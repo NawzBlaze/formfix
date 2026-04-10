@@ -1,24 +1,10 @@
-# FormFix — Robots.txt
-# Site: https://formfix.pages.dev
-
 User-agent: *
 Allow: /
 
-# AI Crawler Context
-Allow: /llms.txt
-Allow: /llms-full.txt
-
-# Disallow server internals
-Disallow: /node_modules/
-
-# Sitemap
+# Sitemaps
 Sitemap: https://formfix.pages.dev/sitemap-index.xml
 Sitemap: https://formfix.pages.dev/formfix-google-sitemap.xml
+Sitemap: https://formfix.pages.dev/sitemap-0.xml
 
-# GoogleBot crawl config
-User-agent: Googlebot
-Allow: /
-Allow: /_astro/
-
-User-agent: Bingbot
-Allow: /
+# Slow down bots if needed
+Crawl-delay: 1

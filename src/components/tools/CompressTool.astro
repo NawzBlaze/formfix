@@ -25,6 +25,15 @@ const { initialTarget = 'auto' } = Astro.props;
             </div>
         </div>
 
+        <div class="popular-targets-links">
+             <label class="section-label">Common Requirements</label>
+             <div class="quick-link-row">
+                 <a href="/compress-image-20kb" class="quick-link">Compress to 20KB ⮕</a>
+                 <a href="/compress-image-50kb" class="quick-link">Compress to 50KB ⮕</a>
+                 <a href="/compress-image-100kb" class="quick-link">Compress to 100KB ⮕</a>
+             </div>
+        </div>
+
         <div class="custom-kb-section">
              <label class="section-label">Or Specify Custom Target (KB)</label>
              <div class="input-group-premium">
@@ -250,7 +259,17 @@ const { initialTarget = 'auto' } = Astro.props;
     .target-pill.auto { background: #fdf2f2; border-color: #fca5a5; color: #b91c1c; flex: 1 1 100%; }
     .target-pill.auto.active { background: #b91c1c; border-color: #b91c1c; color: #fff; }
 
-    .custom-kb-section { margin: 32px 0; }
+    .custom-kb-section { margin: 32px 0 16px; }
+    .popular-targets-links { margin-bottom: 32px; }
+    .quick-link-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .quick-link { 
+        padding: 8px 14px; background: #fff; border: 1.5px solid var(--border); 
+        border-radius: 12px; font-size: 0.75rem; font-weight: 900; color: var(--slate); 
+        text-decoration: none; transition: 0.2s; 
+    }
+    .quick-link:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+    .quick-link:hover { transform: translateX(3px); }
+
     .input-group-premium { display: flex; align-items: center; background: #fff; border: 1.5px solid var(--border); border-radius: 16px; padding: 0 24px; max-width: 300px; transition: 0.3s; margin: 16px 0; }
     .input-group-premium:focus-within { border-color: var(--primary); }
     .input-group-premium input { border: none; background: transparent; padding: 18px 0; width: 100%; font-weight: 950; font-size: 1.2rem; outline: none; color: var(--dark); }
