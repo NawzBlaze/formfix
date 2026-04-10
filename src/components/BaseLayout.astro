@@ -27,7 +27,7 @@ const {
 
 
 const SITE_URL = 'https://formfix.pages.dev';
-const FAVICON = '/favicon.svg';
+const FAVICON = '/favicon.png?v=5';
 const OG_IMAGE = '/og-image.jpg';
 
 // Default WebApplication Schema
@@ -54,7 +54,7 @@ const defaultSchema = {
     "@type": "Organization",
     "name": "FormFix",
     "url": SITE_URL,
-    "logo": SITE_URL + '/favicon.png?v=3',
+    "logo": SITE_URL + '/favicon.png?v=5',
     "sameAs": [
       "https://github.com/NawzBlaze/formfix"
     ],
@@ -143,14 +143,9 @@ const finalCanonical = SITE_URL + finalPath;
 		<meta name="twitter:image" content={SITE_URL + OG_IMAGE} />
 
 		<!-- 4. Icons & PWA (Explicit PNG Sizes for Google) -->
-		<link rel="icon" type="image/x-icon" href="/favicon.ico?v=3" />
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=3" />
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3" />
-		<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=3" />
-		<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png?v=3" />
-		<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png?v=3" />
-		<link rel="shortcut icon" href="/favicon.ico?v=3" />
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3" />
+		<link rel="icon" type="image/png" href="/favicon.png?v=5" />
+		<link rel="apple-touch-icon" href="/favicon.png?v=5" />
+		<link rel="shortcut icon" href="/favicon.png?v=5" />
 		<link rel="manifest" href="/manifest.json" />
 
 		<!-- 5. Search Engine Discovery (JSON-LD Data) -->
@@ -165,7 +160,7 @@ const finalCanonical = SITE_URL + finalPath;
 		  "name": "FormFix",
 		  "alternateName": ["FormFix Image Tools", "FormFix photo editor"],
 		  "url": "https://formfix.pages.dev/",
-		  "logo": "https://formfix.pages.dev/favicon.png?v=3"
+		  "logo": "https://formfix.pages.dev/favicon.png?v=5"
 		}
 		</script>
 		<script type="application/ld+json">
@@ -174,7 +169,7 @@ const finalCanonical = SITE_URL + finalPath;
 		  "@type": "Organization",
 		  "name": "FormFix",
 		  "url": "https://formfix.pages.dev/",
-		  "logo": "https://formfix.pages.dev/favicon.png?v=3",
+		  "logo": "https://formfix.pages.dev/favicon.png?v=5",
 		  "description": "FormFix provides free, private, and secure browser-based image and PDF optimization tools.",
 		  "foundingDate": "2024",
 		  "sameAs": [
