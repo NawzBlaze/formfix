@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import CompressTool from '../components/tools/CompressTool.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'Compress Image to 100KB Online - Fast, Private & Free - FormFix';
+const PAGE_DESC = 'Hit the 100KB file size target instantly. Best for professional forms and photo uploads that require exactly 100KB or less. Fast 1-second processing.';
+const PAGE_KEYWORDS = 'compress image to 100kb, photo compressor 100kb online, reduce image size to 100kb, 100kb image converter';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FormFix 100KB Image Compressor",
+  "operatingSystem": "All",
+  "applicationCategory": "UtilitiesApplication",
+  "description": PAGE_DESC,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="compress" canonicalPath="/compress-image-100kb">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">Target: 100KB Precision</div>
+             <h1 class="main-h1">Compress Image to <span class="highlight">100KB</span></h1>
+             <p class="hero-sub">Get perfectly sized 100KB images in under 1 second. Fast, simple, and private.</p>
+        </header>
+
+        <CompressTool initialTarget={100} />
+
+        <article class="pro-seo-article container mt-48">
+             <h2>The World's Fastest 100KB Compressor</h2>
+             <p>Need a 100KB photo for your job application? Our engine hits the mark without the wait. Powered by a client-side optimization algorithm, we offer high-performance and absolute privacy for your sensitive documents.</p>
+             <h3>How to compress photo under 100kb?</h3>
+             <p>Just upload your image, the 100KB preset is already selected. Hit Optimize and your download is ready in less than 1 second. No server involved.</p>
+        </article>
+
+        <RelatedTools currentTool="compress" />
+    </div>
+</BaseLayout>
+
+<style>
+    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
+    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
+    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
+    .mt-48 { margin-top: 48px; }
+</style>

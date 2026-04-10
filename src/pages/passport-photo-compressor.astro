@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import CompressTool from '../components/tools/CompressTool.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'Passport Photo Compressor Online - 20KB to 50KB - FormFix';
+const PAGE_DESC = 'Specialized passport size photo compressor. Reduce your passport photo to 20KB, 30KB or 50KB instantly for online official applications. Private & Fast.';
+const PAGE_KEYWORDS = 'passport photo compressor, compress passport photo online, 20kb passport photo reducer, ssc passport photo compressor';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Passport Photo Compressor",
+  "operatingSystem": "All",
+  "applicationCategory": "UtilitiesApplication",
+  "description": PAGE_DESC,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="compress" canonicalPath="/passport-photo-compressor">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">Passport Ready</div>
+             <h1 class="main-h1"><span class="highlight">Passport Photo</span> Compressor</h1>
+             <p class="hero-sub">Optimized for government portals. Compress your passport photo to 20KB or 50KB instantly.</p>
+        </header>
+
+        <CompressTool initialTarget={20} />
+
+        <article class="pro-seo-article container mt-48">
+             <h2>The Best Online Passport Photo Compressor</h2>
+             <p>Government applications like SSC, UPSC, and Passport Seva require specific file sizes (usually between 20KB and 50KB). Our tool is designed specifically to hit these targets without making your face blurry.</p>
+             <h3>How to compress passport photo?</h3>
+             <p>Just upload your passport-size photo, select the 20KB or 50KB target, and download. Your file will be perfectly optimized for any official submission.</p>
+        </article>
+
+        <RelatedTools currentTool="compress" />
+    </div>
+</BaseLayout>
+
+<style>
+    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
+    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
+    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
+    .mt-48 { margin-top: 48px; }
+</style>

@@ -1,0 +1,304 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import UploadBox from '../components/UploadBox.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'FormFix – Convert PNG, JPG to WebP Online';
+const PAGE_DESC = 'Instant local image conversion between PNG, JPG, and WebP. Improve website speed by converting to WebP for Google PageSpeed. 100% Secure, No Uploads.';
+const PAGE_KEYWORDS = 'convert image to webp, png to jpeg converter, online image format converter, change image type online, webp to jpg conversion';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Convert Image Format - FormFix",
+      "operatingSystem": "All Platforms",
+      "applicationCategory": "UtilitiesApplication",
+      "description": PAGE_DESC,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How to convert image to WebP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Upload your image, choose 'WebP' from the format selection grid, adjust quality if needed, and click 'Convert & Save'. Your browser will handle the encoding locally and provide a download link immediately."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is WebP better than JPG?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "WebP offers superior lossy and lossless compression. It typically results in 25-30% smaller file sizes compared to JPG at equivalent visual quality, making it the best choice for modern websites."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is conversion lossless?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If you choose PNG as the output format, the conversion is lossless. For WebP and JPG, we use lossy compression by default to save space, but you can set the quality to 100% for nearly-lossless results."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I convert PNG to JPG?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, our tool seamlessly converts PNGs to JPGs. Note that transparency in your PNG will be replaced with a solid color (usually white) when converting to JPG."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="convert">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">🔄 Next-Gen Encoding v3.0</div>
+             <h1>Convert <span class="highlight">Format Online</span></h1>
+             <p>Optimize for speed. Perfect for Web Developers & Content Creators.</p>
+        </header>
+
+        <div class="glass-card tool-content shadow-lg text-center">
+            <div id="u-box-container">
+                <UploadBox />
+            </div>
+
+            <div id="controls" class="tool-controls hidden">
+                <div class="format-selection">
+                    <label class="section-label">1. Choose Output Format</label>
+                    <div class="scroll-row">
+                        <button class="format-pill active" data-format="webp">WebP (Modern & Fast)</button>
+                        <button class="format-pill" data-format="jpg">JPG (Best for Photos)</button>
+                        <button class="format-pill" data-format="png">PNG (Lossless Quality)</button>
+                    </div>
+                    <p class="rec-msg">💡 Recommended: Use **WebP** for 80% faster website loading.</p>
+                </div>
+
+                <div class="quality-section">
+                    <div class="label-row">
+                         <label class="section-label">2. Adjust Image Quality</label>
+                         <div id="est-size" class="size-est shadow-sm">Estimated Size: 0 KB</div>
+                    </div>
+                    
+                    <div class="q-slider-container">
+                        <div class="slider-marks">
+                            <span>Balanced (Small)</span>
+                            <span class="center">High Quality (Recommended)</span>
+                            <span>Lossless (Large)</span>
+                        </div>
+                        <input type="range" id="q-slider" min="10" max="100" value="85" />
+                        <div class="q-percent">
+                             <span id="quality-label">High Quality</span> 
+                             <span id="q-val" class="highlight-val">85%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-footer">
+                    <button id="apply-btn" class="primary-btn wide-btn pulse-glow">
+                        <span>Convert & Save Image</span>
+                    </button>
+                    <p class="trust-msg">✔ 100% Privacy. Processing happens in your Browser RAM.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Preview Section -->
+        <div id="result-stage" class="result-stage hidden">
+            <div class="glass-card result-panel shadow-lg animate-fade-up">
+                <div class="res-header text-center">
+                     <span class="status-badge">✔ Conversion Ready</span>
+                     <h3>Final Formated Image</h3>
+                </div>
+                
+                <div class="res-body text-center">
+                     <div class="image-preview-box">
+                          <img id="image-preview" src="" alt="Converted Result" />
+                     </div>
+                     <div class="res-stats-row">
+                          <div class="stat-p">
+                               <span class="l">Target Format</span>
+                               <span id="final-fmt-stat" class="v">WebP</span>
+                          </div>
+                          <div class="stat-divider"></div>
+                          <div class="stat-p">
+                               <span class="l">Final Size</span>
+                               <span id="final-size-stat" class="v">0 KB</span>
+                          </div>
+                     </div>
+                </div>
+
+                <div class="res-footer">
+                     <a id="download-btn" href="#" class="primary-btn download-btn">Download Formatted Image</a>
+                     <button id="reset-tool" class="secondary-btn">New Image</button>
+                </div>
+            </div>
+        </div>
+
+        <article class="pro-seo-article container mt-48">
+             <h2>Convert PNG to WebP for Google PageSpeed</h2>
+             <p>FormFix is a professional <strong>png to webp converter</strong> that helps you pass the Google Core Web Vitals audit instantly. By using our local encoding engine, you can <strong>convert image format</strong> without any data leaving your device. We specialize in converting high-resolution photos into lightweight, modern formats that drastically reduce server bandwidth and improve user experience across all devices.</p>
+             
+             <h3 class="mt-32">Frequently Asked Questions</h3>
+             <details class="faq-item">
+                  <summary>How to convert image to WebP?</summary>
+                  <p>Upload your image, choose "WebP" from the format selection grid, adjust quality if needed, and click "Convert & Save". Your browser will handle the encoding locally and provide a download link immediately.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Why is WebP better than JPG?</summary>
+                  <p>WebP offers superior lossy and lossless compression. It typically results in 25-30% smaller file sizes compared to JPG at equivalent visual quality, making it the best choice for modern websites.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Is conversion lossless?</summary>
+                  <p>If you choose PNG as the output format, the conversion is lossless. For WebP and JPG, we use lossy compression by default to save space, but you can set the quality to 100% for nearly-lossless results.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Can I convert PNG to JPG?</summary>
+                  <p>Yes, our tool seamlessly converts PNGs to JPGs. Note that transparency in your PNG will be replaced with a solid color (usually white) when converting to JPG.</p>
+             </details>
+        </article>
+
+        <RelatedTools currentTool="convert" />
+    </div>
+</BaseLayout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileInput = document.getElementById('file-input') as HTMLInputElement;
+        const controls = document.getElementById('controls') as HTMLElement;
+        const formatBtns = document.querySelectorAll('.format-pill');
+        const qSlider = document.getElementById('q-slider') as HTMLInputElement;
+        const qValLabel = document.getElementById('q-val') as HTMLElement;
+        const qTextLabel = document.getElementById('quality-label') as HTMLElement;
+        const estLabel = document.getElementById('est-size') as HTMLElement;
+        const applyBtn = document.getElementById('apply-btn') as HTMLButtonElement;
+        const resultStage = document.getElementById('result-stage') as HTMLElement;
+
+        let originalImg: HTMLImageElement | null = null;
+        let originalFile: File | null = null;
+        let activeFormat = 'webp';
+
+        fileInput.addEventListener('change', (e) => {
+            const file = (e.target as HTMLInputElement).files?.[0];
+            if (file) {
+                 originalFile = file;
+                 const rd = new FileReader();
+                 rd.onload = (ev) => {
+                     const img = new Image();
+                     img.onload = () => {
+                         originalImg = img;
+                         controls.classList.remove('hidden');
+                         runEst();
+                     };
+                     img.src = ev.target?.result as string;
+                 };
+                 rd.readAsDataURL(file);
+            }
+        });
+
+        formatBtns.forEach(btn => btn.addEventListener('click', () => {
+             formatBtns.forEach(b => b.classList.remove('active'));
+             btn.classList.add('active');
+             activeFormat = (btn as any).dataset.format;
+             runEst();
+        }));
+
+        qSlider.addEventListener('input', () => {
+             const v = parseInt(qSlider.value);
+             qValLabel.textContent = `${v}%`;
+             if (v < 40) qTextLabel.textContent = 'Low Quality';
+             else if (v < 75) qTextLabel.textContent = 'Balanced';
+             else if (v < 90) qTextLabel.textContent = 'High Quality';
+             else qTextLabel.textContent = 'Lossless (Large)';
+             runEst();
+        });
+
+        const runEst = () => {
+             if (!originalFile) return;
+             const q = parseInt(qSlider.value) / 100;
+             let e = originalFile.size * (activeFormat === 'webp' ? q * 0.4 : activeFormat === 'jpg' ? q * 0.7 : 1);
+             estLabel.textContent = `Estimated Size: ~${(e/1024).toFixed(1)} KB`;
+        };
+
+        applyBtn.addEventListener('click', () => {
+            if (!originalImg) return;
+            const q = parseInt(qSlider.value) / 100;
+            const canvas = document.createElement('canvas');
+            canvas.width = originalImg.naturalWidth; canvas.height = originalImg.naturalHeight;
+            const ctx = canvas.getContext('2d', { alpha: activeFormat === 'png' })!;
+            ctx.drawImage(originalImg, 0, 0);
+            const mime = activeFormat === 'webp' ? 'image/webp' : activeFormat === 'jpg' ? 'image/jpeg' : 'image/png';
+            canvas.toBlob(blob => {
+                 const url = URL.createObjectURL(blob!);
+                 (document.getElementById('image-preview') as HTMLImageElement).src = url;
+                 document.getElementById('final-fmt-stat')!.textContent = activeFormat.toUpperCase();
+                 document.getElementById('final-size-stat')!.textContent = `${(blob!.size/1024).toFixed(1)} KB`;
+                 (document.getElementById('download-btn') as HTMLAnchorElement).href = url;
+                 (document.getElementById('download-btn') as HTMLAnchorElement).download = `formfix-converted.${activeFormat}`;
+                 document.querySelector('.tool-content')?.classList.add('hidden');
+                 resultStage.classList.remove('hidden'); resultStage.scrollIntoView({ behavior: 'smooth' });
+            }, mime, q);
+        });
+
+        document.getElementById('reset-tool')?.addEventListener('click', () => location.reload());
+    });
+</script>
+
+<style>
+    .brand-badge { display: inline-block; background: #fff7ed; color: #ea580c; padding: 8px 16px; border-radius: 100px; font-weight: 850; font-size: 0.8rem; margin-bottom: 12px; }
+    .tool-wrapper { max-width: 800px; margin: 0 auto; padding-bottom: 100px; }
+    .tool-controls { margin-top: 32px; border-top: 1.5px solid var(--border); padding-top: 32px; }
+
+    .format-pill { padding: 14px 24px; border: 1.5px solid var(--border); border-radius: 100px; background: #fff; font-weight: 850; cursor: pointer; transition: 0.2s; font-size: 0.9rem; color: var(--slate); white-space: nowrap; }
+    .format-pill.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3); }
+    .scroll-row { display: flex; gap: 10px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap; }
+    .rec-msg { font-size: 0.9rem; font-weight: 850; color: var(--primary); background: var(--primary-light); display: inline-block; padding: 8px 18px; border-radius: 100px; margin-bottom: 40px; }
+
+    .label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .size-est { font-size: 0.85rem; font-weight: 1000; color: var(--primary); background: #fff; padding: 8px 18px; border-radius: 100px; border: 1.5px solid var(--primary-light); }
+
+    .q-slider-container { padding: 0 12px; }
+    .slider-marks { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 0.7rem; font-weight: 1000; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .slider-marks .center { color: var(--primary); }
+    input[type=range] { width: 100%; height: 8px; border-radius: 100px; -webkit-appearance: none; background: #e2e8f0; border: none; cursor: pointer; margin-bottom: 24px; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--primary); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4); border: 4px solid #fff; }
+    
+    .q-percent { font-size: 1.15rem; font-weight: 1000; color: var(--dark); text-align: center; display: flex; justify-content: center; gap: 8px; align-items: baseline; }
+    #q-val { color: var(--primary); font-size: 1.6rem; }
+
+    .wide-btn { width: 100%; height: 72px; font-size: 1.25rem; font-weight: 1000; border-radius: 20px; }
+    .trust-msg { text-align: center; margin-top: 24px; font-size: 0.9rem; font-weight: 850; color: #166534; background: #dcfce7; padding: 10px 20px; border-radius: 100px; display: inline-block; width: 100%; }
+
+    /* Result Stage */
+    .result-stage { margin-top: 40px; }
+    .status-badge { background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 100px; font-size: 0.75rem; font-weight: 1000; text-transform: uppercase; margin-bottom: 12px; display: inline-block; }
+    .res-body { display: flex; flex-direction: column; align-items: center; gap: 32px; margin: 32px 0 48px; }
+    .image-preview-box { max-height: 400px; border-radius: 20px; border: 2px solid var(--border); overflow: hidden; box-shadow: var(--shadow-soft); } .image-preview-box img { display: block; max-height: 400px; }
+    .res-stats-row { display: flex; align-items: center; gap: 40px; } .stat-divider { width: 1.5px; height: 40px; background: #f1f5f9; } .stat-p { display: flex; flex-direction: column; } .stat-p .l { font-size: 0.75rem; font-weight: 950; color: #94a3b8; text-transform: uppercase; } .stat-p .v { font-size: 1.6rem; font-weight: 1000; color: var(--primary); }
+    .res-footer { display: flex; gap: 16px; } .res-footer .primary-btn { flex: 2; height: 68px; } .res-footer .secondary-btn { flex: 1; border-radius: 20px; }
+
+    @media (max-width: 640px) { .res-footer { flex-direction: column; } .res-stats-row { flex-direction: column; gap: 24px; } .stat-divider { display: none; } }
+
+    /* FAQ */
+    .faq-item { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight: 900; font-size: 1.1rem; padding: 20px; cursor: pointer; color: var(--dark); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 24px; font-weight: bold; font-size: 1.4rem; color: var(--primary); }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 1rem; color: var(--slate); line-height: 1.6; }
+
+    .mt-48 { margin-top: 48px; }
+    .mt-32 { margin-top: 32px; }
+</style>

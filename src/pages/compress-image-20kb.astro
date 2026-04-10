@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import CompressTool from '../components/tools/CompressTool.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'Compress Image to 20KB Online - Free & Instant - FormFix';
+const PAGE_DESC = 'Need to compress photo to exactly 20KB? Our high-precision tool hits the 20KB target perfectly for SSC, UPSC, and Bank forms. 100% private processing.';
+const PAGE_KEYWORDS = 'compress image to 20kb, photo compressor 20kb, reduce image size to 20kb, ssc photo 20kb, upsc signature 20kb';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FormFix 20KB Image Compressor",
+  "operatingSystem": "All",
+  "applicationCategory": "UtilitiesApplication",
+  "description": PAGE_DESC,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="compress" canonicalPath="/compress-image-20kb">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">Target: 20KB Precision</div>
+             <h1 class="main-h1">Compress Image to <span class="highlight">20KB</span></h1>
+             <p class="hero-sub">Perfect for official forms (SSC, UPSC, Bank) that require exactly 20KB or less.</p>
+        </header>
+
+        <CompressTool initialTarget={20} />
+
+        <article class="pro-seo-article container mt-48">
+             <h2>How to compress image to 20kb?</h2>
+             <p>Our specialized 20KB compressor uses a binary search algorithm to hit your target size with 99% accuracy. Simply upload your photo, and the tool will automatically adjust the quality and dimensions to stay under the 20KB limit while keeping the image readable.</p>
+             <h3>Why use FormFix for 20KB compression?</h3>
+             <p>Unlike other websites, we don't upload your sensitive documents to a server. Everything happens locally in your browser. This makes it the safest choice for compressing ID cards, signatures, and passport photos to 20KB.</p>
+        </article>
+
+        <RelatedTools currentTool="compress" />
+    </div>
+</BaseLayout>
+
+<style>
+    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
+    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
+    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
+    .mt-48 { margin-top: 48px; }
+</style>

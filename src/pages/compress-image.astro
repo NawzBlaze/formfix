@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import UploadBox from '../components/UploadBox.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import CompressTool from '../components/tools/CompressTool.astro';
+
+const PAGE_TITLE = 'FormFix – Compress Image to 20KB, 50KB, 100KB Online';
+const PAGE_DESC = 'Hit exact file size targets (20KB, 50KB, 500KB) with our high-precision image compressor. 100% private, no uploads, best for SSC and UPSC forms.';
+const PAGE_KEYWORDS = 'compress image to 20kb, compress photo to 50kb online, image size reducer for forms, ssc photo compressor, upsc photo reducer';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Compress Image to 20KB - FormFix",
+      "operatingSystem": "All Platforms",
+      "applicationCategory": "UtilitiesApplication",
+      "description": PAGE_DESC,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How to compress image to 20kb?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Simply upload your image, click on the '20 KB' preset target button, and hit optimize. Our advanced algorithm will automatically adjust quality until the final generated file size is exactly 20KB or less."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it reduce quality?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our compressor uses a smart mathematical engine (RBQS) which drops file size drastically by stripping invisible metadata and intelligently reducing color depth, aiming to keep the visual quality almost identical to the original."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, it's 100% safe. We utilize local browser processing, meaning your images stay in your computer's memory. No uploads are sent to our servers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How to compress image to 50kb or 100kb?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Simply click the '50 KB' or '100 KB' preset targets in our interface. The smart image compressor will instantly recalibrate to ensure the final output is below your chosen limit."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="compress" canonicalPath="/compress-image">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">Client-Side Compression</div>
+             <h1 class="main-h1">Compress Image to <span class="highlight">Any KB</span> Online</h1>
+             <p class="hero-sub">Enter any specific target (e.g. 20KB, 100KB, or 500KB) and we'll hit it perfectly.</p>
+        </header>
+
+        <CompressTool />
+
+        <article class="pro-seo-article container mt-48">
+             <h2>The Professional Image Compressor Online</h2>
+             <p>FormFix is the highest-precision <strong>online image compressor</strong> for users who need to hit exact file size targets. We ensure that you keep maximum sharpness and readability whether you are aiming for a strict <strong>20kb</strong> limit for a signature, or a <strong>500kb</strong> limit for a website hero image. Perfect for professional portals that require strict adherence to file size constraints.</p>
+             
+             <h3 class="mt-32">Frequently Asked Questions</h3>
+             <details class="faq-item">
+                  <summary>How to compress image to 20kb?</summary>
+                  <p>Simply upload your image, click on the "20 KB" preset target button, and hit optimize. Our advanced algorithm will automatically adjust quality until the final generated file size is exactly 20KB or less.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>How can I compress to 5kb, 500kb or any specific size?</summary>
+                  <p>Use the "Custom Target (KB)" input box. Just type "5" for 5KB or "500" for 500KB. The <strong>smart image compressor</strong> will instantly recalibrate the mathematical engine to ensure the final output strictly matches your chosen limit.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Does it reduce quality?</summary>
+                  <p>Our compressor uses a smart mathematical engine (RBQS) which drops file size drastically by stripping invisible metadata and intelligently reducing color depth, aiming to keep the visual quality almost identical to the original.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Is it safe?</summary>
+                  <p>Yes, it's 100% safe. We utilize local browser processing, meaning your images stay in your computer's memory. No uploads are sent to our servers, keeping your private documents perfectly secure.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Which image formats are supported?</summary>
+                  <p>Our tool currently supports <strong>JPG, PNG, and WebP</strong> formats. For best compression results, we recommend converting PNGs to JPG or WebP if you need to hit very small targets like 20KB.</p>
+             </details>
+        </article>
+
+        <RelatedTools currentTool="compress" />
+    </div>
+</BaseLayout>
+
+<style>
+    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
+    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
+    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
+    
+    /* FAQ */
+    .faq-item { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
+    .faq-item summary { font-weight: 900; font-size: 1.1rem; padding: 20px; cursor: pointer; color: var(--dark); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 24px; font-weight: bold; font-size: 1.4rem; color: var(--primary); }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 1rem; color: var(--slate); line-height: 1.6; }
+
+    .mt-48 { margin-top: 48px; }
+    .mt-32 { margin-top: 32px; }
+</style>

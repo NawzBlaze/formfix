@@ -1,0 +1,63 @@
+{
+  "name": "FormFix – Free Image & PDF Tools",
+  "short_name": "FormFix",
+  "description": "Free browser-based toolkit: compress images to exact KB, create passport photos, merge PDFs, generate QR codes and 30+ more tools. 100% private.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "lang": "en-IN",
+  "scope": "/",
+  "categories": ["utilities", "productivity", "photo"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Compress Image",
+      "short_name": "Compress",
+      "description": "Compress image to exact KB",
+      "url": "/compress-image",
+      "icons": [{ "src": "/favicon-96.png?v=3", "type": "image/png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Passport Photo",
+      "short_name": "Passport",
+      "description": "Create passport size photo",
+      "url": "/passport-size-photo",
+      "icons": [{ "src": "/favicon-96.png?v=3", "type": "image/png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Merge PDF",
+      "short_name": "Merge PDF",
+      "description": "Merge multiple PDF files",
+      "url": "/merge-pdf",
+      "icons": [{ "src": "/favicon-96.png?v=3", "type": "image/png", "sizes": "96x96" }]
+    }
+  ],
+  "icons": [
+    {
+      "src": "/favicon-96.png?v=3",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-192.png?v=3",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-512.png?v=3",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png?v=3",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

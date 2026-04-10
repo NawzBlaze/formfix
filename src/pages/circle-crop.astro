@@ -1,0 +1,304 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import UploadBox from '../components/UploadBox.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'Circle Crop Online - Free Profile Picture Generator';
+const PAGE_DESC = 'Create perfect circular profile pictures for LinkedIn, social media, and Gmail IDs. Fast, private, and 100% free circle cut tool with transparent background.';
+const PAGE_KEYWORDS = 'circle crop online, circular profile pic maker, linkedin photo cropper, round image maker, free profile picture editor';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Circle Crop - Profile Pic Maker",
+      "operatingSystem": "All",
+      "applicationCategory": "DesignApplication",
+      "description": "Premium tool to create perfectly circular profile photos with transparent backgrounds.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} active="crop">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">👤 Smart Avatar Engine</div>
+             <h1>Circle <span class="highlight">Profile Cut</span></h1>
+             <p>Perfectly round avatars for LinkedIn, Gmail, and Social Media IDs.</p>
+        </header>
+
+        <div class="glass-card tool-content shadow-lg">
+            <div id="u-box-container">
+                <UploadBox />
+            </div>
+
+            <div id="controls" class="tool-controls hidden">
+                <div class="crop-playground">
+                    <div id="viewport" class="viewport shadow-lg" style="touch-action: none;">
+                        <div id="image-container" class="image-container" style="touch-action: none;">
+                             <img id="source" class="source" draggable="false" />
+                        </div>
+                        <div id="mask" class="mask"></div>
+                        
+                        <div id="circle" class="crop-circle" style="touch-action: none;">
+                             <div class="handle br" data-dir="br"></div>
+                             <div id="circle-light" class="circle-highlight"></div>
+                        </div>
+                    </div>
+
+                    <div class="zoom-toolbar shadow-lg">
+                         <div class="zoom-item">
+                             <label>Image Zoom</label>
+                             <input type="range" id="zoom-slider" min="1" max="4" step="0.05" value="1" />
+                         </div>
+                    </div>
+                </div>
+
+                <div class="action-footer">
+                    <button id="apply-btn" class="primary-btn wide-btn profile-btn pulse-glow">
+                        <span>Save Profile Photo (PNG)</span>
+                    </button>
+                    <p class="hint-text">Selection is automatically centered in a circle with transparent background.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Preview Section -->
+        <div id="result-stage" class="result-stage hidden animate-fade-up">
+            <div class="glass-card result-panel shadow-lg">
+                <div class="res-header">
+                     <span class="status-badge">✔ Profile Ready</span>
+                     <h3>Final Result Preview</h3>
+                </div>
+                
+                <div class="res-body">
+                     <div class="circle-preview-box shadow-lg">
+                          <img id="image-preview" src="" alt="Circle Result" />
+                     </div>
+                     <div class="res-stats">
+                          <div class="stat-p">
+                               <span class="l">Format</span>
+                               <span class="v">PNG (Transparent)</span>
+                          </div>
+                     </div>
+                </div>
+
+                <div class="res-footer">
+                     <a id="download-btn" href="#" class="primary-btn download-btn">Download Final Photo</a>
+                     <button id="reset-tool" class="secondary-btn">New Image</button>
+                </div>
+            </div>
+        </div>
+
+        <article class="pro-seo-article container mt-48">
+             <h2>Professional Circular Profile Pictures</h2>
+             <p>Need a clean, professional profile photo? Most company portals and social networks like LinkedIn, Gmail, and Twitter now use circular avatars. FormFix provides a dedicated <strong>Circle Crop</strong> tool that ensures your face is perfectly centered and the edges are smooth with automatic anti-aliasing. Our <strong>online profile pic maker</strong> works locally in your browser, keeping your personal photos 100% private.</p>
+             
+             <h3 class="mt-32">Frequently Asked Questions</h3>
+             <details class="faq-item">
+                  <summary>How to create a circular profile picture?</summary>
+                  <p>Upload your square or rectangular photo, adjust the circular selection box to center your face, use the zoom slider for perfect framing, and click "Save Profile Photo". Our tool creates a PNG with transparent corners instantly.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Why use a circle crop tool?</summary>
+                  <p>Manually cropping for a circle in standard editors often leaves white or black corners. Our tool uses transparent Alpha channels (PNG) to ensure your photo fits perfectly into any modern app's circular interface.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Does it work for LinkedIn?</summary>
+                  <p>Yes! This is the perfect <strong>LinkedIn profile crop tool</strong>. We recommend using a high-resolution source image and centering your face with the grid to looks professional.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Is my photo safe?</summary>
+                  <p>Since all processing happens on your own computer (client-side), your photos are never uploaded or stored on any server. It's the safest way to edit personal profile pictures.</p>
+             </details>
+        </article>
+
+        <RelatedTools currentTool="circle-crop" />
+    </div>
+</BaseLayout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileInput = document.getElementById('file-input') as HTMLInputElement;
+        const controls = document.getElementById('controls') as HTMLElement;
+        const source = document.getElementById('source') as HTMLImageElement;
+        const imgContainer = document.getElementById('image-container') as HTMLElement;
+        const viewport = document.getElementById('viewport') as HTMLElement;
+        const circle = document.getElementById('circle') as HTMLElement;
+        const zoomSlider = document.getElementById('zoom-slider') as HTMLInputElement;
+        const applyBtn = document.getElementById('apply-btn') as HTMLButtonElement;
+        const resultStage = document.getElementById('result-stage') as HTMLElement;
+
+        let currentZoom = 1;
+        let originalFile: File | null = null;
+
+        fileInput.addEventListener('change', (e) => {
+            const file = (e.target as HTMLInputElement).files?.[0];
+            if (file) handleFile(file);
+        });
+
+        async function handleFile(file: File) {
+            originalFile = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                source.src = e.target?.result as string;
+                source.onload = () => {
+                    controls.classList.remove('hidden');
+                    initBox();
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function initBox() {
+            const vW = viewport.clientWidth, vH = viewport.clientHeight;
+            const dim = Math.min(vW, vH) * 0.7;
+            circle.style.width = dim + 'px'; circle.style.height = dim + 'px';
+            circle.style.left = (vW - dim) / 2 + 'px'; circle.style.top = (vH - dim) / 2 + 'px';
+        }
+
+        // ── Navigation Engine (Zoom) ──
+        zoomSlider.addEventListener('input', () => {
+             currentZoom = parseFloat(zoomSlider.value);
+             imgContainer.style.transform = `scale(${currentZoom})`;
+        });
+
+        // ── Interaction Logic (Pointer Events + raf) ──
+        let cap = '', sx = 0, sy = 0, cl = 0, ct = 0, cw = 0;
+        let ticking = false;
+
+        const onStart = (e: PointerEvent, type: string) => {
+            e.preventDefault();
+            cap = type; sx = e.clientX; sy = e.clientY;
+            cl = circle.offsetLeft; ct = circle.offsetTop;
+            cw = circle.clientWidth;
+            
+            document.body.style.overflow = 'hidden';
+            (e.target as HTMLElement).setPointerCapture(e.pointerId);
+        };
+
+        const onMove = (e: PointerEvent) => {
+            if (!cap) return;
+            e.preventDefault();
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    updateCircle(e.clientX, e.clientY);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        function updateCircle(clientX: number, clientY: number) {
+            const dx = clientX - sx; const dy = clientY - sy;
+            const vW = viewport.clientWidth; const vH = viewport.clientHeight;
+
+            if (cap === 'move') {
+                let L = cl + dx, T = ct + dy;
+                L = Math.max(0, Math.min(L, vW - circle.clientWidth));
+                T = Math.max(0, Math.min(T, vH - circle.clientHeight));
+                circle.style.left = L + 'px'; circle.style.top = T + 'px';
+            } else if (cap === 'br') {
+                const delta = Math.max(dx, dy);
+                let W = cw + delta;
+                W = Math.max(60, Math.min(W, vW - circle.offsetLeft, vH - circle.offsetTop));
+                circle.style.width = W + 'px'; circle.style.height = W + 'px';
+            }
+        }
+
+        const onEnd = (e: PointerEvent) => { 
+            cap = ''; 
+            document.body.style.overflow = 'auto';
+            (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+        };
+
+        circle.addEventListener('pointerdown', (e) => onStart(e, 'move'));
+        circle.addEventListener('pointermove', onMove);
+        circle.addEventListener('pointerup', onEnd);
+        circle.addEventListener('pointercancel', onEnd);
+
+        circle.querySelector('.handle')?.addEventListener('pointerdown', (e: any) => { 
+            e.stopPropagation(); 
+            onStart(e, 'br'); 
+        });
+
+        // ── Final Crop ──
+        applyBtn.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d')!;
+            const imgRect = source.getBoundingClientRect();
+            const boxRect = circle.getBoundingClientRect();
+            const scaleX = source.naturalWidth / imgRect.width;
+            const relativeX = (boxRect.left - imgRect.left) * scaleX;
+            const relativeY = (boxRect.top - imgRect.top) * scaleX; // Assume square
+            const relativeW = boxRect.width * scaleX;
+            canvas.width = relativeW; canvas.height = relativeW;
+            ctx.beginPath(); ctx.arc(relativeW/2, relativeW/2, relativeW/2, 0, Math.PI * 2); ctx.clip();
+            ctx.drawImage(source, relativeX, relativeY, relativeW, relativeW, 0, 0, relativeW, relativeW);
+            canvas.toBlob(blob => {
+                 const url = URL.createObjectURL(blob!);
+                 (document.getElementById('image-preview') as HTMLImageElement).src = url;
+                 (document.getElementById('download-btn') as HTMLAnchorElement).href = url;
+                 (document.getElementById('download-btn') as HTMLAnchorElement).download = `formfix-circle-profile.png`;
+                 document.querySelector('.tool-content')?.classList.add('hidden');
+                 resultStage.classList.remove('hidden');
+                 resultStage.scrollIntoView({ behavior: 'smooth' });
+            }, 'image/png');
+        });
+
+        document.getElementById('reset-tool')?.addEventListener('click', () => location.reload());
+    });
+</script>
+
+<style>
+    .brand-badge { display: inline-block; background: #ede9fe; color: #7c3aed; padding: 8px 16px; border-radius: 100px; font-weight: 850; font-size: 0.8rem; margin-bottom: 12px; }
+    .tool-wrapper { max-width: 900px; margin: 0 auto; padding-bottom: 80px; }
+    .tool-controls { margin-top: 32px; border-top: 2px solid #f1f5f9; padding-top: 32px; }
+
+    .crop-playground { position: relative; background: #f8fafc; border-radius: 28px; padding: 32px; margin-bottom: 40px; border: 1.5px solid var(--border); }
+    .viewport { position: relative; width: 100%; height: 500px; border-radius: 12px; overflow: hidden; background: #e2e8f0; display: flex; align-items: center; justify-content: center; touch-action: none; }
+    .image-container { position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transform-origin: center; transition: transform 0.1s ease-out; }
+    .source { max-width: 90%; max-height: 90%; display: block; filter: brightness(0.6); }
+
+    .crop-circle { position: absolute; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 0 0 5000px rgba(0,0,0,0.7); z-index: 20; cursor: move; }
+    .circle-highlight { position: absolute; inset: -4px; border: 2px solid rgba(139, 92, 246, 0.4); border-radius: 50%; pointer-events: none; }
+
+    .handle { position: absolute; width: 32px; height: 32px; background: #fff; border: 4px solid #8b5cf6; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 30; }
+    .handle.br { bottom: -16px; right: -16px; cursor: nwse-resize; }
+
+    .zoom-toolbar { position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%); background: #fff; padding: 12px 24px; border-radius: 100px; display: flex; align-items: center; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1.5px solid var(--border); }
+    .zoom-item { display: flex; align-items: center; gap: 12px; }
+    .zoom-item label { font-size: 0.8rem; font-weight: 850; color: #64748b; }
+
+    .wide-btn.profile-btn { width: 100%; height: 72px; font-size: 1.25rem; font-weight: 850; border-radius: 20px; }
+    .hint-text { text-align: center; margin-top: 16px; font-size: 0.85rem; color: #94a3b8; font-weight: 700; }
+
+    /* Result */
+    .result-stage { margin-top: 40px; }
+    .circle-preview-box { width: 200px; height: 200px; border-radius: 50%; border: 4px solid var(--primary); overflow: hidden; margin-bottom: 24px; }
+    .circle-preview-box img { width: 100%; height: 100%; object-fit: cover; }
+    .res-body { display: flex; flex-direction: column; align-items: center; }
+
+    @media (max-width: 640px) {
+        .viewport { height: 400px; }
+        .zoom-toolbar { bottom: 32px; width: 90%; }
+        .zoom-item input { width: 100px; }
+    }
+
+    /* FAQ */
+    .faq-item { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
+    .faq-item summary { font-weight: 900; font-size: 1.1rem; padding: 20px; cursor: pointer; color: var(--dark); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 24px; font-weight: bold; font-size: 1.4rem; color: var(--primary); }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 1rem; color: var(--slate); line-height: 1.6; }
+
+    .mt-48 { margin-top: 48px; }
+    .mt-32 { margin-top: 32px; }
+</style>

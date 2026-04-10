@@ -1,0 +1,154 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'Age Calculator Free – Exact Age in Years, Months, Days';
+const PAGE_DESC = 'Calculate your exact age in years, months, and days instantly. Free online age calculator for birthdays, anniversaries, and date differences.';
+const PAGE_KEYWORDS = 'age calculator, calculate age, exact age, date difference, birthday calculator';
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} active="tools" canonicalPath="/age-calculator">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">⏱️ Date Mathematics</div>
+             <h1 class="main-h1">Age <span class="highlight">Calculator</span></h1>
+             <p class="hero-sub">Enter your birth date to find your exact age and next birthday.</p>
+        </header>
+
+        <div class="glass-card tool-content shadow-lg">
+             <div class="date-inputs">
+                  <div class="date-group shadow-sm">
+                       <label>Date of Birth</label>
+                       <input type="date" id="dob" />
+                  </div>
+                  <div class="date-group shadow-sm">
+                       <label>Age at the date of</label>
+                       <input type="date" id="target-date" />
+                  </div>
+             </div>
+
+             <div class="res-stage mt-48 text-center" id="res-box">
+                  <h3 class="res-title">Exact Age</h3>
+                  <div class="age-big">
+                      <span id="res-years">0</span> <small>Years</small>
+                      <span id="res-months">0</span> <small>Months</small>
+                      <span id="res-days">0</span> <small>Days</small>
+                  </div>
+             </div>
+        </div>
+
+        <article class="pro-seo-article container mt-48">
+             <h2>Calculate Age Instantly</h2>
+             <p>Our completely free <strong>age calculator</strong> computes your exact chronological age in years, months, and days. It handles leap years automatically and provides a precise time gap between any two calendar dates. Whether you are checking your <strong>birthday calculator</strong> result or calculating the duration of a project or legal contract, our tool delivers <strong>exact age in days</strong> instantly with absolute accuracy.</p>
+             
+             <h3 class="mt-32">Frequently Asked Questions</h3>
+             <details class="faq-item">
+                  <summary>How to calculate my exact age?</summary>
+                  <p>Choose your birth date from the "Date of Birth" selector. Our <strong>online age tool</strong> will instantly compare it with today's date (or any target date you specify) and show you how many years, months, and days you have lived.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Does it account for leap years?</summary>
+                  <p>Yes. Our mathematical algorithm accurately calculates the variable number of days in February and the 366-day cycle of leap years to provide a perfect result.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Can I calculate the age between two past dates?</summary>
+                  <p>Absolutely. You can change the "Age at the date of" field to any date in history to calculate the time distance between any two points in time.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Is this data private?</summary>
+                  <p>Yes. Like all FormFix tools, the <strong>age calculation</strong> happens strictly in your browser. We do not store or transmit your birth date to any server.</p>
+             </details>
+        </article>
+
+        <RelatedTools currentTool="tools" />
+    </div>
+</BaseLayout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const dobInput = document.getElementById('dob') as HTMLInputElement;
+        const targetInput = document.getElementById('target-date') as HTMLInputElement;
+
+        const ry = document.getElementById('res-years') as HTMLElement;
+        const rm = document.getElementById('res-months') as HTMLElement;
+        const rd = document.getElementById('res-days') as HTMLElement;
+
+        // Set to today
+        const today = new Date();
+        targetInput.value = today.toISOString().split('T')[0];
+        
+        // Example DOB 20 years ago
+        const defaultDob = new Date();
+        defaultDob.setFullYear(defaultDob.getFullYear() - 20);
+        dobInput.value = defaultDob.toISOString().split('T')[0];
+
+        function calculateAge() {
+            if (!dobInput.value || !targetInput.value) return;
+
+            let birthDate = new Date(dobInput.value);
+            let targetDate = new Date(targetInput.value);
+
+            if (birthDate > targetDate) {
+                 ry.textContent = '0'; rm.textContent = '0'; rd.textContent = '0';
+                 return;
+            }
+
+            let years = targetDate.getFullYear() - birthDate.getFullYear();
+            let months = targetDate.getMonth() - birthDate.getMonth();
+            let days = targetDate.getDate() - birthDate.getDate();
+
+            if (days < 0) {
+                 months--;
+                 const lastMonth = new Date(targetDate.getFullYear(), targetDate.getMonth(), 0);
+                 days += lastMonth.getDate();
+            }
+
+            if (months < 0) {
+                 years--;
+                 months += 12;
+            }
+
+            ry.textContent = years.toString();
+            rm.textContent = months.toString();
+            rd.textContent = days.toString();
+        }
+
+        dobInput.addEventListener('input', calculateAge);
+        targetInput.addEventListener('input', calculateAge);
+        calculateAge();
+    });
+</script>
+
+<style>
+    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
+    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; }
+    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
+    
+    .date-inputs { display: flex; gap: 24px; flex-wrap: wrap; }
+    .date-group { flex: 1; background: #fff; border: 1.5px solid var(--border); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+    .date-group label { font-size: 0.85rem; font-weight: 900; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .date-group input { width: 100%; border: none; font-size: 1.4rem; font-weight: 950; color: var(--dark); outline: none; cursor: pointer; background: transparent; }
+
+    .res-stage { background: #f8fafc; border: 1.5px solid var(--border); border-radius: 24px; padding: 48px 24px; }
+    .res-title { font-weight: 950; font-size: 1.2rem; margin-bottom: 20px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; }
+    
+    .age-big { display: flex; justify-content: center; gap: 24px; align-items: baseline; flex-wrap: wrap; }
+    .age-big span { font-size: 4.5rem; font-weight: 1000; color: var(--primary); line-height: 1; }
+    .age-big small { font-size: 1.2rem; font-weight: 850; color: var(--slate); text-transform: uppercase; margin-left: -12px; }
+
+    .mt-48 { margin-top: 48px; }
+    .mt-32 { margin-top: 32px; }
+
+    /* FAQ */
+    .faq-item { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; text-align: left; margin-top: 16px; }
+    .faq-item summary { font-weight: 900; font-size: 1.1rem; padding: 20px; cursor: pointer; color: var(--dark); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 24px; font-weight: bold; font-size: 1.4rem; color: var(--primary); }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 1rem; color: var(--slate); line-height: 1.6; }
+
+    @media (max-width: 640px) {
+        .date-inputs { flex-direction: column; gap: 16px; }
+        .age-big span { font-size: 3rem; }
+        .age-big gap { gap: 12px; }
+    }
+</style>

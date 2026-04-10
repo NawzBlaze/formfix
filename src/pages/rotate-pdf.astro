@@ -1,0 +1,316 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'Rotate PDF Pages Online - Free & Secure Editor';
+const PAGE_DESC = 'Rotate upside-down PDF pages instantly in your browser with live preview. 100% free, no uploads, and perfectly secure. Rotate left or right and download.';
+const PAGE_KEYWORDS = 'rotate pdf online, rotate pdf pages, preview pdf rotation, flip pdf, secure pdf editor, free rotate pdf tool';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "FormFix Pro PDF Rotator",
+      "operatingSystem": "All",
+      "applicationCategory": "UtilitiesApplication",
+      "description": "Preview and rotate all pages in a PDF document 90, 180, or 270 degrees locally.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/rotate-pdf">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">🔄 Live PDF Engine</div>
+             <h1 class="main-h1">Rotate <span class="highlight">PDF Pages</span></h1>
+             <p class="hero-sub">Fix upside-down scanned PDFs securely with a live visual preview. Fast, free, and completely offline.</p>
+        </header>
+
+        <div class="glass-card tool-content shadow-lg max-w-lg mx-auto">
+            
+            <div id="upload-stage" class="upload-container shadow-sm">
+                 <div class="upload-circle mb-16"><span class="u-icon">📄</span></div>
+                 <h3 class="u-title">Select a PDF</h3>
+                 <p class="u-sub">Works with any PDF document or scan.</p>
+                 <button class="primary-btn wide-btn profile-btn pulse-glow" onclick="document.getElementById('pdf-upload').click()">Browse PDF</button>
+                 <input type="file" id="pdf-upload" class="hidden" accept="application/pdf" />
+            </div>
+
+            <div id="editor-stage" class="hidden">
+                 
+                 <!-- Live Visual Preview -->
+                 <div class="preview-stage mb-24">
+                      <div class="canvas-wrapper">
+                           <canvas id="pdf-preview" class="pdf-canvas"></canvas>
+                      </div>
+                      <span class="preview-badge">Live Preview (Page 1)</span>
+                 </div>
+
+                 <div class="info-banner mb-24 shadow-sm">
+                     <span class="f-icon">📜</span>
+                     <div class="f-text">
+                         <span class="f-name" id="doc-name">document.pdf</span>
+                         <span class="f-size" id="doc-pages">1 Page loaded</span>
+                     </div>
+                 </div>
+                 
+                 <div class="d-flex gap-16 justify-center mb-32 wrap-mobile">
+                      <button id="rotate-left-btn" class="secondary-btn wide-btn-half text-lg hover-scale">↺ Left Rotation</button>
+                      <button id="rotate-right-btn" class="secondary-btn wide-btn-half text-lg hover-scale">Right Rotation ↻</button>
+                 </div>
+                 
+                 <div class="d-flex gap-16 wrap-mobile">
+                      <button id="reset-btn" class="secondary-btn wide-btn-half profile-btn">🗑️ Start Over</button>
+                      <button id="download-btn" class="primary-btn wide-btn profile-btn pulse-glow" style="flex:1;">⬇️ Apply & Save PDF</button>
+                 </div>
+            </div>
+
+        </div>
+
+        <article class="pro-seo-article container mt-48">
+             <h2>The Fastest Way to Rotate Upside-Down PDFs</h2>
+             <p>Scanners and phone cameras often save documents in the wrong orientation. Our <strong>Free PDF Rotator</strong> provides a beautiful live preview, allowing you to visually confirm the correct orientation of your document instantly before saving. Unlike other websites that require you to upload your sensitive tax documents or IDs to their server, our system alters the standard PDF rotation metadata directly inside your computer's RAM.</p>
+             
+             <h3 class="mt-32">Data Privacy Guaranteed</h3>
+             <ul style="color:var(--slate); line-height:1.8; margin-left:20px; font-size:1.1rem">
+                <li><strong>No Server Uploads:</strong> Because no file is transported over the web, there are no file size limits, no waiting for uploads, and absolutely no risk of data theft.</li>
+                <li><strong>Retains Quality:</strong> Fixing the rotation does not blurry images or alter text. We strictly modify the internal bounding box matrices locally so your document retains its original crisp 100% quality.</li>
+             </ul>
+        </article>
+
+        <RelatedTools currentTool="rotate-pdf" />
+    </div>
+</BaseLayout>
+
+<script>
+    const loadPdfJs = async () => {
+        if ((window as any).pdfjsLib) return;
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+            script.onload = () => {
+                (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                resolve(true);
+            };
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    };
+
+    const loadPdfLib = async () => {
+        if ((window as any).PDFLib) return;
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileInput = document.getElementById('pdf-upload') as HTMLInputElement;
+        const uploadStage = document.getElementById('upload-stage') as HTMLElement;
+        const editorStage = document.getElementById('editor-stage') as HTMLElement;
+        const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
+        const resetBtn = document.getElementById('reset-btn') as HTMLButtonElement;
+        
+        const docName = document.getElementById('doc-name') as HTMLElement;
+        const docPages = document.getElementById('doc-pages') as HTMLElement;
+        const previewCanvas = document.getElementById('pdf-preview') as HTMLCanvasElement;
+        const ctx = previewCanvas.getContext('2d')!;
+
+        let pdfBytesOriginal: ArrayBuffer | null = null;
+        let fileName = 'document.pdf';
+        
+        // Track relative rotation sum (+90 or -90)
+        let totalRotation = 0;
+
+        async function renderPreview(arrayBuffer: ArrayBuffer) {
+             const typedarray = new Uint8Array(arrayBuffer.slice(0));
+             const pdf = await (window as any).pdfjsLib.getDocument({ data: typedarray }).promise;
+             const page = await pdf.getPage(1); // Preview first page
+             
+             // Base scale for generic preview container
+             const viewport = page.getViewport({ scale: 1.0 });
+             const scale = Math.min(600 / viewport.width, 1.5);
+             const scaledViewport = page.getViewport({ scale });
+             
+             previewCanvas.width = scaledViewport.width;
+             previewCanvas.height = scaledViewport.height;
+             
+             await page.render({ canvasContext: ctx, viewport: scaledViewport }).promise;
+        }
+
+        function updatePreviewTransform() {
+             previewCanvas.style.transform = `rotate(${totalRotation}deg)`;
+        }
+
+        fileInput.addEventListener('change', async (e: any) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            fileName = file.name;
+            
+            docName.textContent = fileName;
+            uploadStage.innerHTML = `<div class="upload-circle"><span class="u-icon pulse-glow">⏳</span></div><h3 class="u-title">Loading PDF...</h3>`;
+            
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                pdfBytesOriginal = event.target?.result as ArrayBuffer;
+                
+                try {
+                    // Load dependencies concurrently
+                    await Promise.all([loadPdfJs(), loadPdfLib()]);
+
+                    // Count Pages via pdf-lib
+                    const { PDFDocument } = (window as any).PDFLib;
+                    const pdfDoc = await PDFDocument.load(pdfBytesOriginal.slice(0));
+                    const pages = pdfDoc.getPages();
+                    docPages.textContent = `${pages.length} Pages loaded`;
+                    
+                    // Render Visual Preview via pdf.js
+                    await renderPreview(pdfBytesOriginal);
+                    
+                    uploadStage.classList.add('hidden');
+                    uploadStage.innerHTML = `<div class="upload-circle mb-16"><span class="u-icon">📄</span></div><h3 class="u-title">Select a PDF</h3><p class="u-sub">Works with any PDF document or scan.</p><button class="primary-btn wide-btn profile-btn pulse-glow" onclick="document.getElementById('pdf-upload').click()">Browse PDF</button>`;
+                    editorStage.classList.remove('hidden');
+                    
+                    totalRotation = 0;
+                    updatePreviewTransform();
+
+                } catch(err) {
+                    console.error(err);
+                    alert("Could not load PDF. It might be encrypted or corrupted.");
+                    uploadStage.innerHTML = `<div class="upload-circle mb-16"><span class="u-icon">📄</span></div><h3 class="u-title">Select a PDF</h3><p class="u-sub">Works with any PDF document or scan.</p><button class="primary-btn wide-btn profile-btn pulse-glow" onclick="document.getElementById('pdf-upload').click()">Browse PDF</button>`;
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        document.getElementById('rotate-left-btn')!.addEventListener('click', () => {
+             totalRotation -= 90;
+             updatePreviewTransform();
+        });
+
+        document.getElementById('rotate-right-btn')!.addEventListener('click', () => {
+             totalRotation += 90;
+             updatePreviewTransform();
+        });
+
+        resetBtn.addEventListener('click', () => {
+            pdfBytesOriginal = null;
+            fileInput.value = '';
+            totalRotation = 0;
+            updatePreviewTransform();
+            uploadStage.classList.remove('hidden');
+            editorStage.classList.add('hidden');
+        });
+
+        downloadBtn.addEventListener('click', async () => {
+            if (!pdfBytesOriginal) return;
+
+            // Optional: If they didn't rotate, warn them
+            if (totalRotation % 360 === 0) {
+                 const proceed = confirm("You haven't rotated the document visually. Save anyway?");
+                 if (!proceed) return;
+            }
+
+            downloadBtn.textContent = '⏳ Processing...';
+            downloadBtn.style.pointerEvents = 'none';
+
+            try {
+                const { PDFDocument, degrees } = (window as any).PDFLib;
+                
+                // Reload clean doc safely using sliced buffer
+                const pdfDoc = await PDFDocument.load(pdfBytesOriginal.slice(0));
+                const pages = pdfDoc.getPages();
+
+                // Apply relative angles across the board perfectly
+                pages.forEach((page: any) => {
+                    const rotObj = page.getRotation();
+                    const currentAngle = rotObj ? (rotObj.angle || 0) : 0;
+                    page.setRotation(degrees(currentAngle + totalRotation));
+                });
+
+                const modifiedPdfBytes = await pdfDoc.save();
+                const blob = new Blob([modifiedPdfBytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.download = fileName.replace('.pdf', '') + '_fixed.pdf';
+                link.href = url;
+                link.click();
+            } catch (err) {
+                 console.error(err);
+                 alert('Error saving the rotated document.');
+            } finally {
+                 downloadBtn.textContent = '⬇️ Apply & Save PDF';
+                 downloadBtn.style.pointerEvents = 'all';
+                 totalRotation = 0;
+                 updatePreviewTransform(); // Reset visual
+            }
+        });
+    });
+</script>
+
+<style>
+    .main-h1 { font-size: 3.5rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
+    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.25rem; margin-bottom: 24px; }
+    .tool-wrapper { max-width: 960px; margin: 0 auto; padding-bottom: 100px; }
+    .max-w-lg { max-width: 550px; margin-inline: auto; }
+    
+    .upload-container { background: #f8fafc; border: 2.5px dashed var(--border); border-radius: 32px; padding: 60px 20px; text-align: center; cursor: pointer; transition: 0.3s; margin-top:16px; min-height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .upload-container:hover { border-color: var(--primary); background: #f0fdf4; transform: translateY(-4px); }
+    .upload-circle { width: 90px; height: 90px; background: #fff; border-radius: 50%; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 3rem; }
+    .u-title { font-size: 1.8rem; font-weight: 1000; color: var(--dark); margin-bottom: 8px; }
+    .u-sub { font-size: 1.1rem; color: var(--slate); font-weight: 600; margin-bottom: 32px; }
+
+    #editor-stage { background: #fff; padding: 24px; border-radius: 24px; border: 1.5px solid var(--border); }
+    
+    .preview-stage { position: relative; width: 100%; height: 350px; background: #f1f5f9; border-radius: 16px; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 2px dashed #cbd5e1; padding: 20px; }
+    .preview-badge { position: absolute; top: 12px; left: 16px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 12px; border-radius: 100px; font-size: 0.85rem; font-weight: 800; }
+    
+    .canvas-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+    .pdf-canvas { max-width: 100%; max-height: 100%; box-shadow: 0 5px 20px rgba(0,0,0,0.15); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center; border-radius: 2px;}
+
+    .info-banner { display: flex; align-items: center; gap: 16px; padding: 20px; background: #fff; border: 1.5px solid var(--border); border-radius: 16px; }
+    .f-icon { font-size: 2.5rem; }
+    .f-text { display: flex; flex-direction: column; overflow: hidden; }
+    .f-name { font-weight: 900; color: var(--dark); font-size: 1.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+    .f-size { color: var(--primary); font-size: 1rem; font-weight: 700; margin-top:4px; }
+
+    .d-flex { display: flex; }
+    .justify-center { justify-content: center; }
+    .font-bold { font-weight: 950; color: var(--dark); }
+    .text-center { text-align: center; }
+    .text-xl { font-size: 1.3rem; }
+    .text-lg { font-size: 1.1rem; }
+    
+    .hover-scale { transition: 0.2s; }
+    .hover-scale:hover { transform: scale(1.05); border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+    .mt-48 { margin-top: 48px; }
+    .gap-16 { gap: 16px; }
+    
+    .wide-btn { padding: 22px 24px; font-weight: 1000; font-size: 1.25rem; border-radius: 100px; display: block; }
+    .wide-btn-half { padding: 18px 24px; font-weight: 900; border-radius: 100px; flex: 1; border: 2px solid var(--border); background: #fff; }
+    
+    .hidden { display: none !important; }
+
+    @media (max-width: 640px) {
+        .wrap-mobile { flex-direction: column; }
+        .wide-btn, .wide-btn-half { width: 100%; }
+        .f-name { max-width: 200px; }
+        .preview-stage { height: 280px; }
+    }
+</style>

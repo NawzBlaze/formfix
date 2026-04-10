@@ -1,0 +1,87 @@
+---
+---
+<div id="result-card" class="glass-card result-container hidden animate-in">
+    <div class="result-header text-center">
+        <div class="success-icon">✓</div>
+        <h2>Image Ready!</h2>
+        <p>Your processing is complete. Preview below.</p>
+    </div>
+
+    <div class="preview-stage shadow-sm">
+        <img id="image-preview" src="" alt="Processed Preview" />
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-box">
+            <span class="label">Original</span>
+            <span id="original-size" class="value">—</span>
+        </div>
+        <div class="stat-arrow">→</div>
+        <div class="stat-box highlight">
+            <span class="label" id="quality-status-label">Final Size</span>
+            <span id="compressed-size" class="value">—</span>
+            <div id="quality-indicator" class="quality-tag hidden">High Quality</div>
+        </div>
+    </div>
+
+    <div class="result-actions">
+        <a id="download-btn" href="#" download="formfix_image.jpg" class="primary-btn btn-lg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Now
+        </a>
+        <button id="reset-btn" class="secondary-btn btn-lg">Start New</button>
+    </div>
+</div>
+
+<style>
+    .result-container { max-width: 500px; margin: 40px auto; border-color: #e2e8f0; border-width: 1.5px; }
+
+    .result-header { margin-bottom: 28px; }
+    .success-icon { 
+        width: 50px; height: 50px; background: #ecfdf5; color: #10b981; 
+        border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+        font-size: 1.4rem; font-weight: 850; margin-bottom: 12px; border: 1.5px solid #d1fae5;
+    }
+
+    .preview-stage { 
+        background: #f8fafc; border-radius: 16px; border: 1.5px solid #f1f5f9;
+        overflow: hidden; margin-bottom: 28px; display: flex; justify-content: center; align-items: center;
+        min-height: 200px; max-height: 400px; transition: transform 0.3s;
+    }
+    .preview-stage:hover { transform: scale(1.02); }
+    #image-preview { max-width: 100%; max-height: 400px; object-fit: contain; }
+
+    .stats-grid { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+    .stat-box { 
+        flex: 1; padding: 18px 12px; background: #fff; border: 1.5px solid var(--border); 
+        border-radius: 18px; text-align: center; position: relative;
+    }
+    .stat-box.highlight { border-color: var(--primary); background: var(--primary-light); }
+    
+    .stat-arrow { font-size: 1.4rem; color: #cbd5e1; font-weight: 800; }
+    .label { display: block; font-size: 0.7rem; font-weight: 850; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; }
+    .value { font-size: 1.25rem; font-weight: 850; color: var(--dark); display: block; }
+    
+    .stat-box.highlight .label { color: var(--primary); }
+    .stat-box.highlight .value { color: var(--primary); }
+
+    .quality-tag { 
+        position: absolute; top: -10px; left: 50%; transform: translateX(-50%); 
+        background: #10b981; color: white; padding: 2px 10px; border-radius: 100px; 
+        font-size: 0.65rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+        box-shadow: 0 4px 10px -2px rgba(16, 185, 129, 0.3);
+    }
+    .quality-tag.warning { background: #f59e0b; }
+
+    .result-actions { display: flex; flex-direction: column; gap: 12px; }
+    .btn-lg { height: 56px; font-size: 1.05rem; border-radius: 16px; width: 100%; }
+
+    @media (max-width: 480px) {
+        .stat-box { padding: 14px 8px; }
+        .value { font-size: 1.05rem; }
+    }
+</style>

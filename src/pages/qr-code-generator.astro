@@ -1,0 +1,362 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'QR Studio V17 – Couture Designer Matrix Suite';
+const PAGE_DESC = 'The world’s most aesthetic designer QR maker. Couture presets, circular branding, and precision matrix engineering.';
+const PAGE_KEYWORDS = 'professional qr code generator, luxury qr designer, custom qr maker, circular logo qr code';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "SoftwareApplication", "name": "FormFix Pro QR Designer", "description": "Luxury designer QR suite with couture aesthetic presets and precision circular branding." }
+  ]
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/qr-code-generator">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">👑 Diamond Studio V17 (Ultra Couture)</div>
+             <h1 class="main-h1">Designer QR <span class="highlight">Studio Pro</span></h1>
+             <p class="hero-sub">World-class matrix engine. Couture Aesthetic. Elite Branding.</p>
+        </header>
+
+        <div class="studio-layout">
+            
+            <!-- Left: Settings Panel -->
+            <div class="glass-card settings-card">
+                 
+                 <!-- Step 1: Input -->
+                 <div class="control-group mb-32">
+                      <div class="d-flex justify-between align-center mb-12">
+                           <span class="step-num">01</span>
+                           <label class="s-label">QR DESTINATION</label>
+                      </div>
+                      <div class="luxe-input-wrapper">
+                           <textarea id="qr-input" class="couture-textarea" rows="1" placeholder="https://formfix.pages.dev"></textarea>
+                      </div>
+                 </div>
+
+                 <!-- Step 2: Couture Presets -->
+                 <div class="control-group mb-32">
+                      <div class="d-flex justify-between align-center mb-16">
+                           <span class="step-num">02</span>
+                           <label class="s-label">COUTURE PRESETS</label>
+                      </div>
+                      <div class="couture-grid" id="style-grid"></div>
+                 </div>
+
+                 <!-- Step 3: Architecture Patterns -->
+                 <div class="control-group mb-32">
+                      <div class="d-flex justify-between align-center mb-16">
+                           <span class="step-num">03</span>
+                           <label class="s-label">ARCHITECTURE PATTERNS</label>
+                      </div>
+                      
+                      <div class="geo-panel">
+                           <div class="geo-row">
+                                <label class="geo-label">Matrix Dot Pattern</label>
+                                <div class="couture-toggle" id="dot-opts">
+                                     <button class="couture-btn active" data-val="square">Square</button>
+                                     <button class="couture-btn" data-val="dots">Dots</button>
+                                     <button class="couture-btn" data-val="rounded">Rounded</button>
+                                     <button class="couture-btn" data-val="classy">Classy</button>
+                                </div>
+                           </div>
+                           <div class="geo-row mt-12">
+                                <label class="geo-label">Corner Eye Architecture</label>
+                                <div class="couture-toggle" id="frame-opts">
+                                     <button class="couture-btn active" data-val="square">Square</button>
+                                     <button class="couture-btn" data-val="dot">Circular</button>
+                                     <button class="couture-btn" data-val="rounded">Rounded</button>
+                                </div>
+                           </div>
+                      </div>
+                 </div>
+
+                 <!-- Step 4: Circular Branding -->
+                 <div class="control-group mb-32 branding-box">
+                      <div class="d-flex justify-between align-center mb-16">
+                           <span class="step-num gold-num">04</span>
+                           <label class="s-label gold-lbl">CIRCULAR BRANDING</label>
+                      </div>
+
+                      <div class="couture-logo-studio" id="logo-drop">
+                           <input type="file" id="logo-file" class="hidden" accept="image/*" />
+                           <div class="l-ux">
+                                <div class="l-ic-bg"><span class="l-ico">✨</span></div>
+                                <b class="mt-8">UPLOAD BRAND LOGO</b>
+                                <p>Integrated Circular Mask Engine</p>
+                           </div>
+                           <img id="logo-pre" class="hidden" />
+                      </div>
+                      
+                      <div id="logo-opts" class="hidden mt-20 p-20 glass-inner shadow-sm">
+                           <div class="d-flex justify-between align-center mb-12">
+                                <label class="geo-label mb-0">Logo Scale Strength</label>
+                                <span id="logo-val" class="v-tag">45%</span>
+                           </div>
+                           <input type="range" id="logo-size" min="10" max="80" value="45" class="couture-range" />
+                           <div class="mt-16">
+                                <label class="couture-check"><input type="checkbox" id="logo-halo" checked /> Scannable Safe Buffer (White Halo)</label>
+                           </div>
+                      </div>
+                 </div>
+
+                 <!-- Footer Controls -->
+                 <div class="accordion">
+                      <details>
+                           <summary>Elite Colors & Dual Gradients</summary>
+                           <div class="acc-body pt-16">
+                                <div class="d-flex gap-16">
+                                     <div class="c-field flex-1"><label class="geo-label">Main Matrix</label><input type="color" id="qr-color" value="#1e1b4b" /></div>
+                                     <div class="c-field flex-1"><label class="geo-label">Canvas Background</label><input type="color" id="bg-color" value="#ffffff" /></div>
+                                </div>
+                                <div class="mt-20">
+                                     <label class="couture-check font-bold"><input type="checkbox" id="do-grad" /> Enable Gilded Gradient Mode</label>
+                                </div>
+                                <div id="grad-area" class="hidden mt-16">
+                                     <div class="d-flex gap-16">
+                                          <div class="c-field flex-1"><label class="geo-label">Hue Start</label><input type="color" id="g-s" value="#6366f1" /></div>
+                                          <div class="c-field flex-1"><label class="geo-label">Hue End</label><input type="color" id="g-e" value="#ec4899" /></div>
+                                     </div>
+                                </div>
+                           </div>
+                      </details>
+                 </div>
+            </div>
+
+            <!-- Right: Production Preview -->
+            <div class="master-preview">
+                 <div class="couture-stage shadow-2xl" id="stage">
+                      <div id="qr-box"></div>
+                      <div class="stage-footer">MASTER V17 PRODUCTION</div>
+                 </div>
+
+                 <div class="mt-40 w-100">
+                      <button id="dl-btn" class="elite-btn xl-btn pulse-glow">⬇️ Export High-Res (PNG)</button>
+                      <div class="elite-badges mt-24">
+                           <span>300 DPI Clear View</span> • <span>Privacy Lock Rendering</span> • <span>Cloud Optimized</span>
+                      </div>
+                 </div>
+            </div>
+
+        </div>
+
+        <RelatedTools currentTool="qr-code-generator" />
+    </div>
+</BaseLayout>
+
+<script>
+    import QRCodeStyling from 'qr-code-styling';
+
+    const box = document.getElementById('qr-box');
+    const dlBtn = document.getElementById('dl-btn');
+    const qrIn = document.getElementById('qr-input');
+    const qCol = document.getElementById('qr-color');
+    const bCol = document.getElementById('bg-color');
+    const doGrad = document.getElementById('do-grad');
+    const gs = document.getElementById('g-s');
+    const ge = document.getElementById('g-e');
+    const logoFile = document.getElementById('logo-file');
+    const logoDrop = document.getElementById('logo-drop');
+    const logoSize = document.getElementById('logo-size');
+    const logoVal = document.getElementById('logo-val');
+    const logoHalo = document.getElementById('logo-halo');
+    const logoPre = document.getElementById('logo-pre');
+    const logoOpts = document.getElementById('logo-opts');
+    const styleGrid = document.getElementById('style-grid');
+
+    let currentLogo = '';
+    let curDot = 'square';
+    let curFrame = 'square';
+
+    const qr = new QRCodeStyling({
+        width: 320,
+        height: 320,
+        type: 'svg',
+        data: 'https://formfix.pages.dev',
+        dotsOptions: { color: "#1e1b4b", type: "square" },
+        backgroundOptions: { color: "#ffffff" },
+        cornersSquareOptions: { color: "#1e1b4b", type: "square" },
+        imageOptions: { margin: 15, crossOrigin: 'anonymous', imageSize: 0.45, hideBackgroundDots: true }
+    });
+
+    qr.append(box);
+
+    const PRESETS = [
+        { name: 'Couture Navy', col: '#1e1b4b', bg: '#ffffff', dt: 'square', ft: 'square', g: false },
+        { name: '👑 Royal Gold', col: '#854d0e', bg: '#fffbeb', dt: 'classy', ft: 'rounded', g: true, s: '#854d0e', e: '#fde047' },
+        { name: '🌌 Urban Neon', col: '#c026d3', bg: '#020617', dt: 'dots', ft: 'dot', g: true, s: '#22d3ee', e: '#c026d3' },
+        { name: '🎀 Rose Luxe', col: '#db2777', bg: '#fdf2f8', dt: 'rounded', ft: 'rounded', g: false },
+        { name: '🖤 Obsidian', col: '#ffffff', bg: '#09090b', dt: 'rounded', ft: 'rounded', g: false },
+        { name: '🔥 Sunset Edge', col: '#ea580c', bg: '#fff7ed', dt: 'extra-rounded', ft: 'rounded', g: true, s: '#ea580c', e: '#facc15' },
+        { name: '🌿 Moss Green', col: '#064e3b', bg: '#f0fdf4', dt: 'rounded', ft: 'dot', g: false },
+        { name: '☁️ Cloud Pure', col: '#334155', bg: '#ffffff', dt: 'rounded', ft: 'rounded', g: false }
+    ];
+
+    PRESETS.forEach(p => {
+        const chip = document.createElement('button');
+        chip.className = 'couture-chip';
+        chip.innerHTML = `<span class="c-dot" style="background:${p.col}"></span> ${p.name}`;
+        chip.onclick = () => {
+             qCol.value = p.col; bCol.value = p.bg; curDot = p.dt; curFrame = p.ft;
+             doGrad.checked = p.g; if(p.g) { gs.value = p.s; ge.value = p.e; }
+             
+             document.querySelectorAll('#dot-opts .couture-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.val === curDot));
+             document.querySelectorAll('#frame-opts .couture-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.val === curFrame));
+             
+             update();
+        };
+        styleGrid.appendChild(chip);
+    });
+
+    document.querySelectorAll('.couture-btn').forEach(btn => btn.addEventListener('click', () => {
+         const parent = btn.parentElement;
+         parent.querySelectorAll('.couture-btn').forEach(b => b.classList.remove('active'));
+         btn.classList.add('active');
+         if(parent.id === 'dot-opts') curDot = btn.dataset.val;
+         else curFrame = btn.dataset.val;
+         update();
+    }));
+
+    logoDrop.onclick = () => logoFile.click();
+    logoFile.onchange = (e) => {
+        const file = e.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+             const img = new Image();
+             img.onload = () => {
+                  const cvs = document.createElement('canvas');
+                  const ctx = cvs.getContext('2d');
+                  const s = 1000; cvs.width = s; cvs.height = s;
+                  ctx.beginPath(); ctx.arc(s/2, s/2, s/2, 0, Math.PI*2); ctx.closePath(); ctx.clip();
+                  ctx.drawImage(img, 0, 0, s, s);
+                  currentLogo = cvs.toDataURL('image/png');
+                  logoPre.src = currentLogo;
+                  logoPre.classList.remove('hidden');
+                  logoDrop.querySelector('.l-ux').classList.add('hidden');
+                  logoOpts.classList.remove('hidden');
+                  update();
+             };
+             img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
+
+    function update() {
+        if(logoVal) logoVal.textContent = `${logoSize.value}%`;
+        document.getElementById('grad-area').classList.toggle('hidden', !doGrad.checked);
+        qr.update({
+            data: qrIn.value || 'https://formfix.pages.dev',
+            image: currentLogo || undefined,
+            dotsOptions: {
+                type: curDot,
+                color: doGrad.checked ? undefined : qCol.value,
+                gradient: doGrad.checked ? {
+                    type: 'linear',
+                    colorStops: [{ offset: 0, color: gs.value }, { offset: 1, color: ge.value }]
+                } : undefined
+            },
+            backgroundOptions: { color: bCol.value },
+            cornersSquareOptions: { type: curFrame, color: qCol.value },
+            cornersDotOptions: { type: curFrame, color: qCol.value },
+            imageOptions: { 
+                imageSize: parseFloat(logoSize.value) / 100, 
+                margin: 15, 
+                hideBackgroundDots: logoHalo.checked,
+                crossOrigin: 'anonymous'
+            }
+        });
+    }
+
+    [qrIn, qCol, bCol, doGrad, gs, ge, logoSize, logoHalo].forEach(el => el.oninput = update);
+    dlBtn.onclick = () => {
+        qr.download({ name: 'formfix-couture-qr', extension: 'png' });
+        if (typeof (window as any).triggerConfetti === 'function') (window as any).triggerConfetti();
+    };
+    update();
+</script>
+
+<style>
+    .main-h1 { font-size: 3.5rem; font-weight: 1000; color: var(--dark); line-height: 1; margin-bottom: 8px; letter-spacing: -0.05em; }
+    .hero-sub { font-size: 1.25rem; font-weight: 600; color: #64748b; margin-bottom: 56px; }
+    .tool-wrapper { max-width: 1140px; margin: 0 auto; padding-bottom: 120px; }
+
+    .studio-layout { display: grid; grid-template-columns: 1fr 450px; gap: 48px; align-items: start; }
+    .glass-card { background: #fff; border: 1.5px solid #f1f5f9; border-radius: 56px; padding: 56px; box-shadow: 0 40px 100px -20px rgba(0,0,0,0.05); }
+
+    .step-num { font-size: 0.75rem; font-weight: 1000; color: var(--primary); background: var(--primary-light); padding: 4px 10px; border-radius: 6px; letter-spacing: 0.1em; }
+    .s-label { font-weight: 1000; color: var(--dark); font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    /* Couture Textarea */
+    .couture-textarea { width: 100%; border: 3px solid #f1f5f9; background: #f8fafc; padding: 24px 32px; border-radius: 24px; font-weight: 700; font-family: inherit; font-size: 1.15rem; resize:none; transition: 0.3s; color: var(--dark); }
+    .couture-textarea:focus { border-color: var(--primary); background: #fff; box-shadow: 0 20px 40px rgba(79, 70, 229, 0.08); outline: none; }
+
+    /* Couture Grid */
+    .couture-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .couture-chip { display: flex; align-items: center; gap: 12px; padding: 18px 24px; background: #fff; border: 2.5px solid #f8fafc; border-radius: 20px; font-weight: 950; font-size: 0.9rem; cursor: pointer; transition: 0.3s; color: #334155; }
+    .c-dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .couture-chip:hover { border-color: var(--primary); transform: translateX(10px); background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+    /* Couture Toggles */
+    .geo-panel { background: #f8fafc; padding: 24px; border-radius: 32px; }
+    .geo-label { display: block; font-size: 0.75rem; font-weight: 1000; color: #94a3b8; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .couture-toggle { display: flex; gap: 8px; background: #f1f5f9; padding: 6px; border-radius: 18px; }
+    .couture-btn { flex: 1; min-width: 70px; border: none; padding: 12px; border-radius: 12px; font-weight: 1000; font-size: 0.75rem; cursor: pointer; background: transparent; color: #64748b; transition: 0.25s; text-transform: uppercase; }
+    .couture-btn.active { background: #fff; color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+    /* Couture Branding */
+    .branding-box { background: #fdfaf5; border: 2px solid #f973161a; padding: 32px; border-radius: 40px; }
+    .gold-num { background: #fef3c7; color: #d97706; }
+    .gold-lbl { color: #92400e; }
+    .couture-logo-studio { background: #fff; border: 2.5px dashed #fcd34d; border-radius: 32px; padding: 40px; text-align: center; cursor: pointer; transition: 0.4s; min-height: 180px; display:flex; align-items:center; justify-content:center; position: relative; }
+    .couture-logo-studio:hover { border-color: #f59e0b; transform: translateY(-5px); box-shadow: 0 20px 40px rgba(245, 158, 11, 0.1); }
+    #logo-pre { height: 110px; width: 110px; border-radius: 50%; border: 6px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .l-ic-bg { background: #fef3c7; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+    .l-ico { font-size: 2rem; }
+    .l-ux b { font-size: 0.9rem; font-weight: 1000; color: #92400e; letter-spacing: 0.05em; }
+    .l-ux p { font-size: 0.75rem; font-weight: 700; color: #d97706; opacity: 0.7; }
+
+    .glass-inner { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border-radius: 24px; border: 1.5px solid #fff; }
+    .couture-range { width: 100%; height: 6px; appearance: none; background: #e2e8f0; border-radius: 100px; outline: none; }
+    .couture-range::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: #f59e0b; border: 4px solid #fff; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .v-tag { background: #f59e0b; color: #fff; padding: 4px 12px; border-radius: 100px; font-weight: 1000; font-size: 0.7rem; }
+    .couture-check { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.85rem; font-weight: 1000; color: #92400e; }
+    .couture-check input { width: 22px; height: 22px; cursor: pointer; accent-color: #f59e0b; }
+
+    /* Production Stage */
+    .master-preview { position: sticky; top: 40px; display: flex; flex-direction: column; align-items: center; }
+    .couture-stage { background: #fff; padding: 56px; border-radius: 80px; border: 5px solid #f8fafc; position: relative; width: 450px; height: 450px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 10% 10%, #fff, #f1f5f9); }
+    .stage-footer { position: absolute; bottom: 32px; font-weight: 1000; color: #cbd5e1; font-size: 0.75rem; letter-spacing: 0.4em; }
+
+    #qr-box { transform: scale(1.1); transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); }
+    .elite-btn { width: 100%; padding: 32px; font-size: 1.5rem; border-radius: 100px; border: none; font-weight: 1000; background: var(--primary); color: #fff; cursor: pointer; box-shadow: 0 30px 70px rgba(79, 70, 229, 0.4); }
+    .elite-badges { font-size: 0.75rem; font-weight: 1000; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.15em; }
+
+    .accordion summary { cursor: pointer; list-style: none; font-weight: 1000; color: #1e1b4b; display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; border-top: 1.5px solid #f1f5f9; padding-top: 32px; }
+    input[type="color"] { height: 60px; width: 100%; border-radius: 20px; border: 3px solid #f1f5f9; cursor: pointer; background: #fff;-webkit-appearance:none; padding:6px;}
+
+    .hidden { display: none !important; }
+    .w-100 { width: 100%; }
+    .mb-0 { margin-bottom: 0 !important; }
+    .mb-32 { margin-bottom: 32px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mt-8 { margin-top: 8px; }
+    .mt-12 { margin-top: 12px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-20 { margin-top: 20px; }
+    .mt-40 { margin-top: 40px; }
+    .mt-48 { margin-top: 48px; }
+    .p-20 { padding: 20px; }
+    .pt-16 { padding-top: 16px; }
+
+    @media (max-width: 1024px) {
+        .studio-layout { grid-template-columns: 1fr; }
+        .master-preview { position: static; margin-top: 56px; }
+        .couture-stage { width: 100%; height: auto; aspect-ratio: 1; padding: 40px; }
+        .couture-chip { transform: none !important; }
+    }
+</style>

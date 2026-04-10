@@ -1,0 +1,305 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import UploadBox from '../components/UploadBox.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'FormFix – Resize Image Pixels for Instagram, YouTube';
+const PAGE_DESC = 'Easily resize image dimensions in pixels for Instagram, YouTube, and official forms. Pro aspect ratio lock and high-quality interpolation. 100% private and fast.';
+const PAGE_KEYWORDS = 'resize image pixels online, online image resizer, change photo dimensions free, resize image for instagram, photo resolution changer';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Resize Image Online - FormFix",
+      "operatingSystem": "All Platforms",
+      "applicationCategory": "DesignApplication",
+      "description": PAGE_DESC,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How to resize image pixels for Instagram?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Upload your photo and select the 'Instagram (1:1)' preset (1080x1080). Our tool handles the aspect ratio lock automatically to ensure your photo isn't stretched or squashed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does resizing reduce image quality?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our resizing algorithm uses high-quality bicubic interpolation which preserves as much detail as possible. However, enlarging small images may naturally cause some blurring."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a limit on pixel dimensions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We support resizing up to 8000x8000 pixels. Larger files might depend on your browser's available RAM as all processing is done locally."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize for Passport photos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, we have a specific 600x600 preset often required for online visa and passport applications (like for US Visa or Indian Passport portals)."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="resize">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">📏 Dimensions Optimizer v3</div>
+             <h1>Resize <span class="highlight">Online Pixels</span></h1>
+             <p>Perfect for social media Creators & Passport Applicants.</p>
+        </header>
+
+        <div class="glass-card tool-content shadow-lg">
+            <div id="u-box-container">
+                <UploadBox />
+            </div>
+
+            <div id="controls" class="tool-controls hidden">
+                <div class="resize-options">
+                    <div class="preset-section">
+                         <label class="section-label">1. Choose Social & App Presets</label>
+                         <div class="pill-row">
+                             <button class="preset-pill" data-w="1080" data-h="1080">
+                                 <span class="p-icon">📸</span> Instagram (1:1)
+                             </button>
+                             <button class="preset-pill" data-w="1280" data-h="720">
+                                 <span class="p-icon">📺</span> YouTube HD
+                             </button>
+                             <button class="preset-pill" data-w="600" data-h="600">
+                                 <span class="p-icon">🆔</span> Passport / ID
+                             </button>
+                             <button class="preset-pill" data-w="1920" data-h="1080">
+                                 <span class="p-icon">🖥️</span> Desktop HD
+                             </button>
+                         </div>
+                    </div>
+
+                    <div class="custom-dims">
+                         <label class="section-label">2. Set Custom Pixels</label>
+                         <div id="res-flow" class="resolution-flow-badge">
+                              <span id="orig-res-txt">1024 x 1536</span> 
+                              <span class="arrow">→</span> 
+                              <span id="target-res-txt" class="target">800 x 800 (Custom)</span>
+                         </div>
+                         
+                         <div class="dim-inputs">
+                              <div class="input-group">
+                                  <span>Width (PX)</span>
+                                  <input type="number" id="width-px" placeholder="Width" />
+                              </div>
+                              <div id="lock-icon" class="lock-indicator locked" title="Aspect Ratio Locked">
+                                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                              </div>
+                              <div class="input-group">
+                                  <span>Height (PX)</span>
+                                  <input type="number" id="height-px" placeholder="Height" />
+                              </div>
+                         </div>
+                         <div class="lock-toggle">
+                              <input type="checkbox" id="aspect-lock" checked />
+                              <label for="aspect-lock">Keep Dimensions Proportional</label>
+                         </div>
+                    </div>
+                </div>
+
+                <div class="action-footer">
+                    <button id="apply-btn" class="primary-btn wide-btn pulse-glow">
+                        <span>Execute Resize & Download</span>
+                    </button>
+                    <p class="status-msg">✔ Sub-1s processing on your device</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Card Stage -->
+        <div id="result-stage" class="result-stage hidden">
+            <div class="glass-card result-panel shadow-lg animate-fade-up">
+                <div class="res-header text-center">
+                     <span class="status-badge">✔ Resize Successful</span>
+                     <h3>Final Selection Result</h3>
+                </div>
+                
+                <div class="res-body text-center">
+                     <div class="image-preview-box">
+                          <img id="image-preview" src="" alt="Resized Result" />
+                     </div>
+                     <div class="res-stats-row">
+                          <div class="stat-p">
+                               <span class="l">New Resolution</span>
+                               <span id="final-res-stat" class="v">1080 x 1080</span>
+                          </div>
+                     </div>
+                </div>
+
+                <div class="res-footer">
+                     <a id="download-btn" href="#" class="primary-btn download-btn">Download Resized Image</a>
+                     <button id="reset-tool" class="secondary-btn">New Image</button>
+                </div>
+            </div>
+        </div>
+
+        <article class="pro-seo-article container mt-48">
+             <h2>Resize Image Online for Social Media & Job Portals</h2>
+             <p>FormFix provides the most accurate <strong>online image resizer</strong> to hit exact pixel requirements for Instagram (1080x1080) or YouTube thumbnails. Whether you need to <strong>resize image pixels</strong> for a passport application or a website header, our local engine ensures a perfect fit instantly. Professional designers and casual users alike use our <strong>free online image resizer</strong> to maintain high visual quality while reducing dimensional footprints.</p>
+             
+             <h3 class="mt-32">Frequently Asked Questions</h3>
+             <details class="faq-item">
+                  <summary>How to resize image pixels for Instagram?</summary>
+                  <p>Upload your photo and select the "Instagram (1:1)" preset (1080x1080). Our tool handles the aspect ratio lock automatically to ensure your photo isn't stretched or squashed.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Does resizing reduce image quality?</summary>
+                  <p>Our resizing algorithm uses high-quality bicubic interpolation which preserves as much detail as possible. However, enlarging small images may naturally cause some blurring.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Is there a limit on pixel dimensions?</summary>
+                  <p>We support resizing up to 8000x8000 pixels. Larger files might depend on your browser's available RAM as all processing is done locally.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Can I resize for Passport photos?</summary>
+                  <p>Yes, we have a specific 600x600 preset often required for online visa and passport applications (like for US Visa or Indian Passport portals).</p>
+             </details>
+        </article>
+        
+        <RelatedTools currentTool="resize" />
+    </div>
+</BaseLayout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileInput = document.getElementById('file-input') as HTMLInputElement;
+        const controls = document.getElementById('controls') as HTMLElement;
+        const widthInput = document.getElementById('width-px') as HTMLInputElement;
+        const heightInput = document.getElementById('height-px') as HTMLInputElement;
+        const lockIcon = document.getElementById('lock-icon') as HTMLElement;
+        const aspectLock = document.getElementById('aspect-lock') as HTMLInputElement;
+        const presetBtns = document.querySelectorAll('.preset-pill');
+        const applyBtn = document.getElementById('apply-btn') as HTMLButtonElement;
+        const resultStage = document.getElementById('result-stage') as HTMLElement;
+        
+        const origResTxt = document.getElementById('orig-res-txt');
+        const targetResTxt = document.getElementById('target-res-txt');
+
+        let originalImg: HTMLImageElement | null = null;
+        let ratio = 1;
+
+        fileInput.addEventListener('change', (e) => {
+            const file = (e.target as HTMLInputElement).files?.[0];
+            if (file) {
+                const rd = new FileReader();
+                rd.onload = (ev) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        originalImg = img;
+                        ratio = img.naturalWidth / img.naturalHeight;
+                        widthInput.value = img.naturalWidth.toString();
+                        heightInput.value = img.naturalHeight.toString();
+                        origResTxt!.textContent = `${img.naturalWidth} x ${img.naturalHeight}`;
+                        updateFlow();
+                        controls.classList.remove('hidden');
+                    };
+                    img.src = ev.target?.result as string;
+                };
+                rd.readAsDataURL(file);
+            }
+        });
+
+        const updateFlow = () => {
+             targetResTxt!.textContent = `${widthInput.value} x ${heightInput.value} (Target)`;
+        };
+
+        widthInput.addEventListener('input', () => {
+            if (aspectLock.checked) heightInput.value = Math.round(parseInt(widthInput.value) / ratio).toString();
+            updateFlow();
+        });
+        heightInput.addEventListener('input', () => {
+            if (aspectLock.checked) widthInput.value = Math.round(parseInt(heightInput.value) * ratio).toString();
+            updateFlow();
+        });
+
+        presetBtns.forEach(btn => btn.addEventListener('click', () => {
+             widthInput.value = (btn as any).dataset.w;
+             heightInput.value = (btn as any).dataset.h;
+             updateFlow();
+        }));
+
+        applyBtn.addEventListener('click', () => {
+            if (!originalImg) return;
+            const w = parseInt(widthInput.value), h = parseInt(heightInput.value);
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d')!;
+            ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(originalImg, 0, 0, w, h);
+            canvas.toBlob(blob => {
+                 const url = URL.createObjectURL(blob!);
+                 (document.getElementById('image-preview') as HTMLImageElement).src = url;
+                 document.getElementById('final-res-stat')!.textContent = `${w} x ${h}`;
+                 (document.getElementById('download-btn') as HTMLAnchorElement).href = url;
+                 (document.getElementById('download-btn') as HTMLAnchorElement).download = `formfix-resized-${w}x${h}.jpg`;
+                 document.querySelector('.tool-content')?.classList.add('hidden');
+                 resultStage.classList.remove('hidden'); resultStage.scrollIntoView({ behavior: 'smooth' });
+            }, 'image/jpeg', 0.9);
+        });
+
+        document.getElementById('reset-tool')?.addEventListener('click', () => location.reload());
+    });
+</script>
+
+<style>
+    .brand-badge { display: inline-block; background: #f0fdf4; color: #16a34a; padding: 8px 16px; border-radius: 100px; font-weight: 850; font-size: 0.8rem; margin-bottom: 12px; }
+    .tool-wrapper { max-width: 800px; margin: 0 auto; padding-bottom: 100px; }
+    .tool-controls { margin-top: 32px; border-top: 1.5px solid var(--border); padding-top: 32px; }
+
+    .pill-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+    .preset-pill { background: #fff; border: 1.5px solid var(--border); padding: 12px 20px; border-radius: 100px; font-weight: 850; font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; color: var(--slate); }
+    .preset-pill:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px); }
+
+    .resolution-flow-badge { background: var(--dark); color: white; padding: 12px 24px; border-radius: 100px; font-weight: 950; font-size: 0.95rem; margin-bottom: 40px; display: inline-flex; align-items: center; gap: 16px; width: 100%; justify-content: center; }
+    .resolution-flow-badge .arrow { color: #94a3b8; }
+    .resolution-flow-badge .target { color: #60a5fa; }
+
+    .dim-inputs { display: flex; align-items: center; justify-content: center; gap: 24px; margin-bottom: 24px; }
+    .input-group { display: flex; flex-direction: column; gap: 8px; } .input-group span { font-size: 0.7rem; font-weight: 1000; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .input-group input { width: 140px; padding: 16px; border: 2.5px solid var(--border); border-radius: 16px; text-align: center; font-weight: 1000; font-size: 1.25rem; font-family: inherit; }
+    .lock-indicator { margin-top: 24px; color: #cbd5e1; } .lock-indicator.locked { color: var(--primary); }
+    .lock-toggle { display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 850; color: var(--slate); }
+    .lock-toggle input { width: 22px; height: 22px; accent-color: var(--primary); }
+
+    .wide-btn { width: 100%; height: 72px; font-size: 1.25rem; font-weight: 1000; border-radius: 20px; }
+    .status-msg { text-align: center; margin-top: 24px; font-size: 0.9rem; font-weight: 850; color: #166534; background: #dcfce7; padding: 10px 20px; border-radius: 100px; display: inline-block; width: 100%; }
+
+    /* Result Stage */
+    .result-stage { margin-top: 40px; }
+    .status-badge { background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 100px; font-size: 0.75rem; font-weight: 1000; text-transform: uppercase; margin-bottom: 12px; display: inline-block; }
+    .res-body { display: flex; flex-direction: column; align-items: center; gap: 32px; margin: 32px 0 48px; }
+    .image-preview-box { border-radius: 20px; border: 2px solid var(--border); overflow: hidden; max-height: 400px; box-shadow: var(--shadow-soft); } .image-preview-box img { display: block; max-height: 400px; }
+    .res-stats-row { display: flex; justify-content: center; } .stat-p { display: flex; flex-direction: column; } .stat-p .l { font-size: 0.75rem; font-weight: 950; color: #94a3b8; text-transform: uppercase; } .stat-p .v { font-size: 1.5rem; font-weight: 1000; color: var(--primary); }
+    .res-footer { display: flex; gap: 16px; } .res-footer .primary-btn { flex: 2; height: 68px; } .res-footer .secondary-btn { flex: 1; border-radius: 20px; }
+
+    @media (max-width: 640px) {
+        .dim-inputs { gap: 12px; } .input-group input { width: 120px; } .res-footer { flex-direction: column; } .resolution-flow-badge { flex-direction: column; padding: 20px; border-radius: 24px; }
+    }
+</style>

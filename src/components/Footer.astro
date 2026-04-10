@@ -1,0 +1,417 @@
+---
+const YEAR = new Date().getFullYear();
+
+const imageTools = [
+    { title: 'Compress to 20KB', href: '/compress-image' },
+    { title: 'Passport Photo Maker', href: '/passport-size-photo' },
+    { title: 'Crop Image Online', href: '/crop-image' },
+    { title: 'Resize Image Pixels', href: '/resize-image' },
+    { title: 'Background Remover', href: '/background-remover' },
+    { title: 'Circle Crop Avatar', href: '/circle-crop' },
+    { title: 'Black & White Filter', href: '/black-and-white' },
+    { title: 'Pencil Sketch Maker', href: '/photo-to-sketch' },
+    { title: 'Blur & Censor Image', href: '/blur-image' },
+    { title: 'Watermark Image', href: '/watermark-image' },
+    { title: 'Format Converter', href: '/convert-image' },
+    { title: 'Digital Signature', href: '/signature-maker' },
+];
+
+const pdfTools = [
+    { title: 'Merge PDF Files', href: '/merge-pdf' },
+    { title: 'Rotate PDF Pages', href: '/rotate-pdf' },
+    { title: 'Images to PDF', href: '/image-to-pdf' },
+    { title: 'PDF to Images', href: '/pdf-to-image' },
+    { title: 'Split & Extract PDF', href: '/split-pdf' },
+];
+
+const otherTools = [
+    { title: 'QR Code Generator', href: '/qr-code-generator' },
+    { title: 'Password Generator', href: '/password-generator' },
+    { title: 'File Size Converter', href: '/file-size-converter' },
+    { title: 'Percentage Calculator', href: '/percentage-calculator' },
+    { title: 'Age Calculator', href: '/age-calculator' },
+];
+---
+
+<footer class="site-footer" role="contentinfo">
+    <div class="footer-inner container">
+
+        <!-- Brand Block -->
+        <div class="footer-brand">
+            <a href="/" class="footer-logo-link" aria-label="FormFix Homepage">
+                <div class="footer-logo-large">
+                    <img src="/main-logo.png" alt="" />
+                </div>
+                <span class="footer-brand-name">formfix</span>
+            </a>
+            <p class="footer-tagline">
+                Free, private, browser-based image tools for students, job seekers, creators and developers. No uploads. No limits.
+            </p>
+            <div class="footer-trust-badges">
+                <span class="f-badge">🔒 100% Private</span>
+                <span class="f-badge">⚡ Browser-Based</span>
+                <span class="f-badge">✅ Always Free</span>
+            </div>
+        </div>
+
+        <!-- Link Columns -->
+        <div class="footer-links-grid">
+            <div class="footer-col" id="f-col-images">
+                <div class="f-accordion-item">
+                    <h3 class="footer-col-title" onclick="this.parentElement.classList.toggle('active')">🖼️ Image Tools <span class="mobile-plus">+</span></h3>
+                    <ul class="footer-link-list">
+                        {imageTools.map(t => (
+                            <li><a href={t.href} class="footer-link">{t.title}</a></li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-col" id="f-col-pdf">
+                <div class="f-accordion-item">
+                    <h3 class="footer-col-title" onclick="this.parentElement.classList.toggle('active')">📄 PDF Tools <span class="mobile-plus">+</span></h3>
+                    <ul class="footer-link-list">
+                        {pdfTools.map(t => (
+                            <li><a href={t.href} class="footer-link">{t.title}</a></li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div class="f-accordion-item mt-32">
+                    <h3 class="footer-col-title" onclick="this.parentElement.classList.toggle('active')">🔐 Utilities <span class="mobile-plus">+</span></h3>
+                    <ul class="footer-link-list">
+                        {otherTools.map(t => (
+                            <li><a href={t.href} class="footer-link">{t.title}</a></li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-col" id="f-col-info">
+                <div class="f-accordion-item">
+                    <h3 class="footer-col-title" onclick="this.parentElement.classList.toggle('active')">🏢 Company <span class="mobile-plus">+</span></h3>
+                    <ul class="footer-link-list">
+                        <li><a href="/about" class="footer-link">About Us</a></li>
+                        <li><a href="/tools" class="footer-link">All Tools Hub</a></li>
+                        <li><a href="/privacy" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="/terms" class="footer-link">Terms of Service</a></li>
+                        <li>
+                            <a href="https://github.com/m-salim-dev/formfix"
+                               target="_blank" rel="noopener noreferrer"
+                               class="footer-link">
+                                GitHub Repository ↗
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/contact"
+                               class="footer-link">
+                                Contact Support
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- SEO Quick Links -->
+                <div class="footer-seo-links mt-32">
+                    <div class="f-accordion-item">
+                        <h3 class="footer-col-title" onclick="this.parentElement.classList.toggle('active')">🎯 Popular Searches <span class="mobile-plus">+</span></h3>
+                        <ul class="footer-link-list">
+                            <li><a href="/compress-image-20kb" class="footer-link">Compress to 20KB</a></li>
+                            <li><a href="/compress-image-50kb" class="footer-link">Compress to 50KB</a></li>
+                            <li><a href="/compress-image-100kb" class="footer-link">Compress to 100KB</a></li>
+                            <li><a href="/photo-compressor" class="footer-link">Photo Compressor</a></li>
+                            <li><a href="/passport-photo-compressor" class="footer-link">Passport Photo Compressor</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO About Section (Global) -->
+    <div class="footer-about-section">
+        <div class="container">
+            <h2 class="footer-about-title">About FormFix</h2>
+            <p class="footer-about-text">
+                FormFix is a premium, privacy-first platform designed to simplify your digital workflow. We provide a comprehensive suite of completely free, client-side tools allowing you to compress photos to exact sizes (like 20KB or 50KB for government exams), merge PDFs securely, create official passport-size photos, and generate digital signatures safely. Because FormFix utilizes modern browser technologies, <strong>your files are never uploaded to our remote servers</strong>. All image processing, cropping, and formatting happens securely on your local device for ultimate privacy and speed. We are proudly independent, 100% ad-free during tool usage, and dedicated to providing high-speed digital utilities for students, creators, and professionals worldwide.
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+        <div class="container footer-bottom-inner">
+            <p class="footer-copy">
+                &copy; {YEAR} <strong>formfix</strong> — A secure &amp; fast
+                <a href="/compress-image" class="footer-bottom-link">image compressor online</a>.
+                100% free, private &amp; browser-based. No server uploads.
+            </p>
+            <div class="footer-bottom-right">
+                <a href="/tools" class="footer-bottom-link">All Tools</a>
+                <span aria-hidden="true">·</span>
+                <a href="/privacy" class="footer-bottom-link">Privacy</a>
+                <span aria-hidden="true">·</span>
+                <a href="/terms" class="footer-bottom-link">Terms</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .site-footer {
+        background: var(--dark);
+        padding: 80px 0 0;
+        margin-top: auto;
+        color: rgba(255,255,255,0.75);
+        position: relative;
+        overflow: hidden;
+    }
+    .site-footer::before {
+        content: '';
+        position: absolute;
+        top: -1px; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(79,70,229,0.4), rgba(124,58,237,0.4), transparent);
+    }
+
+    /* Subtle glow in footer */
+    .site-footer::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 50%;
+        transform: translateX(-50%);
+        width: 600px; height: 300px;
+        background: radial-gradient(circle, rgba(79,70,229,0.08) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .footer-inner {
+        display: grid;
+        grid-template-columns: 1.8fr 2fr;
+        gap: 80px;
+        margin-bottom: 80px;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* ─ Brand ─ */
+    .footer-brand { display: flex; flex-direction: column; gap: 20px; }
+
+    .footer-logo-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        text-decoration: none;
+        width: fit-content;
+    }
+    .footer-logo-large {
+        width: 54px; height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition-smooth);
+    }
+    .footer-logo-large img {
+        width: 100%; height: 100%; object-fit: contain;
+    }
+    .footer-logo-link:hover .footer-logo-large { transform: rotate(-8deg) scale(1.05); }
+
+    .footer-brand-name {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: white;
+        letter-spacing: -0.06em;
+    }
+
+    .footer-tagline {
+        font-size: 0.95rem;
+        font-weight: 500;
+        line-height: 1.7;
+        color: rgba(255,255,255,0.55);
+        max-width: 340px;
+    }
+
+    .footer-trust-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 4px;
+    }
+    .f-badge {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.75);
+        padding: 6px 14px;
+        border-radius: 100px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        transition: var(--transition-fast);
+    }
+    .f-badge:hover { background: rgba(79,70,229,0.25); border-color: rgba(79,70,229,0.4); color: white; }
+
+    /* ─ Links Grid ─ */
+    .footer-links-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+    }
+
+    .footer-col { display: flex; flex-direction: column; }
+
+    .footer-col-title {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: rgba(255,255,255,0.4);
+        margin-bottom: 20px;
+        font-weight: 800;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .footer-link-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* ─ Link List Items ─ */
+    .footer-link {
+        color: rgba(255,255,255,0.55);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        line-height: 1.4;
+        transition: var(--transition-fast);
+        display: inline-flex;
+        align-items: center;
+    }
+    .footer-link:hover {
+        color: white;
+        transform: translateX(4px);
+    }
+    .footer-link::before {
+        content: '';
+        display: inline-block;
+        width: 0;
+        height: 1px;
+        background: var(--accent);
+        transition: width 0.3s ease;
+        margin-right: 0;
+    }
+
+    /* ─ SEO About Section ─ */
+    .footer-about-section {
+        border-top: 1px solid rgba(255,255,255,0.07);
+        padding: 40px 0;
+        position: relative;
+        z-index: 1;
+    }
+    .footer-about-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: rgba(255,255,255,0.4);
+        margin-bottom: 12px;
+        font-weight: 800;
+    }
+    .footer-about-text {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.45);
+        line-height: 1.7;
+        max-width: 1000px;
+        font-weight: 400;
+    }
+    .footer-about-text strong {
+        color: rgba(255, 255, 255, 0.65);
+        font-weight: 700;
+    }
+
+    /* ─ Bottom Strip ─ */
+    .footer-bottom {
+        border-top: 1px solid rgba(255,255,255,0.07);
+        padding: 28px 0;
+        position: relative;
+        z-index: 1;
+    }
+    .footer-bottom-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .footer-copy {
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.35);
+        font-weight: 500;
+    }
+    .footer-copy strong { color: rgba(255,255,255,0.6); font-weight: 800; }
+    .footer-bottom-link {
+        color: rgba(255,255,255,0.45);
+        text-decoration: none;
+        transition: color 0.2s;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    .footer-bottom-link:hover { color: white; }
+    .footer-bottom-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.2);
+    }
+
+    /* ─ Responsive ─ */
+    @media (max-width: 1100px) {
+        .footer-inner { grid-template-columns: 1fr; gap: 48px; }
+        .footer-tagline { max-width: 100%; }
+    }
+
+    @media (max-width: 768px) {
+        .site-footer { padding: 48px 0 0; }
+        .footer-inner { flex-direction: column; gap: 32px; margin-bottom: 32px; }
+        .footer-links-grid { grid-template-columns: 1fr; gap: 0; }
+        
+        .footer-brand { align-items: center; text-align: center; margin-bottom: 8px; }
+        .footer-tagline { max-width: 100%; margin-inline: auto; font-size: 0.9rem; }
+        .footer-trust-badges { justify-content: center; }
+
+        .f-accordion-item { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 5px 0; }
+        .f-accordion-item.mt-32 { margin-top: 0 !important; }
+        .footer-seo-links.mt-32 { margin-top: 0 !important; }
+
+        .footer-col-title { 
+            margin-bottom: 0; 
+            padding: 16px 0; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            color: white;
+            font-size: 0.88rem;
+        }
+        .mobile-plus { display: inline-block; font-size: 1.1rem; font-weight: 300; transition: transform 0.3s; color: var(--primary); }
+        
+        .footer-link-list { display: none; padding-top: 0px; padding-bottom: 24px; flex-direction: column; gap: 14px; }
+        .f-accordion-item.active .footer-link-list { display: flex; }
+        .f-accordion-item.active .mobile-plus { transform: rotate(45deg); color: var(--danger); }
+        
+        .footer-link { font-size: 0.95rem; padding: 4px 0; }
+
+        .footer-bottom { padding: 32px 0; }
+        .footer-bottom-inner { flex-direction: column; align-items: center; text-align: center; gap: 20px; }
+        .footer-copy { font-size: 0.8rem; line-height: 1.6; }
+        .footer-bottom-right { justify-content: center; width: 100%; gap: 16px; }
+    }
+
+    @media (max-width: 480px) {
+        .footer-links-grid { grid-template-columns: 1fr; gap: 28px; }
+        .footer-trust-badges { gap: 6px; }
+        .f-badge { font-size: 0.72rem; padding: 5px 12px; }
+    }
+</style>

@@ -1,0 +1,26 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="docGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#3730a3" />
+    </linearGradient>
+    <linearGradient id="foldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+    <linearGradient id="checkGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#34d399" />
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="130%" height="130%">
+      <feDropShadow dx="2" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  
+  <path d="M18 6C13.5817 6 10 9.58172 10 14V50C10 54.4183 13.5817 58 18 58H46C50.4183 58 54 54.4183 54 50V22L38 6H18Z" fill="url(#docGrad)" filter="url(#shadow)" />
+  <path d="M54 22H44C40.6863 22 38 19.3137 38 16V6L54 22Z" fill="url(#foldGrad)" />
+  
+  <path d="M22 24H32" stroke="#818cf8" stroke-width="4" stroke-linecap="round" />
+  
+  <path d="M20 36L28 44L48 24" stroke="url(#checkGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)" />
+</svg>

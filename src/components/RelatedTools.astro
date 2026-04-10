@@ -1,0 +1,179 @@
+---
+const { currentTool } = Astro.props;
+
+const allTools = [
+  { id: 'compress',           title: 'Compress to KB',      href: '/compress-image',       icon: '🎯', desc: 'Hit exact file size targets' },
+  { id: 'passport-maker',     title: 'Passport Photo',       href: '/passport-size-photo',  icon: '📸', desc: 'Official 3.5×4.5cm photos' },
+  { id: 'signature',          title: 'Signature Maker',      href: '/signature-maker',      icon: '✍️', desc: '60+ cursive fonts, PNG export' },
+  { id: 'crop',               title: 'Crop Image',           href: '/crop-image',           icon: '✂️', desc: 'Any ratio: 1:1, 4:3, 16:9' },
+  { id: 'resize',             title: 'Resize Image',         href: '/resize-image',         icon: '📏', desc: 'Custom pixel dimensions' },
+  { id: 'convert',            title: 'Format Converter',     href: '/convert-image',        icon: '🔄', desc: 'JPG ↔ PNG ↔ WebP' },
+  { id: 'merge-pdf',          title: 'Merge PDF',            href: '/merge-pdf',            icon: '🔗', desc: 'Combine PDFs offline' },
+  { id: 'image-to-pdf',       title: 'Image to PDF',         href: '/image-to-pdf',         icon: '📄', desc: 'Multiple images → one PDF' },
+  { id: 'pdf-to-image',       title: 'PDF to Image',         href: '/pdf-to-image',         icon: '🖼️', desc: 'Extract PDF pages as JPG' },
+  { id: 'split-pdf',          title: 'Split PDF',            href: '/split-pdf',            icon: '✂️', desc: 'Extract specific pages' },
+  { id: 'rotate-pdf',         title: 'Rotate PDF',           href: '/rotate-pdf',           icon: '🔄', desc: 'Fix upside-down pages' },
+  { id: 'bg-remover',         title: 'Remove BG',            href: '/background-remover',   icon: '🪄', desc: 'AI background removal' },
+  { id: 'black-and-white',    title: 'B&W Filter',           href: '/black-and-white',      icon: '🔲', desc: 'Elegant grayscale filter' },
+  { id: 'photo-to-sketch',    title: 'Pencil Sketch',        href: '/photo-to-sketch',      icon: '✏️', desc: 'Turn photo into art' },
+  { id: 'ocr',                title: 'Image to Text',      href: '/image-to-text',       icon: '🔍', desc: 'Extract text from docs' },
+  { id: 'resume',             title: 'Resume Builder',     href: '/resume-builder',      icon: '👔', desc: '1-min professional CV' },
+  { id: 'handwriting',        title: 'Assignment Maker',     href: '/text-to-handwriting',  icon: '✍️', desc: 'Text to realistic handwriting' },
+  { id: 'blur',               title: 'Blur & Censor',        href: '/blur-image',           icon: '🌫️', desc: 'Redact sensitive info' },
+  { id: 'watermark',          title: 'Add Watermark',        href: '/watermark-image',      icon: '🏷️', desc: 'Protect your photos' },
+  { id: 'qr-code-generator',  title: 'QR Code Generator',   href: '/qr-code-generator',    icon: '📱', desc: 'Branded, permanent QR codes' },
+  { id: 'password-generator', title: 'Password Generator',   href: '/password-generator',   icon: '🔐', desc: 'Military-grade passwords' },
+  { id: 'circle-crop',        title: 'Circle Crop',          href: '/circle-crop',          icon: '⭕', desc: 'Perfect circular avatars' },
+];
+
+// Filter out current tool and show 6
+const relatedTools = allTools.filter(t => t.id !== currentTool).slice(0, 6);
+---
+
+<section class="related-section" aria-label="Related tools">
+    <div class="related-header">
+        <h3>Try Other Free Tools</h3>
+        <a href="/tools" class="related-view-all">View All 30+ Tools →</a>
+    </div>
+    <div class="related-grid">
+        {relatedTools.map(tool => (
+            <a href={tool.href} class="related-card" title={tool.title}>
+                <span class="r-icon" aria-hidden="true">{tool.icon}</span>
+                <div class="r-content">
+                    <span class="r-title">{tool.title}</span>
+                    <span class="r-desc">{tool.desc}</span>
+                </div>
+                <span class="r-arrow" aria-hidden="true">→</span>
+            </a>
+        ))}
+    </div>
+</section>
+
+<style>
+    .related-section {
+        margin-top: 64px;
+        padding-top: 48px;
+        border-top: 1.5px solid var(--border-light);
+    }
+
+    .related-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .related-header h3 {
+        font-size: 1.3rem;
+        font-weight: 900;
+        color: var(--dark);
+        letter-spacing: -0.03em;
+    }
+    .related-view-all {
+        font-size: 0.85rem;
+        font-weight: 800;
+        color: var(--primary);
+        text-decoration: none;
+        transition: var(--transition-fast);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .related-view-all:hover { opacity: 0.75; transform: translateX(2px); }
+
+    .related-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .related-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: white;
+        border: 1.5px solid var(--border-light);
+        border-radius: 16px;
+        padding: 16px 18px;
+        text-decoration: none;
+        transition: var(--transition-smooth);
+        position: relative;
+        overflow: hidden;
+    }
+    .related-card::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 3px;
+        background: var(--gradient-primary);
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+    }
+    .related-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--primary-mid);
+        box-shadow: var(--shadow-md);
+    }
+    .related-card:hover::before { transform: scaleY(1); }
+    .related-card:hover .r-title { color: var(--primary); }
+    .related-card:hover .r-arrow { opacity: 1; transform: translateX(3px); }
+
+    .r-icon {
+        font-size: 1.6rem;
+        width: 42px; height: 42px;
+        background: var(--bg-subtle);
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        transition: var(--transition-smooth);
+    }
+    .related-card:hover .r-icon {
+        background: var(--primary-light);
+    }
+
+    .r-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1;
+        min-width: 0;
+    }
+    .r-title {
+        font-weight: 800;
+        color: var(--dark);
+        font-size: 0.88rem;
+        line-height: 1.3;
+        transition: color 0.2s;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .r-desc {
+        font-size: 0.75rem;
+        color: var(--gray);
+        font-weight: 600;
+        line-height: 1.3;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .r-arrow {
+        font-size: 0.9rem;
+        color: var(--light-gray);
+        flex-shrink: 0;
+        opacity: 0;
+        transition: var(--transition-smooth);
+        font-weight: 800;
+    }
+
+    @media (max-width: 768px) {
+        .related-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+        .r-desc { display: none; }
+        .related-card { padding: 14px 16px; border-radius: 14px; }
+    }
+    @media (max-width: 480px) {
+        .related-grid { grid-template-columns: 1fr; }
+    }
+</style>

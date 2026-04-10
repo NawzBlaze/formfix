@@ -1,0 +1,188 @@
+---
+---
+<div id="u-container" class="upload-container">
+    <!-- 1. The Dynamic Upload Zone (Empty State) -->
+    <div id="upload-box" class="upload-zone shadow-sm" role="button" tabindex="0" aria-label="Upload image by clicking or dragging">
+        <div id="upload-prompt" class="upload-prompt">
+            <div class="upload-icon-circle">
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+            </div>
+            <div class="upload-text">
+                <p class="title">Click to Upload or Drag Image</p>
+                <p class="sub">PNG, JPG, WebP &bull; Max 20MB</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. The Premium Uploaded Preview Card (Success State) -->
+    <div id="uploaded-card" class="uploaded-card hidden shadow-lg animate-in">
+        <div class="card-left">
+             <div class="preview-thumb-box">
+                  <img id="preview-thumb" src="" alt="Thumbnail" />
+             </div>
+        </div>
+        <div class="card-right">
+             <div class="card-header">
+                  <span class="status-badge">✔ Image Uploaded</span>
+                  <p id="file-name" class="file-name">image_name_long_text_example.jpg</p>
+             </div>
+             <div class="file-info-row">
+                  <div class="info-pill size">
+                       <span class="label">Original Size</span>
+                       <span id="file-size" class="value">2.6 MB</span>
+                  </div>
+                  <div class="info-pill dims">
+                       <span class="label">Resolution</span>
+                       <span id="file-dims" class="value">1024 x 1536</span>
+                  </div>
+             </div>
+             <div class="card-actions">
+                  <button id="change-image-btn" class="action-btn outline">Change Image</button>
+                  <button id="remove-image-btn" class="action-btn danger">Remove</button>
+             </div>
+        </div>
+    </div>
+    
+    <!-- Hidden File Input -->
+    <input type="file" id="file-input" accept="image/png, image/jpeg, image/webp" class="hidden-input" aria-hidden="true" />
+</div>
+
+<style>
+    .upload-container { width: 100%; max-width: 600px; margin: 0 auto; }
+
+    /* Empty State Zone */
+    .upload-zone {
+        border: 2px dashed var(--gray); background: #fff; border-radius: 24px; padding: 48px 32px;
+        text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex; flex-direction: column; align-items: center; gap: 20px;
+    }
+    .upload-zone:hover, .upload-zone.active { border-color: var(--primary); background: var(--primary-light); transform: translateY(-3px); }
+    .upload-icon-circle { width: 64px; height: 64px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+    .upload-zone:hover .upload-icon-circle { transform: scale(1.1) rotate(5deg); }
+    .title { font-size: 1.35rem; font-weight: 1000; color: var(--dark); margin-bottom: 4px; letter-spacing: -0.04em; }
+    .sub { color: var(--gray); font-size: 0.95rem; font-weight: 700; }
+
+    /* Success State Card */
+    .uploaded-card {
+        background: #fff; border: 1.5px solid var(--primary); border-radius: 28px; padding: 24px;
+        display: flex; gap: 24px; align-items: flex-start; text-align: left;
+    }
+    .preview-thumb-box { width: 140px; height: 140px; border-radius: 18px; overflow: hidden; background: #f8fafc; border: 1.5px solid var(--border); box-shadow: inset 0 2px 8px rgba(0,0,0,0.05); }
+    .preview-thumb-box img { width: 100%; height: 100%; object-fit: cover; }
+
+    .card-right { flex: 1; min-width: 0; }
+    .status-badge { display: inline-block; font-size: 0.7rem; font-weight: 1000; text-transform: uppercase; letter-spacing: 0.05em; color: #166534; background: #dcfce7; padding: 6px 14px; border-radius: 100px; margin-bottom: 10px; }
+    .file-name { font-size: 1.15rem; font-weight: 1000; color: var(--dark); margin-bottom: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; }
+
+    .file-info-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+    .info-pill { display: flex; flex-direction: column; gap: 1px; }
+    .info-pill .label { font-size: 0.65rem; font-weight: 900; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .info-pill .value { font-size: 0.95rem; font-weight: 1000; color: var(--slate); }
+
+    .card-actions { display: flex; gap: 10px; }
+    .action-btn { padding: 10px 18px; border-radius: 12px; font-weight: 850; font-size: 0.85rem; cursor: pointer; transition: 0.2s; border: 1.5px solid transparent; }
+    .action-btn.outline { background: #fff; color: var(--primary); border-color: var(--primary); }
+    .action-btn.outline:hover { background: var(--primary-light); }
+    .action-btn.danger { background: #fee2e2; color: #dc2626; }
+    .action-btn.danger:hover { background: #fecaca; }
+
+    .hidden-input { display: none !important; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 640px) {
+        .uploaded-card { flex-direction: column; padding: 20px; text-align: center; align-items: center; }
+        .card-right { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .file-info-row { justify-content: center; }
+        .card-actions { width: 100%; justify-content: center; flex-direction: column; }
+        .action-btn { width: 100%; }
+        .preview-thumb-box { width: 100%; height: 160px; }
+    }
+</style>
+
+<script>
+    // Logic for internal handling of the Preview Card UI
+    const zone = document.getElementById('upload-box');
+    const card = document.getElementById('uploaded-card');
+    const input = document.getElementById('file-input') as HTMLInputElement;
+    
+    const thumb = document.getElementById('preview-thumb') as HTMLImageElement;
+    const fName = document.getElementById('file-name');
+    const fSize = document.getElementById('file-size');
+    const fDims = document.getElementById('file-dims');
+
+    const changeBtn = document.getElementById('change-image-btn');
+    const removeBtn = document.getElementById('remove-image-btn');
+
+    if (zone && input) {
+        zone.addEventListener('click', () => input.click());
+
+        // Add Drag and Drop Handlers
+        zone.addEventListener('dragover', (e) => {
+             e.preventDefault();
+             zone.classList.add('active');
+        });
+        zone.addEventListener('dragleave', () => {
+             zone.classList.remove('active');
+        });
+        zone.addEventListener('drop', (e) => {
+             e.preventDefault();
+             zone.classList.remove('active');
+             if (e.dataTransfer?.files.length) {
+                 const file = e.dataTransfer.files[0];
+                 // Create a DataTransfer to update the hidden input
+                 const dt = new DataTransfer();
+                 dt.items.add(file);
+                 input.files = dt.files;
+                 // Dispatch change event so parent tools can catch it
+                 input.dispatchEvent(new Event('change', { bubbles: true }));
+             }
+        });
+
+        input.addEventListener('change', (e) => {
+             const file = (e.target as HTMLInputElement).files?.[0];
+             if (file) handleUIUpdate(file);
+        });
+
+        // External pages can listen to this input's change event too.
+    }
+
+    function handleUIUpdate(file: File) {
+        if (!file) return;
+        
+        // 1. Hide Zone, Show Card
+        zone?.classList.add('hidden');
+        card?.classList.remove('hidden');
+
+        // 2. Set Stats
+        fName!.textContent = file.name;
+        fSize!.textContent = formatKB(file.size);
+
+        // 3. Set Preview & Dims
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const url = e.target?.result as string;
+            thumb.src = url;
+
+            const imgBuffer = new Image();
+            imgBuffer.onload = () => {
+                 fDims!.textContent = `${imgBuffer.naturalWidth} x ${imgBuffer.naturalHeight}`;
+            };
+            imgBuffer.src = url;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    changeBtn?.addEventListener('click', () => input.click());
+    removeBtn?.addEventListener('click', () => {
+         location.reload(); // Hard reset for now, or emit event
+    });
+
+    function formatKB(b: number) { 
+        if (b > 1024 * 1024) return (b / (1024 * 1024)).toFixed(1) + ' MB';
+        return (b / 1024).toFixed(1) + ' KB';
+    }
+</script>

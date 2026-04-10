@@ -1,0 +1,324 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'Add Watermark to Photo Online - Free Image Protection Tool';
+const PAGE_DESC = 'Protect your images by adding text or logo watermarks online for free. Prevent image theft with custom opacity and 9-point position grid. 100% private and secure.';
+const PAGE_KEYWORDS = 'add watermark to photo, prevent image theft, free online watermark tool, protect photography online, text watermark online, online image copyright';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Image Watermark Tool",
+      "operatingSystem": "All",
+      "applicationCategory": "DesignApplication",
+      "description": "Professional tool to add text or logo watermarks to protect images from unauthorized use.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/watermark-image">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">© Copyright Protection</div>
+             <h1 class="main-h1">Add <span class="highlight">Watermark</span> Online</h1>
+             <p class="hero-sub">Protect your photos with custom text or logo watermarks. 100% private.</p>
+        </header>
+
+        <div class="glass-card tool-content shadow-lg">
+            <div id="u-box-container">
+                 <div class="upload-container" id="wm-upload-box">
+                      <div class="upload-circle"><span class="u-icon">🛡️</span></div>
+                      <h3 class="u-title">Upload Image</h3>
+                      <p class="u-sub">Select a JPG or PNG to add watermark</p>
+                      <button class="primary-btn pulse-glow upload-btn" onclick="document.getElementById('wm-input').click()">Browse Image</button>
+                      <input type="file" id="wm-input" class="hidden" accept="image/*" />
+                 </div>
+            </div>
+
+            <div id="controls" class="tool-controls hidden">
+                 <div class="wm-split">
+                      <div class="wm-settings">
+                           <label class="section-label">1. Watermark Text</label>
+                           <input type="text" id="wm-text" class="wm-input-box" placeholder="e.g. Copyright FormFix" value="© Protected" />
+                           
+                           <label class="section-label mt-24">2. Opacity (<span id="op-val">50</span>%)</label>
+                           <input type="range" id="wm-opacity" min="0" max="100" value="50" class="styled-slider" />
+
+                           <label class="section-label mt-24">3. Position</label>
+                           <div class="pos-grid">
+                                <button class="pos-btn" data-pos="tl">↖</button>
+                                <button class="pos-btn" data-pos="tc">↑</button>
+                                <button class="pos-btn" data-pos="tr">↗</button>
+                                <button class="pos-btn" data-pos="cl">←</button>
+                                <button class="pos-btn active" data-pos="cc">●</button>
+                                <button class="pos-btn" data-pos="cr">→</button>
+                                <button class="pos-btn" data-pos="bl">↙</button>
+                                <button class="pos-btn" data-pos="bc">↓</button>
+                                <button class="pos-btn" data-pos="br">↘</button>
+                           </div>
+                           
+                           <div class="action-footer mt-48">
+                               <button id="apply-btn" class="primary-btn wide-btn profile-btn pulse-glow">
+                                   Apply Watermark
+                               </button>
+                           </div>
+                      </div>
+                      
+                      <div class="wm-preview-box shadow-lg">
+                           <div class="preview-title">Live Preview</div>
+                           <canvas id="wm-canvas"></canvas>
+                      </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Result -->
+        <div id="result-stage" class="result-stage hidden animate-fade-up">
+            <div class="glass-card result-panel shadow-lg text-center">
+                <div class="res-header">
+                     <span class="status-badge">✔ Secured</span>
+                     <h3>Watermarked Image Ready</h3>
+                </div>
+                <div class="res-footer mt-24 justify-center">
+                     <a id="download-btn" href="#" class="primary-btn download-btn">Download Protected Image</a>
+                     <button id="reset-tool" class="secondary-btn">New Image</button>
+                </div>
+            </div>
+        </div>
+
+        <article class="pro-seo-article container mt-48">
+             <h2>Protect Photos with Watermark Online</h2>
+             <p>Our fast <strong>add watermark online free</strong> tool allows you to overlay custom text onto your photography to prevent theft. Because the stamping process happens in your web browser, nobody else can intercept or view your un-watermarked high-resolution original. This <strong>photo copyright tool</strong> is perfect for photographers, content creators, and businesses looking to brand their visual assets instantly.</p>
+             
+             <h3 class="mt-32">Frequently Asked Questions</h3>
+             <details class="faq-item">
+                  <summary>How to watermark a photo for free?</summary>
+                  <p>Upload your image, type your copyright or brand name in the text box, adjust the opacity and position using the grid, and click "Apply Watermark". You can then download the protected image as a PNG or JPG.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Can I add a logo watermark?</summary>
+                  <p>Currently, our tool specifically supports high-precision text watermarking with customizable transparency and positioning. Support for uploading a second image as a logo watermark is coming soon!</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Where should I place the watermark?</summary>
+                  <p>Common practices include placing it in one of the 4 corners (TL, TR, BL, BR) or dead-center with low opacity. Our 9-point grid gives you full control over <strong>watermark positioning</strong>.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Is my original high-res quality preserved?</summary>
+                  <p>Yes. Although the preview is scaled down for performance, the final "Apply Watermark" process uses a high-resolution canvas matching your original image dimensions.</p>
+             </details>
+        </article>
+
+        <RelatedTools currentTool="tools" />
+    </div>
+</BaseLayout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileInput = document.getElementById('wm-input') as HTMLInputElement;
+        const uploadBox = document.getElementById('u-box-container') as HTMLElement;
+        const controls = document.getElementById('controls') as HTMLElement;
+        
+        const wmText = document.getElementById('wm-text') as HTMLInputElement;
+        const wmOpacity = document.getElementById('wm-opacity') as HTMLInputElement;
+        const opVal = document.getElementById('op-val') as HTMLElement;
+        const posBtns = document.querySelectorAll('.pos-btn');
+        const applyBtn = document.getElementById('apply-btn') as HTMLButtonElement;
+        
+        const canvas = document.getElementById('wm-canvas') as HTMLCanvasElement;
+        const ctx = canvas.getContext('2d')!;
+        
+        let originalImg: HTMLImageElement | null = null;
+        let position = 'cc';
+
+        fileInput.addEventListener('change', (e) => {
+             const file = (e.target as HTMLInputElement).files?.[0];
+             if (file) {
+                 const reader = new FileReader();
+                 reader.onload = (ev) => {
+                     originalImg = new Image();
+                     originalImg.onload = () => {
+                         uploadBox.classList.add('hidden');
+                         controls.classList.remove('hidden');
+                         drawPreview();
+                     };
+                     originalImg.src = ev.target?.result as string;
+                 };
+                 reader.readAsDataURL(file);
+             }
+        });
+
+        wmText.addEventListener('input', drawPreview);
+        wmOpacity.addEventListener('input', () => {
+             opVal.textContent = wmOpacity.value;
+             drawPreview();
+        });
+
+        posBtns.forEach(btn => btn.addEventListener('click', () => {
+             posBtns.forEach(b => b.classList.remove('active'));
+             btn.classList.add('active');
+             position = (btn as HTMLElement).dataset.pos || 'cc';
+             drawPreview();
+        }));
+
+        function drawPreview() {
+             if (!originalImg) return;
+             
+             // Keep canvas preview size manageable 
+             const maxW = 800;
+             let scale = 1;
+             if (originalImg.width > maxW) scale = maxW / originalImg.width;
+
+             canvas.width = originalImg.width * scale;
+             canvas.height = originalImg.height * scale;
+
+             ctx.clearRect(0, 0, canvas.width, canvas.height);
+             ctx.drawImage(originalImg, 0, 0, canvas.width, canvas.height);
+
+             const text = wmText.value;
+             if (!text) return;
+
+             const op = parseInt(wmOpacity.value) / 100;
+             
+             // Base font size on image dimension
+             const fontSize = Math.max(24, Math.floor(canvas.width * 0.05));
+             
+             ctx.font = `bold ${fontSize}px sans-serif`;
+             ctx.fillStyle = `rgba(255, 255, 255, ${op})`;
+             ctx.textAlign = 'center';
+             ctx.textBaseline = 'middle';
+
+             const metrics = ctx.measureText(text);
+             const padding = 20;
+
+             let x = 0; let y = 0;
+
+             // Calculate X
+             if (position.includes('l')) x = (metrics.width / 2) + padding;
+             else if (position.includes('r')) x = canvas.width - (metrics.width / 2) - padding;
+             else x = canvas.width / 2;
+
+             // Calculate Y
+             if (position.includes('t')) y = fontSize + padding;
+             else if (position.includes('b')) y = canvas.height - fontSize - padding;
+             else y = canvas.height / 2;
+
+             // Add slight black shadow for contrast
+             ctx.shadowColor = `rgba(0,0,0, ${op * 0.8})`;
+             ctx.shadowBlur = 4;
+             ctx.shadowOffsetX = 2;
+             ctx.shadowOffsetY = 2;
+
+             ctx.fillText(text, x, y);
+        }
+
+        applyBtn.addEventListener('click', () => {
+             if (!originalImg) return;
+             
+             // Setup high-res canvas
+             const hrCanvas = document.createElement('canvas');
+             hrCanvas.width = originalImg.width;
+             hrCanvas.height = originalImg.height;
+             const hCtx = hrCanvas.getContext('2d')!;
+
+             hCtx.drawImage(originalImg, 0, 0);
+
+             const text = wmText.value;
+             if (text) {
+                 const op = parseInt(wmOpacity.value) / 100;
+                 const fontSize = Math.max(30, Math.floor(hrCanvas.width * 0.05));
+                 
+                 hCtx.font = `bold ${fontSize}px sans-serif`;
+                 hCtx.fillStyle = `rgba(255, 255, 255, ${op})`;
+                 hCtx.textAlign = 'center';
+                 hCtx.textBaseline = 'middle';
+
+                 const metrics = hCtx.measureText(text);
+                 const padding = 40;
+
+                 let x = 0; let y = 0;
+                 if (position.includes('l')) x = (metrics.width / 2) + padding;
+                 else if (position.includes('r')) x = hrCanvas.width - (metrics.width / 2) - padding;
+                 else x = hrCanvas.width / 2;
+
+                 if (position.includes('t')) y = fontSize + padding;
+                 else if (position.includes('b')) y = hrCanvas.height - fontSize - padding;
+                 else y = hrCanvas.height / 2;
+
+                 hCtx.shadowColor = `rgba(0,0,0, ${op * 0.8})`;
+                 hCtx.shadowBlur = 8; hCtx.shadowOffsetX = 4; hCtx.shadowOffsetY = 4;
+
+                 hCtx.fillText(text, x, y);
+             }
+
+             hrCanvas.toBlob(blob => {
+                 const url = URL.createObjectURL(blob!);
+                 (document.getElementById('download-btn') as HTMLAnchorElement).href = url;
+                 (document.getElementById('download-btn') as HTMLAnchorElement).download = `formfix-watermarked.png`;
+                 document.querySelector('.tool-content')?.classList.add('hidden');
+                 document.getElementById('result-stage')?.classList.remove('hidden');
+             }, 'image/png');
+        });
+
+        document.getElementById('reset-tool')?.addEventListener('click', () => location.reload());
+    });
+</script>
+
+<style>
+    .main-h1 { font-size: 3rem; position: relative; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
+    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; }
+    .tool-wrapper { max-width: 900px; margin: 0 auto; padding-bottom: 100px; }
+
+    .upload-container { background: #f8fafc; border: 2.5px dashed var(--border); border-radius: 32px; padding: 60px 20px; text-align: center; cursor: pointer; transition: 0.3s; }
+    .upload-container:hover { border-color: var(--primary); background: #f0fdf4; }
+    .upload-circle { width: 80px; height: 80px; background: #fff; border-radius: 50%; box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; }
+    .u-title { font-size: 1.6rem; font-weight: 1000; color: var(--dark); margin-bottom: 8px; }
+    .u-sub { font-size: 1rem; color: var(--slate); font-weight: 600; margin-bottom: 32px; }
+    .upload-btn { padding: 18px 40px; font-size: 1.1rem; border-radius: 100px; }
+
+    .tool-controls { margin-top: 40px; }
+    .wm-split { display: grid; grid-template-columns: 350px 1fr; gap: 32px; }
+
+    .wm-input-box { width: 100%; padding: 16px; border-radius: 12px; border: 2px solid var(--border); font-size: 1.1rem; font-weight: 850; outline: none; margin-top: 12px; transition: 0.3s; }
+    .wm-input-box:focus { border-color: var(--primary); }
+
+    .styled-slider { width: 100%; height: 8px; border-radius: 100px; background: #e2e8f0; appearance: none; outline: none; margin-top: 12px; display: block; }
+    .styled-slider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--primary); border-radius: 50%; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    
+    .pos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; max-width: 200px; }
+    .pos-btn { aspect-ratio: 1; border: 1.5px solid var(--border); background: #f8fafc; border-radius: 12px; font-weight: 1000; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #94a3b8; transition: 0.2s; }
+    .pos-btn:hover { background: #fff; border-color: var(--primary); color: var(--primary); }
+    .pos-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .wm-preview-box { border-radius: 20px; border: 2px solid var(--border); overflow: hidden; background: #e2e8f0; position: relative; }
+    .preview-title { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 900; }
+    #wm-canvas { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+    .wide-btn { width: 100%; height: 72px; font-size: 1.2rem; font-weight: 1000; border-radius: 20px; }
+
+    .mt-48 { margin-top: 48px; }
+    .mt-32 { margin-top: 32px; }
+    .mt-24 { margin-top: 24px; }
+    .justify-center { justify-content: center; display: flex; gap: 16px; }
+
+    /* FAQ */
+    .faq-item { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; text-align: left; margin-top: 16px; }
+    .faq-item summary { font-weight: 900; font-size: 1.1rem; padding: 20px; cursor: pointer; color: var(--dark); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 24px; font-weight: bold; font-size: 1.4rem; color: var(--primary); }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 1rem; color: var(--slate); line-height: 1.6; }
+
+    @media (max-width: 800px) {
+        .wm-split { grid-template-columns: 1fr; }
+        .wm-preview-box { height: 400px; order: -1; }
+    }
+</style>

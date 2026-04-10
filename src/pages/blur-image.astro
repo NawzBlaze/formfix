@@ -1,0 +1,418 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'Blur Image Online - Pixelate & Censor Faces for Free';
+const PAGE_DESC = 'Free online image blur tool to redact sensitive information, censor faces or pixelate areas of a photo securely within your browser. 100% private and fast.';
+const PAGE_KEYWORDS = 'blur image online, pixelate image, censor face photo, redact image sensitive info, private online image blur, face pixelator';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Image Blur & Censor Tool",
+      "operatingSystem": "All",
+      "applicationCategory": "UtilitiesApplication",
+      "description": "Premium redaction tool to blur or pixelate sensitive parts of images locally.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/blur-image">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">💧 Redact & Secure</div>
+             <h1 class="main-h1">Blur <span class="highlight">Image Online</span></h1>
+             <p class="hero-sub">Draw to blur or pixelate sensitive information and faces instantly.</p>
+        </header>
+
+        <div class="glass-card tool-content shadow-lg">
+            <div id="u-box-container">
+                 <div class="upload-container" id="blur-upload-box">
+                      <div class="upload-circle"><span class="u-icon">🕵️‍♂️</span></div>
+                      <h3 class="u-title">Upload Image</h3>
+                      <p class="u-sub">Select a photo to censor</p>
+                      <button class="primary-btn pulse-glow upload-btn" onclick="document.getElementById('blur-input').click()">Browse Image</button>
+                      <input type="file" id="blur-input" class="hidden" accept="image/*" />
+                 </div>
+            </div>
+
+            <div id="controls" class="tool-controls hidden">
+                 <div class="blur-workspace">
+                      
+                      <div class="b-toolbar">
+                           <div class="pill-row">
+                                <button class="setting-pill active" data-fx="blur">Soft Blur</button>
+                                <button class="setting-pill" data-fx="pixel">Pixelate</button>
+                                <button class="setting-pill" data-fx="erase">Erase 🧽</button>
+                           </div>
+                           
+                           <div class="b-sliders">
+                                <div class="tb-item">
+                                    <label>Brush Size (<span id="brush-val">40</span>px)</label>
+                                    <input type="range" id="brush-size" min="10" max="150" value="40" class="styled-slider" />
+                                </div>
+                                <div class="tb-item">
+                                    <label>Effect Strength (<span id="str-val">10</span>)</label>
+                                    <input type="range" id="strength" min="2" max="50" value="10" class="styled-slider" />
+                                </div>
+                           </div>
+                           
+                           <div class="b-actions">
+                                <button class="secondary-btn btn-sm" id="clear-btn">Clear All</button>
+                           </div>
+                      </div>
+                      
+                      <p class="hint-text mt-24 text-center">👉 <strong>Draw over the image below</strong> to censor areas.</p>
+
+                      <div class="canvas-viewport shadow-lg">
+                           <canvas id="base-canvas"></canvas>
+                           <canvas id="fx-canvas"></canvas>
+                           <canvas id="draw-canvas"></canvas>
+                      </div>
+
+                      <div class="action-footer mt-48 text-center">
+                           <button id="download-btn" class="primary-btn wide-btn pulse-glow">
+                               Download Censored Image
+                           </button>
+                      </div>
+                 </div>
+            </div>
+        </div>
+
+        <article class="pro-seo-article container mt-48">
+             <h2>Securely Censor & Blur Photos</h2>
+             <p>Our <strong>blur image online</strong> tool allows you to instantly redact sensitive documents, pixelate license plates, or censor faces securely. By processing everything strictly inside your local browser memory, we guarantee absolute confidentiality. Use the <strong>pixelate image online</strong> feature for a classic blocky redaction look, or use the soft blur for a professional-grade censorship effect.</p>
+             
+             <h3 class="mt-32">Frequently Asked Questions</h3>
+             <details class="faq-item">
+                  <summary>How to blur a face in a photo?</summary>
+                  <p>Upload your photo, select "Soft Blur" from the toolbar, adjust the brush size, and simply paint over the face. The blur will be applied instantly to the areas you touch.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>What is pixelate vs blur?</summary>
+                  <p>Blur uses a Gaussian-style filter to soften edges and colors, while Pixelate turns the area into small blocks. Both are effective for <strong>censoring sensitive info</strong>; pixelation is often preferred for a "news" or "undercover" aesthetic.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Is my data private during redaction?</summary>
+                  <p>Yes. Redaction is a sensitive task. That's why FormFix does <strong>100% local image processing</strong>. Your documents, IDs, or sensitive screenshots never leave your device.</p>
+             </details>
+             <details class="faq-item">
+                  <summary>Can I undo a blur stroke?</summary>
+                  <p>Currently, you can use the "Clear All" button to start over. We recommend applying the blur accurately in one go or using the clear button if you make a mistake.</p>
+             </details>
+        </article>
+
+        <RelatedTools currentTool="tools" />
+    </div>
+</BaseLayout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileInput = document.getElementById('blur-input') as HTMLInputElement;
+        const uploadBox = document.getElementById('u-box-container') as HTMLElement;
+        const controls = document.getElementById('controls') as HTMLElement;
+        
+        const baseCanvas = document.getElementById('base-canvas') as HTMLCanvasElement;
+        const fxCanvas = document.getElementById('fx-canvas') as HTMLCanvasElement;
+        const drawCanvas = document.getElementById('draw-canvas') as HTMLCanvasElement;
+        
+        const bCtx = baseCanvas.getContext('2d')!;
+        const fCtx = fxCanvas.getContext('2d', { willReadFrequently: true })!;
+        const dCtx = drawCanvas.getContext('2d', { willReadFrequently: true })!;
+        
+        const typeBtns = document.querySelectorAll('.setting-pill');
+        const brushSlider = document.getElementById('brush-size') as HTMLInputElement;
+        const brushVal = document.getElementById('brush-val') as HTMLElement;
+        const strSlider = document.getElementById('strength') as HTMLInputElement;
+        const strVal = document.getElementById('str-val') as HTMLElement;
+        
+        const clearBtn = document.getElementById('clear-btn') as HTMLButtonElement;
+        const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
+
+        let originalImg: HTMLImageElement | null = null;
+        let drawScale = 1;
+        let isDrawing = false;
+        let currentMode = 'blur';
+        let lastVisualEffect = 'blur';
+
+        fileInput.addEventListener('change', (e) => {
+             const file = (e.target as HTMLInputElement).files?.[0];
+             if (file) handleFile(file);
+        });
+
+        // Add Drag and Drop Handlers
+        uploadBox.addEventListener('dragover', (e) => {
+             e.preventDefault();
+             uploadBox.classList.add('active'); // Will use the hover state css
+        });
+        uploadBox.addEventListener('dragleave', () => {
+             uploadBox.classList.remove('active');
+        });
+        uploadBox.addEventListener('drop', (e) => {
+             e.preventDefault();
+             uploadBox.classList.remove('active');
+             if (e.dataTransfer?.files.length) {
+                 handleFile(e.dataTransfer.files[0]);
+             }
+        });
+
+        function handleFile(file: File) {
+             const reader = new FileReader();
+             reader.onload = (ev) => {
+                 originalImg = new Image();
+                 originalImg.onload = () => {
+                     uploadBox.classList.add('hidden');
+                     controls.classList.remove('hidden');
+                     initCanvas();
+                 };
+                 originalImg.src = ev.target?.result as string;
+             };
+             reader.readAsDataURL(file);
+        }
+
+        typeBtns.forEach(btn => btn.addEventListener('click', () => {
+             typeBtns.forEach(b => b.classList.remove('active'));
+             btn.classList.add('active');
+             currentMode = (btn as HTMLElement).dataset.fx || 'blur';
+             
+             if (currentMode === 'blur' || currentMode === 'pixel') {
+                 lastVisualEffect = currentMode;
+                 generateEffect();
+             }
+             renderFinal();
+        }));
+
+        brushSlider.addEventListener('input', () => brushVal.textContent = brushSlider.value);
+        strSlider.addEventListener('input', () => {
+             strVal.textContent = strSlider.value;
+             generateEffect();
+             renderFinal();
+        });
+
+        clearBtn.addEventListener('click', () => {
+             dCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+             renderFinal();
+        });
+
+        function initCanvas() {
+             if (!originalImg) return;
+             
+             const maxD = 1200;
+             let s = 1;
+             if (originalImg.width > maxD || originalImg.height > maxD) {
+                 s = maxD / Math.max(originalImg.width, originalImg.height);
+             }
+
+             const cw = originalImg.width * s;
+             const ch = originalImg.height * s;
+             
+             baseCanvas.width = cw; baseCanvas.height = ch;
+             fxCanvas.width = cw; fxCanvas.height = ch;
+             drawCanvas.width = cw; drawCanvas.height = ch;
+
+             bCtx.drawImage(originalImg, 0, 0, cw, ch);
+             
+             generateEffect();
+             renderFinal();
+
+             resizeCanvas();
+             window.addEventListener('resize', resizeCanvas);
+        }
+
+        function resizeCanvas() {
+             const container = baseCanvas.parentElement;
+             if (!container) return;
+             
+             drawScale = Math.min(container.clientWidth / baseCanvas.width, 500 / baseCanvas.height, 1);
+             const fw = `${baseCanvas.width * drawScale}px`;
+             const fh = `${baseCanvas.height * drawScale}px`;
+
+             baseCanvas.style.width = fw; baseCanvas.style.height = fh;
+             fxCanvas.style.width = fw; fxCanvas.style.height = fh;
+             drawCanvas.style.width = fw; drawCanvas.style.height = fh;
+        }
+
+        function generateEffect() {
+             if (!originalImg) return;
+             fCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+             
+             const str = parseInt(strSlider.value);
+             
+             if (lastVisualEffect === 'blur') {
+                 fCtx.filter = `blur(${str}px)`;
+                 fCtx.drawImage(baseCanvas, 0, 0);
+                 fCtx.filter = 'none';
+             } else {
+                 // Pixelate
+                 const s = str * 0.01;
+                 const pw = fxCanvas.width * s;
+                 const ph = fxCanvas.height * s;
+                 
+                 // draw small
+                 fCtx.imageSmoothingEnabled = false;
+                 fCtx.drawImage(baseCanvas, 0, 0, pw, ph);
+                 // scale back up
+                 fCtx.drawImage(fxCanvas, 0, 0, pw, ph, 0, 0, fxCanvas.width, fxCanvas.height);
+                 fCtx.imageSmoothingEnabled = true;
+             }
+        }
+
+        function getMousePos(e: MouseEvent | TouchEvent) {
+             const rect = drawCanvas.getBoundingClientRect();
+             let clientX, clientY;
+             if (e instanceof MouseEvent) { clientX = e.clientX; clientY = e.clientY; }
+             else { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+             
+             return {
+                 x: (clientX - rect.left) / drawScale,
+                 y: (clientY - rect.top) / drawScale
+             };
+        }
+
+        function strokeMask(x: number, y: number) {
+             const brush = parseInt(brushSlider.value);
+             dCtx.beginPath();
+             dCtx.arc(x, y, brush, 0, Math.PI * 2);
+             if (currentMode === 'erase') {
+                 dCtx.globalCompositeOperation = 'destination-out';
+                 dCtx.fillStyle = 'black';
+                 dCtx.fill();
+                 dCtx.globalCompositeOperation = 'source-over';
+             } else {
+                 dCtx.fillStyle = 'black';
+                 dCtx.fill();
+             }
+        }
+
+        function renderFinal() {
+             // drawCanvas acts as the final visible display in UI, blending base and fx using drawCanvas mask
+             // Wait, the UI structure has 3 canvases. Let's make `drawCanvas` the top visual layer.
+             // Actually, the easiest is to draw on `drawCanvas` with `source-over` (the mask).
+             // But visual display needs to composite them.
+             
+             // To not mess up the masking logic if we use drawCanvas for display, let's just 
+             // visually overlay the canvases using CSS.
+             // CSS: baseCanvas (z=1), fxCanvas (z=2, with mask applied).
+             // HTML Canvas doesn't support CSS masking by another canvas easily across all browsers.
+             
+             // Let's do compositing inside baseCanvas for export, but what about live preview?
+             // Live preview: We can composite `fxCanvas` over `baseCanvas` using `drawCanvas` as mask directly onto `drawCanvas`? No, drawCanvas needs to save the raw strokes.
+             
+             // Strategy: baseCanvas is the final rendered output.
+             // So we draw base image -> then draw drawCanvas -> composite fxCanvas in with source-in.
+             bCtx.drawImage(originalImg!, 0, 0, baseCanvas.width, baseCanvas.height);
+             
+             // Create temporary composite
+             const tmp = document.createElement('canvas');
+             tmp.width = baseCanvas.width; tmp.height = baseCanvas.height;
+             const tCtx = tmp.getContext('2d')!;
+             
+             // 1. Draw mask
+             tCtx.drawImage(drawCanvas, 0, 0);
+             // 2. Draw effect restricted by mask
+             tCtx.globalCompositeOperation = 'source-in';
+             tCtx.drawImage(fxCanvas, 0, 0);
+             
+             // 3. Draw onto base
+             bCtx.drawImage(tmp, 0, 0);
+        }
+
+        const startDraw = (e: MouseEvent | TouchEvent) => {
+             e.preventDefault();
+             isDrawing = true;
+             const {x, y} = getMousePos(e);
+             strokeMask(x, y);
+             renderFinal();
+        };
+
+        const draw = (e: MouseEvent | TouchEvent) => {
+             if (!isDrawing) return;
+             e.preventDefault();
+             const {x, y} = getMousePos(e);
+             strokeMask(x, y);
+             renderFinal();
+        };
+
+        const stopDraw = () => isDrawing = false;
+
+        drawCanvas.addEventListener('mousedown', startDraw);
+        drawCanvas.addEventListener('mousemove', draw);
+        window.addEventListener('mouseup', stopDraw);
+
+        drawCanvas.addEventListener('touchstart', startDraw, {passive: false});
+        drawCanvas.addEventListener('touchmove', draw, {passive: false});
+        window.addEventListener('touchend', stopDraw);
+
+        downloadBtn.addEventListener('click', () => {
+             baseCanvas.toBlob(blob => {
+                 const url = URL.createObjectURL(blob!);
+                 const a = document.createElement('a');
+                 a.href = url;
+                 a.download = `formfix-censored.jpg`;
+                 a.click();
+             }, 'image/jpeg', 0.9);
+        });
+    });
+</script>
+
+<style>
+    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
+    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; }
+    .tool-wrapper { max-width: 900px; margin: 0 auto; padding-bottom: 100px; }
+
+    .upload-container { background: #f8fafc; border: 2.5px dashed var(--border); border-radius: 32px; padding: 60px 20px; text-align: center; cursor: pointer; transition: 0.3s; }
+    .upload-container:hover { border-color: var(--primary); background: #f0fdf4; }
+    .upload-circle { width: 80px; height: 80px; background: #fff; border-radius: 50%; box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; }
+    .u-title { font-size: 1.6rem; font-weight: 1000; color: var(--dark); margin-bottom: 8px; }
+    .u-sub { font-size: 1rem; color: var(--slate); font-weight: 600; margin-bottom: 32px; }
+    .upload-btn { padding: 18px 40px; font-size: 1.1rem; border-radius: 100px; }
+
+    .tool-controls { margin-top: 40px; }
+    
+    .b-toolbar { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 16px 24px; border-radius: 20px; border: 1.5px solid var(--border); flex-wrap: wrap; gap: 16px; }
+    
+    .pill-row { display: flex; gap: 8px; }
+    .setting-pill { padding: 8px 16px; border-radius: 100px; border: 1.5px solid var(--border); background: #fff; font-weight: 900; font-size: 0.85rem; cursor: pointer; color: var(--slate); transition: 0.2s; }
+    .setting-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .b-sliders { display: flex; gap: 24px; flex: 1; justify-content: center; }
+    .tb-item label { font-size: 0.75rem; font-weight: 950; color: var(--gray); text-transform: uppercase; margin-bottom: 6px; display: block; }
+    .styled-slider { width: 140px; height: 8px; border-radius: 100px; background: #e2e8f0; appearance: none; outline: none; }
+    .styled-slider::-webkit-slider-thumb { appearance: none; width: 16px; height: 16px; background: var(--primary); border-radius: 50%; border: 3px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; }
+
+    .canvas-viewport { width: 100%; height: 500px; background: #e2e8f0; border-radius: 20px; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-top: 16px; position: relative; }
+    
+    #base-canvas { position: absolute; z-index: 1; }
+    /* fxCanvas is hidden perfectly */
+    #fx-canvas { display: none; }
+    /* drawCanvas must be fully transparent, placed on top for events */
+    #draw-canvas { position: absolute; z-index: 10; opacity: 0; cursor: crosshair; }
+
+    .wide-btn { padding: 0 48px; height: 72px; font-size: 1.25rem; font-weight: 1000; border-radius: 20px; }
+    .btn-sm { padding: 8px 16px; border-radius: 12px; background: #fff; border: 1.5px solid var(--border); font-weight: 900; cursor: pointer; transition: 0.2s; color: var(--slate); }
+    .btn-sm:hover { color: #ef4444; border-color: #fca5a5; }
+
+    .mt-48 { margin-top: 48px; }
+    .mt-32 { margin-top: 32px; }
+    .mt-24 { margin-top: 24px; }
+
+    /* FAQ */
+    .faq-item { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; text-align: left; margin-top: 16px; }
+    .faq-item summary { font-weight: 900; font-size: 1.1rem; padding: 20px; cursor: pointer; color: var(--dark); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 24px; font-weight: bold; font-size: 1.4rem; color: var(--primary); }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 1rem; color: var(--slate); line-height: 1.6; }
+
+    @media (max-width: 800px) {
+        .b-toolbar { flex-direction: column; align-items: stretch; }
+        .b-sliders { justify-content: space-between; }
+    }
+</style>

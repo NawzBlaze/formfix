@@ -1,0 +1,309 @@
+---
+const { active = 'home' } = Astro.props;
+
+const navItems = [
+    { name: 'Compress', href: '/compress-image', id: 'compress' },
+    { name: 'Passport Photo', href: '/passport-size-photo', id: 'passport-maker' },
+    { name: 'Sign Maker', href: '/signature-maker', id: 'signature' },
+    { name: 'PDF Tools', href: '/merge-pdf', id: 'pdf' },
+    { name: 'All Tools', href: '/tools', id: 'tools' },
+];
+---
+
+<!-- Announcement Bar (Desktop Only) -->
+<div class="announcement-bar no-mobile" id="ann-bar">
+    <div class="ann-inner">
+        <span class="ann-new-badge">NEW</span>
+        <span class="ann-icon">✨</span>
+        <span><strong>Text-to-Handwriting</strong> &amp; <strong>Resume Builder</strong> just added — <a href="/tools" class="ann-link">Explore all 30+ tools →</a></span>
+        <div class="ann-divider"></div>
+        <span class="ann-privacy-note"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> 100% Private</span>
+        <button class="ann-close" id="ann-close-btn" aria-label="Close announcement">✕</button>
+    </div>
+</div>
+
+<header class="top-header" role="banner" id="main-header">
+    <div class="header-container container">
+        <div class="header-left">
+            <a href="/" class="logo-link" aria-label="FormFix — Free Image Tools Online">
+                <div class="logo-icon-wrapper" aria-hidden="true">
+                    <img src="/main-logo.png" alt="" />
+                </div>
+                <span class="logo-text">FormFix</span>
+            </a>
+        </div>
+
+        <div class="nav-right">
+            <nav class="desktop-nav" aria-label="Main Navigation">
+                <ul id="nav-menu" class="nav-links" role="list">
+                    {navItems.map(item => (
+                        <li role="listitem">
+                            <a href={item.href}
+                               class={`nav-link ${active === item.id ? 'active' : ''}`}
+                               aria-current={active === item.id ? 'page' : undefined}>
+                                {item.name}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
+
+            <a href="/tools" class="mobile-tools-btn" aria-label="All Tools">
+                <span>Tools</span> 🧰
+            </a>
+
+            <div class="header-trust-badge no-mobile" aria-label="100% Secure and Private">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #10B981;"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span>100% Secure</span>
+            </div>
+
+            <a href="/compress-image" class="header-cta-btn no-mobile" aria-label="Start using FormFix">
+                Try Free →
+            </a>
+        </div>
+    </div>
+</header>
+
+<style>
+    /* ─── Announcement Bar ─── */
+    .announcement-bar {
+        background: linear-gradient(90deg, #312e81 0%, #4f46e5 40%, #7c3aed 70%, #312e81 100%);
+        background-size: 200% auto;
+        animation: ann-shimmer 6s linear infinite;
+        color: white;
+        text-align: center;
+        font-size: 0.84rem;
+        font-weight: 600;
+        padding: 9px 16px;
+        position: relative;
+        z-index: 2001;
+        transition: all 0.4s ease;
+    }
+    @keyframes ann-shimmer {
+        from { background-position: 0% center; }
+        to   { background-position: 200% center; }
+    }
+    .announcement-bar.hidden { display: none; }
+    .ann-inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 40px;
+        position: relative;
+    }
+    .ann-new-badge {
+        background: #fbbf24;
+        color: #1e1b4b;
+        font-size: 0.65rem;
+        font-weight: 900;
+        padding: 2px 8px;
+        border-radius: 4px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        flex-shrink: 0;
+    }
+    .ann-icon { font-size: 0.95rem; flex-shrink: 0; }
+    .ann-link {
+        color: #fde68a;
+        font-weight: 800;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        transition: color 0.2s;
+    }
+    .ann-link:hover { color: white; }
+    .ann-divider {
+        width: 1px;
+        height: 16px;
+        background: rgba(255,255,255,0.25);
+        flex-shrink: 0;
+        margin: 0 4px;
+    }
+    .ann-privacy-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        opacity: 0.65;
+        font-size: 0.78rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+    .ann-close {
+        position: absolute;
+        right: 0;
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        width: 26px; height: 26px;
+        border-radius: 50%;
+        font-size: 0.7rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        font-weight: 700;
+    }
+    .ann-close:hover { background: rgba(255,255,255,0.3); }
+
+    /* ─── Header ─── */
+    .top-header {
+        position: sticky;
+        top: 0;
+        z-index: 2000;
+        background: rgba(255,255,255,0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+    .top-header.scrolled {
+        background: rgba(255,255,255,0.95);
+        box-shadow: 0 4px 20px -5px rgba(0,0,0,0.05);
+    }
+
+    .header-container {
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 72px;
+    }
+
+    /* ─── Logo ─── */
+    .logo-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        transition: var(--transition-fast);
+    }
+    .logo-link:hover { opacity: 0.85; transform: scale(1.02); }
+    .logo-icon-wrapper {
+        width: 48px; height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .logo-icon-wrapper img { width: 100%; height: 100%; object-fit: contain; }
+    .logo-text {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: var(--dark);
+        letter-spacing: -0.05em;
+    }
+
+    /* ─── Nav ─── */
+    .nav-right { display: flex; align-items: center; gap: 4px; }
+    .nav-links { display: flex; list-style: none; gap: 2px; margin: 0; padding: 0; }
+    .nav-link {
+        text-decoration: none;
+        color: var(--slate);
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 8px 14px;
+        border-radius: 10px;
+        transition: var(--transition-fast);
+    }
+    .nav-link:hover { color: var(--primary); background: var(--primary-light); }
+    .nav-link.active { color: var(--primary); background: var(--primary-light); font-weight: 800; }
+
+    /* ─── CTA & Trust ─── */
+    .header-trust-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        color: #10B981;
+        border-radius: 100px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        margin-left: 16px;
+    }
+
+    .header-cta-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 20px;
+        background: var(--gradient-primary);
+        color: white;
+        border-radius: 12px;
+        font-size: 0.88rem;
+        font-weight: 800;
+        text-decoration: none;
+        transition: var(--transition-smooth);
+        margin-left: 12px;
+        box-shadow: 0 4px 12px rgba(79,70,229,0.2);
+    }
+    
+    .mobile-tools-btn {
+        display: none;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        background: var(--primary-light);
+        color: var(--primary);
+        border-radius: 100px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        text-decoration: none;
+        border: 1.5px solid var(--primary-mid);
+    }
+
+    /* ─── Mobile Optimization ─── */
+    @media (max-width: 960px) {
+        .no-mobile { display: none !important; }
+        .desktop-nav { display: none; }
+        .mobile-tools-btn { display: flex; }
+        .header-container { height: 60px; padding: 0 16px; }
+        .logo-icon-wrapper { width: 38px; height: 38px; }
+        .logo-text { font-size: 1.35rem; }
+    }
+</style>
+
+<script>
+    const header = document.getElementById('main-header');
+    const annBar = document.getElementById('ann-bar');
+    const annClose = document.getElementById('ann-close-btn');
+
+    // Announcement bar dismiss
+    if (annClose && annBar) {
+        const dismissed = sessionStorage.getItem('ann-dismissed');
+        if (dismissed) annBar.classList.add('hidden');
+
+        annClose.addEventListener('click', () => {
+            annBar.style.height = annBar.offsetHeight + 'px';
+            annBar.style.overflow = 'hidden';
+            annBar.style.paddingTop = '0';
+            annBar.style.paddingBottom = '0';
+            requestAnimationFrame(() => { annBar.style.height = '0'; });
+            setTimeout(() => annBar.classList.add('hidden'), 400);
+            sessionStorage.setItem('ann-dismissed', '1');
+        });
+    }
+ 
+    // Scroll effects
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 10) {
+            header?.classList.add('scrolled');
+        } else {
+            header?.classList.remove('scrolled');
+        }
+    }, { passive: true });
+
+    // Scroll progress indicator
+    const progressBar = document.createElement('div');
+    progressBar.className = 'scroll-indicator';
+    document.body.appendChild(progressBar);
+
+    window.addEventListener('scroll', () => {
+        const scrollTop = document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = progress + '%';
+    }, { passive: true });
+</script>

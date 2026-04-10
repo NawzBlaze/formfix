@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import CompressTool from '../components/tools/CompressTool.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const PAGE_TITLE = 'Compress Image to 50KB Online - Best Quality Photo Reducer - FormFix';
+const PAGE_DESC = 'Easily compress your photo to 50KB or less without losing quality. Best tool for online registration and applications requiring 50KB images. 100% private and secure.';
+const PAGE_KEYWORDS = 'compress image to 50kb, photo compressor 50kb, reduce photo size to 50kb, online image reducer 50kb';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FormFix 50KB Image Compressor",
+  "operatingSystem": "All",
+  "applicationCategory": "UtilitiesApplication",
+  "description": PAGE_DESC,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="compress" canonicalPath="/compress-image-50kb">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">Target: 50KB Limit</div>
+             <h1 class="main-h1">Compress Image to <span class="highlight">50KB</span></h1>
+             <p class="hero-sub">Get high-quality results under 50KB for your official documents and portals.</p>
+        </header>
+
+        <CompressTool initialTarget={50} />
+
+        <article class="pro-seo-article container mt-48">
+             <h2>The Quickest Way to Compress Image to 50kb</h2>
+             <p>Our intelligent 1-second compressor ensures your file hits the 50KB mark perfectly. Whether it's a passport photo or a signature, we prioritize sharpness while meeting the strict file size limits of modern web portals.</p>
+             <h3>Is it safe to compress sensitive photos?</h3>
+             <p>Absolutely. FormFix operates 100% on your local device. Your images never leave your browser, making it the most private 50KB photo compressor available online.</p>
+        </article>
+
+        <RelatedTools currentTool="compress" />
+    </div>
+</BaseLayout>
+
+<style>
+    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
+    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
+    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
+    .mt-48 { margin-top: 48px; }
+</style>

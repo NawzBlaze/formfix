@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+
+const PAGE_TITLE = 'Terms of Service | formfix Image Editor';
+const PAGE_DESC = 'Terms of Service and conditions of use for formfix. A free, client-side, browser-based image editing toolkit.';
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC}>
+    <div class="legal-page card">
+        <h1>Terms of Service</h1>
+        <p class="updated"><strong>Effective Date:</strong> {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        
+        <section class="legal-section">
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing and using formfix at <strong>formfix.pages.dev</strong>, you accept and agree to be bound by these terms. This service is provided as a public utility to assist with image processing for document uploads and web optimization.</p>
+        </section>
+
+        <section class="legal-section">
+            <h2>2. Description of Service</h2>
+            <p>formfix provides various image tools (Compression, Cropping, Resizing, Conversion) that execute entirely in the user's browser. The service is free and does not require registration.</p>
+        </section>
+
+        <section class="legal-section">
+            <h2>3. User Responsibilities</h2>
+            <p>You are solely responsible for the images you process. Since we never upload your images to our servers, we have no record of your activities. You agree not to use the service for any illegal purposes according to your local laws.</p>
+        </section>
+
+        <section class="legal-section">
+            <h2>4. Disclaimer of Warranties</h2>
+            <p>The service is provided "as is". While we use precise mathematical algorithms (like binary search for compression), we cannot guarantee that the results will meet the specific, sometimes proprietary requirements of all third-party submission portals.</p>
+        </section>
+
+        <section class="legal-section">
+            <h2>5. Limitation of Liability</h2>
+            <p>In no event shall formfix or its maintainers be liable for any damages arising out of the use or inability to use the tools, including but not limited to, rejection of documents by third-party systems.</p>
+        </section>
+
+        <section class="legal-section">
+            <h2>6. Changes to Terms</h2>
+            <p>We may revise these terms at any time. By using this website, you agree to be bound by the then-current version of these Terms of Service.</p>
+        </section>
+    </div>
+</BaseLayout>
+
+<style>
+    .legal-page {
+        max-width: 900px !important;
+        margin: 0 auto;
+        padding: 60px !important;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 24px;
+        letter-spacing: -0.04em;
+    }
+
+    .updated {
+        color: var(--gray);
+        margin-bottom: 40px;
+    }
+
+    .legal-section {
+        margin-bottom: 40px;
+    }
+
+    .legal-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+        color: var(--dark);
+        font-weight: 700;
+    }
+
+    .legal-section p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: var(--gray);
+    }
+
+    @media (max-width: 768px) {
+        .legal-page { padding: 30px !important; }
+        h1 { font-size: 2rem; }
+    }
+</style>

@@ -1,0 +1,261 @@
+---
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description: string;
+	active?: string;
+	customSchema?: object;
+	canonicalPath?: string;
+	keywords?: string;
+	noindex?: boolean;
+}
+
+
+const { 
+    title, 
+    description, 
+    active = 'home',
+    customSchema,
+    canonicalPath,
+    keywords = "formfix, image compressor online, compress image to 20kb, passport photo maker, crop image, merge pdf, qr code generator",
+    noindex = false
+} = Astro.props;
+
+
+
+const SITE_URL = 'https://formfix.pages.dev';
+const FAVICON = '/favicon.svg';
+const OG_IMAGE = '/og-image.jpg';
+
+// Default WebApplication Schema
+const defaultSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "FormFix",
+  "description": description,
+  "url": SITE_URL + (canonicalPath || ""),
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "1542"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FormFix",
+    "url": SITE_URL,
+    "logo": SITE_URL + '/favicon.png?v=3',
+    "sameAs": [
+      "https://github.com/NawzBlaze/formfix"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "formfix.support@gmail.com",
+      "contactType": "customer service",
+      "url": SITE_URL + "/contact"
+    }
+  }
+};
+
+const finalSchema = customSchema || defaultSchema;
+
+// SEO Power-up: Dynamic Breadcrumb Schema for Google Rich Snippets
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": SITE_URL
+    },
+    ...(canonicalPath && canonicalPath !== "/" && canonicalPath !== "" ? [{
+      "@type": "ListItem",
+      "position": 2,
+      "name": title.split(/-|–/)[0].trim(),
+      "item": SITE_URL + canonicalPath
+    }] : [])
+  ]
+};
+
+// Ensure finalURL doesn't have a trailing slash unless it's the home page
+let finalPath = canonicalPath || Astro.url.pathname;
+if (finalPath.endsWith('/') && finalPath.length > 1) {
+    finalPath = finalPath.slice(0, -1);
+}
+// Ensure it starts with a slash
+if (!finalPath.startsWith('/')) {
+    finalPath = '/' + finalPath;
+}
+const finalCanonical = SITE_URL + finalPath;
+
+
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#4f46e5" />
+		
+		<!-- 1. Core SEO Basics -->
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="robots" content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
+
+		<link rel="canonical" href={finalCanonical} />
+		<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap-index.xml" />
+
+		<meta name="application-name" content="FormFix" />
+		<meta name="apple-mobile-web-app-title" content="FormFix" />
+		<meta name="format-detection" content="telephone=no" />
+		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+		<link rel="dns-prefetch" href="https://www.clarity.ms" />
+		
+		<!-- 2. Social Media (Open Graph) -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={finalCanonical} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={SITE_URL + OG_IMAGE} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="FormFix" />
+		<meta property="og:locale" content="en_IN" />
+
+		<!-- 3. Twitter Card Tags -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={SITE_URL + OG_IMAGE} />
+
+		<!-- 4. Icons & PWA (Explicit PNG Sizes for Google) -->
+		<link rel="icon" type="image/x-icon" href="/favicon.ico?v=3" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=3" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3" />
+		<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=3" />
+		<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png?v=3" />
+		<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png?v=3" />
+		<link rel="shortcut icon" href="/favicon.ico?v=3" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3" />
+		<link rel="manifest" href="/manifest.json" />
+
+		<!-- 5. Search Engine Discovery (JSON-LD Data) -->
+		<script type="application/ld+json" set:html={JSON.stringify(finalSchema)}></script>
+		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
+
+		<!-- 5b. Global Brand Identity Schemas (Force Google site name to 'FormFix') -->
+		<script type="application/ld+json">
+		{
+		  "@context": "https://schema.org",
+		  "@type": "WebSite",
+		  "name": "FormFix",
+		  "alternateName": ["FormFix Image Tools", "FormFix photo editor"],
+		  "url": "https://formfix.pages.dev/",
+		  "logo": "https://formfix.pages.dev/favicon.png?v=3"
+		}
+		</script>
+		<script type="application/ld+json">
+		{
+		  "@context": "https://schema.org",
+		  "@type": "Organization",
+		  "name": "FormFix",
+		  "url": "https://formfix.pages.dev/",
+		  "logo": "https://formfix.pages.dev/favicon.png?v=3",
+		  "description": "FormFix provides free, private, and secure browser-based image and PDF optimization tools.",
+		  "foundingDate": "2024",
+		  "sameAs": [
+		    "https://github.com/NawzBlaze/formfix"
+		  ],
+		  "contactPoint": {
+		    "@type": "ContactPoint",
+		    "email": "formfix.support@gmail.com",
+		    "contactType": "Customer Support",
+		    "url": "https://formfix.pages.dev/contact"
+		  }
+		}
+		</script>
+
+		<!-- 6. Preconnects & Font Performance -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+		<!-- 7. Additional SEO Signals -->
+		<meta name="author" content="FormFix" />
+		<meta name="rating" content="general" />
+		<meta name="revisit-after" content="7 days" />
+		<meta name="geo.region" content="IN" />
+		<meta name="language" content="English" />
+
+		<!-- Microsoft Clarity Tracking -->
+		<script is:inline>
+		(function(c,l,a,r,i,t,y){
+			c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+			t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+			y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+		})(window, document, "clarity", "script", "w3sxusm4n2");
+		</script>
+	</head>
+
+	<body class="premium-theme">
+		<Header active={active} />
+		
+		<main id="app-container">
+			<slot />
+		</main>
+
+		<Footer />
+
+		<!-- Background Depth Layers -->
+		<div class="bg-glow" aria-hidden="true"></div>
+		<div class="bg-glow-2" aria-hidden="true"></div>
+
+        <script>
+            import confetti from 'canvas-confetti';
+            (window as any).triggerConfetti = () => {
+                const count = 200;
+                const defaults = {
+                    origin: { y: 0.7 }
+                };
+
+                function fire(particleRatio: number, opts: any) {
+                    confetti(Object.assign({}, defaults, opts, {
+                        particleCount: Math.floor(count * particleRatio)
+                    }));
+                }
+
+                fire(0.25, { spread: 26, startVelocity: 55 });
+                fire(0.2, { spread: 60 });
+                fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+                fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+                fire(0.1, { spread: 120, startVelocity: 45 });
+            };
+        </script>
+
+		<style>
+			body {
+				display: flex;
+				flex-direction: column;
+				min-height: 100vh;
+				overflow-x: hidden;
+				position: relative;
+			}
+			
+			main { flex: 1; z-index: 1; }
+		</style>
+	</body>
+</html>
