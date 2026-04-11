@@ -103,7 +103,7 @@ bun run dev
 bun run build
 ```
 
-Dev server will start at **http://localhost:4321**
+Dev server will start and open automatically in your browser.
 
 ---
 
