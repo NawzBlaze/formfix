@@ -152,24 +152,37 @@ const finalCanonical = SITE_URL + finalPath;
 		<script type="application/ld+json" set:html={JSON.stringify(finalSchema)}></script>
 		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
 
-		<!-- 5b. Global Brand Identity Schemas (Force Google site name to 'FormFix') -->
-		<script type="application/ld+json">
-		{
-		  "@context": "https://schema.org",
-		  "@type": "WebSite",
-		  "name": "FormFix",
-		  "alternateName": ["FormFix Image Tools", "FormFix photo editor"],
-		  "url": "https://formfix.pages.dev/",
-		  "logo": "https://formfix.pages.dev/favicon.png?v=5"
-		}
-		</script>
+		{Astro.url.pathname === '/' && (
+			<script type="application/ld+json">
+			{
+			  "@context": "https://schema.org",
+			  "@type": "WebSite",
+			  "name": "FormFix",
+			  "alternateName": [
+				"Form Fix", 
+				"FormFix Tools", 
+				"FormFix Digital", 
+				"FormFix Online Tools", 
+				"formfix.pages.dev"
+			  ],
+			  "url": "https://formfix.pages.dev/",
+			  "potentialAction": {
+				"@type": "SearchAction",
+				"target": "https://formfix.pages.dev/tools?q={search_term_string}",
+				"query-input": "required name=search_term_string"
+			  }
+			}
+			</script>
+		)}
+
 		<script type="application/ld+json">
 		{
 		  "@context": "https://schema.org",
 		  "@type": "Organization",
 		  "name": "FormFix",
+		  "legalName": "FormFix Tools",
 		  "url": "https://formfix.pages.dev/",
-		  "logo": "https://formfix.pages.dev/favicon.png?v=5",
+		  "logo": "https://formfix.pages.dev/favicon.png",
 		  "description": "FormFix provides free, private, and secure browser-based image and PDF optimization tools.",
 		  "foundingDate": "2024",
 		  "sameAs": [
@@ -238,6 +251,28 @@ const finalCanonical = SITE_URL + finalPath;
                 fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
                 fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
                 fire(0.1, { spread: 120, startVelocity: 45 });
+            };
+
+            // Premium Toast Notification System
+            (window as any).ffNotice = (message: string, type: 'success' | 'error' | 'info' = 'info') => {
+                const container = document.getElementById('toast-container') || document.body;
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                
+                let icon = '🔔';
+                if (type === 'success') icon = '✅';
+                if (type === 'error') icon = '❌';
+                
+                toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+                container.appendChild(toast);
+                
+                // Remove toast after duration
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(10px)';
+                    toast.style.transition = 'all 0.3s ease';
+                    setTimeout(() => toast.remove(), 300);
+                }, 4000);
             };
         </script>
 

@@ -239,7 +239,7 @@ const customSchema = {
                 extractBtn.style.display = 'none';
              } catch (err) {
                  console.error(err);
-                 alert("Extraction failed. Please ensure the document is clear and has text.");
+                 (window as any).ffNotice("Extraction failed. Please ensure the document is clear and has text.", "error");
                  overlay.classList.add('hidden');
              } finally {
                  extractBtn.disabled = false;

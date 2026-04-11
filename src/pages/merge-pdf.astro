@@ -2,9 +2,9 @@
 import BaseLayout from '../components/BaseLayout.astro';
 import RelatedTools from '../components/RelatedTools.astro';
 
-const PAGE_TITLE = 'Merge PDF Online - Combine Multiple PDF Files Free';
-const PAGE_DESC = 'Merge, combine, and join multiple PDF files into one single document. 100% secure, offline client-side processing. No watermarks and fully free.';
-const PAGE_KEYWORDS = 'merge pdf online, combine pdf files, join pdf, free merge pdf, secure combine pdf client side';
+const PAGE_TITLE = 'Merge PDF Online - Combine Multiple PDF Files Free | FormFix';
+const PAGE_DESC = 'Merge, combine, and join multiple PDF files into one document for free. 100% secure, offline client-side processing with no server uploads. Safe for documents.';
+const PAGE_KEYWORDS = 'merge pdf online, combine pdf files free, join pdf online, free pdf merger, secure pdf combination, formfix pdf';
 
 const customSchema = {
   "@context": "https://schema.org",
@@ -106,7 +106,7 @@ const customSchema = {
         async function handleFiles(files: FileList | File[]) {
             const validPdfs = Array.from(files).filter(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
             if(validPdfs.length === 0) {
-                 return alert("Please select valid PDF files.");
+                 return (window as any).ffNotice("Please select valid PDF files.", "error");
             }
             // Add new files to existing list
             pendingFiles = [...pendingFiles, ...validPdfs];
@@ -180,7 +180,7 @@ const customSchema = {
         resetBtn.addEventListener('click', resetApp);
 
         mergeBtn.addEventListener('click', async () => {
-             if(pendingFiles.length < 2) return alert("You need at least 2 PDF files to merge them!");
+             if(pendingFiles.length < 2) return (window as any).ffNotice("You need at least 2 PDF files to merge them!", "error");
              
              mergeBtn.textContent = '⏳ Processing...';
              mergeBtn.style.pointerEvents = 'none';
@@ -210,10 +210,11 @@ const customSchema = {
                  link.download = finalName;
                  link.href = url;
                  link.click();
-                 
+                 if((window as any).triggerConfetti) (window as any).triggerConfetti();
+                 (window as any).ffNotice("PDFs merged successfully!", "success");
              } catch (e) {
                  console.error(e);
-                 alert("There was an error merging your PDFs. One of them might be encrypted or corrupted.");
+                 (window as any).ffNotice("There was an error merging your PDFs. One of them might be encrypted or corrupted.", "error");
              } finally {
                  mergeBtn.innerHTML = `⚡ Merge ${pendingFiles.length} PDFs`;
                  mergeBtn.style.pointerEvents = 'all';

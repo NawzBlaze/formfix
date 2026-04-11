@@ -2,9 +2,9 @@
 import BaseLayout from '../components/BaseLayout.astro';
 import RelatedTools from '../components/RelatedTools.astro';
 
-const PAGE_TITLE = 'Digital Signature Maker - Top 50+ Signature Fonts & Draw Online';
-const PAGE_DESC = 'Create your perfect digital signature. Draw smoothly using our ink enhancer, or type your name to generate from 50+ premium signature fonts. Download transparent PNG instantly.';
-const PAGE_KEYWORDS = 'digital signature maker, 50+ signature fonts, draw signature online, type signature to png, signature transparent png, online signature generator';
+const PAGE_TITLE = 'Digital Signature Maker Online | Create Free Signatures | FormFix';
+const PAGE_DESC = 'Create your perfect digital signature online. Draw smoothly or type your name with 65+ premium professional fonts. Download as a transparent PNG instantly for free.';
+const PAGE_KEYWORDS = 'digital signature maker, online signature generator, draw signature online, create digital signature, signature fonts online, electronic signature free';
 
 const customSchema = {
   "@context": "https://schema.org",
@@ -49,8 +49,8 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
     <div class="tool-wrapper animate-in">
         <header class="tool-intro text-center">
              <div class="brand-badge shadow-sm">✍️ Ultimate Signature Engine</div>
-             <h1 class="main-h1">Digital <span class="highlight">Signature Maker</span></h1>
-             <p class="hero-sub">Draw smoothly or select from 65+ premium professional fonts. Download as a transparent PNG instantly.</p>
+             <h1 class="main-h1">Online <span class="highlight">Signature Maker</span></h1>
+             <p class="hero-sub">Draw smoothly or select from 65+ professional fonts. Download as a transparent PNG instantly for free.</p>
         </header>
 
         <div class="glass-card tool-content shadow-lg max-w-lg mx-auto">
@@ -382,7 +382,7 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
                 tctx.font = `80px ${currentFont}`;
                 tctx.textAlign = 'center';
                 tctx.textBaseline = 'middle';
-                if(!text) return alert("Please type your signature first.");
+                if(!text) return (window as any).ffNotice("Please type your signature first.", "error");
                 tctx.fillText(text, 500, 200);
                 exportCanvas = getTrimmedCanvas(tc);
             } else {

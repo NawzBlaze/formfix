@@ -2,9 +2,5 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://formfix.pages.dev/sitemap-index.xml
-Sitemap: https://formfix.pages.dev/formfix-google-sitemap.xml
-Sitemap: https://formfix.pages.dev/sitemap-0.xml
-
-# Slow down bots if needed
-Crawl-delay: 1
+Sitemap: https://formfix.pages.dev/sitemap.xml
+Sitemap: https://formfix.pages.dev/sitemap.txt

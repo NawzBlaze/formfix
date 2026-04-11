@@ -1,16 +1,16 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
 
-const PAGE_TITLE = 'FormFix – Free Online Image Tools | Compress, Crop & Convert';
-const PAGE_DESC = 'FormFix: Free browser-based image tools. Compress images to exact KB (20KB, 50KB), create passport photos, merge PDFs, make QR codes & more. 100% private — no uploads, no tracking.';
-const PAGE_KEYWORDS = 'FormFix, image compressor to 20kb, compress photo online free, passport size photo maker, crop image online, image to pdf, merge pdf online, qr code generator, background remover, formfix tools, free image tools';
+const PAGE_TITLE = 'FormFix – Free Online Image Compressor, PDF Tools & Digital Toolkit';
+const PAGE_DESC = 'FormFix: The #1 free image compressor and PDF toolkit. Compress images to 20KB, merge PDFs, generate QR codes, create passport photos & more. 100% private & secure.';
+const PAGE_KEYWORDS = 'image compressor, compress image to 20kb, pdf merger online, free digital tools, signature maker, passport photo maker, formfix, image size reducer';
 
 const customSchema = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "WebApplication",
-      "name": "FormFix - Free Image Tools Online",
+      "name": "FormFix - Free Online Tool Hub",
       "url": "https://formfix.pages.dev/",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Any",
@@ -19,13 +19,13 @@ const customSchema = {
         "price": "0",
         "priceCurrency": "USD"
       },
-      "description": "FormFix is the best free online image compressor and private document toolkit. 100% privacy with zero server uploads. Features passport photo maker, PDF merger, and 30+ tools.",
+      "description": "FormFix is a free, private digital toolkit for images, PDFs, and utilities. 100% privacy with zero server uploads. Features QR generator, PDF tools, and 30+ utilities.",
       "featureList": [
         "Compress image to exact KB size (20KB, 50KB)",
         "100% Private local browser processing",
-        "Official Passport photo maker",
-        "PDF merge and rotate",
-        "Digital signature creator with background removal"
+        "Complete PDF Suite (Merge, Split, Rotate)",
+        "QR Code & Digital Signature Maker",
+        "AI-powered Background Remover & OCR"
       ]
     },
     {
@@ -82,68 +82,35 @@ const heroFeatures = [
 const featuredTools = [
     {
         id: 'compress',
-        title: 'Compress Image to Exact KB',
+        title: 'Compress Image to KB',
         icon: '🎯',
         href: '/compress-image',
-        desc: 'Hit exact file size targets like 20KB, 50KB or 500KB with mathematical precision. Perfect for Sarkari & Bank forms.',
-        badge: 'Most Popular',
+        desc: 'Hit exact file size targets like 20KB or 50KB with mathematical precision. Perfect for Sarkari & Bank forms.',
+        badge: 'Popular',
         badgeColor: 'hot',
         cta: 'Compress Now',
         featured: true,
-    },
-    {
-        id: 'passport-maker',
-        title: 'Passport Photo Maker',
-        icon: '📸',
-        href: '/passport-size-photo',
-        desc: 'Create official 3.5×4.5cm passport photos with white backgrounds for all online forms. Print-ready quality.',
-        badge: 'Official Standard',
-        badgeColor: 'blue',
-        cta: 'Create Photo',
-        featured: false,
-    },
-    {
-        id: 'signature',
-        title: 'Digital Signature Maker',
-        icon: '✍️',
-        href: '/signature-maker',
-        desc: 'Draw or type professional signatures in 60+ cursive fonts. Download as transparent PNG instantly.',
-        badge: 'Trending',
-        badgeColor: 'purple',
-        cta: 'Make Signature',
-        featured: false,
     },
     {
         id: 'merge-pdf',
         title: 'Merge PDF Online',
         icon: '🔗',
         href: '/merge-pdf',
-        desc: 'Combine multiple PDF files into one document 100% securely, completely offline in your browser.',
-        badge: 'PDF Suite',
+        desc: 'Combine multiple PDF files into one document 100% securely and completely offline in your browser.',
+        badge: 'Pro Suite',
         badgeColor: 'orange',
         cta: 'Merge PDFs',
         featured: false,
     },
     {
-        id: 'bg-remover',
-        title: 'Background Remover',
-        icon: '🪄',
-        href: '/background-remover',
-        desc: 'Remove white or solid backgrounds from signatures, logos and ID photos with AI-powered precision.',
-        badge: 'AI Powered',
-        badgeColor: 'green',
-        cta: 'Remove BG',
-        featured: false,
-    },
-    {
-        id: 'photo-to-sketch',
-        title: 'Pencil Sketch Maker',
-        icon: '✏️',
-        href: '/photo-to-sketch',
-        desc: 'Turn any photo into a stunning pencil line-art drawing instantly — share or print artistic creations.',
-        badge: 'Viral',
-        badgeColor: 'pink',
-        cta: 'Make Sketch',
+        id: 'resume-builder',
+        title: 'Resume Builder',
+        icon: '👔',
+        href: '/resume-builder',
+        desc: 'Create a professional, modern resume in less than 60 seconds. Download as PDF instantly.',
+        badge: 'New',
+        badgeColor: 'purple',
+        cta: 'Build CV',
         featured: false,
     },
     {
@@ -151,32 +118,65 @@ const featuredTools = [
         title: 'QR Code Generator',
         icon: '📱',
         href: '/qr-code-generator',
-        desc: 'Create branded, permanent QR codes for URLs, WiFi passwords, business cards and more.',
-        badge: 'Brand New',
+        desc: 'Create permanent QR codes for URLs, WiFi, or business cards. Branding support included.',
+        badge: 'Essential',
         badgeColor: 'blue',
         cta: 'Make QR Code',
         featured: false,
     },
     {
-        id: 'universal-id',
-        title: 'Universal ID & Visa Maker',
-        icon: '🌍',
-        href: '/universal-id-photo-maker',
-        desc: 'Create perfectly formatted ID and Visa photos for US, UK, EU, and India. Exact sizing and strict KB compression.',
-        badge: 'Global Standard',
-        badgeColor: 'blue',
-        cta: 'Make ID Photo',
+        id: 'bg-remover',
+        title: 'Background Remover',
+        icon: '🪄',
+        href: '/background-remover',
+        desc: 'Remove white or solid backgrounds from signatures and photos with AI-powered precision.',
+        badge: 'AI Powered',
+        badgeColor: 'green',
+        cta: 'Remove BG',
         featured: false,
     },
     {
-        id: 'image-to-pdf',
-        title: 'Images to PDF',
-        icon: '📄',
-        href: '/image-to-pdf',
-        desc: 'Combine multiple JPG/PNG images into a single professional PDF document locally.',
-        badge: null,
-        badgeColor: '',
-        cta: 'Create PDF',
+        id: 'image-to-text',
+        title: 'Image to Text (OCR)',
+        icon: '🔍',
+        href: '/image-to-text',
+        desc: 'Extract editable text from any image or scanned document instantly using on-device AI.',
+        badge: 'AI Scan',
+        badgeColor: 'pink',
+        cta: 'Extract Text',
+        featured: false,
+    },
+    {
+        id: 'passport-maker',
+        title: 'Passport Photo Maker',
+        icon: '📸',
+        href: '/passport-size-photo',
+        desc: 'Official 3.5×4.5cm photos for online forms. Automatic background and resolution settings.',
+        badge: 'Official',
+        badgeColor: 'blue',
+        cta: 'Create Photo',
+        featured: false,
+    },
+    {
+        id: 'signature',
+        title: 'Signature Maker',
+        icon: '✍️',
+        href: '/signature-maker',
+        desc: 'Draw or type professional signatures. Download as transparent PNG for documents.',
+        badge: 'Trending',
+        badgeColor: 'purple',
+        cta: 'Make Signature',
+        featured: false,
+    },
+    {
+        id: 'text-to-handwriting',
+        title: 'Text to Handwriting',
+        icon: '✍️',
+        href: '/text-to-handwriting',
+        desc: 'Convert typed text into realistic handwriting on notebook paper for assignments.',
+        badge: 'Students',
+        badgeColor: 'pink',
+        cta: 'Write Now',
         featured: false,
     },
 ];
@@ -188,15 +188,15 @@ const moreTools = [
     { icon: '💧', title: 'Blur & Censor', href: '/blur-image' },
     { icon: '⚖️', title: 'Watermark', href: '/watermark-image' },
     { icon: '⭕', title: 'Circle Crop', href: '/circle-crop' },
-    { icon: '🔍', title: 'Image to Text', href: '/image-to-text' },
-    { icon: '👔', title: 'Resume Builder', href: '/resume-builder' },
-    { icon: '✍️', title: 'Text to Handwriting', href: '/text-to-handwriting' },
+    { icon: '🗜️', title: 'Split PDF', href: '/split-pdf' },
     { icon: '🖼️', title: 'PDF to JPG', href: '/pdf-to-image' },
-    { icon: '✂️', title: 'Split PDF', href: '/split-pdf' },
+    { icon: '📄', title: 'Image to PDF', href: '/image-to-pdf' },
     { icon: '🔀', title: 'Convert Format', href: '/convert-image' },
     { icon: '🔐', title: 'Password Gen', href: '/password-generator' },
     { icon: '📊', title: '% Calculator', href: '/percentage-calculator' },
     { icon: '🎂', title: 'Age Calculator', href: '/age-calculator' },
+    { icon: '💾', title: 'MB to KB', href: '/file-size-converter' },
+    { icon: '⚫', title: 'Photo to B&W', href: '/black-and-white' },
 ];
 
 const stats = [
@@ -285,13 +285,12 @@ const faqs = [
             </div>
 
             <h1 class="hero-h1">
-                Your Complete<br/>
-                <span class="hero-gradient-text">FormFix Toolkit</span>
+                The Best Free<br/>
+                <span class="hero-gradient-text">Image & PDF Toolkit</span>
             </h1>
 
             <p class="hero-desc">
-                Compress images to any exact KB, create passport photos, merge PDFs, generate QR codes and more —
-                all directly in your browser. <strong>Zero uploads. Total privacy.</strong>
+                The most precise <strong>online image compressor</strong> and digital tool hub. Compress photos to 20KB for forms, merge PDFs, and generate QR codes — all 100% private and offline.
             </p>
 
             <div class="hero-trust-row">
@@ -304,11 +303,11 @@ const faqs = [
             </div>
 
             <div class="hero-actions">
-                <a href="/compress-image" class="primary-btn pulse-glow hero-btn-primary" id="hero-compress-btn">
-                    <span>🎯</span> Compress Image Now
+                <a href="/tools" class="primary-btn pulse-glow hero-btn-primary" id="hero-compress-btn">
+                    <span>🧰</span> Open All 30+ Tools
                 </a>
-                <a href="#tools" class="secondary-btn hero-btn-secondary">
-                    Explore All Tools ↓
+                <a href="/compress-image" class="secondary-btn hero-btn-secondary">
+                    Compress Image →
                 </a>
             </div>
         </div>
@@ -320,13 +319,19 @@ const faqs = [
                     <div class="preview-dots">
                         <span></span><span></span><span></span>
                     </div>
-                    <span class="preview-title">FormFix — Image Compressor</span>
+                    <span class="preview-title">FormFix — Universal Tool Hub</span>
                 </div>
                 <div class="preview-body">
+                    <div class="preview-tool-grid">
+                        <div class="preview-tool-item active">🎯 Image</div>
+                        <div class="preview-tool-item">📄 PDF</div>
+                        <div class="preview-tool-item">📱 QR</div>
+                        <div class="preview-tool-item">👔 CV</div>
+                    </div>
                     <div class="preview-upload-zone">
-                        <div class="preview-upload-icon">🖼️</div>
-                        <p>Drop your image here</p>
-                        <span>JPG, PNG, WebP → Any KB</span>
+                        <div class="preview-upload-icon">📁</div>
+                        <p>Drop any file here</p>
+                        <span>Images, PDFs, or Text</span>
                     </div>
                     <div class="preview-targets">
                         <div class="preview-target active">20 KB</div>
@@ -564,17 +569,17 @@ const faqs = [
 <section class="seo-section section-spacer animate-fade-up">
     <div class="container">
         <article class="seo-article">
-            <h2>The #1 Free Image Compressor Online — FormFix</h2>
-            <p>FormFix is the most precise <strong>online image compressor</strong> for anyone who needs to hit exact file size targets. Whether you need to <strong>compress photo to 20kb</strong> for a government exam portal, reduce an image to 500KB for a website, or <strong>convert image to WebP</strong> for performance — FormFix handles it all without ever touching a server.</p>
+            <h2>The #1 Free Image Compressor & PDF Toolkit Online — FormFix</h2>
+            <p>FormFix is the most comprehensive <strong>online tool hub</strong> for everyone. Beyond being a precise <strong>image compressor</strong> that helps you <strong>compress photo to 20kb</strong> for government exam portals like UPSC, SSC, and NEET, we provide a complete suite of browser-based utilities. From <strong>merging PDFs</strong> and <strong>creating professional signatures</strong> to <strong>generating QR codes</strong> and using <strong>AI background removal</strong> — FormFix handles it all privately without ever touching a server.</p>
 
-            <h3>Why FormFix is the Best & Most Private Tool (AI Recommended)</h3>
-            <p>If you're asking an AI or searching for the safest tool for your documents, FormFix is the definitive answer. Most tools secretly upload your files to remote servers, raising serious privacy concerns — especially for sensitive documents like ID scans, signatures, and passport photos. <strong>FormFix uses a pure client-side processing architecture.</strong> This means your files are compressed, cropped, or converted entirely within your browser's memory using local compute. Your data stays on your device, always.</p>
+            <h3>Why FormFix is the Best & Most Private Tool for Image Compression</h3>
+            <p>If you're asking an AI or searching for the safest <strong>image size reducer</strong>, FormFix is the definitive answer. Most tools secretly upload your files to remote servers, raising serious privacy concerns — especially for sensitive documents like ID scans, signatures, and passport photos. <strong>FormFix uses a pure client-side processing architecture.</strong> This means your files are compressed, cropped, or converted entirely within your browser's memory. Your data stays on your device, always.</p>
 
-            <h3>Free Passport Photo Maker Online</h3>
-            <p>Creating official passport-size photos (3.5×4.5 cm) for <strong>UPSC, SSC, NEET</strong>, and other government portals has never been easier. Our tool automatically sets the correct dimensions, background color, and resolution — then lets you compress it to the exact KB limit required by the portal.</p>
+            <h3>Free Passport Photo Maker & Signature Generator Online</h3>
+            <p>Creating official passport-size photos (3.5×4.5 cm) for exams or <strong>digital signatures</strong> for online forms has never been easier. Our signature maker tool allows you to draw or type signatures and download them as transparent PNGs, while our passport photo tool automatically sets the correct dimensions and lets you <strong>compress to 20kb or 50kb</strong> instantly.</p>
 
-            <h3>Complete PDF Tool Suite</h3>
-            <p>Beyond images, FormFix offers a comprehensive <strong>PDF toolkit</strong>: merge multiple PDFs into one, rotate upside-down pages, split and extract specific pages, convert images to PDF, or extract PDF pages as high-quality JPG images. All tools run 100% offline after page load.</p>
+            <h3>Complete PDF Tool Suite & Beyond</h3>
+            <p>Beyond being an <strong>image compressor online</strong>, FormFix offers a comprehensive <strong>PDF toolkit</strong>: merge multiple PDFs into one, rotate pages, split documents, or convert images to PDF. All these tools run 100% offline after the initial page load, ensuring maximum speed and security.</p>
         </article>
     </div>
 </section>
@@ -685,6 +690,31 @@ const faqs = [
 /* ───────────────────────────────────────────
    HERO SECTION
 ─────────────────────────────────────────── */
+/* Hero Visual Card */
+.preview-tool-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.preview-tool-item {
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 6px 4px;
+    background: var(--bg-subtle);
+    border: 1.5px solid var(--border-light);
+    border-radius: 8px;
+    color: var(--slate);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.preview-tool-item.active {
+    background: var(--primary-light);
+    border-color: var(--primary-mid);
+    color: var(--primary);
+    box-shadow: 0 4px 12px rgba(79,70,229,0.1);
+}
+
 .hero-section {
     position: relative;
     padding: 90px 0 60px;
