@@ -471,6 +471,39 @@ const faqs = [
     </div>
 </section>
 
+<!-- ══════════════ EXAM SPECIAL SECTION ══════════════ -->
+<section class="exam-section section-spacer" id="exam-hub">
+    <div class="container">
+        <div class="exam-glass p-40 rounded-3xl animate-fade-up">
+            <div class="section-head text-center">
+                <span class="section-label">🎓 For Aspirants</span>
+                <h2 class="section-h2 text-white">Sarkari Exam Forms Hub</h2>
+                <p class="section-sub text-white/60">One-click solutions for India's biggest competitive exams.</p>
+            </div>
+            <div class="exam-links mt-48 grid grid-cols-1 md:grid-cols-3 gap-24">
+                <a href="/ssc-photo-compressor" class="exam-card">
+                    <div class="exam-badge">SSC</div>
+                    <h3>SSC Photo Fix</h3>
+                    <p>Precise 20KB compression for CGL, CHSL, GD forms.</p>
+                    <span class="exam-cta">Fix Photo Now →</span>
+                </a>
+                <a href="/upsc-photo-resizer" class="exam-card">
+                    <div class="exam-badge">UPSC</div>
+                    <h3>UPSC Photo Resizer</h3>
+                    <p>OTR & Civil Services specs (20KB - 300KB).</p>
+                    <span class="exam-cta">Resize Image →</span>
+                </a>
+                <a href="/passport-size-photo" class="exam-card">
+                    <div class="exam-badge">General</div>
+                    <h3>Passport Size Maker</h3>
+                    <p>3.5 x 4.5 cm with auto-compress to 50KB.</p>
+                    <span class="exam-cta">Create Photo →</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- ══════════════ HOW IT WORKS ══════════════ -->
 <section class="how-section section-spacer" id="how-it-works">
     <div class="container">
@@ -1509,6 +1542,61 @@ const faqs = [
     .why-section { display: none; }
     .marquee-section { display: none; }
 }
+/* ───────────────────────────────────────────
+   EXAM HUB SECTION
+─────────────────────────────────────────── */
+.exam-glass {
+    background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
+    box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+.exam-links { display: grid; }
+.exam-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 32px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+.exam-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.02));
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.exam-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255,255,255,0.06);
+    border-color: var(--primary-mid);
+}
+.exam-card:hover::after { opacity: 1; }
+.exam-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--primary);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 900;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+.exam-card:nth-child(2) .exam-badge { background: #6366f1; }
+.exam-card:nth-child(3) .exam-badge { background: #8b5cf6; }
+.exam-card h3 { color: white; font-weight: 900; font-size: 1.4rem; margin-bottom: 12px; }
+.exam-card p { color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px; }
+.exam-cta { color: var(--primary-mid); font-weight: 800; font-size: 0.9rem; }
+.p-40 { padding: 40px; }
+
+@media (max-width: 768px) {
+    .p-40 { padding: 24px; }
+    .exam-card { padding: 24px; }
+}
+
 </style>
 
 <script>

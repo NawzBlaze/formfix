@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import CompressTool from '../components/tools/CompressTool.astro';
+import SocialShare from '../components/SocialShare.astro';
+
+const PAGE_TITLE = 'UPSC Photo Resizer & Compressor - Official Tool for UPSC OTR & CSE';
+const PAGE_DESC = 'Easily resize and compress your photo and signature for UPSC OTR, Civil Services (CSE), and other exams to exact specs (20KB - 300KB). 100% private.';
+const PAGE_KEYWORDS = 'upsc photo resizer, upsc otr photo size, upsc signature compressor, civil services photo resize 2024, upsc image requirements';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "UPSC Photo Resizer - FormFix",
+      "operatingSystem": "All Platforms",
+      "applicationCategory": "UtilitiesApplication",
+      "description": PAGE_DESC,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/upsc-photo-resizer">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">🏛️ UPSC CSE / OTR Specialized</div>
+             <h1 class="main-h1">UPSC <span class="highlight">Photo Resizer</span></h1>
+             <p class="hero-sub">Hit the exact UPSC requirements (20KB to 300KB) for Civil Services and OTR. Local processing, no server uploads.</p>
+        </header>
+
+        <section class="ssc-guidelines mb-32 p-20 glass-inner shadow-sm rounded-2xl">
+            <h2 class="text-xl font-black mb-10">UPSC Standard Specifications:</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="g-item p-16 bg-blue/5 rounded-xl border border-blue/10">
+                    <strong class="block text-blue">Photograph</strong>
+                    <span>20KB to 300KB | Min 350x350px</span>
+                </div>
+                <div class="g-item p-16 bg-orange/5 rounded-xl border border-orange/10">
+                    <strong class="block text-orange">Signature</strong>
+                    <span>20KB to 300KB | Min 350x350px</span>
+                </div>
+            </div>
+        </section>
+
+        <CompressTool />
+
+        <article class="pro-seo-article container mt-48">
+             <h2>UPSC Specialized Image Optimizer</h2>
+             <p>Preparing for the <strong>Union Public Service Commission (UPSC)</strong> Civil Services Examination is hard enough—resizing your photo shouldn't be. Our <strong>UPSC photo resizer</strong> is built to meet the exact pixel and KB requirements of the <strong>OTR (One Time Registration)</strong> and application portals. We ensure your images have a resolution of at least 350x350 pixels while staying within the 20KB-300KB range.</p>
+             
+             <h3 class="mt-32">UPSC Checklist for Photo Upload:</h3>
+             <ul>
+                <li>The photograph must be recent (not older than 10 days before form release).</li>
+                <li>Your name and the date of the photo should be clearly printed at the bottom.</li>
+                <li>Minimum pixels: 350 x 350 | Maximum pixels: 1000 x 1000.</li>
+                <li>File size between 20KB and 300KB.</li>
+             </ul>
+
+             <p class="mt-24">Use our specialized tool to ensure your candidacy isn't rejected over simple technical errors.</p>
+        </article>
+
+        <SocialShare title="Found a private and ad-free tool for UPSC photo resizing. Highly recommended for CSE aspirants!" url="https://formfix.pages.dev/upsc-photo-resizer" />
+
+        <RelatedTools currentTool="compress" />
+    </div>
+</BaseLayout>
+
+<style>
+    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
+    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
+    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
+    .mt-48 { margin-top: 48px; }
+    .mt-32 { margin-top: 32px; }
+    .mb-32 { margin-bottom: 32px; }
+    .p-20 { padding: 20px; }
+</style>
