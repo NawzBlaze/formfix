@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+export function getStaticPaths() {
+  return [
+    { 
+      params: { slug: 'how-to-compress-image-to-20kb' },
+      props: { 
+        title: 'How to Compress Image to 20KB Instantly', 
+        desc: 'A comprehensive guide to effectively reducing your image size to exactly 20KB without losing critical quality using safe browser tools.',
+        content: `
+          <h2>The 20KB Constraint</h2>
+          <p>Whether you are filling out an official application, signing up for a college portal, or applying for an international visa, you will inevitably hit the dreaded file size limit: <strong>"Image must be under 20KB"</strong>.</p>
+          <p>Traditional image editing software like Photoshop can handle this, but it requires confusing export settings, quality sliders, and technical knowledge. Online tools are faster, but most upload your private documents to unsecured servers.</p>
+          
+          <h3>The Private Way to Reach 20KB</h3>
+          <p>Using a zero-persistence tool like FormFix allows you to reduce file sizes locally in your own browser's RAM.</p>
+          <ol>
+             <li>Navigate to the <a href="/compress-image-to-20kb">FormFix 20KB Compressor Tool</a>.</li>
+             <li>Drag and drop your scanned photograph or digital signature.</li>
+             <li>The internal WebAssembly engine dynamically calculates the exact JPG quality threshold required to hit 20KB.</li>
+             <li>Download the optimized result instantly.</li>
+          </ol>
+          
+          <h3>Maintaining High Fidelity</h3>
+          <p>Hitting a tiny 20KB limit frequently ruins the readability of your photo. The trick is to ensure your starting image is cropped tightly around your face or signature. Removing unnecessary background whitespace saves crucial bytes, allowing the algorithm to preserve the sharpness of your actual features.</p>
+        `
+      }
+    },
+    { 
+      params: { slug: 'best-image-size-for-online-forms' },
+      props: { 
+        title: 'The Best Image Size for Online Forms & Portals', 
+        desc: 'Discover the ultimate standardized image dimensions and file sizes required for seamless online form and job portal submissions globally.',
+        content: `
+          <h2>Understanding Web Portal Standards</h2>
+          <p>Every web portal has its own unique rules for image uploads, but after analyzing thousands of platforms globally, a clear standard emerges. If you follow these baseline rules, your photos will be accepted 99% of the time.</p>
+          
+          <h3>The Golden Dimensions</h3>
+          <p>For standard portrait or passport-style photos, the golden ratio is <strong>3.5cm x 4.5cm</strong> (which translates to roughly 413 x 531 pixels at 300 DPI). This aspect ratio perfectly fits the bounding boxes of most official document parsers.</p>
+          <p>For signatures, the optimal bounding box is generally <strong>3:1 ratio</strong> (e.g., 600 x 200 pixels).</p>
+
+          <h3>The Golden File Size</h3>
+          <p>The most restrictive portals demand files under <strong>50KB</strong>. If you compress your image to hover right around 45KB-48KB, you strike the perfect balance between high-quality visual retention and rapid upload compliance.</p>
+          <p>You can instantly format any photo to these exact constraints securely using the <a href="/resize-image-for-passport">FormFix Passport Formatting Tool</a>.</p>
+        `
+      }
+    },
+    { 
+      params: { slug: 'reduce-image-size-without-losing-quality' },
+      props: { 
+        title: 'How to Reduce Image Size Without Losing Quality', 
+        desc: 'Learn advanced, secure techniques to brutally compress photo weights while maintaining high-definition visual fidelity for web usage.',
+        content: `
+          <h2>Lossless vs. Lossy Compression</h2>
+          <p>When trying to shrink a 5MB photograph down to a web-friendly size, you must understand the difference between compression types.</p>
+          <p><strong>Lossless compression</strong> removes invisible metadata (like camera data, geolocation, and color profiles) without touching the actual pixels. It's great, but usually only reduces file size by 10%.</p>
+          <p><strong>Lossy compression</strong> actually merges identical pixels and subtly blurs microscopic details to save massive amounts of space. When done correctly, the human eye cannot perceive the difference.</p>
+
+          <h3>The WebP Format Revolution</h3>
+          <p>Historically, JPG was the only option for compression. Today, modern browsers support the WebP format. Converting an image to WebP can yield a 30% smaller file size than JPG at the exact same visual quality.</p>
+          
+          <h3>The Fastest Way to Optimize</h3>
+          <p>Rather than manually tuning quality sliders in complex desktop software, you can leverage automated browser tools. By using the <a href="/compress-image">FormFix Smart Compressor</a>, you simply input your target size, and the algorithm automatically tests multiple compression passes until it discovers the highest possible quality that fits under your limit.</p>
+        `
+      }
+    }
+  ];
+}
+
+const { slug } = Astro.params;
+const { title, desc, content } = Astro.props;
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": title,
+      "description": desc,
+      "url": `https://formfix.pages.dev/blog/${slug}`,
+      "author": {
+        "@type": "Organization",
+        "name": "FormFix Editorial"
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout title={`${title} | FormFix Blog`} description={desc} active="home" canonicalPath={`/blog/${slug}`} customSchema={customSchema}>
+    <div class="blog-wrapper animate-fade-up">
+        <header class="blog-header text-center">
+             <div class="brand-badge box-shadow-subtle">📚 Technical Guide</div>
+             <h1 class="main-h1">{title}</h1>
+             <p class="hero-sub">{desc}</p>
+        </header>
+
+        <article class="pro-seo-article container mt-48">
+             <div class="cms-content" set:html={content}></div>
+        </article>
+
+        <RelatedTools />
+    </div>
+</BaseLayout>
+
+<style>
+    .main-h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 24px; color: #000; line-height: 1.1; max-width: 800px; margin-inline: auto; }
+    .hero-sub { color: var(--surface-600); font-weight: 500; font-size: 1.15rem; margin-bottom: 40px; max-width: 600px; margin-inline: auto; line-height: 1.6; }
+    .blog-wrapper { max-width: 900px; margin: 0 auto; padding-bottom: 100px; padding-top: 64px; }
+    .mt-48 { margin-top: 48px; }
+    
+    .brand-badge {
+        display: inline-block;
+        padding: 6px 16px;
+        background: #fff;
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-full);
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 32px;
+        color: var(--surface-600);
+    }
+    
+    .pro-seo-article {
+        background: #fff;
+        padding: 64px;
+        border-radius: 16px;
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
+    }
+    
+    /* CMS Content Typrography */
+    :global(.cms-content h2) { color: #000; font-weight: 800; font-size: 1.75rem; letter-spacing: -0.02em; margin-top: 40px; margin-bottom: 16px; }
+    :global(.cms-content h2:first-child) { margin-top: 0; }
+    :global(.cms-content h3) { color: #111; font-weight: 800; font-size: 1.25rem; margin-top: 32px; margin-bottom: 12px; }
+    :global(.cms-content p) { color: var(--surface-600); line-height: 1.8; margin-bottom: 24px; font-size: 1.1rem; }
+    :global(.cms-content ol), :global(.cms-content ul) { padding-left: 24px; margin-bottom: 32px; color: var(--surface-600); font-size: 1.1rem; line-height: 1.8; }
+    :global(.cms-content li) { margin-bottom: 12px; }
+    :global(.cms-content li strong) { color: #000; }
+    :global(.cms-content a) { color: #000; font-weight: 700; text-decoration: underline; text-decoration-color: var(--border-subtle); text-underline-offset: 4px; transition: 0.2s; }
+    :global(.cms-content a:hover) { text-decoration-color: #000; }
+    
+    @media (max-width: 768px) {
+        .pro-seo-article { padding: 32px 24px; }
+        .main-h1 { font-size: 2.2rem; }
+    }
+</style>

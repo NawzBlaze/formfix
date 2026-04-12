@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import CompressTool from '../components/tools/CompressTool.astro';
+import SocialShare from '../components/SocialShare.astro';
+
+const PAGE_TITLE = 'NEET Photo Compressor & Signature Resizer 2024 - FormFix';
+const PAGE_DESC = 'Compress your NEET UG application photo (10KB - 200KB), signature (4KB - 30KB), and thumb impressions securely offline. 100% private and fast.';
+const PAGE_KEYWORDS = 'neet photo compressor, neet ug photo size, neet signature resizer, postcard size photo for neet, compress photo for neet exam';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "NEET Photo & Signature Compressor - FormFix",
+      "operatingSystem": "All Platforms",
+      "applicationCategory": "UtilitiesApplication",
+      "description": PAGE_DESC,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "Guide",
+      "name": "NTA NEET UG Official Image Guidelines",
+      "description": "Standard requirements for NTA NEET UG applications.",
+      "text": "Passport Photo: 10KB to 200KB. Postcard Photo: 10KB to 200KB. Signature: 4KB to 30KB. Thumb Impression: 10KB to 200KB."
+    }
+  ]
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/neet-photo-compressor">
+    <div class="tool-wrapper animate-in">
+        <header class="tool-intro text-center">
+             <div class="brand-badge shadow-sm">🩺 NTA NEET Special</div>
+             <h1 class="main-h1">NEET <span class="highlight">Photo</span> Compressor</h1>
+             <p class="hero-sub">Get your NEET UG photos, signature, and thumb impressions perfectly sized in seconds. No network uploads — 100% private.</p>
+        </header>
+
+        <section class="exam-guidelines mb-32 p-20 glass-inner shadow-sm rounded-2xl">
+            <h2 class="text-xl font-black mb-10">NEET UG Official Requirements:</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="g-item p-16 bg-primary/5 rounded-xl border border-primary/10">
+                    <strong class="block text-primary">Passport / Postcard Photo</strong>
+                    <span>10KB to 200KB | Color/B&W with white BG</span>
+                </div>
+                <div class="g-item p-16 bg-purple/5 rounded-xl border border-purple/10">
+                    <strong class="block text-purple">Signature</strong>
+                    <span>4KB to 30KB | Black ink on white paper</span>
+                </div>
+                <div class="g-item p-16 bg-blue/5 rounded-xl border border-blue/10">
+                    <strong class="block text-blue">Thumb & Finger Impressions</strong>
+                    <span>10KB to 200KB | Left & Right hands</span>
+                </div>
+            </div>
+        </section>
+
+        <CompressTool />
+
+        <article class="pro-seo-article container mt-48">
+             <h2>The Safest NTA NEET Photo Resizer Tool</h2>
+             <p>As an aspiring doctor filling out the <strong>NEET UG application</strong>, dealing with NTA's strict image size limits can be highly frustrating. FormFix provides a dedicated <strong>NEET photo size reducer</strong> to solve this. Because we process your files on your device using your browser's RAM, there is zero risk of your sensitive photos being leaked or stored on a public server.</p>
+             
+             <h3 class="mt-32">How to compress your image for NEET:</h3>
+             <ol>
+                <li>Upload your passport photo, postcard photo, signature, or thumb impression.</li>
+                <li>Set your exact target file size (e.g., <strong>150 KB</strong> for photos or <strong>25 KB</strong> for signatures).</li>
+                <li>Download your ready-to-upload file instantly.</li>
+             </ol>
+
+             <p class="mt-20"><strong>Security Check:</strong> Many online photo tools upload and save your data permanently. By using FormFix's 100% offline-processing technology, you keep complete control over your private information.</p>
+        </article>
+
+        <SocialShare title="This free NEET compressor saved my life during application submission! Fast and totally private." url="https://formfix.pages.dev/neet-photo-compressor" />
+
+        <RelatedTools currentTool="compress" />
+    </div>
+</BaseLayout>
+
+<style>
+    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
+    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
+    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
+    .mt-48 { margin-top: 48px; }
+    .mt-32 { margin-top: 32px; }
+    .mb-32 { margin-bottom: 32px; }
+    .p-20 { padding: 20px; }
+    .p-16 { padding: 16px; }
+</style>

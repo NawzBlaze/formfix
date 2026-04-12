@@ -1,322 +1,571 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
 
-const PAGE_TITLE = 'All 30+ Free Online Tools Hub | FormFix Dictionary';
-const PAGE_DESC = 'Access all 30+ FormFix tools: professional image compressor, PDF merger, passport photo maker, QR generator, and signature maker. 100% free, private & browser-based.';
-const PAGE_KEYWORDS = 'formfix tools, free online tool hub, image compressor online, pdf merger free, qr code generator online, digital toolkit';
+const PAGE_TITLE = 'Tool Dashboard | FormFix';
+const PAGE_DESC = 'Access your complete suite of 30+ free tools for images, PDFs, and more.';
+const PAGE_KEYWORDS = 'formfix dashboard, free online tools, image compressor, pdf tools';
 
+// Primary Featured Tool
+const featuredTool = {
+    id: 'compress-image',
+    title: 'Image Compressor Studio',
+    icon: '🎯',
+    href: '/compress-image',
+    desc: 'The ultimate tool to accurately reduce your photo file size to specific targets like 20KB or 50KB without noticeable quality loss.',
+    cta: 'Compress Now'
+};
+
+// All Categories
 const categories = [
     {
-        id: 'image-suite',
-        title: 'Image Suite',
+        id: 'image',
+        title: 'Image Tools',
         icon: '🖼️',
-        color: 'indigo',
         tools: [
-            { title: 'Compress Image to Exact KB', href: '/compress-image', desc: 'Hit exact file size targets like 20KB, 50KB or any custom limit.', badge: 'Most Popular', cta: 'Compress Now' },
-            { title: 'Compress to 20KB', href: '/compress-image-20kb', desc: 'One-click compress to exactly 20KB for govt portals.', badge: 'Hot', cta: 'Start' },
-            { title: 'Compress to 50KB', href: '/compress-image-50kb', desc: 'Reduce image to exactly 50KB instantly.', badge: null, cta: 'Start' },
-            { title: 'Compress to 100KB', href: '/compress-image-100kb', desc: 'Reduce image to 100KB for uploads.', badge: null, cta: 'Start' },
-            { title: 'Passport Photo Maker', href: '/passport-size-photo', desc: 'Official 3.5×4.5cm passport photos for all online forms.', badge: 'Official', cta: 'Create Photo' },
-            { title: 'Crop Image Online', href: '/crop-image', desc: 'Precise cropping with ratio presets (1:1, 4:3, 16:9).', badge: null, cta: 'Crop Now' },
-            { title: 'Circle Profile Maker', href: '/circle-crop', desc: 'Perfect circular avatars for CV, LinkedIn & social.', badge: null, cta: 'Create Avatar' },
-            { title: 'Resize Image Pixels', href: '/resize-image', desc: 'Change width/height proportionally in any resolution.', badge: null, cta: 'Resize' },
-            { title: 'Background Remover', href: '/background-remover', desc: 'Remove white or solid backgrounds from signatures & photos.', badge: 'AI', cta: 'Remove BG' },
-            { title: 'Black & White Filter', href: '/black-and-white', desc: 'Convert photos to elegant grayscale B&W.', badge: 'Hot', cta: 'Apply Filter' },
-            { title: 'Pencil Sketch Maker', href: '/photo-to-sketch', desc: 'Turn any photo into a beautiful pencil drawing instantly.', badge: 'Viral', cta: 'Make Sketch' },
-            { title: 'Assignment Studio', href: '/text-to-handwriting', desc: 'Convert typed text into realistic handwriting on notebook paper.', badge: 'Hot', cta: 'Write Now' },
-            { title: 'Image to Text (OCR)', href: '/image-to-text', desc: 'Extract editable text from any image or document instantly.', badge: 'AI', cta: 'Scan Now' },
-            { title: 'Pro Resume Builder', href: '/resume-builder', desc: 'Create a professional modern resume in less than 60 seconds.', badge: 'Careers', cta: 'Build CV' },
-            { title: 'Format Converter', href: '/convert-image', desc: 'Convert between JPG, PNG & fast-loading WebP.', badge: 'Fast', cta: 'Convert' },
-            { title: 'Digital Signature Maker', href: '/signature-maker', desc: 'Draw or type signatures in 60+ cursive fonts. Transparent PNG.', badge: 'Trending', cta: 'Make Signature' },
-            { title: 'Blur & Censor Image', href: '/blur-image', desc: 'Redact sensitive info, pixelate faces securely.', badge: null, cta: 'Blur Now' },
-            { title: 'Watermark Engine', href: '/watermark-image', desc: 'Add text watermarks to protect your photography.', badge: null, cta: 'Add Watermark' },
+            { id: 'compress-image', title: 'Compress Image to Exact KB', href: '/compress-image', desc: 'Hit exact file size targets like 20KB, 50KB or any custom limit.', cta: 'Compress Now' },
+            { id: 'compress-image-20kb', title: 'Compress to 20KB', href: '/compress-image-to-20kb', desc: 'One-click compress to exactly 20KB for govt portals.', cta: 'Open Tool' },
+            { id: 'compress-image-50kb', title: 'Compress to 50KB', href: '/compress-image-to-50kb', desc: 'Reduce image to exactly 50KB instantly.', cta: 'Open Tool' },
+            { id: 'passport-size-photo', title: 'Passport Photo Maker', href: '/passport-size-photo', desc: 'Official 3.5×4.5cm passport photos for all online forms.', cta: 'Create Photo' },
+            { id: 'crop-image', title: 'Crop Image Online', href: '/crop-image', desc: 'Precise cropping with ratio presets (1:1, 4:3, 16:9).', cta: 'Crop Now' },
+            { id: 'circle-crop', title: 'Circle Profile Maker', href: '/circle-crop', desc: 'Perfect circular avatars for CV, LinkedIn & social.', cta: 'Create Avatar' },
+            { id: 'resize-image', title: 'Resize Image Pixels', href: '/resize-image', desc: 'Change width/height proportionally in any resolution.', cta: 'Resize' },
+            { id: 'background-remover', title: 'Background Remover', href: '/background-remover', desc: 'Remove white or solid backgrounds from signatures & photos.', cta: 'Remove BG' },
+            { id: 'black-and-white', title: 'Black & White Filter', href: '/black-and-white', desc: 'Convert photos to elegant grayscale B&W.', cta: 'Apply Filter' },
+            { id: 'photo-to-sketch', title: 'Pencil Sketch Maker', href: '/photo-to-sketch', desc: 'Turn any photo into a beautiful pencil drawing instantly.', cta: 'Make Sketch' },
+            { id: 'text-to-handwriting', title: 'Assignment Studio', href: '/text-to-handwriting', desc: 'Convert typed text into realistic handwriting on notebook paper.', cta: 'Write Now' },
+            { id: 'image-to-text', title: 'Image to Text (OCR)', href: '/image-to-text', desc: 'Extract editable text from any image or document instantly.', cta: 'Scan Now' },
+            { id: 'resume-builder', title: 'Pro Resume Builder', href: '/resume-builder', desc: 'Create a professional modern resume in less than 60 seconds.', cta: 'Build CV' },
+            { id: 'convert-image', title: 'Format Converter', href: '/convert-image', desc: 'Convert between JPG, PNG & fast-loading WebP.', cta: 'Convert' },
+            { id: 'signature-maker', title: 'Digital Signature Maker', href: '/signature-maker', desc: 'Draw or type signatures in 60+ cursive fonts. Transparent PNG.', cta: 'Make Signature' },
+            { id: 'blur-image', title: 'Blur & Censor Image', href: '/blur-image', desc: 'Redact sensitive info, pixelate faces securely.', cta: 'Blur Now' },
+            { id: 'watermark-image', title: 'Watermark Engine', href: '/watermark-image', desc: 'Add text watermarks to protect your photography.', cta: 'Add Watermark' }
         ]
     },
     {
-        id: 'pdf-suite',
-        title: 'PDF Utilities',
+        id: 'pdf',
+        title: 'PDF Tools',
         icon: '📄',
-        color: 'rose',
         tools: [
-            { title: 'Merge PDF Files', href: '/merge-pdf', desc: 'Combine multiple PDF documents into one file 100% offline.', badge: 'Hot', cta: 'Merge PDFs' },
-            { title: 'Rotate PDF Pages', href: '/rotate-pdf', desc: 'Fix upside-down scanned PDFs without uploading.', badge: 'Quick', cta: 'Rotate PDF' },
-            { title: 'Images to PDF', href: '/image-to-pdf', desc: 'Merge multiple JPG/PNG images into a single PDF.', badge: 'New', cta: 'Create PDF' },
-            { title: 'PDF to Images', href: '/pdf-to-image', desc: 'Extract every page from a PDF as a high-quality image.', badge: 'New', cta: 'Extract' },
-            { title: 'Split & Extract PDF', href: '/split-pdf', desc: 'Separate specific pages from any PDF instantly.', badge: 'New', cta: 'Split PDF' },
+            { id: 'merge-pdf', title: 'Merge PDF Files', href: '/merge-pdf', desc: 'Combine multiple PDF documents into one file 100% offline.', cta: 'Merge PDFs' },
+            { id: 'rotate-pdf', title: 'Rotate PDF Pages', href: '/rotate-pdf', desc: 'Fix upside-down scanned PDFs without uploading.', cta: 'Rotate PDF' },
+            { id: 'image-to-pdf', title: 'Images to PDF', href: '/image-to-pdf', desc: 'Merge multiple JPG/PNG images into a single PDF.', cta: 'Create PDF' },
+            { id: 'pdf-to-image', title: 'PDF to Images', href: '/pdf-to-image', desc: 'Extract every page from a PDF as a high-quality image.', cta: 'Extract' },
+            { id: 'split-pdf', title: 'Split & Extract PDF', href: '/split-pdf', desc: 'Separate specific pages from any PDF instantly.', cta: 'Split PDF' },
         ]
     },
     {
         id: 'utilities',
-        title: 'Security & Utilities',
+        title: 'Utilities',
         icon: '🔐',
-        color: 'emerald',
         tools: [
-            { title: 'QR Code Generator', href: '/qr-code-generator', desc: 'Create branded, permanent QR codes for URLs, WiFi & more.', badge: 'Brand New', cta: 'Make QR Code' },
-            { title: 'Password Generator', href: '/password-generator', desc: 'Generate military-grade secure passwords locally.', badge: 'Secure', cta: 'Generate' },
-            { title: 'File Size Converter', href: '/file-size-converter', desc: 'Instant calculator for Bytes ⇄ KB ⇄ MB ⇄ GB.', badge: null, cta: 'Calculate' },
-            { title: 'Percentage Calculator', href: '/percentage-calculator', desc: 'Quickly find % of numbers without page reload.', badge: null, cta: 'Calculate %' },
-            { title: 'Age Calculator', href: '/age-calculator', desc: 'Calculate exact age in years, months, and days.', badge: null, cta: 'Check Age' },
-        ]
-    },
-    {
-        id: 'compressors',
-        title: 'Photo Compressors',
-        icon: '🗜️',
-        color: 'amber',
-        tools: [
-            { title: 'Photo Compressor', href: '/photo-compressor', desc: 'Smart compressor for any photo format.', badge: null, cta: 'Compress' },
-            { title: 'Passport Photo Compressor', href: '/passport-photo-compressor', desc: 'Compress passport photos without losing quality.', badge: null, cta: 'Compress' },
+            { id: 'qr-code-generator', title: 'QR Code Generator', href: '/qr-code-generator', desc: 'Create branded, permanent QR codes for URLs, WiFi & more.', cta: 'Make QR Code' },
+            { id: 'password-generator', title: 'Password Generator', href: '/password-generator', desc: 'Generate military-grade secure passwords locally.', cta: 'Generate' },
+            { id: 'file-size-converter', title: 'File Size Converter', href: '/file-size-converter', desc: 'Instant calculator for Bytes ⇄ KB ⇄ MB ⇄ GB.', cta: 'Calculate' },
+            { id: 'percentage-calculator', title: 'Percentage Calculator', href: '/percentage-calculator', desc: 'Quickly find % of numbers without page reload.', cta: 'Calculate %' },
+            { id: 'age-calculator', title: 'Age Calculator', href: '/age-calculator', desc: 'Calculate exact age in years, months, and days.', cta: 'Check Age' },
         ]
     }
 ];
 
-const colorMap: Record<string, { bg: string; border: string; badge: string; icon: string }> = {
-    indigo: { bg: '#eef2ff', border: '#c7d2fe', badge: '#4f46e5', icon: '#eef2ff' },
-    rose:   { bg: '#fff1f2', border: '#fecdd3', badge: '#e11d48', icon: '#fff1f2' },
-    emerald:{ bg: '#ecfdf5', border: '#a7f3d0', badge: '#059669', icon: '#ecfdf5' },
-    amber:  { bg: '#fffbeb', border: '#fde68a', badge: '#d97706', icon: '#fffbeb' },
-};
+// Flatten for quick lookup in client JS
+const allToolsFlat = categories.flatMap(c => c.tools);
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} active="tools" canonicalPath="/tools">
 
-<!-- Hero -->
-<section class="hub-hero container animate-fade-up">
-    <div class="hub-hero-content">
-        <span class="section-label">🛠️ Complete Toolkit</span>
-        <h1>FormFix <span class="highlight">Tool Hub</span></h1>
-        <p class="hub-sub">30+ free, browser-based tools. No uploads. No sign-up. Instant results on any device.</p>
-        <div class="hub-stats">
-            <div class="hub-stat"><strong>30+</strong> <span>Free Tools</span></div>
-            <div class="hub-stat-div"></div>
-            <div class="hub-stat"><strong>0</strong> <span>Server Uploads</span></div>
-            <div class="hub-stat-div"></div>
-            <div class="hub-stat"><strong>100%</strong> <span>Private</span></div>
-        </div>
-    </div>
-</section>
-
-
-<button id="back-to-top" class="back-to-top hidden" aria-label="Back to top">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
-</button>
-
-<!-- Categories -->
-<div class="categories-wrapper container animate-fade-up">
-    {categories.map(cat => {
-        const colors = colorMap[cat.color];
-        return (
-            <section id={cat.id} class="category-section">
-                <div class="cat-header" style={`background: ${colors.bg}; border-color: ${colors.border};`}>
-                    <div class="cat-icon-wrap" style={`background: ${colors.badge};`}>
-                        {cat.icon}
-                    </div>
-                    <div>
-                        <h2 class="cat-title">{cat.title}</h2>
-                        <p class="cat-count">{cat.tools.length} tools available</p>
-                    </div>
+<!-- DASHBOARD HEADER -->
+<div class="dashboard-shell animate-fade-up">
+    <div class="container">
+        
+        <header class="dashboard-header">
+            <div class="header-titles">
+                <h1>Workspace</h1>
+                <p class="greeting-line">Welcome back — pick up right where you left off.</p>
+            </div>
+            
+            <div class="search-filter-wrap">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="search" id="tool-search" placeholder="Search perfectly optimized tools..." aria-label="Search tools" />
                 </div>
+            </div>
+        </header>
 
-                <div class="tool-grid">
-                    {cat.tools.map(tool => (
-                        <a href={tool.href} class="hub-card">
-                            <div class="hub-card-top">
-                                <h3>{tool.title}</h3>
-                                {tool.badge && (
-                                    <span class="hub-badge" style={`background: ${colors.badge};`}>{tool.badge}</span>
-                                )}
+        <!-- DASHBOARD TOP GRID (Hierarchy & Recents) -->
+        <section class="top-dashboard-section" id="top-dashboard-area">
+            <div class="quick-actions-row">
+                <!-- 1. Featured Tool (Prominent) -->
+                <div class="featured-column">
+                    <h3 class="section-lbl">Primary Tool</h3>
+                    <a href={featuredTool.href} class="dashboard-card featured-card tracker-tool" data-id={featuredTool.id} data-title={featuredTool.title} data-icon={featuredTool.icon} data-href={featuredTool.href} data-cta={featuredTool.cta}>
+                        <div class="feat-content">
+                            <span class="tool-icon colossal">{featuredTool.icon}</span>
+                            <div class="feat-text">
+                                <h2>{featuredTool.title}</h2>
+                                <p>{featuredTool.desc}</p>
                             </div>
-                            <p>{tool.desc}</p>
-                            <span class="hub-cta">{tool.cta} →</span>
-                        </a>
-                    ))}
+                        </div>
+                        <button class="action-btn primary">{featuredTool.cta}</button>
+                    </a>
                 </div>
-            </section>
-        );
-    })}
-</div>
 
-<!-- Bottom CTA -->
-<section class="hub-cta-section container animate-fade-up">
-    <div class="hub-cta-card">
-        <div class="hub-cta-content">
-            <h2>🚀 Need a specific tool?</h2>
-            <p>Can't find what you need? Our most popular tool is the image compressor — hit any exact KB target with one click.</p>
+                <!-- 2. Recent Tools (Dynamic) -->
+                <div class="recent-column">
+                    <div class="recent-header">
+                        <h3 class="section-lbl">Recent Tools</h3>
+                        <button id="clear-recents" class="clear-btn hidden">Clear</button>
+                    </div>
+                    <div class="recent-grid empty" id="recent-tools-container">
+                        <div class="empty-state">
+                            <p>No tools used recently.</p>
+                            <span>Your history will appear here.</span>
+                        </div>
+                        <!-- JS WILL POPULATE THIS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FILTER TABS -->
+        <div class="filter-tabs" id="filter-tabs">
+            <button class="filter-tab active" data-filter="all">All Tools</button>
+            <button class="filter-tab" data-filter="image">Image Tools</button>
+            <button class="filter-tab" data-filter="pdf">PDF Tools</button>
+            <button class="filter-tab" data-filter="utilities">Utilities</button>
         </div>
-        <div class="hub-cta-actions">
-            <a href="/compress-image" class="primary-btn" id="hub-compress-btn">Compress Image →</a>
-            <a href="/passport-size-photo" class="secondary-btn" id="hub-passport-btn">Passport Photo →</a>
+
+        <!-- COLLAPSIBLE GROUPINGS -->
+        <div class="tool-groups-container" id="groups-container">
+            {categories.map(cat => (
+                <details class="tool-group" data-category={cat.id} open>
+                    <summary class="group-summary">
+                        <div class="summary-left">
+                            <span class="group-icon">{cat.icon}</span>
+                            <h2>{cat.title} <span class="count-badge">{cat.tools.length}</span></h2>
+                        </div>
+                        <span class="toggle-arrow">▼</span>
+                    </summary>
+                    
+                    <div class="group-grid">
+                        {cat.tools.map(tool => (
+                            <a href={tool.href} class="dashboard-card standard-card tracker-tool search-item" data-id={tool.id} data-title={tool.title} data-icon={cat.icon} data-href={tool.href} data-cta={tool.cta}>
+                                <div class="card-top">
+                                    <span class="tool-icon">{cat.icon}</span>
+                                    <div class="card-titles">
+                                        <h3>{tool.title}</h3>
+                                        <p>{tool.desc}</p>
+                                    </div>
+                                </div>
+                                <div class="card-bottom">
+                                    <button class="action-btn secondary">{tool.cta}</button>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                </details>
+            ))}
+            
+            <div id="no-results" class="hidden no-results-state">
+                <span class="sad-icon">🔍</span>
+                <h3>No tools found</h3>
+                <p>Try searching with different keywords.</p>
+            </div>
         </div>
+
     </div>
-</section>
+</div>
 
 </BaseLayout>
 
 <style>
-/* ─ Hero ─ */
-.hub-hero {
-    padding: 72px 0 48px;
-    text-align: center;
+/* ───── GLOBALS & TYPE ───── */
+.dashboard-shell {
+    background: #fafafa;
+    min-height: 100vh;
+    padding: 60px 0 120px 0;
 }
-.hub-hero-content { max-width: 680px; margin: 0 auto; }
-.hub-hero h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 900; letter-spacing: -0.05em; margin: 12px 0 20px; }
-.hub-sub { font-size: 1.15rem; color: var(--slate); font-weight: 500; line-height: 1.6; margin-bottom: 36px; }
-
-.hub-stats {
-    display: inline-flex;
-    align-items: center;
-    gap: 24px;
-    background: var(--bg-subtle);
-    border: 1.5px solid var(--border-light);
-    border-radius: 100px;
-    padding: 16px 36px;
+.section-lbl {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--surface-500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
 }
-.hub-stat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.hub-stat strong { font-size: 1.4rem; font-weight: 900; color: var(--primary); line-height: 1; }
-.hub-stat span { font-size: 0.72rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; }
-.hub-stat-div { width: 1px; height: 36px; background: var(--border); }
 
-/* ─ Categories ─ */
-.categories-wrapper { padding-bottom: 80px; }
-.category-section { margin-bottom: 72px; scroll-margin-top: 100px; }
-
-/* Back to Top */
-.back-to-top {
-    position: fixed;
-    bottom: 32px; right: 32px;
-    width: 56px; height: 56px;
-    background: var(--dark);
-    color: white;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    z-index: 100;
-    box-shadow: var(--shadow-xl);
-    transition: var(--transition-bounce);
-}
-.back-to-top:hover { transform: translateY(-6px) scale(1.1); background: var(--primary); }
-.back-to-top.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
-
-.cat-header {
+/* ───── HEADER & SEARCH ───── */
+.dashboard-header {
     display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 24px 28px;
-    border-radius: 20px;
-    border: 1.5px solid;
-    margin-bottom: 24px;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 48px;
+    gap: 32px;
+    flex-wrap: wrap;
 }
-.cat-icon-wrap {
-    width: 52px; height: 52px;
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.6rem;
-    flex-shrink: 0;
+.header-titles h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #000;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
 }
-.cat-title { font-size: 1.4rem; font-weight: 900; color: var(--dark); letter-spacing: -0.03em; margin-bottom: 2px; }
-.cat-count { font-size: 0.82rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; }
+.greeting-line {
+    font-size: 1.1rem;
+    color: var(--surface-600);
+    font-weight: 500;
+}
+.search-filter-wrap { flex-grow: 1; max-width: 400px; width: 100%; }
+.search-box {
+    position: relative;
+    width: 100%;
+}
+.search-icon {
+    position: absolute;
+    left: 16px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--surface-400);
+    font-size: 1.1rem;
+}
+#tool-search {
+    width: 100%;
+    padding: 16px 16px 16px 48px;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+    background: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.03);
+}
+#tool-search:focus {
+    outline: none;
+    border-color: #000;
+    box-shadow: 0 4px 20px -4px rgba(0,0,0,0.1);
+}
 
-/* ─ Tool Grid ─ */
-.tool-grid {
+/* ───── TOP GRID (HIERARCHY) ───── */
+.quick-actions-row {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    gap: 14px;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 32px;
+    margin-bottom: 48px;
 }
-.hub-card {
-    background: white;
-    border: 1.5px solid var(--border-light);
-    border-radius: 20px;
-    padding: 24px;
+
+/* Cards Base */
+.dashboard-card {
+    background: #fff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
     text-decoration: none;
     display: flex;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.02);
+}
+.dashboard-card:hover {
+    border-color: var(--surface-300);
+    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+}
+.action-btn {
+    border: none; border-radius: 8px; font-weight: 600; font-size: 0.95rem; padding: 10px 24px; cursor: pointer; transition: 0.2s;
+}
+.dashboard-card:hover .action-btn.primary { background: #222; transform: translateY(-1px); }
+.dashboard-card:hover .action-btn.secondary { background: #000; color: #fff; transform: translateY(-1px); }
+
+/* Featured Card */
+.featured-card {
     flex-direction: column;
-    gap: 10px;
-    transition: var(--transition-smooth);
-    position: relative;
-    overflow: hidden;
+    justify-content: space-between;
+    padding: 40px;
+    height: 100%;
+    min-height: 280px;
+    border: 1px solid var(--surface-300);
 }
-.hub-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--gradient-primary);
-    transform: scaleX(0);
-    transition: transform 0.35s ease;
-    transform-origin: left;
-}
-.hub-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--primary-mid); }
-.hub-card:hover::before { transform: scaleX(1); }
-.hub-card:hover .hub-cta { color: var(--primary); transform: translateX(4px); }
+.feat-content { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 32px; }
+.tool-icon.colossal { font-size: 3.5rem; background: var(--surface-100); padding: 16px; border-radius: 16px; }
+.feat-text h2 { font-size: 1.8rem; font-weight: 800; color: #000; margin-bottom: 12px; }
+.feat-text p { font-size: 1.1rem; color: var(--surface-600); line-height: 1.6; }
+.action-btn.primary { background: #000; color: #fff; width: fit-content; padding: 14px 32px; }
 
-.hub-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-.hub-card-top h3 { font-size: 1rem; font-weight: 800; color: var(--dark); line-height: 1.3; }
-.hub-badge {
-    color: white;
-    padding: 3px 10px;
-    border-radius: 100px;
-    font-size: 0.62rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    white-space: nowrap;
-    flex-shrink: 0;
-    margin-top: 2px;
-}
-.hub-card p { font-size: 0.88rem; color: var(--slate); font-weight: 500; line-height: 1.55; flex-grow: 1; }
-.hub-cta { font-size: 0.82rem; font-weight: 800; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; transition: var(--transition-base); margin-top: auto; }
-
-/* ─ Bottom CTA ─ */
-.hub-cta-section { padding-bottom: 100px; }
-.hub-cta-card {
-    background: var(--dark);
-    border-radius: 28px;
-    padding: 48px 60px;
+/* Recents */
+.recent-column { display: flex; flex-direction: column; }
+.recent-header { display: flex; justify-content: space-between; align-items: center; }
+.clear-btn { background: none; border: none; color: var(--surface-400); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 16px; }
+.clear-btn:hover { color: #000; text-decoration: underline; }
+.recent-grid {
     display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-grow: 1;
+}
+.recent-grid.empty { justify-content: center; align-items: center; background: transparent; border: 2px dashed var(--surface-300); border-radius: 16px; }
+.empty-state { text-align: center; color: var(--surface-500); }
+.empty-state p { font-weight: 600; color: var(--surface-600); margin-bottom: 4px; }
+.empty-state span { font-size: 0.9rem; }
+
+/* Mini Card for Recents */
+.mini-card {
+    padding: 16px 20px;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 40px;
-    position: relative;
-    overflow: hidden;
+    gap: 16px;
 }
-.hub-cta-card::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 260px; height: 260px;
-    background: radial-gradient(circle, rgba(79,70,229,0.3) 0%, transparent 70%);
-    pointer-events: none;
+.mini-left { display: flex; align-items: center; gap: 16px; }
+.mini-icon { font-size: 1.5rem; }
+.mini-title { font-weight: 700; color: #000; font-size: 1rem; }
+.mini-btn { font-size: 0.85rem; font-weight: 600; color: var(--surface-600); background: var(--surface-100); padding: 6px 16px; border-radius: 6px; transition: 0.2s; }
+.mini-card:hover .mini-btn { background: #000; color: #fff; }
+
+/* ───── FILTERS ───── */
+.filter-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 16px;
+    overflow-x: auto;
 }
-.hub-cta-content { position: relative; }
-.hub-cta-content h2 { font-size: 1.8rem; color: white; margin-bottom: 8px; font-weight: 900; }
-.hub-cta-content p { font-size: 1rem; color: rgba(255,255,255,0.6); line-height: 1.6; font-weight: 500; }
-.hub-cta-actions { display: flex; gap: 14px; flex-shrink: 0; position: relative; }
+.filter-tab {
+    background: transparent;
+    border: none;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--surface-500);
+    padding: 8px 16px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+.filter-tab:hover { color: #000; background: var(--surface-200); }
+.filter-tab.active { background: #000; color: #fff; }
+
+/* ───── COLLAPSIBLE GROUPS ───── */
+.tool-groups-container { display: flex; flex-direction: column; gap: 24px; }
+.tool-group {
+    background: transparent;
+}
+.group-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    cursor: pointer;
+    list-style: none; /* remove default triangle */
+    outline: none;
+    border-bottom: 2px solid transparent;
+}
+.group-summary::-webkit-details-marker { display: none; }
+.summary-left { display: flex; align-items: center; gap: 16px; }
+.group-icon { font-size: 1.8rem; }
+.summary-left h2 { font-size: 1.5rem; font-weight: 800; color: #000; display: flex; align-items: center; gap: 12px; }
+.count-badge { font-size: 0.8rem; background: var(--surface-200); color: var(--surface-600); padding: 4px 10px; border-radius: 100px; }
+.toggle-arrow { font-size: 1rem; color: var(--surface-400); transition: transform 0.3s; }
+.tool-group[open] .toggle-arrow { transform: rotate(180deg); }
+
+/* Group Grid */
+.group-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    padding: 16px 0 48px 0;
+    animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Standard Cards */
+.standard-card {
+    flex-direction: column;
+    padding: 24px;
+    gap: 20px;
+    justify-content: space-between;
+    height: 100%;
+}
+.card-top { display: flex; gap: 16px; align-items: flex-start; }
+.tool-icon { font-size: 1.8rem; }
+.card-titles h3 { font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 6px; line-height: 1.3;}
+.card-titles p { font-size: 0.95rem; color: var(--surface-500); line-height: 1.5; }
+.action-btn.secondary { background: var(--surface-100); color: var(--surface-600); width: 100%; padding: 12px; }
+
+/* No Results State */
+.no-results-state {
+    text-align: center;
+    padding: 80px 0;
+}
+.sad-icon { font-size: 3rem; margin-bottom: 16px; display: block; opacity: 0.5; }
+.no-results-state h3 { font-size: 1.5rem; font-weight: 700; color: #000; margin-bottom: 8px; }
+.no-results-state p { color: var(--surface-500); }
+.hidden { display: none !important; }
+
+/* ───── RESPONSIVE CONSTRAINTS ───── */
+@media (max-width: 1024px) {
+    .quick-actions-row { grid-template-columns: 1fr; }
+    .featured-card { min-height: auto; }
+}
 
 @media (max-width: 768px) {
-    .hub-hero { padding: 48px 0 32px; }
-    .hub-stats { flex-wrap: wrap; gap: 16px; padding: 16px 24px; border-radius: 20px; }
-    .hub-stat-div { display: none; }
-    .tool-grid { grid-template-columns: 1fr; gap: 10px; }
-    .hub-card { padding: 20px; border-radius: 16px; }
-    .hub-cta-card { flex-direction: column; padding: 32px 28px; text-align: center; }
-    .hub-cta-content h2 { font-size: 1.4rem; }
-    .hub-cta-actions { flex-direction: column; width: 100%; }
-    .hub-cta-actions a { width: 100%; }
-    .cat-header { padding: 18px 20px; }
+    .dashboard-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+    .search-filter-wrap { max-width: 100%; }
+    .feat-content { flex-direction: column; gap: 16px; }
+    .tool-icon.colossal { font-size: 2.5rem; padding: 12px; }
+    .group-grid { grid-template-columns: 1fr; }
 }
 </style>
+
 <script>
-    const btt = document.getElementById('back-to-top');
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- 1. RECENT TOOLS SYSTEM (LOCALSTORAGE) ---
+        const RECENT_KEY = 'formfix_recent_tools';
+        const recentContainer = document.getElementById('recent-tools-container');
+        const clearBtn = document.getElementById('clear-recents');
+        
+        function renderRecents() {
+            if (!recentContainer) return;
+            const data = localStorage.getItem(RECENT_KEY);
+            let recents = data ? JSON.parse(data) : [];
+            
+            if (recents.length === 0) {
+                recentContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>No tools used recently.</p>
+                        <span>Your history will appear here.</span>
+                    </div>`;
+                recentContainer.classList.add('empty');
+                if(clearBtn) clearBtn.classList.add('hidden');
+                return;
+            }
 
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 400) {
-            btt?.classList.remove('hidden');
-        } else {
-            btt?.classList.add('hidden');
+            recentContainer.classList.remove('empty');
+            if(clearBtn) clearBtn.classList.remove('hidden');
+            
+            recentContainer.innerHTML = recents.map(t => `
+                <a href="${t.href}" class="dashboard-card mini-card box-shadow-subtle hover-lift">
+                    <div class="mini-left">
+                        <span class="mini-icon">${t.icon}</span>
+                        <span class="mini-title">${t.title}</span>
+                    </div>
+                    <span class="mini-btn">${t.cta}</span>
+                </a>
+            `).join('');
         }
-    });
 
-    btt?.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        function trackToolClick(e) {
+            const card = e.currentTarget;
+            const toolData = {
+                id: card.dataset.id,
+                title: card.dataset.title,
+                icon: card.dataset.icon,
+                href: card.dataset.href,
+                cta: card.dataset.cta
+            };
+
+            const data = localStorage.getItem(RECENT_KEY);
+            let recents = data ? JSON.parse(data) : [];
+            
+            // Remove if exists
+            recents = recents.filter(t => t.id !== toolData.id);
+            // Add to front
+            recents.unshift(toolData);
+            // Keep only top 3
+            if (recents.length > 3) recents = recents.slice(0, 3);
+            
+            localStorage.setItem(RECENT_KEY, JSON.stringify(recents));
+        }
+
+        // Init tracker on all tool cards
+        document.querySelectorAll('.tracker-tool').forEach(el => {
+            el.addEventListener('click', trackToolClick);
+        });
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                localStorage.removeItem(RECENT_KEY);
+                renderRecents();
+            });
+        }
+
+        renderRecents();
+
+        // --- 2. SEARCH AND FILTER LOGIC ---
+        const searchInput = document.getElementById('tool-search');
+        const filterBtns = document.querySelectorAll('.filter-tab');
+        const groups = document.querySelectorAll('.tool-group');
+        const topArea = document.getElementById('top-dashboard-area');
+        const noResults = document.getElementById('no-results');
+
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        function runFilters() {
+            let totalVisible = 0;
+
+            groups.forEach(group => {
+                const cat = group.dataset.category;
+                const items = group.querySelectorAll('.search-item');
+                let groupHasVisibleItems = false;
+                
+                // Check if this entire group is filtered out by tabs
+                const matchesTab = (currentFilter === 'all' || currentFilter === cat);
+
+                items.forEach(item => {
+                    const title = item.dataset.title.toLowerCase();
+                    const desc = item.querySelector('.card-titles p').innerText.toLowerCase();
+                    const matchesSearch = title.includes(currentSearch) || desc.includes(currentSearch);
+                    
+                    if (matchesTab && matchesSearch) {
+                        item.classList.remove('hidden');
+                        groupHasVisibleItems = true;
+                        totalVisible++;
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+
+                // Hide/show the entire group HTML
+                if (groupHasVisibleItems) {
+                    group.classList.remove('hidden');
+                    // Force open if searching actively
+                    if (currentSearch.length > 0) {
+                        group.setAttribute('open', '');
+                    }
+                } else {
+                    group.classList.add('hidden');
+                }
+            });
+
+            // Handle Top Area
+            if (topArea) {
+                if (currentSearch.length > 0 || currentFilter !== 'all') {
+                    topArea.classList.add('hidden'); // hide top actions when deeply searching
+                } else {
+                    topArea.classList.remove('hidden');
+                }
+            }
+
+            // Handle No Results
+            if (totalVisible === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value.toLowerCase();
+                runFilters();
+            });
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                runFilters();
+            });
+        });
+
     });
 </script>

@@ -111,12 +111,14 @@ const finalCanonical = SITE_URL + finalPath;
 		<meta name="theme-color" content="#4f46e5" />
 		
 		<!-- 1. Core SEO Basics -->
-		<title>{title}</title>
+		<title>{title.includes('FormFix') ? title : `${title} | FormFix`}</title>
 		<meta name="description" content={description} />
 		<meta name="keywords" content={keywords} />
 		<meta name="robots" content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
 
 		<link rel="canonical" href={finalCanonical} />
+		<link rel="alternate" hreflang="x-default" href={finalCanonical} />
+		<link rel="alternate" hreflang="en" href={finalCanonical} />
 		<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
 
 		<meta name="application-name" content="FormFix" />
@@ -206,7 +208,6 @@ const finalCanonical = SITE_URL + finalPath;
 		<meta name="author" content="FormFix" />
 		<meta name="rating" content="general" />
 		<meta name="revisit-after" content="7 days" />
-		<meta name="geo.region" content="IN" />
 		<meta name="language" content="English" />
 
 		<!-- Microsoft Clarity Tracking -->

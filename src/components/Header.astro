@@ -10,466 +10,148 @@ const navItems = [
 ];
 ---
 
-<!-- Announcement Bar (Desktop Only) -->
-<div class="announcement-bar no-mobile" id="ann-bar">
-    <div class="ann-inner">
-        <span class="ann-new-badge">NEW</span>
-        <span class="ann-icon">✨</span>
-        <span><strong>Text-to-Handwriting</strong> &amp; <strong>Resume Builder</strong> just added — <a href="/tools" class="ann-link">Explore all 30+ tools →</a></span>
-        <div class="ann-divider"></div>
-        <span class="ann-privacy-note"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> 100% Private</span>
-        <button class="ann-close" id="ann-close-btn" aria-label="Close announcement">✕</button>
-    </div>
-</div>
-
-<header class="top-header" role="banner" id="main-header">
-    <div class="header-container container">
+<header class="prism-header" id="main-header">
+    <div class="container header-inner">
         <div class="header-left">
-            <a href="/" class="logo-link" aria-label="FormFix — Free Online Tool Hub">
-                <div class="logo-icon-wrapper" aria-hidden="true">
-                    <img src="/favicon.png?v=5" alt="FormFix Logo" width="40" height="40" />
+            <a href="/" class="logo" aria-label="FormFix Home">
+                <div class="logo-box">
+                    <img src="/favicon.png?v=5" alt="FormFix" width="36" height="36" />
                 </div>
                 <span class="logo-text">FormFix</span>
             </a>
         </div>
 
-        <div class="nav-right">
-            <nav class="desktop-nav" aria-label="Main Navigation">
-                <ul id="nav-menu" class="nav-links" role="list">
-                    {navItems.map(item => (
-                        <li role="listitem">
-                            <a href={item.href}
-                               class={`nav-link ${active === item.id ? 'active' : ''}`}
-                               aria-current={active === item.id ? 'page' : undefined}>
-                                {item.name}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
+        <nav class="desktop-nav no-mobile" aria-label="Main">
+            <ul class="nav-list">
+                {navItems.map(item => (
+                    <li>
+                        <a href={item.href} class={`nav-link ${active === item.id ? 'active' : ''}`}>
+                            {item.name}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </nav>
 
-            <div class="header-actions">
-                <div class="header-trust-badge no-mobile" aria-label="100% Secure and Private">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #10B981;"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    <span>100% Secure</span>
-                </div>
-
-                <a href="/compress-image" class="header-cta-btn no-mobile" id="header-try-btn" aria-label="Start using FormFix free tools">
-                    Try Free →
-                </a>
-
-                <!-- Mobile: hamburger menu -->
-                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
-                    <span class="burger-line"></span>
-                    <span class="burger-line"></span>
-                    <span class="burger-line"></span>
-                </button>
+        <div class="header-right">
+            <div class="trust-pill no-mobile">
+                <span class="dot"></span>
+                Secure Workspace
             </div>
+            <a href="/tools" class="primary-btn dashboard-btn">
+                Launch Dashboard
+            </a>
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </div>
 </header>
 
-<!-- Mobile Fullscreen Menu -->
-<div class="mobile-menu" id="mobile-menu" aria-hidden="true" role="dialog" aria-label="Navigation Menu">
-    <div class="mobile-menu-header">
-        <a href="/" class="logo-link" aria-label="FormFix Home">
-            <img src="/favicon.png?v=5" alt="FormFix" width="32" height="32" />
-            <span class="logo-text">FormFix</span>
-        </a>
-        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">✕</button>
+<div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+        <span class="logo-text">FormFix</span>
+        <button id="drawer-close">✕</button>
     </div>
-    <nav class="mobile-nav" aria-label="Mobile Navigation">
-        <ul class="mobile-nav-list">
-            {navItems.map(item => (
-                <li>
-                    <a href={item.href} class={`mobile-nav-link ${active === item.id ? 'active' : ''}`}>
-                        {item.name}
-                    </a>
-                </li>
-            ))}
-        </ul>
-        <div class="mobile-menu-footer">
-            <a href="/compress-image" class="primary-btn" style="justify-content: center;" id="mobile-cta-btn">
-                Start Free →
-            </a>
-            <p class="mobile-trust">🔒 100% Private · No Server Uploads</p>
-        </div>
+    <nav class="drawer-nav">
+        {navItems.map(item => (
+            <a href={item.href} class="drawer-link">{item.name}</a>
+        ))}
     </nav>
 </div>
-<div class="mobile-menu-overlay" id="mobile-menu-overlay" aria-hidden="true"></div>
+<div class="drawer-overlay" id="drawer-overlay"></div>
 
 <style>
-    /* ─── Announcement Bar ─── */
-    .announcement-bar {
-        background: linear-gradient(90deg, #312e81 0%, #4f46e5 40%, #7c3aed 70%, #312e81 100%);
-        background-size: 200% auto;
-        animation: ann-shimmer 6s linear infinite;
-        color: white;
-        text-align: center;
-        font-size: 0.83rem;
-        font-weight: 600;
-        padding: 9px 16px;
-        position: relative;
-        z-index: 2001;
-    }
-    @keyframes ann-shimmer {
-        from { background-position: 0% center; }
-        to   { background-position: 200% center; }
-    }
-    .announcement-bar.hidden { display: none; }
-    .ann-inner {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 0 40px;
-        position: relative;
-    }
-    .ann-new-badge {
-        background: #fbbf24;
-        color: #1e1b4b;
-        font-size: 0.62rem;
-        font-weight: 900;
-        padding: 2px 8px;
-        border-radius: 4px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        flex-shrink: 0;
-    }
-    .ann-icon { font-size: 0.95rem; flex-shrink: 0; }
-    .ann-link {
-        color: #fde68a;
-        font-weight: 800;
-        text-decoration: underline;
-        text-underline-offset: 3px;
-    }
-    .ann-link:hover { color: white; }
-    .ann-divider {
-        width: 1px; height: 16px;
-        background: rgba(255,255,255,0.25);
-        flex-shrink: 0;
-        margin: 0 4px;
-    }
-    .ann-privacy-note {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        opacity: 0.65;
-        font-size: 0.78rem;
-        font-weight: 700;
-        flex-shrink: 0;
-    }
-    .ann-close {
-        position: absolute;
-        right: 0;
-        background: rgba(255,255,255,0.15);
-        border: 1px solid rgba(255,255,255,0.2);
-        color: white;
-        width: 26px; height: 26px;
-        border-radius: 50%;
-        font-size: 0.7rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        transition: background 0.2s;
-    }
-    .ann-close:hover { background: rgba(255,255,255,0.3); }
+.prism-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s var(--spring);
+}
+.prism-header.scrolled {
+    background: rgba(255,255,255,0.95);
+    padding: 10px 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
 
-    /* ─── Header ─── */
-    .top-header {
-        position: sticky;
-        top: 0;
-        z-index: 2000;
-        background: rgba(255,255,255,0.88);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(0,0,0,0.06);
-        transition: all 0.3s ease;
-    }
-    .top-header.scrolled {
-        background: rgba(255,255,255,0.97);
-        box-shadow: 0 4px 24px -8px rgba(0,0,0,0.08);
-    }
-    .header-container {
-        padding: 0 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 68px;
-    }
-    .header-left, .nav-right, .header-actions {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
+.header-inner {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    /* ─── Logo ─── */
-    .logo-link {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-        transition: all 0.2s ease;
-    }
-    .logo-icon-wrapper {
-        width: 40px; height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .logo-icon-wrapper img { width: 100%; height: 100%; object-fit: contain; }
-    .logo-link:hover .logo-icon-wrapper { transform: rotate(-8deg) scale(1.1); }
-    .logo-text {
-        font-size: 1.5rem;
-        font-weight: 900;
-        letter-spacing: -0.05em;
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-box { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+.logo:hover .logo-box { transform: rotate(-5deg) scale(1.1); }
+.logo-text { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 1.4rem; background: var(--grad-prism); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-    /* ─── Desktop Nav ─── */
-    .nav-right { gap: 4px; }
-    .nav-links { display: flex; list-style: none; gap: 2px; margin: 0; padding: 0; }
-    .nav-link {
-        text-decoration: none;
-        color: var(--slate);
-        font-weight: 600;
-        font-size: 0.88rem;
-        padding: 8px 13px;
-        border-radius: 10px;
-        transition: all 0.15s ease;
-        position: relative;
-    }
-    .nav-link:hover { color: var(--primary); background: var(--primary-light); }
-    .nav-link.active { color: var(--primary); background: var(--primary-light); font-weight: 800; }
+.nav-list { display: flex; gap: 8px; list-style: none; }
+.nav-link { 
+    padding: 8px 16px; 
+    border-radius: var(--radius-sm); 
+    font-weight: 600; 
+    font-size: 0.95rem; 
+    color: var(--surface-500);
+    transition: 0.2s;
+}
+.nav-link:hover { color: var(--primary); background: var(--surface-200); }
+.nav-link.active { color: var(--primary); background: rgba(83,64,255,0.05); }
 
-    /* ─── CTA & Trust ─── */
-    .header-trust-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        background: rgba(16, 185, 129, 0.08);
-        border: 1px solid rgba(16, 185, 129, 0.2);
-        color: #059669;
-        border-radius: 100px;
-        font-size: 0.78rem;
-        font-weight: 800;
-    }
-    .header-cta-btn {
-        display: inline-flex;
-        align-items: center;
-        padding: 10px 20px;
-        background: linear-gradient(135deg, #4f46e5, #7c3aed);
-        color: white;
-        border-radius: 12px;
-        font-size: 0.88rem;
-        font-weight: 800;
-        text-decoration: none;
-        transition: all 0.25s ease;
-        box-shadow: 0 4px 12px rgba(79,70,229,0.25);
-        white-space: nowrap;
-    }
-    .header-cta-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(79,70,229,0.35);
-    }
+.header-right { display: flex; align-items: center; gap: 20px; }
+.trust-pill { 
+    display: inline-flex; align-items: center; gap: 8px; 
+    padding: 6px 14px; background: rgba(16,185,129,0.1); 
+    color: #059669; font-weight: 700; font-size: 0.75rem; 
+    border-radius: var(--radius-full);
+}
+.trust-pill .dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; }
 
-    /* ─── Hamburger Button ─── */
-    .mobile-menu-btn {
-        display: none;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-        width: 42px; height: 42px;
-        background: var(--bg-subtle);
-        border: 1.5px solid var(--border-light);
-        border-radius: 10px;
-        cursor: pointer;
-        padding: 8px;
-        transition: all 0.2s;
-        -webkit-tap-highlight-color: transparent;
-    }
-    .mobile-menu-btn:hover { background: var(--primary-light); border-color: var(--primary-mid); }
-    .mobile-menu-btn[aria-expanded="true"] { background: var(--primary); border-color: var(--primary); }
-    .mobile-menu-btn[aria-expanded="true"] .burger-line { background: white; }
-    .mobile-menu-btn[aria-expanded="true"] .burger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .mobile-menu-btn[aria-expanded="true"] .burger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .mobile-menu-btn[aria-expanded="true"] .burger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .burger-line {
-        width: 20px; height: 2px;
-        background: var(--dark);
-        border-radius: 3px;
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        transform-origin: center;
-    }
+.dashboard-btn { padding: 10px 20px !important; font-size: 0.9rem !important; }
 
-    /* ─── Mobile Menu Drawer ─── */
-    .mobile-menu {
-        position: fixed;
-        top: 0; right: 0;
-        width: min(360px, 100vw);
-        height: 100dvh;
-        background: white;
-        z-index: 9998;
-        display: flex;
-        flex-direction: column;
-        transform: translateX(100%);
-        transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-        box-shadow: -20px 0 60px rgba(0,0,0,0.15);
-        overflow-y: auto;
-    }
-    .mobile-menu.open {
-        transform: translateX(0);
-    }
-    .mobile-menu-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: 9997;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-        backdrop-filter: blur(4px);
-    }
-    .mobile-menu-overlay.open {
-        opacity: 1;
-        pointer-events: all;
-    }
-    .mobile-menu-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 24px;
-        border-bottom: 1.5px solid var(--border-light);
-        flex-shrink: 0;
-    }
-    .mobile-menu-close {
-        width: 36px; height: 36px;
-        background: var(--bg-subtle);
-        border: 1.5px solid var(--border);
-        border-radius: 50%;
-        font-size: 0.85rem;
-        font-weight: 800;
-        color: var(--dark);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        -webkit-tap-highlight-color: transparent;
-        transition: all 0.2s;
-    }
-    .mobile-menu-close:hover { background: var(--danger); color: white; border-color: var(--danger); }
+.menu-toggle { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; border: none; background: transparent; width: 48px; height: 48px; border-radius: var(--radius-sm); cursor: pointer; transition: background 0.2s; }
+.menu-toggle:active { background: var(--surface-200); }
+.menu-toggle span { width: 24px; height: 2px; background: var(--surface-800); border-radius: 2px; }
 
-    .mobile-nav { display: flex; flex-direction: column; padding: 20px 24px; flex: 1; gap: 4px; }
-    .mobile-nav-list { list-style: none; display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; }
-    .mobile-nav-link {
-        display: flex;
-        align-items: center;
-        padding: 16px 20px;
-        border-radius: 14px;
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: var(--dark);
-        text-decoration: none;
-        transition: all 0.15s;
-        border: 1.5px solid transparent;
-        -webkit-tap-highlight-color: transparent;
-    }
-    .mobile-nav-link:hover, .mobile-nav-link:active { background: var(--primary-light); color: var(--primary); border-color: var(--primary-mid); }
-    .mobile-nav-link.active { background: var(--primary-light); color: var(--primary); font-weight: 800; border-color: var(--primary-mid); }
+/* Drawer styles */
+.mobile-drawer { position: fixed; right: -320px; top: 0; width: 300px; height: 100vh; background: #fff; z-index: 1001; transition: 0.4s var(--spring); padding: 40px 24px; }
+.mobile-drawer.open { right: 0; }
+.drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1000; }
+.drawer-overlay.open { opacity: 1; pointer-events: all; }
+.drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+.drawer-nav { display: flex; flex-direction: column; gap: 8px; }
+.drawer-link { padding: 12px 16px; border-radius: 8px; font-weight: 700; color: var(--surface-700); text-decoration: none; }
+.drawer-link:active { background: var(--surface-200); }
 
-    .mobile-menu-footer { margin-top: auto; padding-top: 24px; border-top: 1.5px solid var(--border-light); }
-    .mobile-trust { font-size: 0.78rem; color: var(--gray); text-align: center; font-weight: 600; margin-top: 12px; }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 960px) {
-        .no-mobile { display: none !important; }
-        .desktop-nav { display: none; }
-        .mobile-menu-btn { display: flex; }
-        .header-container { height: 60px; padding: 0 16px; }
-        .logo-icon-wrapper { width: 34px; height: 34px; }
-        .logo-text { font-size: 1.3rem; }
-    }
-
-    /* Body lock when menu is open */
-    :global(body.menu-open) { overflow: hidden; }
+@media (max-width: 960px) {
+    .no-mobile { display: none; }
+    .menu-toggle { display: flex; }
+    .header-inner { height: 64px; }
+}
 </style>
 
 <script>
-    // Announcement bar dismiss
-    const annBar = document.getElementById('ann-bar');
-    const annClose = document.getElementById('ann-close-btn');
-    if (annClose && annBar) {
-        if (sessionStorage.getItem('ann-dismissed')) annBar.classList.add('hidden');
-        annClose.addEventListener('click', () => {
-            annBar.style.height = annBar.offsetHeight + 'px';
-            annBar.style.overflow = 'hidden';
-            requestAnimationFrame(() => {
-                annBar.style.height = '0';
-                annBar.style.paddingTop = '0';
-                annBar.style.paddingBottom = '0';
-            });
-            setTimeout(() => annBar.classList.add('hidden'), 350);
-            sessionStorage.setItem('ann-dismissed', '1');
-        });
-    }
-
-    // Header scroll effect
     const header = document.getElementById('main-header');
+    const toggle = document.getElementById('menu-toggle');
+    const drawer = document.getElementById('mobile-drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    const close = document.getElementById('drawer-close');
+
     window.addEventListener('scroll', () => {
-        header?.classList.toggle('scrolled', window.scrollY > 10);
-    }, { passive: true });
-
-    // Scroll progress indicator
-    const progressBar = document.createElement('div');
-    progressBar.className = 'scroll-indicator';
-    document.body.appendChild(progressBar);
-    window.addEventListener('scroll', () => {
-        const s = document.documentElement;
-        const progress = (s.scrollTop / (s.scrollHeight - s.clientHeight)) * 100;
-        progressBar.style.width = progress + '%';
-    }, { passive: true });
-
-    // Mobile menu logic
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-    const mobileMenuClose = document.getElementById('mobile-menu-close');
-
-    function openMenu() {
-        mobileMenu?.classList.add('open');
-        mobileMenuOverlay?.classList.add('open');
-        mobileMenuBtn?.setAttribute('aria-expanded', 'true');
-        mobileMenu?.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('menu-open');
-    }
-
-    function closeMenu() {
-        mobileMenu?.classList.remove('open');
-        mobileMenuOverlay?.classList.remove('open');
-        mobileMenuBtn?.setAttribute('aria-expanded', 'false');
-        mobileMenu?.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('menu-open');
-    }
-
-    mobileMenuBtn?.addEventListener('click', () => {
-        const isOpen = mobileMenu?.classList.contains('open');
-        isOpen ? closeMenu() : openMenu();
+        header?.classList.toggle('scrolled', window.scrollY > 20);
     });
-    mobileMenuClose?.addEventListener('click', closeMenu);
-    mobileMenuOverlay?.addEventListener('click', closeMenu);
 
-    // Close on escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeMenu();
+    toggle?.addEventListener('click', () => {
+        drawer?.classList.add('open');
+        overlay?.classList.add('open');
     });
+
+    [close, overlay].forEach(el => el?.addEventListener('click', () => {
+        drawer?.classList.remove('open');
+        overlay?.classList.remove('open');
+    }));
 </script>
