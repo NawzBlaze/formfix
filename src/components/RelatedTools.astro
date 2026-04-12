@@ -26,8 +26,30 @@ const allTools = [
   { id: 'circle-crop',        title: 'Circle Crop',          href: '/circle-crop',          icon: '⭕', desc: 'Perfect circular avatars' },
 ];
 
-// Filter out current tool and show 6
-const relatedTools = allTools.filter(t => t.id !== currentTool).slice(0, 6);
+// Define logical groups for interlinking
+const imageTools = ['compress', 'passport-maker', 'crop', 'resize', 'circle-crop', 'bg-remover', 'black-and-white', 'photo-to-sketch', 'blur', 'watermark', 'convert'];
+const pdfTools = ['merge-pdf', 'image-to-pdf', 'pdf-to-image', 'split-pdf', 'rotate-pdf'];
+const utilTools = ['qr-code-generator', 'password-generator', 'file-size-converter', 'percentage-calculator', 'age-calculator', 'ocr', 'resume', 'handwriting'];
+
+let relatedTools = [];
+
+if (imageTools.includes(currentTool)) {
+    // If it's an image tool, recommend other image tools first
+    relatedTools = allTools.filter(t => t.id !== currentTool && imageTools.includes(t.id)).slice(0, 5);
+    // Add one PDF tool for variety
+    relatedTools.push(allTools.find(t => t.id === 'merge-pdf'));
+} else if (pdfTools.includes(currentTool)) {
+    // If it's a PDF tool, recommend other PDF tools
+    relatedTools = allTools.filter(t => t.id !== currentTool && pdfTools.includes(t.id));
+    // Fill up to 6 with common image tools
+    if (relatedTools.length < 6) {
+        relatedTools.push(...allTools.filter(t => t.id === 'compress' || t.id === 'image-to-pdf').slice(0, 6 - relatedTools.length));
+    }
+} else {
+    // Default to a mix of popular tools
+    const popularIds = ['compress', 'merge-pdf', 'passport-maker', 'qr-code-generator', 'resume', 'bg-remover'];
+    relatedTools = allTools.filter(t => t.id !== currentTool && popularIds.includes(t.id)).slice(0, 6);
+}
 ---
 
 <section class="related-section" aria-label="Related tools">
