@@ -157,7 +157,7 @@ const customSchema = {
                     item.className = 'page-thumbnail selected shadow-sm';
                     item.dataset.index = (i - 1).toString();
                     item.innerHTML = `
-                         <img src="${canvas.toDataURL()}" />
+                         <img src="${canvas.toDataURL()}" alt="PDF segment thumbnail" />
                          <label class="p-num">Page ${i}</label>
                          <div class="sel-overlay"></div>
                          <div class="sel-tick">✔</div>
