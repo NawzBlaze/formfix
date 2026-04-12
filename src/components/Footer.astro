@@ -67,10 +67,10 @@ const YEAR = new Date().getFullYear();
 
 <style>
 .prism-footer {
-    background: #0f172a;
-    color: #94a3b8;
+    background: var(--bg-app);
+    color: var(--text-muted);
     padding-top: 80px;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid var(--border-subtle);
 }
 
 .footer-grid {
@@ -82,15 +82,15 @@ const YEAR = new Date().getFullYear();
 
 .f-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-bottom: 24px; }
 .f-logo-icon { width: 32px; height: 32px; background: var(--grad-prism); color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
-.f-logo-text { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 1.25rem; color: #fff; }
+.f-logo-text { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--text-main); }
 
 .f-tagline { font-size: 0.95rem; line-height: 1.6; max-width: 280px; margin-bottom: 24px; }
 
 .f-social-row { display: flex; gap: 16px; }
-.f-social-row a { color: #64748b; transition: 0.2s; }
-.f-social-row a:hover { color: #fff; }
+.f-social-row a { color: var(--text-muted); transition: 0.2s; }
+.f-social-row a:hover { color: var(--accent); }
 
-.f-title { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; margin-bottom: 24px; }
+.f-title { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-main); margin-bottom: 24px; }
 .f-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
 .f-list a { text-decoration: none; color: inherit; font-size: 0.95rem; transition: 0.2s; }
 .f-list a:hover { color: var(--primary); }

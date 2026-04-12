@@ -67,15 +67,15 @@ const navItems = [
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: rgba(255,255,255,0.7);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    transition: all 0.3s var(--spring);
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 .prism-header.scrolled {
-    background: rgba(255,255,255,0.95);
-    padding: 10px 0;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    background: rgba(255,255,255,0.97);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
 }
 
 .header-inner {
@@ -88,25 +88,26 @@ const navItems = [
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .logo-box { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
 .logo:hover .logo-box { transform: rotate(-5deg) scale(1.1); }
-.logo-text { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 1.4rem; background: var(--grad-prism); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.logo-text { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 1.4rem; color: #000; letter-spacing: -0.03em; }
 
 .nav-list { display: flex; gap: 8px; list-style: none; }
-.nav-link { 
-    padding: 8px 16px; 
-    border-radius: var(--radius-sm); 
-    font-weight: 600; 
-    font-size: 0.95rem; 
-    color: var(--surface-500);
+.nav-link {
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-muted);
     transition: 0.2s;
+    text-decoration: none;
 }
-.nav-link:hover { color: var(--primary); background: var(--surface-200); }
-.nav-link.active { color: var(--primary); background: rgba(83,64,255,0.05); }
+.nav-link:hover { color: #000; background: var(--surface-200); }
+.nav-link.active { color: #000; background: var(--surface-200); }
 
 .header-right { display: flex; align-items: center; gap: 20px; }
-.trust-pill { 
-    display: inline-flex; align-items: center; gap: 8px; 
-    padding: 6px 14px; background: rgba(16,185,129,0.1); 
-    color: #059669; font-weight: 700; font-size: 0.75rem; 
+.trust-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; background: rgba(16,185,129,0.1);
+    color: #059669; font-weight: 700; font-size: 0.75rem;
     border-radius: var(--radius-full);
 }
 .trust-pill .dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; }
@@ -117,15 +118,15 @@ const navItems = [
 .menu-toggle:active { background: var(--surface-200); }
 .menu-toggle span { width: 24px; height: 2px; background: var(--surface-800); border-radius: 2px; }
 
-/* Drawer styles */
-.mobile-drawer { position: fixed; right: -320px; top: 0; width: 300px; height: 100vh; background: #fff; z-index: 1001; transition: 0.4s var(--spring); padding: 40px 24px; }
+/* Mobile Drawer */
+.mobile-drawer { position: fixed; right: -320px; top: 0; width: 300px; height: 100vh; background: #fff; z-index: 1001; transition: right 0.4s cubic-bezier(0.16,1,0.3,1); padding: 40px 24px; border-left: 1px solid var(--border-subtle); }
 .mobile-drawer.open { right: 0; }
 .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1000; }
 .drawer-overlay.open { opacity: 1; pointer-events: all; }
 .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
 .drawer-nav { display: flex; flex-direction: column; gap: 8px; }
-.drawer-link { padding: 12px 16px; border-radius: 8px; font-weight: 700; color: var(--surface-700); text-decoration: none; }
-.drawer-link:active { background: var(--surface-200); }
+.drawer-link { padding: 12px 16px; border-radius: 8px; font-weight: 700; color: #374151; text-decoration: none; }
+.drawer-link:hover { background: var(--surface-200); }
 
 @media (max-width: 960px) {
     .no-mobile { display: none; }
@@ -133,6 +134,7 @@ const navItems = [
     .header-inner { height: 64px; }
 }
 </style>
+
 
 <script>
     const header = document.getElementById('main-header');
@@ -155,3 +157,4 @@ const navItems = [
         overlay?.classList.remove('open');
     }));
 </script>
+

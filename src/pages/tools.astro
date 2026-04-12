@@ -74,25 +74,47 @@ const allToolsFlat = categories.flatMap(c => c.tools);
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} active="tools" canonicalPath="/tools">
 
 <!-- DASHBOARD HEADER -->
-<div class="dashboard-shell animate-fade-up">
+<div class="dashboard-shell">
     <div class="container">
         
-        <header class="dashboard-header">
+        <header class="dashboard-header animate-in">
             <div class="header-titles">
                 <h1>Workspace</h1>
                 <p class="greeting-line">Welcome back — pick up right where you left off.</p>
             </div>
             
-            <div class="search-filter-wrap">
-                <div class="search-box">
-                    <span class="search-icon">🔍</span>
-                    <input type="search" id="tool-search" placeholder="Search perfectly optimized tools..." aria-label="Search tools" />
+            <div class="header-stats">
+                <div class="stat-group">
+                    <span class="stat-val">240k+</span>
+                    <span class="stat-lbl">Processed</span>
+                </div>
+                <div class="stat-group">
+                    <span class="stat-val">100%</span>
+                    <span class="stat-lbl">Private</span>
                 </div>
             </div>
         </header>
 
+        <!-- QUICK ACTIONS BAR -->
+        <div class="quick-bar animate-in delay-100">
+            <span class="bar-lbl">Quick Actions:</span>
+            <div class="bar-actions">
+                <a href="/compress-image-to-20kb" class="bar-link">20KB Target</a>
+                <a href="/compress-image-to-50kb" class="bar-link">50KB Target</a>
+                <a href="/passport-size-photo" class="bar-link">Passport Photo</a>
+                <a href="/resume-builder" class="bar-link">New Resume</a>
+            </div>
+        </div>
+
+        <div class="search-filter-row animate-in delay-100">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="search" id="tool-search" placeholder="Search 30+ tools..." aria-label="Search tools" />
+            </div>
+        </div>
+
         <!-- DASHBOARD TOP GRID (Hierarchy & Recents) -->
-        <section class="top-dashboard-section" id="top-dashboard-area">
+        <section class="top-dashboard-section animate-in delay-200" id="top-dashboard-area">
             <div class="quick-actions-row">
                 <!-- 1. Featured Tool (Prominent) -->
                 <div class="featured-column">
@@ -120,7 +142,33 @@ const allToolsFlat = categories.flatMap(c => c.tools);
                             <p>No tools used recently.</p>
                             <span>Your history will appear here.</span>
                         </div>
-                        <!-- JS WILL POPULATE THIS -->
+                    </div>
+
+                    <div class="activity-feed mt-32">
+                        <h3 class="section-lbl">Activity Hub</h3>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <span class="active-dot"></span>
+                                <div class="item-text">
+                                    <strong>2.4MB compressed</strong>
+                                    <span>2 mins ago</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <span class="active-dot"></span>
+                                <div class="item-text">
+                                    <strong>PDF merged securely</strong>
+                                    <span>15 mins ago</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <span class="active-dot"></span>
+                                <div class="item-text">
+                                    <strong>QR Code generated</strong>
+                                    <span>1 hour ago</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -180,9 +228,8 @@ const allToolsFlat = categories.flatMap(c => c.tools);
 <style>
 /* ───── GLOBALS & TYPE ───── */
 .dashboard-shell {
-    background: #fafafa;
-    min-height: 100vh;
-    padding: 60px 0 120px 0;
+    background: var(--bg-app);
+    padding: 60px 0;
 }
 .section-lbl {
     font-size: 0.9rem;
@@ -197,27 +244,53 @@ const allToolsFlat = categories.flatMap(c => c.tools);
 .dashboard-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 48px;
+    align-items: center;
+    margin-bottom: 24px;
     gap: 32px;
-    flex-wrap: wrap;
 }
 .header-titles h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 800;
-    color: #000;
-    letter-spacing: -0.03em;
-    margin-bottom: 8px;
+    color: var(--text-main);
+    letter-spacing: -0.04em;
+    margin-bottom: 4px;
 }
 .greeting-line {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--surface-600);
     font-weight: 500;
 }
-.search-filter-wrap { flex-grow: 1; max-width: 400px; width: 100%; }
+.header-stats { display: flex; gap: 32px; }
+.stat-group { display: flex; flex-direction: column; align-items: flex-end; }
+.stat-val { font-size: 1.25rem; font-weight: 800; color: var(--accent); }
+.stat-lbl { font-size: 0.75rem; font-weight: 700; color: var(--surface-400); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Quick Bar */
+.quick-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--surface-100);
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+    margin-bottom: 32px;
+}
+.bar-lbl { font-size: 0.85rem; font-weight: 700; color: var(--surface-500); }
+.bar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.bar-link {
+    font-size: 0.85rem; font-weight: 600; color: var(--surface-700);
+    padding: 6px 14px; background: var(--surface-50); 
+    border-radius: 99px; text-decoration: none; border: 1px solid var(--surface-200);
+    transition: 0.2s;
+}
+.bar-link:hover { background: #000; color: #fff; border-color: #000; transform: translateY(-1px); }
+
+.search-filter-row { margin-bottom: 40px; }
 .search-box {
     position: relative;
     width: 100%;
+    max-width: 600px;
 }
 .search-icon {
     position: absolute;
@@ -253,17 +326,18 @@ const allToolsFlat = categories.flatMap(c => c.tools);
 
 /* Cards Base */
 .dashboard-card {
-    background: #fff;
+    background: var(--surface-100);
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
     text-decoration: none;
     display: flex;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.02);
+    box-shadow: var(--shadow-sm);
 }
 .dashboard-card:hover {
-    border-color: var(--surface-300);
-    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.08);
+    border-color: var(--accent);
+    background: var(--surface-200);
+    box-shadow: var(--shadow-card);
     transform: translateY(-4px);
 }
 .action-btn {
@@ -275,10 +349,8 @@ const allToolsFlat = categories.flatMap(c => c.tools);
 /* Featured Card */
 .featured-card {
     flex-direction: column;
-    justify-content: space-between;
     padding: 40px;
     height: 100%;
-    min-height: 280px;
     border: 1px solid var(--surface-300);
 }
 .feat-content { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 32px; }
@@ -287,7 +359,7 @@ const allToolsFlat = categories.flatMap(c => c.tools);
 .feat-text p { font-size: 1.1rem; color: var(--surface-600); line-height: 1.6; }
 .action-btn.primary { background: #000; color: #fff; width: fit-content; padding: 14px 32px; }
 
-/* Recents */
+/* Recents & Activity */
 .recent-column { display: flex; flex-direction: column; }
 .recent-header { display: flex; justify-content: space-between; align-items: center; }
 .clear-btn { background: none; border: none; color: var(--surface-400); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 16px; }
@@ -295,10 +367,17 @@ const allToolsFlat = categories.flatMap(c => c.tools);
 .recent-grid {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    flex-grow: 1;
+    gap: 12px;
 }
-.recent-grid.empty { justify-content: center; align-items: center; background: transparent; border: 2px dashed var(--surface-300); border-radius: 16px; }
+.recent-grid.empty { justify-content: center; align-items: center; background: transparent; border: 2px dashed var(--surface-300); border-radius: 16px; min-height: 120px; }
+
+.activity-list { display: flex; flex-direction: column; gap: 16px; }
+.activity-item { display: flex; align-items: center; gap: 12px; }
+.active-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
+.item-text { display: flex; flex-direction: column; }
+.item-text strong { font-size: 0.85rem; color: var(--surface-800); }
+.item-text span { font-size: 0.75rem; color: var(--surface-400); }
+
 .empty-state { text-align: center; color: var(--surface-500); }
 .empty-state p { font-weight: 600; color: var(--surface-600); margin-bottom: 4px; }
 .empty-state span { font-size: 0.9rem; }
@@ -379,7 +458,6 @@ const allToolsFlat = categories.flatMap(c => c.tools);
     flex-direction: column;
     padding: 24px;
     gap: 20px;
-    justify-content: space-between;
     height: 100%;
 }
 .card-top { display: flex; gap: 16px; align-items: flex-start; }

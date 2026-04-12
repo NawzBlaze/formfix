@@ -77,6 +77,7 @@ const topTools = [
         icon: '🎯',
         href: '/compress-image',
         desc: 'Reduce photo file size accurately to specific targets like 20KB or 50KB without noticeable quality loss.',
+        featured: true
     },
     {
         title: 'PDF Merger',
@@ -123,70 +124,81 @@ const faqs = [
 <!-- 🌟 FOCUSED HERO SECTION -->
 <section class="saas-hero">
     <div class="container hero-container">
-        <div class="hero-content animate-fade-up">
+        <div class="hero-content animate-in">
 
             <h1 class="hero-title">
-                Compress Images to <span class="text-gradient">Exact KB Size</span> 
-                — No Uploads, No Quality Loss
+                Compress Images to Exact KB Size — <span class="text-gradient">No Uploads, No Quality Loss</span>
             </h1>
             
             <p class="hero-subtitle">
                 A professional-grade toolkit that processes your files securely in your browser. Perfectly exact sizing for web portals.
             </p>
 
-            <div class="hero-cta-box">
-                <a href="/compress-image" class="primary-btn hero-btn btn-shadow-hover">
-                    Start Compressing Free <span class="moving-arrow">→</span>
+            <div class="hero-cta-box mt-32 animate-in delay-100">
+                <a href="/compress-image" class="primary-btn hero-btn btn-elevate">
+                    Start Compressing Free <span class="btn-arrow">→</span>
                 </a>
-                <p class="cta-note">✓ Used by students, developers & professionals daily</p>
+                <p class="hero-trust-signal">✓ Used by students, recruiters & professionals daily</p>
             </div>
         </div>
 
-        <div class="hero-visual animate-fade-up delay-200">
-            <div class="product-preview-card box-depth" id="demo-card">
+        <div class="hero-visual animate-in delay-200">
+            <div class="product-preview-card box-depth signature-card" id="demo-card">
                 <div class="preview-header">
-                    <span class="mac-dot r"></span>
-                    <span class="mac-dot y"></span>
-                    <span class="mac-dot g"></span>
+                    <div class="window-dots">
+                        <span class="dot-red"></span>
+                        <span class="dot-yellow"></span>
+                        <span class="dot-green"></span>
+                    </div>
                 </div>
                 
                 <!-- DEFAULT STATE -->
                 <div class="preview-body" id="demo-default">
-                    <div class="preview-upload-zone interactive" id="demo-drop">
-                        <span class="upload-icon pulse-soft">📷</span>
+                    <div class="preview-upload-zone" id="demo-drop">
+                        <div class="upload-icon-box">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        </div>
                         <div class="upload-label">Drag & Drop Image</div>
                     </div>
                     <div class="preview-controls">
                         <div class="control-row">
                             <span class="control-label">Target Size:</span>
-                            <div class="control-input range-slider">
+                            <div class="control-input">
                                 <span class="kb-val">20 KB</span>
                             </div>
                         </div>
-                        <button class="preview-btn active-state" id="demo-btn">Optimize Image</button>
+                        <button class="preview-btn active-state brand-btn" id="demo-btn">
+                            Optimize Image
+                        </button>
                     </div>
                 </div>
 
                 <!-- LOADING STATE -->
                 <div class="preview-body hidden" id="demo-loading">
                     <div class="loading-state text-center">
-                        <div class="spinner"></div>
-                        <p class="loading-text">Compressing locally on device...</p>
-                        <div class="progress-bar"><div class="progress-fill"></div></div>
+                        <div class="fun-spinner"></div>
+                        <p class="loading-text">Processing locally...</p>
+                        <div class="progress-track"><div class="progress-fill"></div></div>
                     </div>
                 </div>
 
                 <!-- SUCCESS STATE -->
                 <div class="preview-body hidden" id="demo-success">
                     <div class="success-state text-center">
-                        <div class="success-icon">✅</div>
-                        <h4 class="success-title">Optimization Complete!</h4>
+                        <h4 class="success-title">Compression Complete</h4>
                         <div class="stat-compare">
-                            <span class="stat-old">2.4 MB</span>
-                            <span class="stat-arr">→</span>
-                            <span class="stat-new text-glow">19.8 KB</span>
+                            <div class="stat-box">
+                                <span class="stat-label">Original</span>
+                                <span class="stat-old">2.4 MB</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Result</span>
+                                <span class="stat-new">19.8 KB</span>
+                            </div>
                         </div>
-                        <button class="preview-btn success-btn" id="demo-reset">Download & Try Another</button>
+                        <button class="preview-btn success-btn" id="demo-reset">
+                            Download File
+                        </button>
                     </div>
                 </div>
 
@@ -196,55 +208,52 @@ const faqs = [
 </section>
 
 <!-- 🛠️ BENTO TOOLS GRID -->
-<section class="top-tools-section section-spacer-sm">
+<section class="top-tools-section section-spacer bg-soft">
     <div class="container">
-        <div class="section-title-wrap center animate-fade-up">
+        <div class="section-title-wrap center">
             <h2>Essential Web Tools</h2>
         </div>
 
-        <div class="bento-grid animate-fade-up">
-            <a href={topTools[0].href} class="clean-tool-card featured hover-depth">
-                <div class="tool-content-wrap">
-                    <div class="tool-head">
-                        <span class="tool-icon lg">{topTools[0].icon}</span>
-                        <h3>{topTools[0].title}</h3>
-                    </div>
-                    <p>{topTools[0].desc}</p>
+        <div class="bento-grid">
+            <a href={topTools[0].href} class="clean-tool-card featured">
+                <span class="tool-icon large">{topTools[0].icon}</span>
+                <div class="tool-head">
+                    <h3>{topTools[0].title}</h3>
                 </div>
-                <span class="action-arrow">→</span>
+                <p>{topTools[0].desc}</p>
+                <div class="featured-arrow">→</div>
             </a>
-
-            <div class="secondary-bento">
-                <a href={topTools[1].href} class="clean-tool-card hover-depth">
-                    <div class="tool-head">
-                        <span class="tool-icon">{topTools[1].icon}</span>
+            <div class="bento-vertical-stack">
+                <a href={topTools[1].href} class="clean-tool-card horizontal">
+                    <span class="tool-icon">{topTools[1].icon}</span>
+                    <div class="tool-content">
                         <h3>{topTools[1].title}</h3>
+                        <p>{topTools[1].desc}</p>
                     </div>
-                    <p>{topTools[1].desc}</p>
                 </a>
-                <a href={topTools[2].href} class="clean-tool-card hover-depth">
-                    <div class="tool-head">
-                        <span class="tool-icon">{topTools[2].icon}</span>
+                <a href={topTools[2].href} class="clean-tool-card horizontal">
+                    <span class="tool-icon">{topTools[2].icon}</span>
+                    <div class="tool-content">
                         <h3>{topTools[2].title}</h3>
+                        <p>{topTools[2].desc}</p>
                     </div>
-                    <p>{topTools[2].desc}</p>
                 </a>
             </div>
         </div>
 
-        <div class="all-tools-link animate-fade-up mt-48">
+        <div class="all-tools-link mt-32">
             <a href="/tools" class="secondary-btn">View All 30+ Free Tools →</a>
         </div>
     </div>
 </section>
 
 <!-- ⚡ HOW IT WORKS -->
-<section class="workflow-section section-spacer">
+<section class="workflow-section section-spacer bg-light">
     <div class="container">
-        <div class="section-title-wrap center animate-fade-up">
+        <div class="section-title-wrap center">
             <h2>Frictionless Workflow</h2>
         </div>
-        <div class="workflow-grid animate-fade-up">
+        <div class="workflow-grid">
             {howItWorks.map(step => (
                 <div class="workflow-step">
                     <div class="step-num">{step.step}</div>
@@ -256,18 +265,27 @@ const faqs = [
     </div>
 </section>
 
-<!-- 🛡️ TRUST SECTION -->
-<section class="trust-section section-spacer">
+<!-- 🛡️ TRUST SECTION (Dark Palette) -->
+<section class="trust-section-premium section-spacer">
     <div class="container">
-        <div class="trust-banner box-glow animate-fade-up">
-            <div class="trust-content">
+        <div class="trust-grid-layout">
+            <div class="trust-copy">
                 <h2>Zero-Persistence Architecture.</h2>
                 <p>FormFix fundamentally respects your privacy. Every action—compressing photos, merging PDFs, generating signatures—happens <strong>locally inside your web browser</strong> via modern JavaScript APIs. We never receive, process, or store your personal files on our servers.</p>
             </div>
-            <div class="trust-stats">
-                <div class="stat-pill"><span class="stat-icon">🛡️</span> <strong>100%</strong> Client-Side</div>
-                <div class="stat-pill"><span class="stat-icon">⚡</span> <strong>Instant</strong> Offline Execution</div>
-                <div class="stat-pill"><span class="stat-icon">🔒</span> <strong>Zero</strong> Server Logs</div>
+            <div class="trust-badges">
+                <div class="premium-stat-card">
+                    <span class="p-icon">🛡️</span>
+                    <div class="p-text"><strong>100%</strong> Client-Side</div>
+                </div>
+                <div class="premium-stat-card">
+                    <span class="p-icon">⚡</span>
+                    <div class="p-text"><strong>Instant</strong> Offline Execution</div>
+                </div>
+                <div class="premium-stat-card">
+                    <span class="p-icon">🔒</span>
+                    <div class="p-text"><strong>Zero</strong> Server Logs</div>
+                </div>
             </div>
         </div>
     </div>
@@ -276,7 +294,7 @@ const faqs = [
 <!-- 🌍 GLOBAL SEO DISCOVERY FOOTER -->
 <section class="niche-tools-section">
     <div class="container">
-        <div class="discovery-grid animate-fade-up">
+        <div class="discovery-grid">
             
             <div class="discovery-col">
                 <h4>Exact KB Targeting</h4>
@@ -314,10 +332,10 @@ const faqs = [
 <!-- ❓ FAQS -->
 <section class="faq-section section-spacer" id="faq">
     <div class="container">
-        <div class="section-title-wrap center animate-fade-up">
+        <div class="section-title-wrap center">
             <h2>Frequently Asked Questions</h2>
         </div>
-        <div class="faq-list animate-fade-up">
+        <div class="faq-list">
             {faqs.map(item => (
                 <details class="minimal-faq">
                     <summary>{item.q} <span class="indicator">+</span></summary>
@@ -341,242 +359,293 @@ const faqs = [
 .section-title-wrap { margin-bottom: 48px; }
 .section-title-wrap.center { text-align: center; }
 .section-title-wrap h2 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 12px; }
-.section-title-wrap p { font-size: 1.15rem; color: var(--surface-500); max-width: 600px; margin: 0 auto; }
+.hero-trust-signal {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 20px;
+}
+.btn-arrow { margin-left: 8px; font-weight: 400; transition: margin 0.2s; }
+.hero-btn:hover .btn-arrow { margin-left: 12px; }
 
-/* ───── HERO SECTION ───── */
+/* ───── CORE LAYOUT OVERRIDES ───── */
 .saas-hero {
     position: relative;
-    padding: 100px 0 60px;
+    padding: 80px 0 60px;
     background: var(--bg-app);
-    overflow: hidden;
     border-bottom: 1px solid var(--border-subtle);
 }
 
 .hero-container {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 64px;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
     align-items: center;
 }
 
 .hero-title {
-    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-size: 3.5rem;
     font-weight: 800;
-    line-height: 1.05;
+    line-height: 1.1;
     letter-spacing: -0.04em;
-    color: #000;
-    margin-bottom: 20px;
+    color: var(--text-main);
+    margin-bottom: 24px;
 }
 
 .text-gradient {
-    background: linear-gradient(135deg, #111 0%, #666 100%);
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    border-bottom: 4px solid #111;
-    padding-bottom: 4px;
+    background-clip: text;
 }
 
-.hero-subtitle {
-    font-size: 1.25rem;
-    color: var(--surface-600);
-    line-height: 1.6;
-    margin-bottom: 40px;
-    max-width: 480px;
-}
-
-.hero-btn {
-    height: 56px;
-    padding: 0 40px;
-    font-size: 1.1rem;
-    border-radius: 8px;
-    width: auto;
-    transition: all 0.3s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-.btn-shadow-hover:hover {
-    box-shadow: 0 14px 24px -10px rgba(0,0,0,0.3);
-    transform: translateY(-2px);
-}
-.moving-arrow { display: inline-block; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); margin-left: 8px; }
-.hero-btn:hover .moving-arrow { transform: translateX(6px); }
-
-.cta-note {
-    font-size: 0.9rem;
-    color: var(--surface-500);
-    margin-top: 16px;
-    font-weight: 600;
-}
-
-/* ───── HERO VISUAL PREVIEW & INTERACTION ───── */
-.box-depth {
-    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05);
-}
+/* ───── HERO VISUAL PREVIEW ───── */
 .product-preview-card {
-    background: #ffffff;
+    background: var(--surface-100);
     border-radius: 12px;
-    overflow: hidden;
+    border: 1px solid var(--border-subtle);
     max-width: 440px;
     margin-left: auto;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
 }
 
 .preview-header {
-    background: #fdfdfd;
-    padding: 16px;
-    display: flex; gap: 8px;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    background: var(--surface-50);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
 }
-.mac-dot { width: 10px; height: 10px; border-radius: 50%; }
-.mac-dot.r { background: #ff5f56; }
-.mac-dot.y { background: #ffbd2e; }
-.mac-dot.g { background: #27c93f; }
 
-.preview-body { padding: 32px; }
+.window-dots {
+    display: flex;
+    gap: 6px;
+}
+.window-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.preview-title-bar { font-size: 0.75rem; font-weight: 700; color: var(--surface-600); text-transform: uppercase; letter-spacing: 0.05em; }
+
+.preview-body { padding: 24px; }
 .preview-upload-zone {
     border: 2px dashed var(--surface-300);
     border-radius: 8px;
-    background: var(--surface-100);
+    background: #fafafa;
     height: 160px;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 12px;
-    margin-bottom: 32px;
-    transition: 0.3s;
+    margin-bottom: 24px;
+    transition: all 0.2s;
+    cursor: pointer;
 }
-.preview-upload-zone.interactive:hover {
-    border-color: #000;
-    background: #fafafa;
+.preview-upload-zone:hover {
+    border-color: var(--accent);
+    background: #fff;
 }
-.upload-icon { font-size: 2.2rem; opacity: 0.8; }
-.pulse-soft { animation: floatIcon 3s ease-in-out infinite; }
-@keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.upload-icon-box {
+    margin-bottom: 12px;
+    color: var(--surface-400);
+}
+.upload-label { font-weight: 700; color: var(--text-main); font-size: 0.95rem; }
 
-.upload-label { font-weight: 600; color: #000; font-size: 0.95rem; }
+.control-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.control-label { font-size: 0.85rem; font-weight: 600; color: var(--surface-600); }
+.control-input { background: var(--bg-app); border: 1px solid var(--border-subtle); padding: 6px 12px; border-radius: 4px; font-weight: 700; font-size: 0.9rem; }
 
-.control-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.control-label { font-size: 0.9rem; font-weight: 600; color: var(--surface-600); }
-.control-input { background: #fff; border: 1px solid var(--border-subtle); padding: 8px 16px; border-radius: 6px; font-weight: 800; font-size: 0.95rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-
-.preview-btn { width: 100%; border: none; background: #000; color: #fff; padding: 14px; text-align: center; border-radius: 8px; font-weight: 600; font-size: 0.95rem; transition: 0.2s; cursor: pointer; }
-.preview-btn:hover { background: #222; transform: translateY(-1px); box-shadow: 0 6px 12px -4px rgba(0,0,0,0.2); }
+.preview-btn { width: 100%; border: none; padding: 12px; text-align: center; border-radius: 6px; font-weight: 700; font-size: 0.95rem; cursor: pointer; }
+.brand-btn { background: var(--text-main); color: var(--bg-app); }
+.brand-btn:hover { background: var(--surface-800); }
 
 /* Interactive Demo Core */
 .hidden { display: none !important; }
-.loading-state { padding: 32px 0; }
-.spinner { width: 40px; height: 40px; border: 4px solid var(--surface-200); border-top-color: #000; border-radius: 50%; margin: 0 auto 24px auto; animation: spin 1s infinite linear; }
+.loading-state { padding: 24px 0; }
+.fun-spinner { width: 32px; height: 32px; border: 3px solid var(--surface-200); border-top-color: var(--text-main); border-radius: 50%; margin: 0 auto 16px auto; animation: spin 0.8s linear infinite; }
 @keyframes spin { 100% { transform: rotate(360deg); } }
-.loading-text { font-weight: 600; color: var(--surface-600); margin-bottom: 24px; }
-.progress-bar { height: 8px; background: var(--surface-200); border-radius: 4px; overflow: hidden; width: 80%; margin: 0 auto; }
-.progress-fill { height: 100%; background: #000; width: 0%; transition: width 0.3s ease; }
+.loading-text { font-weight: 600; color: var(--surface-700); font-size: 0.95rem; }
+.progress-track { height: 4px; background: var(--surface-200); border-radius: 2px; overflow: hidden; width: 100%; margin-top: 16px; }
+.progress-fill { height: 100%; width: 0%; background: var(--text-main); transition: width 0.1s linear; }
 
-.success-state { padding: 16px 0; }
-.success-icon { font-size: 3rem; margin-bottom: 16px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-@keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-.success-title { font-size: 1.3rem; font-weight: 800; color: #000; margin-bottom: 24px; }
-.stat-compare { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 32px; background: var(--surface-100); padding: 16px; border-radius: 12px; }
-.stat-old { color: var(--surface-500); text-decoration: line-through; font-weight: 600; }
-.stat-arr { color: var(--surface-400); font-weight: bold; }
-.stat-new { color: #000; font-weight: 800; font-size: 1.2rem; }
-.text-glow { text-shadow: 0 0 20px rgba(0, 112, 243, 0.3); color: #0070f3; }
-.success-btn { background: #0070f3; }
-.success-btn:hover { background: #005bb5; }
+.success-state { padding: 8px 0; }
+.success-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; }
+.stat-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; padding: 16px; background: var(--surface-50); border-radius: 6px; }
+.stat-box { display: flex; flex-direction: column; gap: 2px; }
+.stat-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; color: var(--surface-500); }
+.stat-old { color: var(--surface-400); text-decoration: line-through; font-size: 0.9rem; }
+.stat-new { font-weight: 800; font-size: 1.1rem; color: var(--text-main); }
+.success-btn { background: var(--success); color: var(--bg-app); }
 
 /* ───── BENTO TOOLS GRID ───── */
-.top-tools-section { background: var(--surface-100); }
 .bento-grid {
     display: grid;
-    grid-template-columns: 1.4fr 0.8fr;
-    gap: 32px;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
     margin-bottom: 48px;
 }
-.secondary-bento {
+.bento-vertical-stack {
     display: grid;
     grid-template-rows: 1fr 1fr;
-    gap: 32px;
+    gap: 24px;
 }
 .clean-tool-card {
-    background: #fff;
-    border: 1px solid var(--border-subtle);
+    background: var(--surface-100);
+    border: 1px solid #eee;
     padding: 32px;
-    border-radius: 16px;
+    border-radius: 12px;
     text-decoration: none;
-    transition: all 0.3s var(--ease-in-out);
-    display: flex; flex-direction: column; justify-content: center;
+    transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+    display: flex; flex-direction: column;
     position: relative;
+    overflow: hidden;
 }
-.hover-depth:hover {
-    border-color: rgba(0,0,0,0.2);
-    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.08);
+.clean-tool-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.06);
     transform: translateY(-4px);
 }
-.tool-icon { font-size: 1.8rem; display: block; margin-bottom: 16px; }
-.tool-icon.lg { font-size: 2.5rem; }
-.tool-head h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 12px; color: #000; }
-.clean-tool-card p { font-size: 1rem; color: var(--surface-600); line-height: 1.6; }
+.clean-tool-card.featured { justify-content: flex-start; min-height: 380px; }
+.clean-tool-card.horizontal { flex-direction: row; gap: 20px; align-items: center; padding: 24px 32px; }
+.tool-icon { font-size: 1.5rem; color: var(--accent); }
+.tool-icon.large { font-size: 2.5rem; margin-bottom: 24px; }
+.tool-head h3, .tool-content h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main); letter-spacing: -0.02em; }
+.clean-tool-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+.featured-arrow { position: absolute; bottom: 32px; right: 32px; font-size: 1.5rem; color: #eee; transition: 0.3s; }
+.clean-tool-card:hover .featured-arrow { color: var(--accent); transform: translateX(8px); }
+.action-arrow { display: none; }
 
-.clean-tool-card.featured {
-    padding: 48px;
-    justify-content: space-between;
+.all-tools-link { 
+    text-align: center; 
+    display: flex;
+    justify-content: center;
 }
-.clean-tool-card.featured h3 { font-size: 1.75rem; }
-.action-arrow { position: absolute; right: 48px; bottom: 48px; font-size: 1.5rem; color: var(--surface-400); transition: 0.3s; }
-.clean-tool-card.featured:hover .action-arrow { color: #000; transform: translateX(4px); }
-
-.all-tools-link { text-align: center; }
+.all-tools-link .secondary-btn {
+    background: #fff;
+    border: 1px solid var(--border-subtle);
+    padding: 12px 24px;
+    border-radius: 99px;
+    font-weight: 700;
+    color: var(--text-main);
+    text-decoration: none;
+    transition: 0.2s;
+}
+.all-tools-link .secondary-btn:hover {
+    background: var(--surface-50);
+    transform: translateY(-2px);
+}
 
 /* ───── WORKFLOW ───── */
-.workflow-section { background: #fff; }
+.workflow-section { background: var(--bg-app); }
 .workflow-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 48px;
 }
 .workflow-step { position: relative; }
-.step-num { font-size: 1rem; font-weight: 800; color: #000; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 8px; margin-bottom: 24px; }
-.workflow-step h3 { font-size: 1.25rem; margin-bottom: 12px; font-weight: 800; color: #000; }
-.workflow-step p { color: var(--surface-600); line-height: 1.6; }
+.step-num { font-size: 1rem; font-weight: 800; color: var(--text-main); border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 8px; margin-bottom: 24px; }
+.workflow-step h3 { font-size: 1.25rem; margin-bottom: 12px; font-weight: 800; color: var(--text-main); }
+.workflow-step p { color: var(--text-muted); line-height: 1.6; }
 
 /* ───── TRUST SECTION ───── */
-.trust-section { background: linear-gradient(180deg, #fff 0%, #111 60%); padding-top: 40px; padding-bottom: 100px; }
-.trust-banner {
-    background: #111;
+.trust-section-premium { 
+    background: #111111; 
+    padding: 100px 0;
     color: #fff;
-    border-radius: 20px;
-    padding: 64px 80px;
-    display: flex;
-    justify-content: space-between;
+}
+.trust-grid-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 80px;
     align-items: center;
-    gap: 64px;
-    border: 1px solid rgba(255,255,255,0.1);
 }
-.box-glow {
-    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7), 0 0 40px -10px rgba(255, 255, 255, 0.1);
+.trust-copy h2 { 
+    font-size: 2.5rem; 
+    font-weight: 800;
+    margin-bottom: 20px; 
+    letter-spacing: -0.04em;
+    color: #fff;
 }
-.trust-content h2 { color: #fff; font-size: 2.25rem; margin-bottom: 20px; letter-spacing: -0.03em; }
-.trust-content p { font-size: 1.15rem; color: rgba(255,255,255,0.7); line-height: 1.7; max-width: 540px; }
-.trust-stats { display: flex; flex-direction: column; gap: 16px; }
-.stat-pill { background: rgba(255,255,255,0.05); padding: 16px 24px; border-radius: 8px; font-size: 1rem; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.8); }
-.stat-pill strong { color: #fff; }
-.stat-icon { font-size: 1.25rem; }
+.trust-copy p { 
+    font-size: 1.1rem; 
+    color: #999; 
+    line-height: 1.7; 
+    max-width: 540px; 
+}
+.trust-badges { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px; 
+}
+.premium-stat-card {
+    background: #1a1a1a;
+    padding: 16px 24px;
+    border-radius: 12px;
+    border: 1px solid #222;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: 0.3s;
+}
+.premium-stat-card:hover { border-color: #333; background: #222; }
+.premium-stat-card .p-icon { font-size: 1.2rem; }
+.premium-stat-card .p-text { font-size: 0.95rem; font-weight: 600; color: #ccc; }
+.premium-stat-card strong { color: #fff; }
 
 /* ───── SEO DISCOVERY FOOTER ───── */
-.niche-tools-section { padding: 64px 0; background: #fff; border-top: 1px solid var(--border-subtle); }
+.niche-tools-section { padding: 64px 0; background: var(--surface-50); border-top: 1px solid var(--border-subtle); }
 .discovery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; max-width: 1000px; margin: 0 auto; }
-.discovery-col h4 { font-size: 1rem; color: #000; margin-bottom: 20px; font-weight: 800; }
+.discovery-col h4 { font-size: 1rem; color: var(--text-main); margin-bottom: 20px; font-weight: 800; }
 .discovery-links { display: flex; flex-direction: column; gap: 12px; }
-.text-link { color: var(--surface-600); font-size: 0.95rem; font-weight: 600; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px; transition: 0.2s; }
-.text-link:hover { color: #000; text-decoration-color: #000; }
+.text-link { color: var(--text-muted); font-size: 0.95rem; font-weight: 600; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px; transition: 0.2s; }
+.text-link:hover { color: var(--text-main); text-decoration-color: var(--accent); }
 
 /* ───── FAQS ───── */
-.faq-section { background: var(--surface-100); }
-.faq-list { max-width: 800px; margin: 0 auto; background: #fff; border-radius: 12px; border: 1px solid var(--border-subtle); overflow: hidden; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05); }
-.minimal-faq { border-bottom: 1px solid var(--border-subtle); }
+.faq-section { background: #fff; border-top: 1px solid var(--border-subtle); }
+.faq-list { max-width: 800px; margin: 0 auto; }
+.minimal-faq { border-bottom: 1px solid var(--border-subtle); padding: 8px 0; }
 .minimal-faq:last-child { border-bottom: none; }
-.minimal-faq summary { padding: 24px 32px; font-weight: 700; font-size: 1.1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; color: #000; }
-.indicator { font-size: 1.5rem; color: var(--surface-400); transition: 0.3s; }
-.minimal-faq[open] .indicator { transform: rotate(45deg); color: #000; }
-.faq-body { padding: 0 32px 32px 32px; color: var(--surface-600); line-height: 1.7; font-size: 1.05rem; }
+.minimal-faq summary { 
+    padding: 24px 0; 
+    font-weight: 700; 
+    font-size: 1.1rem; 
+    cursor: pointer; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    list-style: none; 
+    color: var(--text-main); 
+}
+.minimal-faq summary::-webkit-details-marker { display: none; }
+.indicator { font-size: 1.2rem; color: var(--text-muted); font-weight: 400; }
+.minimal-faq[open] .indicator { transform: rotate(45deg); color: var(--text-main); }
+.faq-body { padding: 0 0 24px 0; color: var(--text-muted); line-height: 1.7; font-size: 1.05rem; }
+
+/* ───── ANIMATIONS ───── */
+.animate-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.animate-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+
+.animate-fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animate-fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 /* ───── RESPONSIVE CONSTRAINTS ───── */
 @media (max-width: 1024px) {
@@ -609,15 +678,29 @@ const faqs = [
 <script>
     // Smooth reveal animations
     document.addEventListener('DOMContentLoaded', () => {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '50px'
+        };
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Stop watching once visible
                 }
             });
-        }, { threshold: 0.1 });
+        }, observerOptions);
 
-        document.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
+        document.querySelectorAll('.animate-fade-up').forEach(el => {
+            // Check if already in viewport
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                el.classList.add('visible');
+            } else {
+                observer.observe(el);
+            }
+        });
 
         // Interactive Product Demo Logic
         const dropZone = document.getElementById('demo-drop');
@@ -642,25 +725,28 @@ const faqs = [
             resetBtn.addEventListener('click', () => {
                 stateSuccess.classList.add('hidden');
                 stateDefault.classList.remove('hidden');
-                dropZone.style.borderColor = ''; dropZone.style.background = '';
             });
         }
 
         function initiateOptimization() {
+            // Visual feedback on start
+            if (dropZone) {
+                dropZone.style.borderColor = 'var(--accent)';
+                dropZone.style.background = 'var(--surface-100)';
+            }
+
             stateDefault.classList.add('hidden');
             stateLoading.classList.remove('hidden');
             progressFill.style.width = '0%';
-
-            // Simulate progress artificially 
-            setTimeout(() => { progressFill.style.width = '40%'; }, 200);
-            setTimeout(() => { progressFill.style.width = '80%'; }, 800);
+            
+            // Fast simulation for professional feel
             setTimeout(() => { 
                 progressFill.style.width = '100%'; 
                 setTimeout(() => {
                     stateLoading.classList.add('hidden');
                     stateSuccess.classList.remove('hidden');
-                }, 400);
-            }, 1200);
+                }, 100);
+            }, 500);
         }
     });
 </script>
