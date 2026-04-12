@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+
+const title = "Benefits of On-Device AI: OCR & Image to Text Explained";
+const description = "Discover why processing OCR (Image to Text) locally in your browser is faster and safer than cloud-based alternatives.";
+---
+
+<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/ocr-benefits-on-device">
+    <section class="page-header">
+        <div class="container">
+            <h1>The Power of On-Device OCR</h1>
+            <p class="subtitle">Extracting text from images without sacrificing privacy.</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container container-narrow">
+            <article class="prose">
+                <p>OCR (Optical Character Recognition) technology has traditionally required massive server power. However, with modern browser capabilities, we can now extract text from images right on your device.</p>
+                
+                <h2>Why Privacy Matters in OCR</h2>
+                <p>People often use OCR to digitize receipts, ID cards, or handwritten notes. Uploading these to a random server is a massive privacy risk. By using FormFix's <a href="/image-to-text">Image to Text</a> tool, your sensitive documents never leave your machine.</p>
+                
+                <h2>Technical Advantages</h2>
+                <ul>
+                    <li><strong>No Latency:</strong> No waiting for a server to process and send back the text.</li>
+                    <li><strong>Offline Capability:</strong> Once the AI model is cached in your browser, it works without internet.</li>
+                    <li><strong>Zero Data Costs:</strong> You don't waste data uploading high-resolution images.</li>
+                </ul>
+
+                <div class="cta-box mt-32">
+                    <a href="/image-to-text" class="primary-btn">Try On-Device OCR</a>
+                </div>
+            </article>
+        </div>
+    </section>
+</BaseLayout>
+
+<style>
+    .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
+    .content-section { padding: 60px 0; }
+    .prose { line-height: 1.8; color: var(--slate); }
+    .container-narrow { max-width: 800px; }
+    .cta-box { background: var(--primary-light); padding: 32px; border-radius: 16px; text-align: center; }
+</style>

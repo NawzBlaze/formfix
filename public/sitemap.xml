@@ -1,8 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap>
-    <loc>https://formfix.pages.dev/sitemap-0.xml</loc>
-    <lastmod>2026-04-11</lastmod>
-  </sitemap>
-</sitemapindex>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <url><loc>https://formfix.pages.dev/</loc><lastmod>2026-04-12</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://formfix.pages.dev/tools</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://formfix.pages.dev/compress-image</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://formfix.pages.dev/compress-image-20kb</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://formfix.pages.dev/compress-image-50kb</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://formfix.pages.dev/compress-image-100kb</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://formfix.pages.dev/passport-size-photo</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://formfix.pages.dev/passport-photo-compressor</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://formfix.pages.dev/photo-compressor</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://formfix.pages.dev/crop-image</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/resize-image</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/circle-crop</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://formfix.pages.dev/background-remover</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/black-and-white</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/photo-to-sketch</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/convert-image</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/blur-image</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://formfix.pages.dev/watermark-image</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://formfix.pages.dev/signature-maker</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://formfix.pages.dev/merge-pdf</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://formfix.pages.dev/rotate-pdf</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/image-to-pdf</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/pdf-to-image</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/split-pdf</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/qr-code-generator</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://formfix.pages.dev/password-generator</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://formfix.pages.dev/file-size-converter</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://formfix.pages.dev/percentage-calculator</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://formfix.pages.dev/age-calculator</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://formfix.pages.dev/image-to-text</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/resume-builder</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/text-to-handwriting</loc><lastmod>2026-04-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://formfix.pages.dev/guides/how-to-compress-image-to-20kb</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://formfix.pages.dev/guides/secure-pdf-merging-offline</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://formfix.pages.dev/guides/passport-photo-specifications</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://formfix.pages.dev/guides/ocr-benefits-on-device</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://formfix.pages.dev/guides/generating-branded-qr-codes</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://formfix.pages.dev/privacy</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://formfix.pages.dev/terms</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://formfix.pages.dev/about</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://formfix.pages.dev/contact</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+</urlset>

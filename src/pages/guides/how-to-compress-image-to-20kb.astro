@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+
+const title = "How to Compress Image to 20KB for Online Forms (UPSC, SSC, Bank)";
+const description = "Step-by-step guide on how to compress your photo to exactly 20KB without losing quality. Perfect for government exam portals like UPSC, SSC, and Banking.";
+---
+
+<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/how-to-compress-image-to-20kb">
+    <section class="page-header">
+        <div class="container">
+            <h1>How to Compress Image to 20KB</h1>
+            <p class="subtitle">A complete guide for students and job seekers.</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container container-narrow">
+            <article class="prose">
+                <p>Many government job portals and examination websites require images to be within a specific size limit, most commonly <strong>20KB</strong>. Achieving this without making the image blurry can be frustrating.</p>
+                
+                <h2>Why 20KB?</h2>
+                <p>Server storage and bandwidth are expensive. Large portals like UPSC or SSC handle millions of applications. Restricting photo size helps them manage their database efficiently. However, modern smartphone cameras take photos that are 3MB to 10MB, which is 50 to 500 times larger than the requirement.</p>
+                
+                <h2>Steps to Compress Photo to 20KB</h2>
+                <ol>
+                    <li><strong>Go to FormFix:</strong> Open our <a href="/compress-image">Image Compressor</a>.</li>
+                    <li><strong>Upload Photo:</strong> Select the photo you want to resize.</li>
+                    <li><strong>Select Preset:</strong> Click on the "20 KB" button.</li>
+                    <li><strong>Adjust Settings:</strong> Our tool will automatically calculate the best quality to fit the target size.</li>
+                    <li><strong>Download:</strong> Once processed, hit download. The quality is optimized to remain sharp.</li>
+                </ol>
+
+                <h2>Tips for Maintaining Quality</h2>
+                <ul>
+                    <li><strong>Start with a clear photo:</strong> If you start with a blurry photo, compression will make it worse.</li>
+                    <li><strong>Crop before compressing:</strong> Use our <a href="/passport-size-photo">Passport Photo Maker</a> to crop the unnecessary parts of the background first.</li>
+                    <li><strong>Use the right format:</strong> JPG is usually the best format for small file targets.</li>
+                </ul>
+
+                <div class="cta-box mt-32">
+                    <h3>Ready to compress?</h3>
+                    <p>Use our free, private tool to hit your target size instantly.</p>
+                    <a href="/compress-image" class="primary-btn">Start Compressing Now</a>
+                </div>
+            </article>
+        </div>
+    </section>
+</BaseLayout>
+
+<style>
+    .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
+    .content-section { padding: 60px 0; }
+    .prose { line-height: 1.8; color: var(--slate); }
+    .prose h2 { color: var(--dark); margin-top: 2rem; margin-bottom: 1rem; }
+    .prose p { margin-bottom: 1.5rem; }
+    .prose ul, .prose ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+    .container-narrow { max-width: 800px; }
+    .cta-box { background: var(--primary-light); padding: 32px; border-radius: 16px; border: 1px solid var(--primary-mid); text-align: center; }
+</style>

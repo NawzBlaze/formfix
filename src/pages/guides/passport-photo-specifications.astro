@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+
+const title = "Passport Size Photo Specifications Guide (2024-25)";
+const description = "Everything you need to know about official passport photo dimensions, background requirements, and file size limits for exams.";
+---
+
+<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/passport-photo-specifications">
+    <section class="page-header">
+        <div class="container">
+            <h1>Passport Photo Specifications</h1>
+            <p class="subtitle">Official requirements for UPSC, SSC, and Passport applications.</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container container-narrow">
+            <article class="prose">
+                <p>Getting your passport-size photo right is the first step in a successful application. Whether it's for a national competitive exam or a visa application, the rules are strict.</p>
+                
+                <h2>Common Dimensions</h2>
+                <ul>
+                    <li><strong>Generic Indian Forms:</strong> 3.5 cm x 4.5 cm</li>
+                    <li><strong>Passport (Indian):</strong> 3.5 cm x 3.5 cm (with 70-80% face coverage)</li>
+                    <li><strong>US Visa:</strong> 2 inch x 2 inch (51 mm x 51 mm)</li>
+                </ul>
+
+                <h2>Background and Quality</h2>
+                <p>Most portals require a <strong>white or light-colored background</strong>. The face should be clearly visible with no shadows. Using a selfie is usually not recommended unless it's cropped and has a professional look.</p>
+
+                <h2>File Size Constraints</h2>
+                <p>This is where most people get stuck. Exams like UPSC usually require the file to be between <strong>20KB and 50KB</strong>. If it's 19KB, it's rejected. If it's 51KB, it's rejected.</p>
+
+                <h2>How FormFix Helps</h2>
+                <p>Our <a href="/passport-size-photo">Passport Photo Maker</a> is designed specifically for these constraints. It offers:</p>
+                <ul>
+                    <li>Auto-scaling to 3.5x4.5cm.</li>
+                    <li>Built-in background removal.</li>
+                    <li>Precision compression to hit the 20-50KB sweet spot.</li>
+                </ul>
+
+                <div class="cta-box mt-32">
+                    <a href="/passport-size-photo" class="primary-btn">Create Passport Photo Now</a>
+                </div>
+            </article>
+        </div>
+    </section>
+</BaseLayout>
+
+<style>
+    .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
+    .content-section { padding: 60px 0; }
+    .prose { line-height: 1.8; color: var(--slate); }
+    .container-narrow { max-width: 800px; }
+    .cta-box { background: var(--primary-light); padding: 32px; border-radius: 16px; text-align: center; }
+</style>

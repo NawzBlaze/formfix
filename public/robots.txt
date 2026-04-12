@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
 
-# Sitemaps
+# Sitemap
 Sitemap: https://formfix.pages.dev/sitemap.xml
-Sitemap: https://formfix.pages.dev/sitemap.txt
+
