@@ -1,205 +1,283 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
 
-const PAGE_TITLE = '404 - We Compressed This Page Too Hard! | FormFix';
-const PAGE_DESC = 'Our AI got a bit too excited and compressed this page into a single pixel. We are trying to recover it!';
+const PAGE_TITLE = '404 | Well... this is awkward | FormFix';
+const PAGE_DESC = 'The page you are looking for doesn’t exist, got lost, or never existed in the first place.';
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} noindex={true}>
 
-    <div class="ultra-404">
-        <div class="background-elements">
-            <div class="floating-emoji e1">📁</div>
-            <div class="floating-emoji e2">📉</div>
-            <div class="floating-emoji e3">🤖</div>
-            <div class="floating-emoji e4">🔎</div>
+    <div class="void-404">
+        <!-- Floating Particles (0s and 4s) -->
+        <div class="particle-system">
+            <span class="particle p1">0</span>
+            <span class="particle p2">4</span>
+            <span class="particle p3">0</span>
+            <span class="particle p4">4</span>
+            <span class="particle p5">0</span>
+            <span class="particle p6">4</span>
         </div>
 
-        <div class="error-stage animate-pop-in">
-            <div class="pixel-box">
-                <div class="the-pixel"></div>
+        <div class="content-stage animate-in">
+            <!-- Animated Robot Mascot (SVG) -->
+            <div class="robot-wrap">
+                <svg width="200" height="200" viewBox="0 0 200 200" class="confused-robot">
+                    <!-- Head -->
+                    <rect x="50" y="40" width="100" height="80" rx="15" class="robot-head" fill="#1e1b4b" stroke="#4f46e5" stroke-width="3" />
+                    <!-- Eyes -->
+                    <circle cx="80" cy="80" r="8" fill="#a855f7" class="eye left-eye">
+                        <animate attributeName="opacity" values="1;0.2;1" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="120" cy="80" r="8" fill="#a855f7" class="eye right-eye">
+                        <animate attributeName="opacity" values="1;0.2;1" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                    <!-- Mouth/Panel -->
+                    <rect x="75" y="100" width="50" height="4" rx="2" fill="#4f46e5" />
+                    <!-- Antenna -->
+                    <line x1="100" y1="40" x2="100" y2="20" stroke="#4f46e5" stroke-width="3" />
+                    <circle cx="100" cy="20" r="5" fill="#a855f7" class="antenna-light" />
+                    <!-- Neck -->
+                    <rect x="90" y="120" width="20" height="10" fill="#312e81" />
+                    <!-- Body (partial) -->
+                    <path d="M60 130 Q100 130 140 130 L150 180 L50 180 Z" fill="#1e1b4b" stroke="#4f46e5" stroke-width="3" />
+                </svg>
             </div>
-            
-            <h1 class="glitch-text" data-text="404">404</h1>
-            <h2 class="funny-title">Oops! Too Much Compression... 🤏</h2>
-            
-            <p class="funny-msg">
-                Our AI optimizer got a bit too aggressive and compressed this entire page into that **single tiny pixel** above. We're trying to inflate it back, but it's not looking good.
-            </p>
 
-            <div class="interactive-row">
-                <a href="/" class="primary-btn glow-btn">🚀 Emergency Warp Home</a>
-                <a href="/tools" class="secondary-btn">🧰 Visit the Tool Shed</a>
-            </div>
-
-            <div class="rescue-mission">
-                <p>While we rescue this page, check out these 100% visible tools:</p>
-                <div class="mini-grid">
-                    <a href="/compress-image" class="mini-tool">Compressor</a>
-                    <a href="/merge-pdf" class="mini-tool">PDF Merger</a>
-                    <a href="/signature-maker" class="mini-tool">Sign Maker</a>
-                    <a href="/official-passport-photo-maker" class="mini-tool">Passport Studio</a>
+            <div class="text-cluster">
+                <h1 class="big-404">404</h1>
+                <h2 class="awkward-heading">Well… this is awkward.</h2>
+                
+                <div class="search-animation" id="search-box">
+                    <div class="search-bar">
+                        <div class="search-progress"></div>
+                    </div>
+                    <p class="search-status">Searching for your page...</p>
                 </div>
+
+                <p class="joke-text" id="joke-placeholder">Even our AI couldn’t fix this one 🤖</p>
+            </div>
+
+            <div class="btn-group">
+                <a href="/" class="btn-neon-blue">Go Home</a>
+                <button onclick="history.back()" class="btn-outline-neon">Go Back</button>
             </div>
         </div>
     </div>
 
+    <script is:inline>
+        // Randomized Jokes
+        const jokes = [
+            "Even our AI couldn’t fix this one 🤖",
+            "We checked everywhere. Even under the couch.",
+            "This page ghosted you harder than your last chat.",
+            "Oops! Our intern probably deleted this page.",
+            "404: Brain not found. (Just kidding, it's the page).",
+            "You've wandered into a digital void. Be careful.",
+            "We tried to optimize this into a single pixel. It vanished."
+        ];
+
+        const jokePlaceholder = document.getElementById('joke-placeholder');
+        const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+        jokePlaceholder.innerText = randomJoke;
+
+        // Fake Search Animation Logic
+        const statusText = document.querySelector('.search-status');
+        const statuses = [
+            "Scanning cache...",
+            "Checking the database...",
+            "Asking the server nicely...",
+            "Accepting the inevitable...",
+            "Status: Gone. Forever."
+        ];
+
+        let sIndex = 0;
+        const sInterval = setInterval(() => {
+            if (sIndex < statuses.length) {
+                statusText.innerText = statuses[sIndex];
+                sIndex++;
+            } else {
+                clearInterval(sInterval);
+            }
+        }, 800);
+    </script>
+
 </BaseLayout>
 
 <style>
-    .ultra-404 {
-        position: relative;
+    .void-404 {
         min-height: 90vh;
+        background: radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%);
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
         overflow: hidden;
-        background: #fff;
-        padding: 20px;
+        color: #fff;
+        font-family: 'Outfit', sans-serif;
     }
 
-    .background-elements {
+    /* Floating Particles */
+    .particle-system {
         position: absolute;
         width: 100%;
         height: 100%;
         pointer-events: none;
     }
 
-    .floating-emoji {
+    .particle {
         position: absolute;
-        font-size: 3rem;
-        opacity: 0.1;
-        animation: float 6s infinite ease-in-out;
+        font-size: 1.5rem;
+        font-weight: 800;
+        opacity: 0.05;
+        color: #4f46e5;
+        animation: drift 10s infinite linear;
     }
-    .e1 { top: 20%; left: 10%; animation-delay: 0s; }
-    .e2 { top: 70%; left: 15%; animation-delay: 2s; }
-    .e3 { top: 30%; right: 10%; animation-delay: 4s; }
-    .e4 { top: 75%; right: 20%; animation-delay: 1s; }
+    .p1 { top: 10%; left: 10%; animation-delay: 0s; }
+    .p2 { top: 20%; right: 20%; animation-delay: 2s; }
+    .p3 { bottom: 30%; left: 25%; animation-delay: 4s; }
+    .p4 { bottom: 10%; right: 15%; animation-delay: 6s; }
+    .p5 { top: 50%; left: 5%; animation-delay: 1s; }
+    .p6 { top: 40%; right: 5%; animation-delay: 3s; }
 
-    @keyframes float {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(-30px) rotate(10deg); }
+    @keyframes drift {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(40px, -40px) rotate(360deg); }
     }
 
-    .error-stage {
+    .content-stage {
         position: relative;
         z-index: 10;
-        max-width: 600px;
         text-align: center;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        padding: 60px 40px;
-        border-radius: 40px;
-        border: 1px solid rgba(0,0,0,0.05);
-        box-shadow: 0 40px 100px -20px rgba(0,0,0,0.1);
+        max-width: 500px;
+        padding: 20px;
     }
 
-    .pixel-box {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
-    .the-pixel {
-        width: 4px;
-        height: 4px;
-        background: #4f46e5;
-        box-shadow: 0 0 20px 5px rgba(79, 70, 229, 0.4);
-        animation: pulse 1.5s infinite;
+    .confused-robot {
+        filter: drop-shadow(0 0 20px rgba(79, 70, 229, 0.3));
+        animation: hover 3s infinite ease-in-out;
     }
 
-    @keyframes pulse {
-        0% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(3); opacity: 0.5; }
-        100% { transform: scale(1); opacity: 1; }
+    @keyframes hover {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(2deg); }
     }
 
-    .glitch-text {
+    .big-404 {
         font-size: 8rem;
-        font-weight: 950;
+        font-weight: 900;
         margin: 0;
         line-height: 1;
-        background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+        background: linear-gradient(135deg, #4f46e5, #a855f7);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         letter-spacing: -0.05em;
     }
 
-    .funny-title {
-        font-size: 2rem;
+    .awkward-heading {
+        font-size: 2.25rem;
         font-weight: 800;
-        color: #111;
-        margin: 20px 0 10px;
+        margin-top: 10px;
         letter-spacing: -0.02em;
     }
 
-    .funny-msg {
-        font-size: 1.15rem;
-        color: #666;
-        line-height: 1.6;
-        margin-bottom: 40px;
+    .joke-text {
+        font-size: 1.1rem;
+        color: #94a3b8;
+        margin: 24px 0 40px;
+        font-style: italic;
     }
 
-    .interactive-row {
+    /* Search Bar Animation */
+    .search-animation {
+        margin: 32px auto 0;
+        max-width: 300px;
+    }
+
+    .search-bar {
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 12px;
+    }
+
+    .search-progress {
+        width: 0%;
+        height: 100%;
+        background: #4f46e5;
+        box-shadow: 0 0 10px #4f46e5;
+        animation: searchFill 4s forwards cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    @keyframes searchFill {
+        0% { width: 0%; }
+        20% { width: 30%; }
+        50% { width: 70%; }
+        100% { width: 100%; }
+    }
+
+    .search-status {
+        font-size: 0.85rem;
+        color: #475569;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    /* Buttons */
+    .btn-group {
         display: flex;
         gap: 16px;
         justify-content: center;
-        margin-bottom: 50px;
     }
 
-    .glow-btn {
-        box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
-    }
-
-    .rescue-mission {
-        border-top: 1px dashed #eee;
-        padding-top: 40px;
-    }
-    .rescue-mission p {
-        font-size: 0.85rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #aaa;
-        letter-spacing: 0.1em;
-        margin-bottom: 20px;
-    }
-
-    .mini-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-
-    .mini-tool {
-        background: #f8fafc;
-        border: 1px solid #f1f5f9;
-        padding: 12px;
-        border-radius: 16px;
-        font-weight: 600;
-        color: #334155;
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: all 0.2s;
-    }
-
-    .mini-tool:hover {
+    .btn-neon-blue {
         background: #4f46e5;
         color: #fff;
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s;
+        box-shadow: 0 0 15px rgba(79, 70, 229, 0.4);
+    }
+
+    .btn-neon-blue:hover {
         transform: translateY(-3px);
+        box-shadow: 0 0 25px rgba(79, 70, 229, 0.6);
     }
 
-    .animate-pop-in {
-        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    .btn-outline-neon {
+        background: transparent;
+        border: 2px solid #334155;
+        color: #94a3b8;
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
     }
 
-    @keyframes popIn {
-        from { opacity: 0; transform: scale(0.8) translateY(40px); }
-        to { opacity: 1; transform: scale(1) translateY(0); }
+    .btn-outline-neon:hover {
+        border-color: #a855f7;
+        color: #fff;
+        box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
     }
 
-    @media (max-width: 480px) {
-        .error-stage { padding: 40px 20px; }
-        .interactive-row { flex-direction: column; }
-        .mini-grid { grid-template-columns: 1fr; }
-        .glitch-text { font-size: 6rem; }
+    /* Animations */
+    .animate-in {
+        animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+        .big-404 { font-size: 6rem; }
+        .awkward-heading { font-size: 1.75rem; }
+        .btn-group { flex-direction: column; }
     }
 </style>
