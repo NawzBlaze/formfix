@@ -5,132 +5,170 @@ import RelatedTools from './RelatedTools.astro';
 import SocialShare from './SocialShare.astro';
 ---
 
-<div class="tool-tension-layout">
-    <div class="container">
-        <!-- Dramatic Header -->
-        <header class="tool-header-dramatic">
-            <div class="header-glow"></div>
-            <h1 class="dominant-title">{title}</h1>
-            <p class="subtitle-muted">{subtitle}</p>
+<div class="tool-blended-environment animate-in">
+    <!-- Top-center ambient light source -->
+    <div class="environment-light-source"></div>
+
+    <div class="container environment-container">
+        
+        <!-- Seamless Header -->
+        <header class="tool-header-blended">
+            <h1 class="blended-title">{title}</h1>
+            <p class="blended-subtitle">{subtitle}</p>
         </header>
 
-        <!-- Layered Workspace -->
-        <div class="workspace-outer-layer">
-            <div class="outer-edge-highlight"></div>
-            <div class="ambient-glow-layer"></div>
+        <!-- The Tool Focal Point -->
+        <div class="tool-focal-container">
+            <!-- Glow behind container -->
+            <div class="focal-container-glow"></div>
             
-            <div class="workspace-inner-layer">
-                <slot name="tool-ui" />
+            <div class="focal-container-inner">
+                <div class="top-edge-reflection"></div>
+                
+                <div class="tool-active-area">
+                    <slot name="tool-ui" />
+                </div>
             </div>
         </div>
 
-        <div class="tool-sharing-row">
-            <SocialShare title={title} url={Astro.url.href} />
-        </div>
+        <div class="tool-secondary-content">
+            <div class="tool-sharing-row">
+                <SocialShare title={title} url={Astro.url.href} />
+            </div>
 
-        <div class="related-tools-wrap">
-            <RelatedTools currentTool={currentTool} />
+            <div class="related-tools-wrap">
+                <RelatedTools currentTool={currentTool} />
+            </div>
         </div>
     </div>
 </div>
 
 <style>
-    .tool-tension-layout {
-        padding: 100px 0 140px;
+    /* ───── BLENDED ENVIRONMENT ───── */
+    .tool-blended-environment {
+        padding: 120px 0 160px;
         min-height: 80vh;
         position: relative;
+        overflow: visible; /* Let glows escape if needed */
+        z-index: 1;
     }
 
-    /* Dramatic Header */
-    .tool-header-dramatic {
-        text-align: center;
-        margin-bottom: 80px;
-        position: relative;
-    }
-
-    .header-glow {
+    /* Lighting System */
+    .environment-light-source {
         position: absolute;
-        top: 50%; left: 50%; transform: translate(-50%, -50%);
-        width: 600px; height: 300px;
-        background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
-        z-index: -1; pointer-events: none; opacity: 0.6;
+        top: 0; left: 50%; transform: translateX(-50%);
+        width: 100vw; height: 600px;
+        background: radial-gradient(ellipse at top center, var(--accent-glow) 0%, transparent 70%);
+        z-index: -1; pointer-events: none; opacity: 0.8;
+    }
+    .dark .environment-light-source { opacity: 0.4; }
+
+    .environment-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 1000px; /* Focus width */
     }
 
-    .dominant-title {
-        font-size: clamp(3rem, 6vw, 4.5rem);
+    /* Header */
+    .tool-header-blended {
+        text-align: center;
+        margin-bottom: 60px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .blended-title {
+        font-size: clamp(2.5rem, 6vw, 4rem);
         font-weight: 900;
-        letter-spacing: -0.05em;
+        letter-spacing: -0.04em;
         line-height: 1.1;
         margin-bottom: 16px;
         color: var(--text-primary);
-        text-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        text-shadow: 0 10px 30px rgba(0,0,0,0.05);
     }
-    .dark .dominant-title { text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-    .subtitle-muted {
-        font-size: 1.3rem;
+    .blended-subtitle {
+        font-size: 1.25rem;
         color: var(--text-secondary);
         font-weight: 500;
         max-width: 600px;
         margin: 0 auto;
     }
 
-    /* Outer Container (Dark/Deep Surface) */
-    .workspace-outer-layer {
+    /* ───── FOCAL CONTAINER (Layer 3) ───── */
+    .tool-focal-container {
         position: relative;
-        background: var(--surface-3); /* #111827 in dark, #fff in light */
-        border-radius: 32px;
-        padding: 24px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0,0,0,0.05);
-        border: 1px solid var(--border-strong);
-        margin-bottom: 80px;
+        width: 100%;
+        margin-bottom: 100px;
         z-index: 10;
+    }
+
+    .focal-container-glow {
+        position: absolute;
+        top: 10%; left: 5%; right: 5%; bottom: -10%;
+        background: var(--accent-glow);
+        filter: blur(80px);
+        opacity: 0.5;
+        z-index: -1;
+        pointer-events: none;
+    }
+    .dark .focal-container-glow { opacity: 0.3; }
+
+    .focal-container-inner {
+        position: relative;
+        background: var(--surface-gradient); /* Smooth transition */
+        border-radius: 32px;
+        padding: 32px;
+        box-shadow: var(--shadow-lift);
+        border: 1px solid var(--border-strong);
         overflow: hidden;
     }
-    .dark .workspace-outer-layer {
-        background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
-        box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7), 0 0 30px var(--accent-soft);
+    .dark .focal-container-inner {
+        background: linear-gradient(180deg, #1f2937 0%, #0f172a 100%); /* Layer 3 */
+        border: 1px solid rgba(255,255,255,0.05);
     }
 
-    .outer-edge-highlight {
+    .top-edge-reflection {
         position: absolute; top: 0; left: 0; right: 0; height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-        z-index: 20; opacity: 0.6; pointer-events: none;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        opacity: 0.6; z-index: 20; pointer-events: none;
     }
-    .dark .outer-edge-highlight { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); }
+    .dark .top-edge-reflection { opacity: 0.15; }
 
-    .ambient-glow-layer {
-        position: absolute; top: -50px; left: -50px; width: 300px; height: 300px;
-        background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-        z-index: 0; pointer-events: none; opacity: 0.5;
-    }
-
-    /* Inner Panel (Soft/Readable Surface) */
-    .workspace-inner-layer {
+    /* ───── ACTIVE AREA (Layer 4) ───── */
+    .tool-active-area {
         position: relative;
-        background: var(--surface-1); /* #f8fafc in light, #020617 in dark */
+        background: var(--surface-2); /* Layer 4 */
         border-radius: 20px;
         padding: 60px;
-        box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+        box-shadow: inset 0 2px 20px rgba(0,0,0,0.02);
         border: 1px solid var(--card-border);
         z-index: 10;
         min-height: 400px;
     }
-    .dark .workspace-inner-layer {
-        background: #0f172a; /* Deep slate, better than pure black for tools */
-        box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+    .dark .tool-active-area {
+        background: #111827; /* Perfectly tinted dark surface, NO WHITE */
+        box-shadow: inset 0 2px 20px rgba(0,0,0,0.3);
     }
 
+    /* ───── SECONDARY CONTENT (Fade out to reduce noise) ───── */
+    .tool-secondary-content {
+        width: 100%;
+        opacity: 0.8;
+        transition: opacity 0.4s;
+    }
+    .tool-secondary-content:hover { opacity: 1; }
+
     .related-tools-wrap {
-        margin-top: 100px;
+        margin-top: 80px;
         border-top: 1px solid var(--border-subtle);
         padding-top: 80px;
     }
 
     @media (max-width: 768px) {
-        .tool-tension-layout { padding: 60px 0 100px; }
-        .workspace-outer-layer { padding: 12px; border-radius: 24px; }
-        .workspace-inner-layer { padding: 30px 20px; border-radius: 16px; }
-        .dominant-title { font-size: 2.5rem; }
+        .tool-blended-environment { padding: 60px 0 100px; }
+        .focal-container-inner { padding: 16px; border-radius: 24px; }
+        .tool-active-area { padding: 30px 20px; border-radius: 16px; min-height: 300px; }
     }
 </style>
