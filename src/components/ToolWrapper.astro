@@ -5,20 +5,19 @@ import RelatedTools from './RelatedTools.astro';
 import SocialShare from './SocialShare.astro';
 ---
 
-<div class="tool-standard-layout animate-in">
+<div class="tool-cinematic-layout animate-in">
     <div class="container">
         <header class="tool-header">
-             <h1 class="text-gradient-tool">{title}</h1>
+             <h1 class="text-gradient-animated">{title}</h1>
              <p class="subtitle">{subtitle}</p>
         </header>
 
-        <div class="tool-main-workspace shadow-xl">
+        <div class="tool-main-workspace cinematic-workspace">
+            <div class="workspace-glow-border"></div>
             <div class="workspace-inner">
                 <slot name="tool-ui" />
             </div>
         </div>
-
-
 
         <div class="tool-sharing-row">
             <SocialShare title={title} url={Astro.url.href} />
@@ -31,28 +30,34 @@ import SocialShare from './SocialShare.astro';
 </div>
 
 <style>
-    .tool-standard-layout {
-        padding: 60px 0 100px;
+    .tool-cinematic-layout {
+        padding: 80px 0 120px;
         min-height: 80vh;
-        background: var(--bg-primary);
+        background: transparent;
+        position: relative;
     }
 
     .tool-header {
         text-align: center;
-        margin-bottom: 48px;
+        margin-bottom: 60px;
     }
 
-    .text-gradient-tool {
+    .text-gradient-animated {
         background: var(--accent-gradient);
+        background-size: 200% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        font-size: clamp(2.5rem, 8vw, 3.5rem);
+        font-size: clamp(2.5rem, 8vw, 4rem);
         font-weight: 900;
         letter-spacing: -0.05em;
         line-height: 1.1;
         margin-bottom: 16px;
+        animation: textShine 5s linear infinite;
+        filter: drop-shadow(0 4px 12px var(--accent-glow));
     }
+
+    @keyframes textShine { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 
     .subtitle {
         font-size: 1.25rem;
@@ -62,36 +67,52 @@ import SocialShare from './SocialShare.astro';
         margin: 0 auto;
     }
 
-    .tool-main-workspace {
-        background: var(--card-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 32px;
-        overflow: hidden;
-        margin-bottom: 80px;
+    /* Cinematic Workspace Depth */
+    .cinematic-workspace {
         position: relative;
-        box-shadow: var(--card-shadow);
-        transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        background: var(--surface-3);
+        border-radius: var(--radius-lg);
+        margin-bottom: 80px;
+        box-shadow: var(--shadow-medium);
+        z-index: 1;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
+    
+    .cinematic-workspace:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lift);
+    }
+
+    .workspace-glow-border {
+        position: absolute;
+        inset: -1px;
+        border-radius: calc(var(--radius-lg) + 1px);
+        background: linear-gradient(135deg, var(--accent-primary), transparent);
+        opacity: 0.15;
+        z-index: 0;
+        pointer-events: none;
+    }
+    .dark .workspace-glow-border { opacity: 0.3; }
 
     .workspace-inner {
-        padding: 40px;
+        position: relative;
+        background: var(--surface-gradient);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius-lg);
+        padding: 60px;
         color: var(--text-primary);
-    }
-
-    .tool-info-article {
-        max-width: 900px;
-        margin: 0 auto 80px;
-        color: var(--text-primary);
+        z-index: 2;
+        min-height: 400px;
     }
 
     .related-tools-wrap {
-        margin-top: 60px;
+        margin-top: 80px;
         border-top: 1px solid var(--border-subtle);
-        padding-top: 60px;
+        padding-top: 80px;
     }
 
     @media (max-width: 768px) {
-        .text-gradient-tool { font-size: 2.25rem; }
-        .workspace-inner { padding: 20px; }
+        .workspace-inner { padding: 30px 20px; }
+        .tool-cinematic-layout { padding: 40px 0 80px; }
     }
 </style>
