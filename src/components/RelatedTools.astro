@@ -73,9 +73,9 @@ if (imageTools.includes(currentTool)) {
 
 <style>
     .related-section {
-        margin-top: 64px;
-        padding-top: 48px;
-        border-top: 1.5px solid var(--border-light);
+        margin-top: 32px;
+        padding-top: 32px;
+        border-top: 1px solid var(--border-subtle);
     }
 
     .related-header {
@@ -106,39 +106,29 @@ if (imageTools.includes(currentTool)) {
 
     .related-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
     }
 
     .related-card {
         display: flex;
         align-items: center;
-        gap: 14px;
-        background: white;
-        border: 1.5px solid var(--border-light);
-        border-radius: 16px;
-        padding: 16px 18px;
+        gap: 16px;
+        background: #ffffff;
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        padding: 16px;
         text-decoration: none;
-        transition: var(--transition-smooth);
+        transition: all 0.25s var(--spring-smooth);
         position: relative;
-        overflow: hidden;
-    }
-    .related-card::before {
-        content: '';
-        position: absolute;
-        left: 0; top: 0; bottom: 0;
-        width: 3px;
-        background: var(--gradient-primary);
-        transform: scaleY(0);
-        transition: transform 0.3s ease;
+        box-shadow: var(--shadow-sm);
     }
     .related-card:hover {
         transform: translateY(-3px);
-        border-color: var(--primary-mid);
+        border-color: var(--accent);
         box-shadow: var(--shadow-md);
     }
-    .related-card:hover::before { transform: scaleY(1); }
-    .related-card:hover .r-title { color: var(--primary); }
+    .related-card:hover .r-title { color: var(--accent); }
     .related-card:hover .r-arrow { opacity: 1; transform: translateX(3px); }
 
     .r-icon {

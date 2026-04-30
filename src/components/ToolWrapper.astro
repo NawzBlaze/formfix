@@ -1,0 +1,95 @@
+---
+const { title, subtitle, currentTool } = Astro.props;
+const encodedUrl = encodeURIComponent(Astro.url.href);
+import RelatedTools from './RelatedTools.astro';
+import SocialShare from './SocialShare.astro';
+---
+
+<div class="tool-standard-layout animate-in">
+    <div class="container">
+        <header class="tool-header">
+             <h1 class="text-gradient-tool">{title}</h1>
+             <p class="subtitle">{subtitle}</p>
+        </header>
+
+        <div class="tool-main-workspace shadow-xl">
+            <div class="workspace-inner">
+                <slot name="tool-ui" />
+            </div>
+        </div>
+
+
+
+        <div class="tool-sharing-row">
+            <SocialShare title={title} url={Astro.url.href} />
+        </div>
+
+        <div class="related-tools-wrap">
+            <RelatedTools currentTool={currentTool} />
+        </div>
+    </div>
+</div>
+
+<style>
+    .tool-standard-layout {
+        padding: 60px 0 100px;
+        min-height: 80vh;
+    }
+
+    .tool-header {
+        text-align: center;
+        margin-bottom: 48px;
+    }
+
+    .text-gradient-tool {
+        background: linear-gradient(135deg, var(--text-main) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 3.5rem;
+        font-weight: 850;
+        letter-spacing: -0.05em;
+        line-height: 1.1;
+        margin-bottom: 16px;
+    }
+
+    .subtitle {
+        font-size: 1.25rem;
+        color: var(--text-muted);
+        font-weight: 500;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .tool-main-workspace {
+        background: #ffffff;
+        border: 1px solid var(--border-subtle);
+        border-radius: 32px;
+        overflow: hidden;
+        margin-bottom: 80px;
+        position: relative;
+    }
+
+    .workspace-inner {
+        padding: 40px;
+    }
+
+    .tool-info-article {
+        max-width: 900px;
+        margin: 0 auto 80px;
+    }
+
+
+
+    .related-tools-wrap {
+        margin-top: 60px;
+        border-top: 1px solid var(--border-subtle);
+        padding-top: 60px;
+    }
+
+    @media (max-width: 768px) {
+        .text-gradient-tool { font-size: 2.5rem; }
+        .workspace-inner { padding: 20px; }
+        .article-card { padding: 32px 20px; }
+    }
+</style>

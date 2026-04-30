@@ -1,90 +1,98 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
-import CompressTool from '../components/tools/CompressTool.astro';
-import SocialShare from '../components/SocialShare.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
-const PAGE_TITLE = 'CUET Photo & Signature Resizer 2024 - FormFix';
-const PAGE_DESC = 'Compress your CUET online application photo (10KB - 200KB) and signature (4KB - 30KB) instantly. Free, 100% private, and works completely offline.';
-const PAGE_KEYWORDS = 'cuet photo size, cuet photo compressor, cuet signature resizer, compress photo for cuet exam, nta cuet photo format';
+const PAGE_TITLE = 'CUET Photo Resizer & Signature Maker Online | FormFix';
+const PAGE_DESC = 'Official CUET (UG/PG) photo resizer. Convert your photo to 10KB-200KB and signature to 4KB-30KB exactly as per NTA CUET guidelines. 100% private and free.';
+const PAGE_KEYWORDS = 'cuet photo resizer, cuet signature maker, nta cuet photo size online, compress photo for cuet, cuet ug form photo maker, cuet pg photo resize';
 
 const customSchema = {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "SoftwareApplication",
-      "name": "CUET Photo Compressor - FormFix",
-      "operatingSystem": "All Platforms",
-      "applicationCategory": "UtilitiesApplication",
-      "description": PAGE_DESC,
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    },
-    {
-      "@type": "Guide",
-      "name": "CUET UG/PG Official Image Guidelines",
-      "description": "Image format and size requirements for the Common University Entrance Test (CUET).",
-      "text": "Photograph Size: 10KB to 200KB. Signature Size: 4KB to 30KB. Document/Certificate PDF: 50KB to 300KB."
-    }
-  ]
+  "@type": "WebApplication",
+  "name": "CUET Form Optimizer",
+  "description": "Specialized tool for NTA CUET candidates to format photos and signatures.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "All"
 };
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/cuet-photo-resizer">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">🎓 NTA CUET Special</div>
-             <h1 class="main-h1">CUET <span class="highlight">Photo Formatter</span></h1>
-             <p class="hero-sub">Resize your photograph and signature precisely for the CUET application portal. Zero server uploads to ensure absolute privacy.</p>
-        </header>
+    <ToolWrapper 
+        title="CUET Exam Optimizer" 
+        subtitle="Specially built for NTA CUET candidates. Get your documents form-ready in seconds."
+        currentTool="cuet-optimizer"
+    >
+        <div slot="tool-ui">
+             <div class="cuet-workspace">
+                 <div class="cuet-alert">
+                     <strong>CUET Requirement:</strong> Photo (10KB-200KB) and Signature (4KB-30KB). Must be in JPG/JPEG format.
+                 </div>
+                 <div class="tool-actions-centered">
+                     <a href="/passport-size-photo" class="primary-btn pulse-glow">Create CUET Photos →</a>
+                     <a href="/compress-image" class="secondary-btn">Compress to 50KB</a>
+                 </div>
+             </div>
+        </div>
 
-        <section class="exam-guidelines mb-32 p-20 glass-inner shadow-sm rounded-2xl">
-            <h2 class="text-xl font-black mb-10">CUET Official Requisites:</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="g-item p-16 bg-primary/5 rounded-xl border border-primary/10">
-                    <strong class="block text-primary">Scanned Photograph</strong>
-                    <span>10KB to 200KB | JPG or JPEG</span>
-                </div>
-                <div class="g-item p-16 bg-purple/5 rounded-xl border border-purple/10">
-                    <strong class="block text-purple">Scanned Signature</strong>
-                    <span>4KB to 30KB | JPG or JPEG</span>
-                </div>
-            </div>
-        </section>
+        <div slot="tool-info">
+             <article class="prose">
+                 <h2>Official NTA CUET UG/PG Photo & Signature Guidelines</h2>
+                 <p>The Common University Entrance Test (CUET) handled by NTA requires candidates to upload clear, recent photographs and signatures. Any deviation from the specified file size can lead to the "Image Not Uploaded" error on the CUET portal.</p>
+                 
+                 <div class="guideline-card">
+                     <h3>CUET Photograph Specifications:</h3>
+                     <ul>
+                         <li><strong>File Size:</strong> 10 KB to 200 KB.</li>
+                         <li><strong>Format:</strong> JPG/JPEG only.</li>
+                         <li><strong>Background:</strong> White background is preferred.</li>
+                         <li><strong>Visibility:</strong> 80% face coverage, no mask, both ears visible.</li>
+                     </ul>
+                 </div>
 
-        <CompressTool />
+                 <div class="guideline-card mt-24">
+                     <h3>CUET Signature Specifications:</h3>
+                     <ul>
+                         <li><strong>File Size:</strong> 4 KB to 30 KB.</li>
+                         <li><strong>Format:</strong> JPG/JPEG only.</li>
+                         <li><strong>Instruction:</strong> Sign on white paper with black ink.</li>
+                     </ul>
+                 </div>
 
-        <article class="pro-seo-article container mt-48">
-             <h2>The Quickest CUET Photo Settings Updater</h2>
-             <p>Navigating the <strong>CUET (Common University Entrance Test)</strong> application form shouldn't be stressful because of an invalid photo size. With FormFix's dedicated <strong>CUET photo resizer</strong>, getting your files within the required 10-200KB (for photos) or 4-30KB (for signatures) interval is as easy as selecting a preset.</p>
-             
-             <h3 class="mt-32">Steps to properly size your CUET files:</h3>
-             <ol>
-                <li>Upload the relevant file: your face photograph or scanned signature.</li>
-                <li>Enter the desired KB amount (we recommend 100KB for photos, 20KB for signatures).</li>
-                <li>Verify the original vs new size on the screen, then download.</li>
-                <li>Submit your NTA form without getting validation errors!</li>
-             </ol>
+                 <h2>How to Resize Photo for CUET Online</h2>
+                 <ol>
+                     <li><strong>Choose Tool:</strong> Click on "Create CUET Photos" above.</li>
+                     <li><strong>Upload:</strong> Select your passport photo or signature image.</li>
+                     <li><strong>Aspect Ratio:</strong> Use the standard 3.5x4.5cm for photos.</li>
+                     <li><strong>Target KB:</strong> Set the compressor to 100KB for photos and 20KB for signatures to stay within the safe range.</li>
+                     <li><strong>Download:</strong> Save the JPEG and upload it directly to the cuet.samarth.ac.in portal.</li>
+                 </ol>
 
-             <p class="mt-20"><strong>Client-Side Processing:</strong> FormFix never sends your photos across the internet. Everything is calculated right on your mobile or desktop memory to keep you protected.</p>
-        </article>
-
-        <SocialShare title="Use this site to compress your CUET photos and signatures easily! The NTA portal accepts it right away." url="https://formfix.pages.dev/cuet-photo-resizer" />
-
-        <RelatedTools currentTool="compress" />
-    </div>
+                 <div class="faq-section mt-48">
+                     <h3>CUET Photo Upload FAQ</h3>
+                     <details class="minimal-faq">
+                         <summary>What is the photo size for CUET 2024? <span class="indicator">+</span></summary>
+                         <div class="faq-body">
+                             <p>The file size must be between 10KB and 200KB for the photograph and 4KB to 30KB for the signature.</p>
+                         </div>
+                     </details>
+                     <details class="minimal-faq">
+                         <summary>Can I upload a selfie for CUET? <span class="indicator">+</span></summary>
+                         <div class="faq-body">
+                             <p>No. Selfies are strictly prohibited. You must use a professional passport-sized photograph with a neutral expression.</p>
+                         </div>
+                     </details>
+                 </div>
+             </article>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
 <style>
-    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
-    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
-    .mt-48 { margin-top: 48px; }
-    .mt-32 { margin-top: 32px; }
-    .mb-32 { margin-bottom: 32px; }
-    .p-20 { padding: 20px; }
-    .p-16 { padding: 16px; }
+    .cuet-workspace { text-align: center; padding: 20px 0; }
+    .cuet-alert { background: #eef2ff; border-left: 4px solid #6366f1; padding: 16px; border-radius: 8px; margin-bottom: 32px; color: #3730a3; font-size: 0.95rem; }
+    .tool-actions-centered { display: flex; gap: 16px; justify-content: center; align-items: center; }
+    .guideline-card { background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 24px; border-radius: 16px; }
+    .guideline-card h3 { margin-bottom: 12px; font-size: 1.1rem; }
+    .guideline-card ul { padding-left: 20px; color: var(--text-muted); }
+    .guideline-card li { margin-bottom: 8px; }
 </style>

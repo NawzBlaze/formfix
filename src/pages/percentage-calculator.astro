@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Percentage Calculator Online Free – Instant Result';
 const PAGE_DESC = 'Calculate percentages instantly in your browser. Find X% of Y, or what percentage X is of Y. Fast, free, no ads.';
@@ -8,119 +8,123 @@ const PAGE_KEYWORDS = 'percentage calculator, calculate percentage online, math 
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} active="tools" canonicalPath="/percentage-calculator">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">🧮 Smart Calculator</div>
-             <h1 class="main-h1">Percentage <span class="highlight">Calculator</span></h1>
-             <p class="hero-sub">Instant percentage calculations directly in your browser without reloading.</p>
-        </header>
+    <ToolWrapper title="Percentage Calculator" subtitle="Instant percentage calculations directly in your browser." currentTool="percentage-calculator">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <div class="calculator-stack">
+                       <!-- Calc 1 -->
+                       <div class="calc-section">
+                            <label class="section-label m-0 mb-12">Calculate percentage of a value</label>
+                            <div class="calc-card">
+                                 <div class="calc-row">
+                                      <div class="c-field flex-2">
+                                           <span class="l-text m-0 mb-8">What is</span>
+                                           <div class="input-container">
+                                                <input type="number" id="c1-a" placeholder="20" class="mini-input" />
+                                                <span class="i-suffix">%</span>
+                                           </div>
+                                      </div>
+                                      <div class="c-field flex-2">
+                                           <span class="l-text m-0 mb-8">of</span>
+                                           <div class="input-container">
+                                                <input type="number" id="c1-b" placeholder="150" class="mini-input" />
+                                           </div>
+                                      </div>
+                                      <div class="c-arrow flex-1">=</div>
+                                      <div class="c-result flex-2"><span id="c1-res">30</span></div>
+                                 </div>
+                            </div>
+                       </div>
 
-        <div class="glass-card tool-content shadow-lg">
-            
-             <!-- Calc 1 -->
-             <div class="calc-row">
-                  <div class="c-group">
-                       <label>What is</label>
-                       <div class="input-wrap">
-                           <input type="number" id="c1-a" placeholder="20" />
-                           <span class="suffix">%</span>
+                       <!-- Calc 2 -->
+                       <div class="calc-section">
+                            <label class="section-label m-0 mb-12">Find the percentage relationship</label>
+                            <div class="calc-card">
+                                 <div class="calc-row">
+                                      <div class="c-field flex-2">
+                                           <span class="l-text m-0 mb-8 d-none d-sm-block">&nbsp;</span>
+                                           <div class="input-container">
+                                                <input type="number" id="c2-a" placeholder="30" class="mini-input" />
+                                           </div>
+                                      </div>
+                                      <div class="c-field flex-3">
+                                           <span class="l-text m-0 mb-8">is what % of</span>
+                                           <div class="input-container">
+                                                <input type="number" id="c2-b" placeholder="150" class="mini-input" />
+                                           </div>
+                                      </div>
+                                      <div class="c-arrow flex-1">=</div>
+                                      <div class="c-result flex-2"><span id="c2-res">20</span>%</div>
+                                 </div>
+                            </div>
+                       </div>
+
+                       <!-- Calc 3 -->
+                       <div class="calc-section">
+                            <label class="section-label m-0 mb-12">Percentage increase/decrease</label>
+                            <div class="calc-card">
+                                 <div class="calc-row">
+                                      <div class="c-field flex-2">
+                                           <span class="l-text m-0 mb-8">From</span>
+                                           <div class="input-container">
+                                                <input type="number" id="c3-a" placeholder="100" class="mini-input" />
+                                           </div>
+                                      </div>
+                                      <div class="c-field flex-2">
+                                           <span class="l-text m-0 mb-8">To</span>
+                                           <div class="input-container">
+                                                <input type="number" id="c3-b" placeholder="125" class="mini-input" />
+                                           </div>
+                                      </div>
+                                      <div class="c-arrow flex-1">=</div>
+                                      <div class="c-result flex-2"><span id="c3-res">25</span>%</div>
+                                 </div>
+                            </div>
                        </div>
                   </div>
-                  <div class="c-group">
-                       <label>of</label>
-                       <div class="input-wrap">
-                           <input type="number" id="c1-b" placeholder="150" />
-                       </div>
-                  </div>
-                  <div class="equal-sign">=</div>
-                  <div class="c-res"><span id="c1-res">30</span></div>
              </div>
-
-             <!-- Calc 2 -->
-             <div class="calc-row mt-32">
-                  <div class="c-group">
-                       <div class="input-wrap">
-                           <input type="number" id="c2-a" placeholder="30" />
-                       </div>
-                  </div>
-                  <div class="c-group">
-                       <label>is what % of</label>
-                       <div class="input-wrap">
-                           <input type="number" id="c2-b" placeholder="150" />
-                       </div>
-                  </div>
-                  <div class="equal-sign">=</div>
-                  <div class="c-res"><span id="c2-res">20</span>%</div>
-             </div>
-
-             <!-- Calc 3 -->
-             <div class="calc-row mt-32">
-                  <div class="c-group">
-                       <label>Percentage increase from</label>
-                       <div class="input-wrap">
-                           <input type="number" id="c3-a" placeholder="100" />
-                       </div>
-                  </div>
-                  <div class="c-group">
-                       <label>to</label>
-                       <div class="input-wrap">
-                           <input type="number" id="c3-b" placeholder="120" />
-                       </div>
-                  </div>
-                  <div class="equal-sign">=</div>
-                  <div class="c-res"><span id="c3-res">20</span>%</div>
-             </div>
-
         </div>
 
-        <article class="pro-seo-article container mt-48">
+        <div slot="tool-info">
              <h2>Online Percentage Calculator</h2>
-             <p>Our completely free <strong>percentage calculator</strong> computes results dynamically as you type. Whether you are calculating discounts, taxes, or score differences, this tool provides instant feedback without needing to refresh or bounce pages. Understanding <strong>how to find percentage of a number</strong> is essential for finance, retail, and academics. Our <strong>percentage difference calculator</strong> handles complex increases or decreases with absolute mathematical precision.</p>
+             <p>Our completely free <strong>percentage calculator</strong> computes results dynamically as you type. Whether you are calculating discounts, taxes, or score differences, this tool provides instant feedback without needing to refresh.</p>
              
-             <h3 class="mt-32">Frequently Asked Questions</h3>
-             <details class="faq-item">
-                  <summary>How to find the percentage of a number?</summary>
-                  <p>To find X% of Y, multiply the number (Y) by the percentage (X) and then divide by 100. For example, 20% of 150 is (20 * 150) / 100 = 30. Our <strong>online math tool</strong> does this instantly as you type.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>How to calculate percentage increase?</summary>
-                  <p>Subtract the original value from the new value, then divide that difference by the original value. Multiply the result by 100 to get the percentage. Example: Increase from 100 to 125 is a 25% increase.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>What is percentage decrease?</summary>
-                  <p>Percentage decrease is the percentage reduction from an original quantity. Use our "Percentage increase/decrease" section, and if the result is negative, it represents a percentage decrease.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>Is this calculator accurate for finance?</summary>
-                  <p>Yes, our calculator uses high-precision JavaScript floating-point math, making it perfect for VAT calculations, discount planning, and basic investment yield checks.</p>
-             </details>
-        </article>
-
-        <RelatedTools currentTool="tools" />
-    </div>
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>How to find the percentage of a number?</summary>
+                       <p>To find X% of Y, multiply the number (Y) by the percentage (X) and then divide by 100.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>Is this calculator accurate for finance?</summary>
+                       <p>Yes, our calculator uses high-precision JavaScript floating-point math, making it perfect for VAT calculations and discount planning.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
-<script>
+<script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
         const calculate = () => {
              // Calc 1: X% of Y
-             const c1a = parseFloat((document.getElementById('c1-a') as HTMLInputElement).value);
-             const c1b = parseFloat((document.getElementById('c1-b') as HTMLInputElement).value);
-             const c1res = document.getElementById('c1-res') as HTMLElement;
+             const c1a = parseFloat(document.getElementById('c1-a').value);
+             const c1b = parseFloat(document.getElementById('c1-b').value);
+             const c1res = document.getElementById('c1-res');
              if (!isNaN(c1a) && !isNaN(c1b)) c1res.textContent = ((c1a / 100) * c1b).toFixed(2).replace(/\.00$/, '');
              else c1res.textContent = '-';
 
              // Calc 2: X is what % of Y
-             const c2a = parseFloat((document.getElementById('c2-a') as HTMLInputElement).value);
-             const c2b = parseFloat((document.getElementById('c2-b') as HTMLInputElement).value);
-             const c2res = document.getElementById('c2-res') as HTMLElement;
+             const c2a = parseFloat(document.getElementById('c2-a').value);
+             const c2b = parseFloat(document.getElementById('c2-b').value);
+             const c2res = document.getElementById('c2-res');
              if (!isNaN(c2a) && !isNaN(c2b) && c2b !== 0) c2res.textContent = ((c2a / c2b) * 100).toFixed(2).replace(/\.00$/, '');
              else c2res.textContent = '-';
 
              // Calc 3: Increase/Decrease %
-             const c3a = parseFloat((document.getElementById('c3-a') as HTMLInputElement).value);
-             const c3b = parseFloat((document.getElementById('c3-b') as HTMLInputElement).value);
-             const c3res = document.getElementById('c3-res') as HTMLElement;
+             const c3a = parseFloat(document.getElementById('c3-a').value);
+             const c3b = parseFloat(document.getElementById('c3-b').value);
+             const c3res = document.getElementById('c3-res');
              if (!isNaN(c3a) && !isNaN(c3b) && c3a !== 0) {
                   const diff = c3b - c3a;
                   const pct = (diff / c3a) * 100;
@@ -134,34 +138,51 @@ const PAGE_KEYWORDS = 'percentage calculator, calculate percentage online, math 
 </script>
 
 <style>
-    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; }
-    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
-    
-    .calc-row { display: flex; align-items: flex-end; gap: 16px; background: #f8fafc; border: 1.5px solid var(--border); border-radius: 20px; padding: 24px; flex-wrap: wrap; }
-    .c-group { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 140px; }
-    .c-group label { font-size: 0.8rem; font-weight: 950; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
-    
-    .input-wrap { display: flex; align-items: center; background: #fff; border: 2px solid var(--border); border-radius: 12px; overflow: hidden; transition: 0.3s; }
-    .input-wrap:focus-within { border-color: var(--primary); }
-    .input-wrap input { width: 100%; padding: 16px; border: none; outline: none; font-size: 1.25rem; font-weight: 900; color: var(--dark); }
-    .input-wrap .suffix { padding-right: 16px; font-weight: 900; color: var(--gray); font-size: 1.2rem; }
+    .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 800px; margin: 0 auto; background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 32px; }
 
-    .equal-sign { font-size: 2rem; font-weight: bold; color: #cbd5e1; padding-bottom: 8px; }
-    .c-res { flex: 1; font-size: 2rem; font-weight: 1000; color: var(--primary); text-align: right; word-break: break-all; min-width: 120px; }
+    .calculator-stack { display: flex; flex-direction: column; gap: 32px; }
+    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    
+    .calc-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-sm); }
+    .calc-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    
+    .c-field { display: flex; flex-direction: column; }
+    .l-text { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: block; }
+    
+    .input-container { display: flex; align-items: center; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden; transition: 0.2s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box; }
+    .input-container:focus-within { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1); }
+    .mini-input { width: 100%; padding: 16px; border: none; outline: none; font-size: 1.2rem; font-weight: 800; color: var(--text-main); background: transparent; }
+    .i-suffix { padding-right: 16px; font-weight: 800; color: var(--text-muted); font-size: 1.1rem; }
 
-    @media (max-width: 640px) {
-        .equal-sign { display: none; }
-        .c-res { text-align: left; width: 100%; border-top: 1.5px solid var(--border); padding-top: 16px; }
-    }
+    .c-arrow { font-size: 1.5rem; font-weight: 900; color: var(--surface-300); text-align: center; }
+    .c-result { font-size: 2rem; font-weight: 1000; color: var(--accent); text-align: right; word-break: break-all; line-height: 1; }
 
     /* FAQ */
-    .faq-item { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; text-align: left; margin-top: 16px; }
-    .faq-item summary { font-weight: 900; font-size: 1.1rem; padding: 20px; cursor: pointer; color: var(--dark); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 24px; font-weight: bold; font-size: 1.4rem; color: var(--primary); }
+    .faq-grid { display: grid; gap: 16px; }
+    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
     .faq-item[open] summary::after { content: '−'; }
-    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 1rem; color: var(--slate); line-height: 1.6; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
-    .mt-48 { margin-top: 48px; }
+    .m-0 { margin: 0; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
     .mt-32 { margin-top: 32px; }
+    .flex-1 { flex: 1; }
+    .flex-2 { flex: 2; }
+    .flex-3 { flex: 3; }
+
+    @media (min-width: 641px) {
+        .d-sm-block { display: block; }
+    }
+
+    @media (max-width: 640px) {
+        .workspace-editor { padding: 24px; }
+        .c-arrow { display: none; }
+        .c-result { text-align: left; width: 100%; border-top: 1px solid var(--border-subtle); padding-top: 16px; margin-top: 8px; font-size: 1.75rem; }
+        .calc-row { flex-direction: column; align-items: stretch; gap: 12px; }
+        .c-field { width: 100%; }
+        .d-sm-block { display: none; }
+    }
 </style>

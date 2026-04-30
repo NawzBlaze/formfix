@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Digital Signature Maker Online | Create Free Signatures | FormFix';
 const PAGE_DESC = 'Create your perfect digital signature online. Draw smoothly or type your name with 65+ premium professional fonts. Download as a transparent PNG instantly for free.';
@@ -24,7 +24,6 @@ const customSchema = {
   ]
 };
 
-// massive font list!
 const fontList = [
   "Alex Brush", "Allura", "Bad Script", "Bilbo", "Caveat", "Cedarville Cursive", "Charm", "Clicker Script", 
   "Cookie", "Courgette", "Covered By Your Grace", "Damion", "Dancing Script", "Delius", "Engagement", 
@@ -39,115 +38,164 @@ const fontList = [
 ];
 
 const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font => `family=${font.replace(/ /g, '+')}`).join('&') + "&display=swap";
-
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/signature-maker">
-    <!-- Load 65 Premium Cursive Fonts -->
     <link href={googleFontsUrl} rel="stylesheet" />
 
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">✍️ Ultimate Signature Engine</div>
-             <h1 class="main-h1">Online <span class="highlight">Signature Maker</span></h1>
-             <p class="hero-sub">Draw smoothly or select from 65+ professional fonts. Download as a transparent PNG instantly for free.</p>
-        </header>
+    <ToolWrapper title="Signature Maker" subtitle="Draw smoothly or type your name with 65+ premium professional fonts." currentTool="signature-maker">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <div class="tabs-group mb-24">
+                       <button id="tab-draw" class="tab-pill active">🖍️ Draw Flow</button>
+                       <button id="tab-type" class="tab-pill">⌨️ Type Name</button>
+                  </div>
 
-        <div class="glass-card tool-content shadow-lg max-w-lg mx-auto">
-            
-            <div class="tabs-container">
-                 <button id="tab-draw" class="tab-btn active">🖍️ Draw Smoothly</button>
-                 <button id="tab-type" class="tab-btn">⌨️ Type (60+ Fonts)</button>
-            </div>
+                  <div class="settings-grid mb-24">
+                       <div class="config-card shadow-sm">
+                            <label class="section-label mb-12">Ink Selection</label>
+                            <div class="ink-selector" id="color-picker">
+                                 <button class="ink-dot active" data-col="#000000" style="background:#000000;"></button>
+                                 <button class="ink-dot" data-col="#1d4ed8" style="background:#1d4ed8;"></button>
+                                 <button class="ink-dot" data-col="#dc2626" style="background:#dc2626;"></button>
+                                 <input type="color" id="custom-color" class="ink-custom" title="Custom color" />
+                            </div>
+                       </div>
+                       
+                       <div id="draw-actions" class="config-card shadow-sm">
+                            <label class="section-label mb-12">Drawing Engine</label>
+                            <div class="d-flex align-center gap-12">
+                                 <button id="enhance-btn" class="secondary-btn btn-sm">✨ Auto Smooth</button>
+                                 <span id="enhance-pill" class="status-pill inverse hidden">Vectorized</span>
+                            </div>
+                       </div>
+                  </div>
 
-            <div class="controls-row">
-                 <div class="color-picker" id="color-picker">
-                      <button class="col-btn active shadow-sm" data-col="#000000" style="background:#000000;" aria-label="Black"></button>
-                      <button class="col-btn shadow-sm" data-col="#1d4ed8" style="background:#1d4ed8;" aria-label="Blue"></button>
-                      <button class="col-btn shadow-sm" data-col="#dc2626" style="background:#dc2626;" aria-label="Red"></button>
-                 </div>
-                 <div id="draw-actions" class="d-flex align-center gap-12">
-                      <p id="enhance-status" class="enhance-status hidden">✨ Smoothed!</p>
-                      <button id="enhance-btn" class="enhance-pill pulse-glow" title="Make your handwriting look like a sleek fountain pen!">
-                           ✨ Auto Ink Smoother
-                      </button>
-                 </div>
-            </div>
+                  <div class="studio-workspace shadow-sm">
+                       <!-- DRAW VIEW -->
+                       <div id="view-draw" class="view-panel">
+                            <div class="draw-pad">
+                                <canvas id="sign-canvas"></canvas>
+                            </div>
+                       </div>
 
-            <div class="workspace-card">
-                <!-- VIEW 1: DRAW -->
-                <div id="view-draw" class="view-panel">
-                     <div class="canvas-wrapper">
-                         <canvas id="sign-canvas"></canvas>
-                     </div>
-                </div>
+                       <!-- TYPE VIEW -->
+                       <div id="view-type" class="view-panel hidden">
+                            <input type="text" id="type-input" class="signature-field" placeholder="Signature Name..." />
+                            <div class="font-gallery scroll-container" id="font-selector">
+                                 {fontList.map((font, idx) => (
+                                     <button 
+                                        class={`font-card ${idx === 0 ? 'active' : ''}`} 
+                                        data-font={`'${font}', cursive`} 
+                                        style={`font-family: '${font}', cursive`}
+                                     >
+                                         {font}
+                                     </button>
+                                 ))}
+                            </div>
+                       </div>
+                  </div>
 
-                <!-- VIEW 2: TYPE -->
-                <div id="view-type" class="view-panel hidden">
-                     <input type="text" id="type-input" class="modern-input" placeholder="Type your Full Name..." />
-                     
-                     <div class="font-selector mt-16" id="font-selector">
-                          {fontList.map((font, index) => (
-                              <button 
-                                 class={`font-btn ${index === 0 ? 'active' : ''}`} 
-                                 data-font={`'${font}', cursive`} 
-                                 style={`font-family: '${font}', cursive`}
-                                 title={font}
-                              >
-                                  {font.split(' ')[0]} {/* Short name display */}
-                              </button>
-                          ))}
-                     </div>
-                </div>
-            </div>
-
-            <div class="action-footer mt-24">
-                 <div class="d-flex gap-16 wrap-mobile">
-                     <button id="clear-btn" class="secondary-btn wide-btn-half profile-btn">🗑️ Clear</button>
-                     <button id="download-btn" class="primary-btn wide-btn profile-btn pulse-glow" style="flex:1;">⬇️ Transparent PNG</button>
-                 </div>
-                 <p class="privacy-note mt-16 text-center">🔒 Runs fully offline in browser. No tracking or uploading.</p>
-            </div>
-
+                  <div class="action-footer mt-24">
+                       <button id="clear-btn" class="secondary-btn flex-1 py-16">↺ Reset Pad</button>
+                       <button id="download-btn" class="primary-btn flex-2 py-16">Download Transparent PNG</button>
+                  </div>
+                  <p class="privacy-note text-center mt-16 font-600">🔒 100% Browser-side. Safe for legal documents.</p>
+             </div>
         </div>
 
-        <article class="pro-seo-article container mt-48">
-             <h2>The Most Advanced Digital Signature Generator</h2>
-             <p>Create a stunning, professional digital signature for all your online forms, PDFs, and official documents. Our <strong>Ultimate Signature Maker</strong> offers two world-class approaches: a native hand-drawing pad with our proprietary <strong>Auto Ink Smoother</strong> that fixes jittery mouse movements to make it look like a real fountain pen, and a premium library of <strong>over 60 high-end cursive fonts</strong>.</p>
+        <div slot="tool-info">
+             <h2>Ultimate Digital Signature Studio</h2>
+             <p>Our <strong>Signature Maker</strong> is the most advanced tool for creating electronic signatures. Whether you prefer hand-drawing or selecting from a professional font library, we ensure your signature looks crisp and authentic. The entire process happens locally, ensuring your personal identity data is never shared.</p>
              
-             <h3 class="mt-32">Create Signatures for Free</h3>
-             <ul style="color:var(--slate); line-height:1.8; margin-left:20px; font-size:1.1rem">
-                <li><strong>Draw Like a Pro:</strong> Just sign with your mouse or finger, click "Auto Ink Smoother", and watch your rough lines instantly transform into a beautiful, flowing vector-like signature.</li>
-                <li><strong>Top Premium Options:</strong> We bypassed standard basic fonts and included 65+ of the world's most elegant calligraphy fonts (like Great Vibes, Pacifico, and Allura) so you can find the perfect professional vibe.</li>
-             </ul>
-        </article>
-
-        <RelatedTools currentTool="signature-maker" />
-    </div>
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>Is this signature legally binding?</summary>
+                       <p>In most jurisdictions including the US (ESIGN Act) and UK (eIDAS), digital signatures are legally recognized for most business and personal documents. We generate high-quality transparent PNGs that can be used on any electronic form.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>Can I use this on a phone?</summary>
+                       <p>Yes. Our studio is fully touch-optimized. Using your finger or a stylus on a smartphone provides an even more natural handwriting feel than a mouse.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
+
+
+
+<style>
+    .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 800px; margin: 0 auto; }
+    
+    .tabs-group { display: flex; background: var(--surface-100); padding: 4px; border-radius: 12px; }
+    .tab-pill { flex: 1; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
+    .tab-pill.active { background: #fff; color: var(--text-main); box-shadow: var(--shadow-sm); }
+
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 16px; background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+    .section-label { font-size: 0.72rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 12px; }
+    
+    .ink-selector { display: flex; gap: 12px; }
+    .ink-dot { width: 32px; height: 32px; border-radius: 50%; border: 3px solid #fff; cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm); }
+    .ink-dot.active { transform: scale(1.15); box-shadow: 0 0 0 2px var(--accent); }
+
+    .status-badge { background: #d1fae5; color: #065f46; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; }
+    .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
+
+    .canvas-workspace { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); overflow: hidden; }
+    .draw-pad { background: #fafafa; height: 320px; display: flex; align-items: center; justify-content: center; touch-action: none; position: relative; }
+    #sign-canvas { max-width: 100%; max-height: 100%; cursor: crosshair; }
+
+    .modern-input { width: 100%; padding: 24px; font-size: 2.5rem; text-align: center; border-radius: 0; border: none; border-bottom: 2px solid var(--border-subtle); background: #fff; outline: none; transition: 0.2s; }
+    .modern-input:focus { border-color: var(--accent); }
+
+    .font-library { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; max-height: 350px; overflow-y: auto; padding: 20px; background: var(--surface-50); }
+    .font-card { padding: 12px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 10px; font-size: 1.4rem; cursor: pointer; transition: 0.2s; text-align: center; color: var(--text-main); height: 60px; display: flex; align-items: center; justify-content: center; }
+    .font-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .font-card.active { border-color: var(--accent); color: #fff; background: var(--accent); }
+
+    .action-footer { display: flex; gap: 16px; }
+    .flex-1 { flex: 1; }
+    .flex-2 { flex: 2; }
+    .hidden { display: none !important; }
+
+    /* FAQ */
+    .faq-grid { display: grid; gap: 16px; }
+    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+
+    @media (max-width: 640px) {
+        .action-footer { flex-direction: column; }
+        .settings-grid { grid-template-columns: 1fr; }
+        .modern-input { font-size: 1.8rem; }
+    }
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const tabDraw = document.getElementById('tab-draw') as HTMLButtonElement;
-        const tabType = document.getElementById('tab-type') as HTMLButtonElement;
-        const viewDraw = document.getElementById('view-draw') as HTMLElement;
-        const viewType = document.getElementById('view-type') as HTMLElement;
-        const typeInput = document.getElementById('type-input') as HTMLInputElement;
+        const tabDraw = document.getElementById('tab-draw');
+        const tabType = document.getElementById('tab-type');
+        const viewDraw = document.getElementById('view-draw');
+        const viewType = document.getElementById('view-type');
+        const typeInput = document.getElementById('type-input');
         
-        const canvas = document.getElementById('sign-canvas') as HTMLCanvasElement;
-        const ctx = canvas.getContext('2d')!;
+        const canvas = document.getElementById('sign-canvas');
+        const ctx = canvas.getContext('2d');
         
         let isDrawing = false;
         let isTypeMode = false;
         let strokeColor = '#000000';
         let currentFont = "'Alex Brush', cursive";
 
-        const enhanceBtn = document.getElementById('enhance-btn') as HTMLButtonElement;
-        const enhanceStatus = document.getElementById('enhance-status') as HTMLElement;
-        const drawActions = document.getElementById('draw-actions') as HTMLElement;
+        const enhanceBtn = document.getElementById('enhance-btn');
+        const enhanceStatus = document.getElementById('enhance-status');
+        const drawActions = document.getElementById('draw-actions');
 
-        let rawStrokes: {x:number, y:number}[][] = [];
-        let currentStroke: {x:number, y:number}[] = [];
+        let rawStrokes = [];
+        let currentStroke = [];
         let isEnhanced = false;
 
         function setupCanvas() {
@@ -195,39 +243,39 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
         });
 
         // Colors
-        const colBtns = document.getElementById('color-picker')!.querySelectorAll('.col-btn');
+        const colBtns = document.getElementById('color-picker').querySelectorAll('.col-btn');
         colBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 colBtns.forEach(b => b.classList.remove('active'));
-                const target = e.currentTarget as HTMLElement;
+                const target = e.currentTarget;
                 target.classList.add('active');
-                strokeColor = target.dataset.col!;
+                strokeColor = target.dataset.col;
                 ctx.strokeStyle = strokeColor;
                 if(isTypeMode) typeInput.style.color = strokeColor;
             });
         });
 
         // Fonts
-        const fontBtns = document.getElementById('font-selector')!.querySelectorAll('.font-btn');
+        const fontBtns = document.getElementById('font-selector').querySelectorAll('.font-btn');
         fontBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 fontBtns.forEach(b => b.classList.remove('active'));
-                const target = e.currentTarget as HTMLElement;
+                const target = e.currentTarget;
                 target.classList.add('active');
-                currentFont = target.dataset.font!;
+                currentFont = target.dataset.font;
                 typeInput.style.fontFamily = currentFont;
             });
         });
 
         // Draw Flow
-        function getPos(e: MouseEvent | TouchEvent) {
+        function getPos(e) {
             const rect = canvas.getBoundingClientRect();
             const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
             const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
             return { x: clientX - rect.left, y: clientY - rect.top };
         }
 
-        function startPosition(e: MouseEvent | TouchEvent) {
+        function startPosition(e) {
             e.preventDefault(); 
             if (isTypeMode) return; 
             isDrawing = true;
@@ -244,7 +292,7 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
             draw(e);
         }
 
-        function draw(e: MouseEvent | TouchEvent) {
+        function draw(e) {
             e.preventDefault();
             if (!isDrawing || isTypeMode) return;
             const pos = getPos(e);
@@ -280,7 +328,7 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
              ctx.clearRect(0, 0, canvas.width, canvas.height);
              
              // Advanced downsampling filter
-             function simplify(pts: {x:number, y:number}[], tolerance: number) {
+             function simplify(pts, tolerance) {
                  if (pts.length <= 2) return pts;
                  const simplified = [pts[0]];
                  let lastPt = pts[0];
@@ -326,14 +374,14 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
              ctx.lineWidth = 4;
         });
 
-        document.getElementById('clear-btn')!.addEventListener('click', () => {
+        document.getElementById('clear-btn').addEventListener('click', () => {
             if (isTypeMode) { typeInput.value = ''; } 
             else { setupCanvas(); }
         });
 
         // Trim Transparent Canvas bounds completely
-        function getTrimmedCanvas(sourceCanvas: HTMLCanvasElement): HTMLCanvasElement {
-            const sourceCtx = sourceCanvas.getContext('2d')!;
+        function getTrimmedCanvas(sourceCanvas) {
+            const sourceCtx = sourceCanvas.getContext('2d');
             const imgData = sourceCtx.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
             const data = imgData.data;
             
@@ -365,24 +413,24 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
             const trmCanvas = document.createElement('canvas');
             trmCanvas.width = trmWidth;
             trmCanvas.height = trmHeight;
-            const trmCtx = trmCanvas.getContext('2d')!;
+            const trmCtx = trmCanvas.getContext('2d');
             trmCtx.drawImage(sourceCanvas, minX, minY, trmWidth, trmHeight, 0, 0, trmWidth, trmHeight);
             
             return trmCanvas;
         }
 
-        document.getElementById('download-btn')!.addEventListener('click', () => {
+        document.getElementById('download-btn').addEventListener('click', () => {
             let exportCanvas = canvas;
             if (isTypeMode) {
                 const text = typeInput.value.trim();
                 const tc = document.createElement('canvas');
                 tc.width = 1000; tc.height = 400; // Big space for long names
-                const tctx = tc.getContext('2d')!;
+                const tctx = tc.getContext('2d');
                 tctx.fillStyle = strokeColor;
                 tctx.font = `80px ${currentFont}`;
                 tctx.textAlign = 'center';
                 tctx.textBaseline = 'middle';
-                if(!text) return (window as any).ffNotice("Please type your signature first.", "error");
+                if(!text) return window.ffNotice("Please type your signature first.", "error");
                 tctx.fillText(text, 500, 200);
                 exportCanvas = getTrimmedCanvas(tc);
             } else {
@@ -398,66 +446,47 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
 </script>
 
 <style>
-    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; }
-    .tool-wrapper { max-width: 960px; margin: 0 auto; padding-bottom: 100px; }
-    .max-w-lg { max-width: 650px; margin-inline: auto; }
+    .tabs-group { display: flex; background: var(--surface-100); padding: 4px; border-radius: 12px; }
+    .tab-pill { flex: 1; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
+    .tab-pill.active { background: #fff; color: var(--text-main); box-shadow: var(--shadow-sm); }
+
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 16px; background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+    .section-label { font-size: 0.72rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: block; }
     
-    .tabs-container { display: flex; background: #f1f5f9; padding: 6px; border-radius: 100px; margin-bottom: 32px; }
-    .tab-btn { flex: 1; padding: 16px; border-radius: 100px; font-weight: 950; font-size: 1.1rem; color: var(--slate); background: transparent; border: none; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .tab-btn.active { background: #fff; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .color-chip-group { display: flex; gap: 12px; }
+    .color-chip { width: 32px; height: 32px; border-radius: 50%; border: 3px solid #fff; cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm); }
+    .color-chip.active { transform: scale(1.15); box-shadow: 0 0 0 2px var(--accent); }
 
-    .controls-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding: 0 12px; }
-    .color-picker { display: flex; gap: 12px; }
-    .col-btn { width: 34px; height: 34px; border-radius: 50%; border: 3px solid #fff; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .col-btn:hover { transform: scale(1.1); }
-    .col-btn.active { transform: scale(1.2); outline: 2px solid var(--primary); outline-offset: 2px; }
+    .status-pill { background: #d1fae5; color: #065f46; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; }
+    .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
 
-    .enhance-pill { background: linear-gradient(135deg, #f59e0b, #eab308); color: white; border: none; padding: 10px 18px; border-radius: 100px; font-weight: 1000; font-size: 0.95rem; text-transform: uppercase; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); transition: 0.3s; letter-spacing: 0.05em; }
-    .enhance-pill:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4); }
-    .enhance-status { font-weight: 900; color: #10b981; font-size: 0.9rem; margin: 0; animation: fade-in 0.3s forwards; }
+    .workspace-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 24px; overflow: hidden; }
+    .canvas-box { background: var(--surface-50); border-radius: var(--radius-sm); border: 2px dashed var(--border-subtle); height: 300px; display: flex; align-items: center; justify-content: center; touch-action: none; position: relative; }
+    #sign-canvas { max-width: 100%; max-height: 100%; cursor: crosshair; }
 
-    .workspace-card { background: #fff; border: 1.5px solid var(--border); border-radius: 24px; padding: 24px; min-height: 340px; display: flex; flex-direction: column; box-shadow: inset 0 2px 20px rgba(0,0,0,0.02); }
-    .view-panel { flex: 1; display: flex; flex-direction: column; }
+    .modern-input { width: 100%; padding: 20px; font-size: 2rem; text-align: center; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); background: var(--surface-50); outline: none; transition: 0.2s; }
+    .modern-input:focus { border-color: var(--accent); background: #fff; }
 
-    .canvas-wrapper { flex: 1; background: #fafbfc; border-radius: 16px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px dashed var(--gray); touch-action: none; position: relative; }
-    .canvas-wrapper canvas { width: 100%; height: 100%; cursor: crosshair; }
+    .font-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; max-height: 300px; overflow-y: auto; padding: 12px; background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); }
+    .font-grid::-webkit-scrollbar { width: 6px; }
+    .font-grid::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 10px; }
 
-    .modern-input { width: 100%; padding: 24px; font-size: 2.2rem; text-align: center; border-radius: 16px; border: 2px solid var(--border); background: #f8fafc; outline: none; transition: 0.3s; color: var(--dark); font-weight: 500; }
-    .modern-input:focus { border-color: var(--primary); background:#fff; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
-    
-    .font-selector { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; max-height: 300px; overflow-y: auto; padding: 12px; background: #f1f5f9; border-radius: 16px; }
-    /* Modern minimalist custom scrollbar */
-    .font-selector::-webkit-scrollbar { width: 8px; }
-    .font-selector::-webkit-scrollbar-track { background: transparent; }
-    .font-selector::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
-
-    .font-btn { padding: 14px 10px; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; font-size: 1.6rem; cursor: pointer; transition: 0.2s; white-space: nowrap; text-align: center; color: var(--dark); overflow: hidden; text-overflow: ellipsis; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-    .font-btn:hover { border-color: var(--primary-light); transform: translateY(-2px); }
-    .font-btn.active { border-color: var(--primary); color: #fff; background: var(--primary); font-weight: bold; transform: scale(1.05); }
+    .font-btn { padding: 12px 8px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 8px; font-size: 1.25rem; cursor: pointer; transition: 0.2s; white-space: nowrap; text-align: center; color: var(--text-main); overflow: hidden; text-overflow: ellipsis; }
+    .font-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .font-btn.active { border-color: var(--accent); color: #fff; background: var(--accent); font-weight: bold; }
 
     .d-flex { display: flex; }
     .align-center { align-items: center; }
-    .wrap-mobile { flex-wrap: wrap; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
     .gap-12 { gap: 12px; }
     .gap-16 { gap: 16px; }
-    .wide-btn { padding: 20px 24px; font-weight: 1000; font-size: 1.15rem; border-radius: 100px; }
-    .wide-btn-half { padding: 20px 32px; font-weight: 1000; font-size: 1.15rem; border-radius: 100px; min-width: 140px; }
-
-    .mt-48 { margin-top: 48px; }
-    .mt-32 { margin-top: 32px; }
-    .mt-24 { margin-top: 24px; }
-    .mt-16 { margin-top: 16px; }
-
+    .flex-1 { flex: 1; }
+    .flex-2 { flex: 2; }
     .hidden { display: none !important; }
-
-    @keyframes fade-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 640px) {
         .wrap-mobile { flex-direction: column; }
-        .wide-btn, .wide-btn-half { width: 100%; }
-        .workspace-card { padding: 16px;}
-        .canvas-wrapper { height: 260px; }
-        .controls-row { flex-direction: column; gap: 16px; align-items: flex-start; }
+        .settings-grid { grid-template-columns: 1fr; }
     }
 </style>

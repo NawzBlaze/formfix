@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
-const PAGE_TITLE = 'Text to Handwriting Converter - Realistic Assignment Maker Online';
+const PAGE_TITLE = 'Text to Handwriting Converter - Realistic Assignment Maker | FormFix';
 const PAGE_DESC = 'Convert typed text into realistic handwriting on notebook paper. Perfect for assignments, letters, and homework. 100% private and free.';
 const PAGE_KEYWORDS = 'text to handwriting, handwriting converter online, assignment maker, homework maker, handwritten text generator, ruled paper handwriting';
 
@@ -11,7 +11,7 @@ const customSchema = {
   "@graph": [
     {
       "@type": "SoftwareApplication",
-      "name": "Handwriting Assignment Studio",
+      "name": "Text to Handwriting Converter",
       "operatingSystem": "All",
       "applicationCategory": "EducationalApplication",
       "description": "Transform typed text into realistic handwritten documents on professional ruled paper backgrounds.",
@@ -26,173 +26,148 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/text-to-handwriting">
-    <!-- Load Handwriting Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Indie+Flower&family=Patrick+Hand&family=Handlee&family=Homemade+Apple&family=Kalam:wght@300;400;700&family=Shadows+Into+Light&family=Satisfy&display=swap" rel="stylesheet">
 
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">🎓 Student assignment Helper</div>
-             <h1 class="main-h1">Text to <span class="highlight">Handwriting</span> Studio</h1>
-             <p class="hero-sub">Generate realistic handwritten assignments in seconds. Type your text and get a high-quality photo of it.</p>
-        </header>
+    <ToolWrapper title="Text to Handwriting" subtitle="Transform any text into realistic handwriting on ruled paper instantly." currentTool="text-to-handwriting">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <div class="studio-grid">
+                       <!-- 1. Controls Sidebar -->
+                       <div class="controls-sidebar">
+                            <div class="settings-card glass-card mb-24">
+                                 <label class="section-label mb-12">1. Input Text</label>
+                                 <textarea id="text-input" placeholder="Paste your assignment text here..." class="modern-textarea mb-24">Hi, this is a realistic handwriting sample. You can change colors, paper types, and hand styles using the controls below!</textarea>
 
-        <div class="handwriting-workspace grid-2x">
-            <!-- Left: Inputs -->
-            <div class="glass-card editor-pane shadow-lg">
-                 <div class="pane-section mb-24">
-                      <label class="pane-label">Content to Handwrite</label>
-                      <textarea id="text-input" placeholder="Type or paste your assignment here...
-Line breaks will be respected.
-Try to keep lines short for better results." class="modern-textarea"></textarea>
-                 </div>
+                                 <div class="settings-grid mb-24">
+                                      <div class="setting-item">
+                                           <label class="section-label mb-8">Hand Style</label>
+                                           <select id="font-select" class="modern-select">
+                                                <option value="'Caveat', cursive">Natural Cursive</option>
+                                                <option value="'Patrick Hand', cursive">Patrick Hand</option>
+                                                <option value="'Indie Flower', cursive">Indie Flower</option>
+                                                <option value="'Kalam', cursive">Kalam Marker</option>
+                                                <option value="'Handlee', cursive">Neat Print</option>
+                                                <option value="'Shadows Into Light', cursive">Thin Artistic</option>
+                                                <option value="'Homemade Apple', cursive">Vintage Cursive</option>
+                                                <option value="'Satisfy', cursive">Liquid Ink</option>
+                                           </select>
+                                      </div>
+                                      <div class="setting-item">
+                                           <label class="section-label mb-8">Paper Base</label>
+                                           <select id="paper-select" class="modern-select">
+                                                <option value="ruled">Blue Ruled</option>
+                                                <option value="boxed">Math Graph</option>
+                                                <option value="blank">Plain White</option>
+                                                <option value="yellow">Yellow Pad</option>
+                                                <option value="old">Vintage</option>
+                                           </select>
+                                      </div>
+                                 </div>
 
-                 <div class="pane-section mb-24">
-                      <div class="grid-2col">
-                           <div>
-                                <label class="pane-label">Handwriting Style</label>
-                                <select id="font-select" class="modern-select">
-                                     <option value="'Caveat', cursive">Natural Cursive</option>
-                                     <option value="'Patrick Hand', cursive">Patrick Hand</option>
-                                     <option value="'Indie Flower', cursive">Indie Flower</option>
-                                     <option value="'Kalam', cursive">Kalam Marker</option>
-                                     <option value="'Handlee', cursive">Neat Print</option>
-                                     <option value="'Shadows Into Light', cursive">Thin Artistic</option>
-                                     <option value="'Homemade Apple', cursive">Vintage Cursive</option>
-                                     <option value="'Satisfy', cursive">Liquid Ink</option>
-                                </select>
-                           </div>
-                           <div>
-                                <label class="pane-label">Paper Type</label>
-                                <select id="paper-select" class="modern-select">
-                                     <option value="ruled">Blue Ruled Paper</option>
-                                     <option value="boxed">Math Graph Paper</option>
-                                     <option value="blank">Plain White Paper</option>
-                                     <option value="yellow">Yellow Pad (Legal)</option>
-                                     <option value="old">Vintage Parchment</option>
-                                </select>
-                           </div>
-                      </div>
-                 </div>
+                                 <div class="setting-item mb-24">
+                                      <div class="d-flex justify-between align-center mb-12">
+                                           <label class="section-label m-0">Ink Color</label>
+                                           <div class="ink-selector" id="ink-group">
+                                                <button class="ink-dot active" data-color="#003366" style="background: #003366" title="Dark Blue"></button>
+                                                <button class="ink-dot" data-color="#111827" style="background: #111827" title="Black"></button>
+                                                <button class="ink-dot" data-color="#065f46" style="background: #065f46" title="Dark Green"></button>
+                                                <button class="ink-dot" data-color="#b91c1c" style="background: #b91c1c" title="Red"></button>
+                                           </div>
+                                      </div>
+                                 </div>
 
-                 <div class="pane-section mb-24">
-                      <div class="grid-2col">
-                           <div>
-                                <label class="pane-label">Ink Color</label>
-                                <div class="ink-buttons">
-                                     <button class="ink-btn active" data-color="#003366" style="background: #003366"></button>
-                                     <button class="ink-btn" data-color="#000000" style="background: #000000"></button>
-                                     <button class="ink-btn" data-color="#b91c1c" style="background: #b91c1c"></button>
-                                </div>
-                           </div>
-                           <div>
-                                <label class="pane-label">Font Size (<span id="font-size-val">1.2</span>)</label>
-                                <input type="range" id="font-size" min="0.8" max="2.5" step="0.1" value="1.2" class="modern-slider" />
-                           </div>
-                      </div>
-                 </div>
+                                 <div class="settings-grid mb-32">
+                                      <div class="setting-item">
+                                           <div class="d-flex justify-between mb-8">
+                                                <label class="section-label m-0">Scale</label>
+                                                <span id="font-size-val" class="status-pill">1.2</span>
+                                           </div>
+                                           <input type="range" id="font-size" min="0.8" max="2.5" step="0.1" value="1.2" class="premium-slider" />
+                                      </div>
+                                      <div class="setting-item">
+                                           <div class="d-flex justify-between mb-8">
+                                                <label class="section-label m-0">Jitter</label>
+                                                <span id="tilt-val" class="status-pill">Low</span>
+                                           </div>
+                                           <input type="range" id="tilt-slider" min="0" max="10" step="1" value="3" class="premium-slider" />
+                                      </div>
+                                 </div>
 
-                 <div class="pane-section mb-24">
-                      <div class="grid-2col">
-                           <div>
-                                <label class="pane-label">Line Space (<span id="line-height-val">1.4</span>)</label>
-                                <input type="range" id="line-height" min="1.0" max="2.0" step="0.05" value="1.35" class="modern-slider" />
-                           </div>
-                           <div>
-                                <label class="pane-label">Tilt / Jitter (<span id="tilt-val">High</span>)</label>
-                                <input type="range" id="tilt-slider" min="0" max="10" step="1" value="5" class="modern-slider" />
-                           </div>
-                      </div>
-                 </div>
+                                 <button id="download-btn" class="primary-btn btn-glow lg-btn">Download High-Res JPG</button>
+                                 <p class="privacy-tiny">🔒 Secure local rendering. No images ever leave your device.</p>
+                            </div>
+                       </div>
 
-                 <div class="action-wrap mt-32">
-                      <button id="download-btn" class="primary-btn wide-btn profile-btn pulse-glow">⬇️ Download High-Res Photo</button>
-                      <p class="text-tiny text-center text-slate mt-12">Format: High-Quality JPEG (Looks 100% Real)</p>
-                 </div>
-            </div>
-
-            <!-- Right: Preview -->
-            <div class="preview-pane">
-                 <div class="preview-sticky">
-                      <div class="preview-container shadow-2xl" id="capture-area">
-                           <canvas id="handwriting-canvas"></canvas>
-                      </div>
-                      <div class="preview-badge mt-16 shadow-lg">HD Real-time Preview</div>
-                 </div>
-            </div>
+                       <!-- 2. Preview Stage -->
+                       <div class="preview-stage">
+                            <div class="preview-header mb-16">
+                                 <span class="preview-badge">Document Preview</span>
+                            </div>
+                            <div class="assignment-preview glass-card">
+                                 <div class="canvas-wrap scroll-container">
+                                      <canvas id="handwriting-canvas"></canvas>
+                                 </div>
+                            </div>
+                       </div>
+                  </div>
+             </div>
         </div>
 
-        <article class="pro-seo-article container mt-60">
-             <div class="divider-line mb-48"></div>
-             
-             <div class="pro-features-grid">
-                <div class="feat-card">
-                    <span class="feat-icon">✍️</span>
-                    <h3>Natural Pen Dynamics</h3>
-                    <p>Unlike basic handwriting fonts, our engine simulates natural pen pressure and slight direction changes (jitter) for every single letter, making it look authentically human.</p>
-                </div>
-                <div class="feat-card">
-                    <span class="feat-icon">📄</span>
-                    <h3>Official Paper Templates</h3>
-                    <p>Choose from standard Blue Ruled paper (Classmate style), Math Grids, or Legal Yellow Pads. The text is perfectly calibrated to sit on the lines.</p>
-                </div>
-                <div class="feat-card">
-                    <span class="feat-icon">🛡️</span>
-                    <h3>100% Client-Side</h3>
-                    <p>Your sensitive notes and assignments are never uploaded to our servers. All rendering happens instantly in your browser cache.</p>
-                </div>
+        <div slot="tool-info">
+             <div class="pro-article">
+                 <h2>Text to Handwriting Converter</h2>
+                 <p>Our <strong>Text to Handwriting Converter</strong> helps you generate high-quality images of handwritten notes instantly. Perfect for making digital assignments look realistic on professional ruled paper backgrounds.</p>
+                 
+                 <div class="feature-grid">
+                      <div class="f-item">
+                           <span class="f-icon">✨</span>
+                           <h3>Human Jitter</h3>
+                           <p>Our algorithm mimics human imperfection by adding subtle tilt and position shifts to every word.</p>
+                      </div>
+                      <div class="f-item">
+                           <span class="f-icon">📏</span>
+                           <h3>A4 Standards</h3>
+                           <p>Output is perfectly scaled for A4 paper printing at 300 DPI for professional results.</p>
+                      </div>
+                 </div>
+
+                 <div class="faq-accordion mt-32">
+                      <details class="faq-item">
+                           <summary>How do I make it look real?</summary>
+                           <div class="ans">Use a 'Low' or 'Med' jitter setting. Adjust the font scale so your text sits naturally on the ruled lines. Real handwriting is rarely perfectly centered, so those small 'irregularities' are key.</div>
+                      </details>
+                      <details class="faq-item">
+                           <summary>Can I print the output?</summary>
+                           <div class="ans">Yes. The download is a high-resolution JPG optimized for 300 DPI printing. It will look like a scanned photo of a real piece of paper when printed.</div>
+                      </details>
+                 </div>
              </div>
-
-             <h2 class="mt-48 text-center">How to Create 100% Realistic Assignments</h2>
-             <p class="text-center text-slate max-w-sm mx-auto mb-40">Follow these expert steps to make your digital work indistinguishable from physical handwriting.</p>
-
-             <div class="steps-path">
-                <div class="path-step">
-                    <div class="step-num">01</div>
-                    <div class="step-info">
-                        <strong>Choose Natural Fonts:</strong> Select 'Caveat' or 'Homemade Apple' for cursive, and 'Indie Flower' for a neat, youthful print style.
-                    </div>
-                </div>
-                <div class="path-step">
-                    <div class="step-num">02</div>
-                    <div class="step-info">
-                        <strong>Calibrate Ruling:</strong> Use the "Line Space" slider. In India, standard registers use 36px-40px spacing. Match your font size so the base of letters touches the blue lines.
-                    </div>
-                </div>
-                <div class="path-step">
-                    <div class="step-num">03</div>
-                    <div class="step-info">
-                        <strong>Add Organic Jitter:</strong> Set Jitter to "Medium" (value 4-6). This adds slight tilts to lines and micro-shifts in position, simulating a tired human hand.
-                    </div>
-                </div>
-             </div>
-        </article>
-
-        <RelatedTools currentTool="text-to-handwriting" />
-    </div>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
-<script>
+<script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
-        const textInput = document.getElementById('text-input') as HTMLTextAreaElement;
-        const fontSelect = document.getElementById('font-select') as HTMLSelectElement;
-        const paperSelect = document.getElementById('paper-select') as HTMLSelectElement;
-        const fontSizeSlider = document.getElementById('font-size') as HTMLInputElement;
-        const lineSlider = document.getElementById('line-height') as HTMLInputElement;
-        const tiltSlider = document.getElementById('tilt-slider') as HTMLInputElement;
-        const inkBtns = document.querySelectorAll('.ink-btn');
-        const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
+        const textInput = document.getElementById('text-input');
+        const fontSelect = document.getElementById('font-select');
+        const paperSelect = document.getElementById('paper-select');
+        const fontSizeSlider = document.getElementById('font-size');
+        const tiltSlider = document.getElementById('tilt-slider');
+        const inkGroup = document.getElementById('ink-group');
+        const downloadBtn = document.getElementById('download-btn');
         
-        const fontSizeVal = document.getElementById('font-size-val')!;
-        const lineHeightVal = document.getElementById('line-height-val')!;
+        const fontSizeVal = document.getElementById('font-size-val');
+        const tiltVal = document.getElementById('tilt-val');
         
-        const canvas = document.getElementById('handwriting-canvas') as HTMLCanvasElement;
-        const ctx = canvas.getContext('2d')!;
+        const canvas = document.getElementById('handwriting-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
 
         let activeInk = '#003366';
         
-        // Initial setup
         const A4_RATIO = 1.414;
-        const CANVAS_WIDTH = 1000;
+        const CANVAS_WIDTH = 1240; // 300 DPI for A4 width
         const CANVAS_HEIGHT = CANVAS_WIDTH * A4_RATIO;
         canvas.width = CANVAS_WIDTH;
         canvas.height = CANVAS_HEIGHT;
@@ -201,34 +176,38 @@ Try to keep lines short for better results." class="modern-textarea"></textarea>
             const paper = paperSelect.value;
             const font = fontSelect.value;
             const text = textInput.value;
-            const fontSize = parseFloat(fontSizeSlider.value) * 20;
-            const lineHeight = parseFloat(lineSlider.value) * fontSize;
+            const baseFontSize = parseFloat(fontSizeSlider.value) * 22;
+            const lineHeight = baseFontSize * 1.6;
             const jitterAmount = parseInt(tiltSlider.value) / 10;
             
             fontSizeVal.textContent = fontSizeSlider.value;
-            lineHeightVal.textContent = lineSlider.value;
+            const jitLabels = ['Off','Min', 'Low', 'Low+', 'Med-', 'Med', 'Med+', 'High-', 'High', 'Max', 'Ultra'];
+            tiltVal.textContent = jitLabels[parseInt(tiltSlider.value)];
 
-            // Clear and draw background
+            // Background
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
             drawPaper(paper);
 
-            // Draw Text
+            // Font setup
             ctx.fillStyle = activeInk;
-            ctx.font = `${fontSize}px ${font}`;
-            ctx.textBaseline = "alphabetic"; // Better for sitting ON lines
+            ctx.font = `${baseFontSize}px ${font}`;
+            ctx.textBaseline = "alphabetic";
 
-            const marginX = 120; // Corrected left margin
-            const rightMargin = 60;
+            const marginX = 140;
+            const rightMargin = 80;
             const maxWidth = CANVAS_WIDTH - marginX - rightMargin;
-            const startY = 112; // Adjusted to sit on typical notebook lines
+            const startY = 160;
 
-            // Split into manual paragraphs first
             const paragraphs = text.split('\n');
             let currentLineY = startY;
 
             paragraphs.forEach((para) => {
+                if (!para.trim()) {
+                    currentLineY += lineHeight;
+                    return;
+                }
                 const words = para.split(' ');
                 let currentLine = '';
 
@@ -241,168 +220,164 @@ Try to keep lines short for better results." class="modern-textarea"></textarea>
                         drawHandwrittenLine(currentLine, marginX, currentLineY, jitterAmount);
                         currentLine = words[n] + ' ';
                         currentLineY += lineHeight;
+                        if (currentLineY > CANVAS_HEIGHT - 60) break;
                     } else {
                         currentLine = testLine;
                     }
                 }
                 drawHandwrittenLine(currentLine, marginX, currentLineY, jitterAmount);
-                currentLineY += lineHeight; // Small gap between paragraphs
+                currentLineY += lineHeight;
+                if (currentLineY > CANVAS_HEIGHT - 60) return;
             });
         }
 
-        function drawHandwrittenLine(text: string, x: number, y: number, jitter: number) {
+        function drawHandwrittenLine(text, x, y, jitter) {
             if (y > CANVAS_HEIGHT - 40) return;
             
             ctx.save();
-            // Natural jitter
             if (jitter > 0) {
-                const tilt = (Math.random() - 0.5) * jitter * 0.03;
-                const shiftX = (Math.random() - 0.5) * jitter * 5;
-                const shiftY = (Math.random() - 0.5) * jitter * 3;
+                const tilt = (Math.random() - 0.5) * jitter * 0.04;
+                const shiftX = (Math.random() - 0.5) * jitter * 6;
+                const shiftY = (Math.random() - 0.5) * jitter * 4;
                 ctx.translate(x + shiftX, y + shiftY);
                 ctx.rotate(tilt);
             } else {
                 ctx.translate(x, y);
             }
 
-            // Ink simulation
-            ctx.shadowBlur = jitter * 0.3;
+            ctx.shadowBlur = jitter * 0.2;
             ctx.shadowColor = activeInk;
-            ctx.globalAlpha = 0.9 + (Math.random() * 0.1); // Variable ink density
+            ctx.globalAlpha = 0.85 + (Math.random() * 0.15);
             
             ctx.fillText(text.trim(), 0, 0);
             ctx.restore();
         }
 
-        function drawPaper(type: string) {
+        function drawPaper(type) {
             if (type === 'ruled') {
                 // Vertical Red Margin
                 ctx.strokeStyle = "rgba(255, 0, 0, 0.25)";
                 ctx.lineWidth = 2;
                 ctx.beginPath();
-                ctx.moveTo(90, 0); ctx.lineTo(90, CANVAS_HEIGHT);
+                ctx.moveTo(110, 0); ctx.lineTo(110, CANVAS_HEIGHT);
                 ctx.stroke();
 
                 // Blue horizontal lines
-                ctx.strokeStyle = "#cfe3ff";
-                ctx.lineWidth = 1;
-                for (let y = 116; y < CANVAS_HEIGHT; y += 36) { // 36px matches typical ruling
+                ctx.strokeStyle = "#e2e8f0";
+                ctx.lineWidth = 1.5;
+                for (let y = 168; y < CANVAS_HEIGHT; y += 42) {
                     ctx.beginPath();
                     ctx.moveTo(0, y); ctx.lineTo(CANVAS_WIDTH, y);
                     ctx.stroke();
                 }
             } else if (type === 'boxed') {
                 ctx.strokeStyle = "#f1f5f9";
-                for (let x = 0; x < CANVAS_WIDTH; x += 30) {
+                ctx.lineWidth = 1;
+                for (let x = 0; x < CANVAS_WIDTH; x += 35) {
                     ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, CANVAS_HEIGHT); ctx.stroke();
                 }
-                for (let y = 0; y < CANVAS_HEIGHT; y += 30) {
+                for (let y = 0; y < CANVAS_HEIGHT; y += 35) {
                     ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(CANVAS_WIDTH, y); ctx.stroke();
                 }
             } else if (type === 'yellow') {
                 ctx.fillStyle = "#fffde7";
                 ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                ctx.strokeStyle = "rgba(255,0,0,0.2)"; // Legal pad margin
+                ctx.strokeStyle = "rgba(255,0,0,0.15)";
                 ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.moveTo(100, 0); ctx.lineTo(100, CANVAS_HEIGHT); ctx.stroke();
-                
+                ctx.beginPath(); ctx.moveTo(110, 0); ctx.lineTo(110, CANVAS_HEIGHT); ctx.stroke();
                 ctx.strokeStyle = "#ffe082";
-                for (let y = 120; y < CANVAS_HEIGHT; y += 32) {
+                for (let y = 168; y < CANVAS_HEIGHT; y += 40) {
                     ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(CANVAS_WIDTH, y); ctx.stroke();
                 }
             } else if (type === 'old') {
-                ctx.fillStyle = "#f3e5ab";
+                ctx.fillStyle = "#faf3e0";
                 ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                for(let i=0; i<1000; i++) {
-                    ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.03})`;
-                    ctx.fillRect(Math.random() * CANVAS_WIDTH, Math.random() * CANVAS_HEIGHT, 1, 1);
+                for(let i=0; i<800; i++) {
+                    ctx.fillStyle = `rgba(139, 69, 19, ${Math.random() * 0.05})`;
+                    ctx.fillRect(Math.random() * CANVAS_WIDTH, Math.random() * CANVAS_HEIGHT, 1.5, 1.5);
                 }
             }
         }
 
-        // Live input listeners
-        textInput.addEventListener('input', render);
-        fontSelect.addEventListener('change', render);
-        paperSelect.addEventListener('change', render);
-        fontSizeSlider.addEventListener('input', render);
-        lineSlider.addEventListener('input', render);
-        tiltSlider.addEventListener('input', render);
+        [textInput, fontSelect, paperSelect, fontSizeSlider, tiltSlider].forEach(el => {
+            el.addEventListener('input', render);
+        });
 
-        inkBtns.forEach(btn => {
-            btn.addEventListener('click', (e: any) => {
-                inkBtns.forEach(b => b.classList.remove('active'));
+        if (inkGroup) {
+            inkGroup.addEventListener('click', (e) => {
+                const btn = e.target.closest('.ink-dot');
+                if(!btn) return;
+                document.querySelectorAll('.ink-dot').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                activeInk = btn.getAttribute('data-color')!;
+                activeInk = btn.getAttribute('data-color');
                 render();
             });
-        });
+        }
 
-        downloadBtn.addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.download = "handwritten_assignment.jpg";
-            link.href = canvas.toDataURL('image/jpeg', 0.95);
-            link.click();
-        });
+        if (downloadBtn) {
+            downloadBtn.onclick = () => {
+                const link = document.createElement('a');
+                link.download = "assignment_formfix.jpg";
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.click();
+            };
+        }
 
-        // Initial render
-        setTimeout(render, 500); // Wait for fonts
+        // Wait for fonts to load before first render
+        document.fonts.ready.then(() => {
+            render();
+        });
     });
 </script>
 
 <style>
-    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 8px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.25rem; margin-bottom: 32px; }
-    .tool-wrapper { max-width: 1200px; margin: 0 auto; padding-bottom: 100px; }
+    .workspace-editor { width: 100%; max-width: 1200px; margin: 0 auto; }
+    .studio-grid { display: grid; grid-template-columns: 420px 1fr; gap: 40px; }
 
-    .handwriting-workspace { display: grid; grid-template-columns: 450px 1fr; gap: 32px; align-items: start; }
-    @media (max-width: 1000px) { .handwriting-workspace { grid-template-columns: 1fr; } }
-    
-    .editor-pane { background: #fff; padding: 32px; border-radius: 24px; border: 1.5px solid var(--border); }
-    .pane-label { display: block; font-size: 0.75rem; font-weight: 1000; color: var(--slate); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.05em; }
-    
-    .modern-textarea { width: 100%; height: 220px; border-radius: 16px; border: 1.5px solid var(--border); padding: 16px; font-size: 1rem; color: var(--dark); background: #f8fafc; outline: none; transition: 0.3s; resize: none; font-family: inherit; }
-    .modern-textarea:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px var(--primary-light); }
-    
-    .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .modern-select { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); background: #fff; font-weight: 700; color: var(--dark); outline: none; }
-    
-    .ink-buttons { display: flex; gap: 12px; }
-    .ink-btn { width: 32px; height: 32px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--border); transition: 0.2s; cursor: pointer; }
-    .ink-btn.active { box-shadow: 0 0 0 2px var(--primary); transform: scale(1.1); }
+    .controls-sidebar { position: sticky; top: 20px; }
+    .settings-card { padding: 32px; background: #fff; }
+    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
 
-    .preview-pane { position: relative; }
-    .preview-sticky { position: sticky; top: 20px; }
-    .preview-container { border-radius: 12px; overflow: hidden; border: 1.5px solid var(--border); background: #f1f5f9; cursor: crosshair; }
-    #handwriting-canvas { width: 100%; height: auto; display: block; image-rendering: -webkit-optimize-contrast; }
-    
-    .preview-badge { display: inline-block; background: var(--dark); color: #fff; padding: 10px 20px; border-radius: 100px; font-weight: 1000; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .modern-textarea { width: 100%; height: 200px; padding: 16px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: var(--surface-50); font-weight: 600; font-size: 1rem; outline: none; transition: 0.2s; resize: none; line-height: 1.5; }
+    .modern-textarea:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
 
-    .modern-slider { -webkit-appearance: none; width: 100%; height: 6px; border-radius: 5px; background: #cbd5e1; outline: none; margin-top: 8px; }
-    .modern-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); cursor: pointer; border: 4px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.15); transition: 0.2s; }
-    
-    .pro-features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 60px; }
-    .feat-card { background: #fff; border: 1.5px solid var(--border-light); border-radius: 20px; padding: 32px; transition: 0.3s; }
-    .feat-icon { font-size: 2.2rem; margin-bottom: 16px; display: block; }
-    .feat-card h3 { font-size: 1.15rem; font-weight: 1000; margin-bottom: 8px; color: var(--dark); }
-    .feat-card p { font-size: 0.95rem; color: var(--slate); line-height: 1.6; font-weight: 500; }
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .modern-select { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: #fff; font-weight: 800; font-size: 0.9rem; outline: none; transition: 0.2s; cursor: pointer; }
+    .modern-select:hover { border-color: var(--accent); }
 
-    .steps-path { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-    .path-step { display: flex; gap: 20px; }
-    .step-num { font-size: 2rem; font-weight: 1000; color: var(--primary-light); opacity: 0.8; line-height: 1; }
-    .step-info strong { display: block; margin-bottom: 6px; color: var(--dark); }
-    .step-info { font-size: 0.92rem; color: var(--slate); line-height: 1.6; font-weight: 500; }
+    .ink-selector { display: flex; gap: 12px; }
+    .ink-dot { width: 34px; height: 34px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--border-subtle); cursor: pointer; transition: 0.2s; }
+    .ink-dot.active { transform: scale(1.15); box-shadow: 0 0 0 2px var(--accent); }
 
-    .divider-line { width: 100%; height: 1.5px; background: #eee; border-radius: 10px; }
-    .mt-60 { margin-top: 60px; }
-    .max-w-sm { max-width: 500px; }
-    .text-slate { color: var(--slate); }
+    .status-pill { font-size: 0.75rem; font-weight: 900; color: var(--accent); background: #f0f7ff; padding: 2px 10px; border-radius: 20px; }
+    .premium-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--surface-200); appearance: none; outline: none; }
+    .premium-slider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--accent); border: 4px solid #fff; border-radius: 50%; box-shadow: var(--shadow-sm); cursor: pointer; transition: 0.2s; }
+    .premium-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
-    .wide-btn { padding: 22px 32px; font-weight: 1000; font-size: 1.2rem; border-radius: 100px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: none; cursor: pointer; transition: 0.3s; }
-    .wide-btn:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: var(--shadow-xl); }
+    .lg-btn { width: 100%; height: 64px; font-size: 1.1rem; border-radius: 18px; margin-top: 12px; }
+    .privacy-tiny { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 16px; }
 
-    @media (max-width: 900px) {
-        .pro-features-grid, .steps-path { grid-template-columns: 1fr; }
-        .handwriting-workspace { grid-template-columns: 1fr; }
-        .main-h1 { font-size: 2.4rem; }
+    /* Preview UI */
+    .preview-stage { min-width: 0; }
+    .preview-badge { display: inline-block; background: var(--text-main); color: #fff; padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+    .assignment-preview { padding: 40px; background: #eaeff5; display: flex; justify-content: center; overflow: hidden; }
+    .canvas-wrap { max-width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border-radius: 4px; overflow: auto; background: #fff; }
+    #handwriting-canvas { display: block; height: auto; width: 100%; max-width: 800px; }
+
+    /* Info */
+    .pro-article h2 { font-size: 1.75rem; font-weight: 850; margin-bottom: 24px; }
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
+    .f-item { padding: 24px; background: var(--surface-50); border-radius: 20px; border: 1px solid var(--border-subtle); }
+    .f-icon { font-size: 2rem; display: block; margin-bottom: 12px; }
+    .ans { padding: 12px 0; color: var(--text-muted); font-size: 0.95rem; }
+
+    .d-flex { display: flex; }
+    .justify-between { justify-content: space-between; }
+    .align-center { align-items: center; }
+
+    @media (max-width: 1100px) {
+        .studio-grid { grid-template-columns: 1fr; }
+        .controls-sidebar { position: static; }
+        .assignment-preview { padding: 20px; }
     }
 </style>

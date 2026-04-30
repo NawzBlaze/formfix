@@ -1,93 +1,118 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
-import CompressTool from '../components/tools/CompressTool.astro';
-import SocialShare from '../components/SocialShare.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
-const PAGE_TITLE = 'NEET Photo Compressor & Signature Resizer 2024 - FormFix';
-const PAGE_DESC = 'Compress your NEET UG application photo (10KB - 200KB), signature (4KB - 30KB), and thumb impressions securely offline. 100% private and fast.';
-const PAGE_KEYWORDS = 'neet photo compressor, neet ug photo size, neet signature resizer, postcard size photo for neet, compress photo for neet exam';
+const PAGE_TITLE = 'NEET Photo Compressor (Postcard & Passport Size) | FormFix';
+const PAGE_DESC = 'Official NEET photo compressor and postcard size (4x6) maker. Get the perfect 10KB to 200KB photo and signature for NTA NEET UG applications. 100% private.';
+const PAGE_KEYWORDS = 'neet photo compressor, neet postcard size photo maker online, neet 4x6 photo resize, nta neet photo size converter, neet signature resizer, neet photo maker';
 
 const customSchema = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "SoftwareApplication",
-      "name": "NEET Photo & Signature Compressor - FormFix",
-      "operatingSystem": "All Platforms",
-      "applicationCategory": "UtilitiesApplication",
-      "description": PAGE_DESC,
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    },
-    {
-      "@type": "Guide",
-      "name": "NTA NEET UG Official Image Guidelines",
-      "description": "Standard requirements for NTA NEET UG applications.",
-      "text": "Passport Photo: 10KB to 200KB. Postcard Photo: 10KB to 200KB. Signature: 4KB to 30KB. Thumb Impression: 10KB to 200KB."
+      "@type": "WebApplication",
+      "name": "NEET Form Optimizer",
+      "description": "Specialized tool for NTA NEET UG candidates for passport and postcard size photos.",
+      "applicationCategory": "MultimediaApplication"
     }
   ]
 };
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/neet-photo-compressor">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">🩺 NTA NEET Special</div>
-             <h1 class="main-h1">NEET <span class="highlight">Photo</span> Compressor</h1>
-             <p class="hero-sub">Get your NEET UG photos, signature, and thumb impressions perfectly sized in seconds. No network uploads — 100% private.</p>
-        </header>
+    <ToolWrapper 
+        title="NEET Application Optimizer" 
+        subtitle="Create both Passport (2x2) and Postcard (4x6) photos for NTA NEET registration."
+        currentTool="neet-optimizer"
+    >
+        <div slot="tool-ui">
+             <div class="neet-workspace">
+                 <div class="neet-alert">
+                     <strong>NEET Requirement:</strong> Passport size (10KB-200KB) and Postcard size (4"x6") (10KB-200KB). Background must be WHITE.
+                 </div>
+                 <div class="tool-actions-centered">
+                     <a href="/passport-size-photo" class="primary-btn pulse-glow">Create NEET Photos →</a>
+                     <a href="/compress-image" class="secondary-btn">Compress to 50KB</a>
+                 </div>
+             </div>
+        </div>
 
-        <section class="exam-guidelines mb-32 p-20 glass-inner shadow-sm rounded-2xl">
-            <h2 class="text-xl font-black mb-10">NEET UG Official Requirements:</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="g-item p-16 bg-primary/5 rounded-xl border border-primary/10">
-                    <strong class="block text-primary">Passport / Postcard Photo</strong>
-                    <span>10KB to 200KB | Color/B&W with white BG</span>
-                </div>
-                <div class="g-item p-16 bg-purple/5 rounded-xl border border-purple/10">
-                    <strong class="block text-purple">Signature</strong>
-                    <span>4KB to 30KB | Black ink on white paper</span>
-                </div>
-                <div class="g-item p-16 bg-blue/5 rounded-xl border border-blue/10">
-                    <strong class="block text-blue">Thumb & Finger Impressions</strong>
-                    <span>10KB to 200KB | Left & Right hands</span>
-                </div>
-            </div>
-        </section>
+        <div slot="tool-info">
+             <article class="prose">
+                 <h2>Official NTA NEET UG Photo & Signature Guidelines</h2>
+                 <p>The National Testing Agency (NTA) for NEET UG has very specific requirements for candidate photographs. Failure to upload the correct size or format can lead to the rejection of your application. FormFix helps you create 100% compliant photos locally in your browser.</p>
+                 
+                 <div class="guideline-grid">
+                     <div class="guideline-card">
+                         <h3>1. Passport Size Photo</h3>
+                         <ul>
+                             <li><strong>Dimensions:</strong> 3.5 cm x 4.5 cm (or 2" x 2").</li>
+                             <li><strong>File Size:</strong> 10 KB to 200 KB.</li>
+                             <li><strong>Background:</strong> Plain white background only.</li>
+                             <li><strong>Face Coverage:</strong> 80% face coverage with ears clearly visible.</li>
+                         </ul>
+                     </div>
+                     <div class="guideline-card">
+                         <h3>2. Postcard Size Photo (4"x6")</h3>
+                         <ul>
+                             <li><strong>Dimensions:</strong> 4 inches x 6 inches (Postcard size).</li>
+                             <li><strong>File Size:</strong> 10 KB to 200 KB.</li>
+                             <li><strong>Details:</strong> Must have the candidate's name and date of photo taken at the bottom.</li>
+                         </ul>
+                     </div>
+                 </div>
 
-        <CompressTool />
+                 <h2>How to Create Your NEET Photo Online</h2>
+                 <ol>
+                     <li><strong>Choose the Tool:</strong> Click on "Create NEET Photos" above to open our specialized maker.</li>
+                     <li><strong>Upload Photo:</strong> Select a clear photo with a white background.</li>
+                     <li><strong>Adjust and Crop:</strong> Use the aspect ratio lock for "Passport" or "Postcard" size.</li>
+                     <li><strong>Add Text (for Postcard):</strong> Ensure you add your name and today's date at the bottom as per NTA rules.</li>
+                     <li><strong>Compress and Download:</strong> Set your target size to 50KB-100KB for maximum safety and download your JPEG.</li>
+                 </ol>
 
-        <article class="pro-seo-article container mt-48">
-             <h2>The Safest NTA NEET Photo Resizer Tool</h2>
-             <p>As an aspiring doctor filling out the <strong>NEET UG application</strong>, dealing with NTA's strict image size limits can be highly frustrating. FormFix provides a dedicated <strong>NEET photo size reducer</strong> to solve this. Because we process your files on your device using your browser's RAM, there is zero risk of your sensitive photos being leaked or stored on a public server.</p>
-             
-             <h3 class="mt-32">How to compress your image for NEET:</h3>
-             <ol>
-                <li>Upload your passport photo, postcard photo, signature, or thumb impression.</li>
-                <li>Set your exact target file size (e.g., <strong>150 KB</strong> for photos or <strong>25 KB</strong> for signatures).</li>
-                <li>Download your ready-to-upload file instantly.</li>
-             </ol>
+                 <div class="warning-card mt-24">
+                     <p><strong>⚠️ Critical NTA Rule:</strong> Do not wear spectacles or caps in the photo. Both ears must be visible. Photos with dark or colorful backgrounds will be summarily rejected.</p>
+                 </div>
 
-             <p class="mt-20"><strong>Security Check:</strong> Many online photo tools upload and save your data permanently. By using FormFix's 100% offline-processing technology, you keep complete control over your private information.</p>
-        </article>
-
-        <SocialShare title="This free NEET compressor saved my life during application submission! Fast and totally private." url="https://formfix.pages.dev/neet-photo-compressor" />
-
-        <RelatedTools currentTool="compress" />
-    </div>
+                 <div class="faq-section mt-48">
+                     <h3>NEET Photo Upload FAQ</h3>
+                     <details class="minimal-faq">
+                         <summary>What is the postcard size for NEET in pixels? <span class="indicator">+</span></summary>
+                         <div class="faq-body">
+                             <p>For a high-quality 4x6 inch postcard photo, you should aim for at least 1200 x 1800 pixels. Our tool handles these dimensions automatically when you select the Postcard preset.</p>
+                         </div>
+                     </details>
+                     <details class="minimal-faq">
+                         <summary>Can I upload a photo with a blue background for NEET? <span class="indicator">+</span></summary>
+                         <div class="faq-body">
+                             <p>No. NTA strictly requires a WHITE background. Photos with any other background color are the #1 reason for NEET application rejection.</p>
+                         </div>
+                     </details>
+                     <details class="minimal-faq">
+                         <summary>Is a date mandatory on the NEET postcard photo? <span class="indicator">+</span></summary>
+                         <div class="faq-body">
+                             <p>Yes. The candidate's name and the date of taking the photograph must be printed clearly at the bottom of the postcard-sized photograph.</p>
+                         </div>
+                     </details>
+                 </div>
+             </article>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
 <style>
-    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
-    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
-    .mt-48 { margin-top: 48px; }
-    .mt-32 { margin-top: 32px; }
-    .mb-32 { margin-bottom: 32px; }
-    .p-20 { padding: 20px; }
-    .p-16 { padding: 16px; }
+    .neet-workspace { text-align: center; padding: 20px 0; }
+    .neet-alert { background: #fff1f2; border-left: 4px solid #f43f5e; padding: 16px; border-radius: 8px; margin-bottom: 32px; color: #9f1239; font-size: 0.95rem; }
+    .tool-actions-centered { display: flex; gap: 16px; justify-content: center; align-items: center; }
+    .guideline-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    .guideline-card { background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 24px; border-radius: 16px; }
+    .guideline-card h3 { margin-bottom: 12px; font-size: 1.1rem; }
+    .guideline-card ul { padding-left: 20px; color: var(--text-muted); text-align: left; }
+    .guideline-card li { margin-bottom: 8px; }
+    .warning-card { background: #fffbeb; border: 1px solid #fef3c7; padding: 20px; border-radius: 16px; color: #92400e; font-size: 0.9rem; }
+    
+    @media (max-width: 600px) {
+        .guideline-grid { grid-template-columns: 1fr; }
+    }
 </style>

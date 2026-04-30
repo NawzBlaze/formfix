@@ -1,51 +1,21 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 import CompressTool from '../components/tools/CompressTool.astro';
-import RelatedTools from '../components/RelatedTools.astro';
 
-const PAGE_TITLE = 'Photo Compressor Online - World\'s Fastest Image Reducer - FormFix';
-const PAGE_DESC = 'Instant photo compressor for 20KB, 50KB, 100KB, 500KB and more. No uploads, processed 100% in your browser. Fast, simple, and 100% private.';
-const PAGE_KEYWORDS = 'photo compressor, online image reducer, compress jpg to any kb, best free photo compressor';
-
-const customSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "FormFix Photo Compressor",
-  "operatingSystem": "All",
-  "applicationCategory": "UtilitiesApplication",
-  "description": PAGE_DESC,
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-};
+const PAGE_TITLE = 'Photo Compressor Online - Reduce JPEG/PNG Size | FormFix';
+const PAGE_DESC = 'Professional photo compressor used by millions to reduce image file size without losing quality. Optimized for 20KB, 50KB, and 100KB targets.';
+const PAGE_KEYWORDS = 'photo compressor, reduce photo size online, jpeg compressor, image size reducer';
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="compress" canonicalPath="/photo-compressor">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">⚡ 1 Second Engine</div>
-             <h1 class="main-h1">The World's Fastest <span class="highlight">Photo Compressor</span></h1>
-             <p class="hero-sub">Simple, private, and insanely fast. Compress any JPEG, PNG, or WebP photo instantly.</p>
-        </header>
-
-        <CompressTool />
-
-        <article class="pro-seo-article container mt-48">
-             <h2>The Modern Way to Optimize Photos Online</h2>
-             <p>Why wait for slow server-based tools? FormFix uses your computer's power to optimize images instantly. Our "Photo Compressor" is designed for simplicity—one upload, one click, and you're done.</p>
-             <h3>Maximum Privacy for Your Photos</h3>
-             <p>Images uploaded to FormFix stay on your machine. We never see your files, and they never leave your browser. Fast and completely secure.</p>
-        </article>
-
-        <RelatedTools currentTool="compress" />
-    </div>
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} active="compress" canonicalPath="/compress-image">
+    <ToolWrapper title="Photo Compressor" subtitle="Reduce image size while maintaining crystal clear quality." currentTool="compress">
+        <div slot="tool-ui">
+             <CompressTool />
+        </div>
+        <div slot="tool-info">
+             <h2>Why use FormFix Photo Compressor?</h2>
+             <p>Our tool uses advanced browser-side compression, allowing you to hit exact file size requirements (like 20KB or 50KB) needed for official form submissions.</p>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
-
-<style>
-    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
-    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
-    .mt-48 { margin-top: 48px; }
-</style>

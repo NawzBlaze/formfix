@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
+import CompressTool from '../components/tools/CompressTool.astro';
 
 const PAGE_TITLE = 'Tool Dashboard | FormFix';
 const PAGE_DESC = 'Access your complete suite of 30+ free tools for images, PDFs, and more.';
@@ -22,9 +23,11 @@ const categories = [
         title: 'Image Tools',
         icon: '🖼️',
         tools: [
-            { id: 'compress-image', title: 'Compress Image to Exact KB', href: '/compress-image', desc: 'Hit exact file size targets like 20KB, 50KB or any custom limit.', cta: 'Compress Now' },
-            { id: 'compress-image-20kb', title: 'Compress to 20KB', href: '/compress-image-to-20kb', desc: 'One-click compress to exactly 20KB for govt portals.', cta: 'Open Tool' },
-            { id: 'compress-image-50kb', title: 'Compress to 50KB', href: '/compress-image-to-50kb', desc: 'Reduce image to exactly 50KB instantly.', cta: 'Open Tool' },
+            { id: 'compress-image', title: 'Image Compressor Studio', href: '/compress-image', desc: 'Hit exact file size targets like 20KB, 50KB or any custom limit.', cta: 'Compress Now' },
+            { id: 'ssc-photo-compressor', title: 'SSC Photo Optimizer', href: '/ssc-photo-compressor', desc: 'Guaranteed 20-50KB resize for SSC CGL, CHSL & MTS exams.', cta: 'SSC Tool' },
+            { id: 'upsc-photo-resizer', title: 'UPSC Photo Resizer', href: '/upsc-photo-resizer', desc: 'Exact 350x350px scaling for UPSC Civil Services forms.', cta: 'UPSC Tool' },
+            { id: 'neet-photo-compressor', title: 'NEET Form Optimizer', href: '/neet-photo-compressor', desc: 'Passport and Postcard (4x6) size maker for NTA NEET.', cta: 'NEET Tool' },
+            { id: 'cuet-photo-resizer', title: 'CUET Photo Resizer', href: '/cuet-photo-resizer', desc: 'NTA-compliant photo and signature resizer for CUET.', cta: 'CUET Tool' },
             { id: 'passport-size-photo', title: 'Passport Photo Maker', href: '/passport-size-photo', desc: 'Official 3.5×4.5cm passport photos for all online forms.', cta: 'Create Photo' },
             { id: 'crop-image', title: 'Crop Image Online', href: '/crop-image', desc: 'Precise cropping with ratio presets (1:1, 4:3, 16:9).', cta: 'Crop Now' },
             { id: 'circle-crop', title: 'Circle Profile Maker', href: '/circle-crop', desc: 'Perfect circular avatars for CV, LinkedIn & social.', cta: 'Create Avatar' },
@@ -99,87 +102,60 @@ const allToolsFlat = categories.flatMap(c => c.tools);
         <div class="quick-bar animate-in delay-100">
             <span class="bar-lbl">Quick Actions:</span>
             <div class="bar-actions">
-                <a href="/compress-image-to-20kb" class="bar-link">20KB Target</a>
-                <a href="/compress-image-to-50kb" class="bar-link">50KB Target</a>
+                <a href="/compress-image?size=20" class="bar-link">20KB Size</a>
+                <a href="/compress-image?size=50" class="bar-link">50KB Size</a>
                 <a href="/passport-size-photo" class="bar-link">Passport Photo</a>
                 <a href="/resume-builder" class="bar-link">New Resume</a>
             </div>
         </div>
 
-        <div class="search-filter-row animate-in delay-100">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="search" id="tool-search" placeholder="Search 30+ tools..." aria-label="Search tools" />
-            </div>
-        </div>
-
-        <!-- DASHBOARD TOP GRID (Hierarchy & Recents) -->
-        <section class="top-dashboard-section animate-in delay-200" id="top-dashboard-area">
-            <div class="quick-actions-row">
-                <!-- 1. Featured Tool (Prominent) -->
-                <div class="featured-column">
-                    <h3 class="section-lbl">Primary Tool</h3>
-                    <a href={featuredTool.href} class="dashboard-card featured-card tracker-tool" data-id={featuredTool.id} data-title={featuredTool.title} data-icon={featuredTool.icon} data-href={featuredTool.href} data-cta={featuredTool.cta}>
-                        <div class="feat-content">
-                            <span class="tool-icon colossal">{featuredTool.icon}</span>
-                            <div class="feat-text">
-                                <h2>{featuredTool.title}</h2>
-                                <p>{featuredTool.desc}</p>
-                            </div>
-                        </div>
-                        <button class="action-btn primary">{featuredTool.cta}</button>
-                    </a>
+        <!-- WORKSPACE SECTION -->
+        <section class="workspace-section animate-in delay-200" id="top-dashboard-area">
+            <div class="workspace-card">
+                <div class="workspace-header">
+                    <div class="header-left">
+                        <span class="workspace-tag">Active Workspace</span>
+                        <h2>Image Compressor Studio</h2>
+                        <p>Compress images to exact targets like 20KB or 50KB locally.</p>
+                    </div>
                 </div>
-
-                <!-- 2. Recent Tools (Dynamic) -->
-                <div class="recent-column">
-                    <div class="recent-header">
-                        <h3 class="section-lbl">Recent Tools</h3>
-                        <button id="clear-recents" class="clear-btn hidden">Clear</button>
-                    </div>
-                    <div class="recent-grid empty" id="recent-tools-container">
-                        <div class="empty-state">
-                            <p>No tools used recently.</p>
-                            <span>Your history will appear here.</span>
-                        </div>
-                    </div>
-
-                    <div class="activity-feed mt-32">
-                        <h3 class="section-lbl">Activity Hub</h3>
-                        <div class="activity-list">
-                            <div class="activity-item">
-                                <span class="active-dot"></span>
-                                <div class="item-text">
-                                    <strong>2.4MB compressed</strong>
-                                    <span>2 mins ago</span>
-                                </div>
-                            </div>
-                            <div class="activity-item">
-                                <span class="active-dot"></span>
-                                <div class="item-text">
-                                    <strong>PDF merged securely</strong>
-                                    <span>15 mins ago</span>
-                                </div>
-                            </div>
-                            <div class="activity-item">
-                                <span class="active-dot"></span>
-                                <div class="item-text">
-                                    <strong>QR Code generated</strong>
-                                    <span>1 hour ago</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="workspace-body">
+                    <CompressTool initialTarget="20" />
                 </div>
             </div>
         </section>
 
-        <!-- FILTER TABS -->
-        <div class="filter-tabs" id="filter-tabs">
-            <button class="filter-tab active" data-filter="all">All Tools</button>
-            <button class="filter-tab" data-filter="image">Image Tools</button>
-            <button class="filter-tab" data-filter="pdf">PDF Tools</button>
-            <button class="filter-tab" data-filter="utilities">Utilities</button>
+        <!-- RECENT ACTIVITY BAR -->
+        <div class="activity-bar animate-in delay-300" id="activity-area">
+            <div class="activity-header">
+                <span class="activity-dot"></span>
+                <h3>Recent Activity</h3>
+                <button id="clear-recents" class="hidden clear-btn">Clear History</button>
+            </div>
+            <div id="recent-tools-container" class="recent-scroll-grid empty">
+                <!-- Will be populated by JS -->
+                <div class="empty-state">
+                    <p>Your recent tools and downloads will appear here for quick access.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tools-grid-section">
+    <div class="container">
+        <!-- SEARCH & FILTERS -->
+        <div class="dashboard-controls animate-in">
+            <div class="search-wrap">
+                <svg class="search-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="search" id="tool-search" placeholder="Search 30+ tools..." aria-label="Search tools" />
+            </div>
+            <div class="filter-tabs" id="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Tools</button>
+                <button class="filter-tab" data-filter="image">Image</button>
+                <button class="filter-tab" data-filter="pdf">PDF</button>
+                <button class="filter-tab" data-filter="utilities">Utilities</button>
+            </div>
         </div>
 
         <!-- COLLAPSIBLE GROUPINGS -->
@@ -188,10 +164,10 @@ const allToolsFlat = categories.flatMap(c => c.tools);
                 <details class="tool-group" data-category={cat.id} open>
                     <summary class="group-summary">
                         <div class="summary-left">
-                            <span class="group-icon">{cat.icon}</span>
-                            <h2>{cat.title} <span class="count-badge">{cat.tools.length}</span></h2>
+                            <h2>{cat.title}</h2>
+                            <span class="count-badge">{cat.tools.length} Tools</span>
                         </div>
-                        <span class="toggle-arrow">▼</span>
+                        <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                     </summary>
                     
                     <div class="group-grid">
@@ -226,268 +202,230 @@ const allToolsFlat = categories.flatMap(c => c.tools);
 </BaseLayout>
 
 <style>
-/* ───── GLOBALS & TYPE ───── */
+/* ───── NEW DASHBOARD SYSTEM ───── */
 .dashboard-shell {
-    background: var(--bg-app);
-    padding: 60px 0;
+    background: #fff;
+    padding: var(--space-xl) 0 0;
 }
-.section-lbl {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--surface-500);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 16px;
+.tools-grid-section {
+    padding: var(--space-xl) 0 var(--space-2xl);
+    background: var(--surface-50);
 }
 
-/* ───── HEADER & SEARCH ───── */
 .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    gap: 32px;
+    margin-bottom: var(--space-md);
 }
 .header-titles h1 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     font-weight: 800;
-    color: var(--text-main);
     letter-spacing: -0.04em;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
 }
-.greeting-line {
-    font-size: 1rem;
-    color: var(--surface-600);
-    font-weight: 500;
-}
-.header-stats { display: flex; gap: 32px; }
-.stat-group { display: flex; flex-direction: column; align-items: flex-end; }
-.stat-val { font-size: 1.25rem; font-weight: 800; color: var(--accent); }
-.stat-lbl { font-size: 0.75rem; font-weight: 700; color: var(--surface-400); text-transform: uppercase; letter-spacing: 0.05em; }
+.greeting-line { font-size: 1.1rem; color: var(--surface-600); }
 
-/* Quick Bar */
+/* Quick Actions */
 .quick-bar {
     display: flex;
     align-items: center;
-    gap: 16px;
-    background: var(--surface-100);
-    padding: 12px 20px;
-    border-radius: 12px;
-    border: 1px solid var(--border-subtle);
-    margin-bottom: 32px;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
 }
-.bar-lbl { font-size: 0.85rem; font-weight: 700; color: var(--surface-500); }
-.bar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.bar-lbl { font-size: 0.9rem; font-weight: 600; color: var(--surface-500); }
+.bar-actions { display: flex; gap: var(--space-sm); }
 .bar-link {
-    font-size: 0.85rem; font-weight: 600; color: var(--surface-700);
-    padding: 6px 14px; background: var(--surface-50); 
-    border-radius: 99px; text-decoration: none; border: 1px solid var(--surface-200);
-    transition: 0.2s;
+    padding: 6px 14px;
+    background: var(--surface-100);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-main);
+    text-decoration: none;
+    transition: all 0.2s var(--ease-in-out);
 }
-.bar-link:hover { background: #000; color: #fff; border-color: #000; transform: translateY(-1px); }
+.bar-link:hover { 
+    background: var(--text-main); 
+    color: #fff; 
+    border-color: var(--text-main);
+    transform: translateY(-1px);
+}
 
-.search-filter-row { margin-bottom: 40px; }
-.search-box {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
+/* Workspace Section */
+.workspace-section {
+    margin-bottom: var(--space-lg);
 }
-.search-icon {
+.workspace-card {
+    background: #fff;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-md);
+}
+.workspace-header { margin-bottom: var(--space-xl); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-lg); }
+.workspace-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: var(--radius-xs);
+    margin-bottom: var(--space-sm);
+}
+.workspace-header h2 { font-size: 1.75rem; font-weight: 800; margin-bottom: var(--space-xs); }
+.workspace-header p { color: var(--surface-600); }
+
+/* Activity Bar */
+.activity-bar {
+    background: transparent;
+    padding: 0;
+    margin-bottom: var(--space-xl);
+}
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-md);
+    padding-left: 4px;
+}
+.activity-header h3 { font-size: 0.8rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.1em; margin: 0; display: flex; align-items: center; gap: 8px; }
+.activity-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; display: inline-block; }
+.recent-scroll-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md);
+}
+.recent-scroll-grid.empty { display: none; }
+
+.mini-card {
+    background: #fff;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    transition: all 0.25s var(--spring-smooth);
+    box-shadow: var(--shadow-sm);
+}
+.mini-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--shadow-md); }
+.mini-left { display: flex; align-items: center; gap: 12px; }
+.mini-icon { font-size: 1.2rem; width: 32px; height: 32px; background: var(--surface-50); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.mini-title { font-size: 0.95rem; font-weight: 700; color: var(--text-main); }
+.mini-btn { font-size: 0.75rem; font-weight: 800; color: var(--accent); padding: 4px 10px; background: var(--surface-50); border-radius: 100px; }
+
+.clear-btn { background: none; border: none; font-size: 0.75rem; font-weight: 700; color: var(--surface-400); cursor: pointer; }
+.clear-btn:hover { color: #dc2626; }
+
+/* Dashboard Controls */
+.dashboard-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+    gap: var(--space-xl);
+}
+.search-wrap {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+}
+.search-svg {
     position: absolute;
-    left: 16px; top: 50%;
+    left: 14px;
+    top: 50%;
     transform: translateY(-50%);
     color: var(--surface-400);
-    font-size: 1.1rem;
 }
 #tool-search {
     width: 100%;
-    padding: 16px 16px 16px 48px;
-    border-radius: 12px;
+    padding: 10px 14px 10px 44px;
     border: 1px solid var(--border-subtle);
-    background: #fff;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.2s;
-    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.03);
-}
-#tool-search:focus {
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
     outline: none;
-    border-color: #000;
-    box-shadow: 0 4px 20px -4px rgba(0,0,0,0.1);
+    transition: 0.2s;
 }
+#tool-search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
 
-/* ───── TOP GRID (HIERARCHY) ───── */
-.quick-actions-row {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 32px;
-    margin-bottom: 48px;
-}
-
-/* Cards Base */
-.dashboard-card {
-    background: var(--surface-100);
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    text-decoration: none;
-    display: flex;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: var(--shadow-sm);
-}
-.dashboard-card:hover {
-    border-color: var(--accent);
-    background: var(--surface-200);
-    box-shadow: var(--shadow-card);
-    transform: translateY(-4px);
-}
-.action-btn {
-    border: none; border-radius: 8px; font-weight: 600; font-size: 0.95rem; padding: 10px 24px; cursor: pointer; transition: 0.2s;
-}
-.dashboard-card:hover .action-btn.primary { background: #222; transform: translateY(-1px); }
-.dashboard-card:hover .action-btn.secondary { background: #000; color: #fff; transform: translateY(-1px); }
-
-/* Featured Card */
-.featured-card {
-    flex-direction: column;
-    padding: 40px;
-    height: 100%;
-    border: 1px solid var(--surface-300);
-}
-.feat-content { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 32px; }
-.tool-icon.colossal { font-size: 3.5rem; background: var(--surface-100); padding: 16px; border-radius: 16px; }
-.feat-text h2 { font-size: 1.8rem; font-weight: 800; color: #000; margin-bottom: 12px; }
-.feat-text p { font-size: 1.1rem; color: var(--surface-600); line-height: 1.6; }
-.action-btn.primary { background: #000; color: #fff; width: fit-content; padding: 14px 32px; }
-
-/* Recents & Activity */
-.recent-column { display: flex; flex-direction: column; }
-.recent-header { display: flex; justify-content: space-between; align-items: center; }
-.clear-btn { background: none; border: none; color: var(--surface-400); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 16px; }
-.clear-btn:hover { color: #000; text-decoration: underline; }
-.recent-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.recent-grid.empty { justify-content: center; align-items: center; background: transparent; border: 2px dashed var(--surface-300); border-radius: 16px; min-height: 120px; }
-
-.activity-list { display: flex; flex-direction: column; gap: 16px; }
-.activity-item { display: flex; align-items: center; gap: 12px; }
-.active-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
-.item-text { display: flex; flex-direction: column; }
-.item-text strong { font-size: 0.85rem; color: var(--surface-800); }
-.item-text span { font-size: 0.75rem; color: var(--surface-400); }
-
-.empty-state { text-align: center; color: var(--surface-500); }
-.empty-state p { font-weight: 600; color: var(--surface-600); margin-bottom: 4px; }
-.empty-state span { font-size: 0.9rem; }
-
-/* Mini Card for Recents */
-.mini-card {
-    padding: 16px 20px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-}
-.mini-left { display: flex; align-items: center; gap: 16px; }
-.mini-icon { font-size: 1.5rem; }
-.mini-title { font-weight: 700; color: #000; font-size: 1rem; }
-.mini-btn { font-size: 0.85rem; font-weight: 600; color: var(--surface-600); background: var(--surface-100); padding: 6px 16px; border-radius: 6px; transition: 0.2s; }
-.mini-card:hover .mini-btn { background: #000; color: #fff; }
-
-/* ───── FILTERS ───── */
-.filter-tabs {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 32px;
-    border-bottom: 1px solid var(--border-subtle);
-    padding-bottom: 16px;
-    overflow-x: auto;
-}
+.filter-tabs { display: flex; gap: var(--space-sm); }
 .filter-tab {
-    background: transparent;
-    border: none;
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--surface-500);
     padding: 8px 16px;
-    border-radius: 100px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    background: transparent;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--surface-600);
     cursor: pointer;
     transition: 0.2s;
-    white-space: nowrap;
 }
-.filter-tab:hover { color: #000; background: var(--surface-200); }
-.filter-tab.active { background: #000; color: #fff; }
+.filter-tab:hover { background: var(--surface-100); color: var(--text-main); }
+.filter-tab.active { background: var(--text-main); color: #fff; }
 
-/* ───── COLLAPSIBLE GROUPS ───── */
-.tool-groups-container { display: flex; flex-direction: column; gap: 24px; }
-.tool-group {
-    background: transparent;
-}
+/* Tool Grouping */
+.tool-group { margin-bottom: var(--space-lg); }
 .group-summary {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 0;
+    padding: var(--space-lg) 0;
     cursor: pointer;
-    list-style: none; /* remove default triangle */
+    list-style: none;
     outline: none;
-    border-bottom: 2px solid transparent;
 }
 .group-summary::-webkit-details-marker { display: none; }
-.summary-left { display: flex; align-items: center; gap: 16px; }
-.group-icon { font-size: 1.8rem; }
-.summary-left h2 { font-size: 1.5rem; font-weight: 800; color: #000; display: flex; align-items: center; gap: 12px; }
-.count-badge { font-size: 0.8rem; background: var(--surface-200); color: var(--surface-600); padding: 4px 10px; border-radius: 100px; }
-.toggle-arrow { font-size: 1rem; color: var(--surface-400); transition: transform 0.3s; }
-.tool-group[open] .toggle-arrow { transform: rotate(180deg); }
+.summary-left { display: flex; align-items: center; gap: var(--space-md); }
+.summary-left h2 { font-size: 1.25rem; font-weight: 700; }
+.count-badge { font-size: 0.8rem; color: var(--surface-400); }
+.chevron-icon { color: var(--surface-400); transition: 0.3s var(--ease-in-out); }
+.tool-group[open] .chevron-icon { transform: rotate(180deg); }
 
-/* Group Grid */
+/* Grid & Cards */
 .group-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
-    padding: 16px 0 48px 0;
-    animation: fadeIn 0.4s ease;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-lg);
+    padding-bottom: var(--space-xl);
 }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Standard Cards */
 .standard-card {
+    background: #fff;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    text-decoration: none;
+    transition: all 0.25s var(--spring-smooth);
+    display: flex;
     flex-direction: column;
-    padding: 24px;
-    gap: 20px;
-    height: 100%;
+    justify-content: space-between;
+    height: auto;
+    box-shadow: var(--shadow-sm);
 }
-.card-top { display: flex; gap: 16px; align-items: flex-start; }
-.tool-icon { font-size: 1.8rem; }
-.card-titles h3 { font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 6px; line-height: 1.3;}
-.card-titles p { font-size: 0.95rem; color: var(--surface-500); line-height: 1.5; }
-.action-btn.secondary { background: var(--surface-100); color: var(--surface-600); width: 100%; padding: 12px; }
-
-/* No Results State */
-.no-results-state {
-    text-align: center;
-    padding: 80px 0;
+.standard-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
 }
-.sad-icon { font-size: 3rem; margin-bottom: 16px; display: block; opacity: 0.5; }
-.no-results-state h3 { font-size: 1.5rem; font-weight: 700; color: #000; margin-bottom: 8px; }
-.no-results-state p { color: var(--surface-500); }
-.hidden { display: none !important; }
-
-/* ───── RESPONSIVE CONSTRAINTS ───── */
-@media (max-width: 1024px) {
-    .quick-actions-row { grid-template-columns: 1fr; }
-    .featured-card { min-height: auto; }
+.card-titles h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: var(--space-xs); color: var(--text-main); }
+.card-titles p { font-size: 0.9rem; color: var(--surface-600); line-height: 1.5; }
+.card-bottom { margin-top: var(--space-lg); opacity: 0; transform: translateY(6px); transition: 0.2s; }
+.standard-card:hover .card-bottom { opacity: 1; transform: translateY(0); }
+.action-btn.secondary {
+    width: 100%;
+    height: 38px;
+    background: var(--text-main);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: 0.2s;
 }
-
-@media (max-width: 768px) {
-    .dashboard-header { flex-direction: column; align-items: flex-start; gap: 24px; }
-    .search-filter-wrap { max-width: 100%; }
-    .feat-content { flex-direction: column; gap: 16px; }
-    .tool-icon.colossal { font-size: 2.5rem; padding: 12px; }
-    .group-grid { grid-template-columns: 1fr; }
+.action-btn.secondary:hover {
+    background: #2a2a2a;
+    transform: translateY(-1px);
 }
 </style>
 
@@ -503,22 +441,19 @@ const allToolsFlat = categories.flatMap(c => c.tools);
             const data = localStorage.getItem(RECENT_KEY);
             let recents = data ? JSON.parse(data) : [];
             
+            const activityArea = document.getElementById('activity-area');
+
             if (recents.length === 0) {
-                recentContainer.innerHTML = `
-                    <div class="empty-state">
-                        <p>No tools used recently.</p>
-                        <span>Your history will appear here.</span>
-                    </div>`;
-                recentContainer.classList.add('empty');
-                if(clearBtn) clearBtn.classList.add('hidden');
+                if(activityArea) activityArea.classList.add('hidden');
                 return;
             }
 
+            if(activityArea) activityArea.classList.remove('hidden');
             recentContainer.classList.remove('empty');
             if(clearBtn) clearBtn.classList.remove('hidden');
             
             recentContainer.innerHTML = recents.map(t => `
-                <a href="${t.href}" class="dashboard-card mini-card box-shadow-subtle hover-lift">
+                <a href="${t.href}" class="mini-card">
                     <div class="mini-left">
                         <span class="mini-icon">${t.icon}</span>
                         <span class="mini-title">${t.title}</span>
@@ -575,6 +510,8 @@ const allToolsFlat = categories.flatMap(c => c.tools);
         let currentFilter = 'all';
         let currentSearch = '';
 
+        const activityArea = document.getElementById('activity-area');
+        
         function runFilters() {
             let totalVisible = 0;
 
@@ -603,8 +540,8 @@ const allToolsFlat = categories.flatMap(c => c.tools);
                 // Hide/show the entire group HTML
                 if (groupHasVisibleItems) {
                     group.classList.remove('hidden');
-                    // Force open if searching actively
-                    if (currentSearch.length > 0) {
+                    // Force open if searching actively/filtering
+                    if (currentSearch.length > 0 || currentFilter !== 'all') {
                         group.setAttribute('open', '');
                     }
                 } else {
@@ -613,13 +550,9 @@ const allToolsFlat = categories.flatMap(c => c.tools);
             });
 
             // Handle Top Area
-            if (topArea) {
-                if (currentSearch.length > 0 || currentFilter !== 'all') {
-                    topArea.classList.add('hidden'); // hide top actions when deeply searching
-                } else {
-                    topArea.classList.remove('hidden');
-                }
-            }
+            const isSearching = currentSearch.length > 0 || currentFilter !== 'all';
+            if (topArea) topArea.classList.toggle('hidden', isSearching);
+            if (activityArea) activityArea.classList.toggle('hidden', isSearching);
 
             // Handle No Results
             if (totalVisible === 0) {

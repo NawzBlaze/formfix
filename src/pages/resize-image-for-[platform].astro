@@ -9,8 +9,7 @@ export function getStaticPaths() {
     { platform: 'passport', title: 'Passport Photo', dims: '3.5 x 4.5 cm' },
     { platform: 'instagram', title: 'Instagram', dims: '1080 x 1080 px' },
     { platform: 'linkedin', title: 'LinkedIn Profile', dims: '400 x 400 px' },
-    { platform: 'youtube', title: 'YouTube Thumbnail', dims: '1280 x 720 px' },
-    { platform: 'facebook', title: 'Facebook Post', dims: '1200 x 630 px' }
+
   ];
   return platforms.map((p) => ({
     params: { platform: p.platform },

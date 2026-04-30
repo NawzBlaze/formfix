@@ -3,307 +3,277 @@ import UploadBox from '../UploadBox.astro';
 const { initialTarget = 'auto' } = Astro.props;
 ---
 
-<div class="glass-card tool-content shadow-lg">
-    <div id="u-box-container">
+<div class="compress-workspace">
+    <!-- 1. Selection Stage -->
+    <div id="u-box-container" class="stage-entry">
         <UploadBox />
     </div>
 
-    <div id="controls" class="tool-controls hidden">
-        <div class="config-section">
-            <label class="section-label">1. Select Target File Size (KB)</label>
-            <div class="pill-grid">
-                <button class={`target-pill auto ${initialTarget === 'auto' ? 'active' : ''}`} data-kb="auto">
-                    <span class="p-t">Auto Mode</span>
-                    <span class="p-s">Best Quality</span>
+    <!-- 2. Optimization controls -->
+    <div id="controls" class="stage-panel hidden">
+        <div class="settings-hub glass-card">
+            <div class="config-header">
+                <h3>Optimization Settings</h3>
+                <p>Choose your target file size below.</p>
+            </div>
+            
+            <div class="section-group">
+                <label class="group-label">Common Presets</label>
+                <div class="preset-grid">
+                    <button class={`preset-chip ${initialTarget == 20 ? 'active' : ''}`} data-kb="20">20 KB</button>
+                    <button class={`preset-chip ${initialTarget == 50 ? 'active' : ''}`} data-kb="50">50 KB</button>
+                    <button class={`preset-chip ${initialTarget == 100 ? 'active' : ''}`} data-kb="100">100 KB</button>
+                    <button class={`preset-chip ${initialTarget == 200 ? 'active' : ''}`} data-kb="200">200 KB</button>
+                </div>
+            </div>
+
+            <div class="section-group">
+                <label class="group-label">Custom Target</label>
+                <div class="custom-input-wrap">
+                    <input type="number" id="custom-kb" placeholder="Custom size..." min="5" max="10000" value={initialTarget === 'auto' ? '' : initialTarget} class="premium-field" />
+                    <span class="field-suffix">Kilobytes</span>
+                </div>
+            </div>
+
+            <div class="action-footer">
+                <button id="compress-btn" class="primary-btn btn-glow lg-btn">
+                    <span id="btn-label">Optimize Image Now</span>
+                    <div id="loader" class="fun-spinner-sm hidden"></div>
                 </button>
-                <button class={`target-pill ${initialTarget == 1000 ? 'active' : ''}`} data-kb="1000">1 MB</button>
-                <button class={`target-pill ${initialTarget == 500 ? 'active' : ''}`} data-kb="500">500 KB</button>
-                <button class={`target-pill ${initialTarget == 200 ? 'active' : ''}`} data-kb="200">200 KB</button>
-                <button class={`target-pill ${initialTarget == 100 ? 'active' : ''}`} data-kb="100">100 KB</button>
-                <button class={`target-pill ${initialTarget == 50 ? 'active' : ''}`} data-kb="50">50 KB</button>
-                <button class={`target-pill ${initialTarget == 20 ? 'active' : ''}`} data-kb="20">20 KB</button>
+                <p class="privacy-tiny">🔒 Securely processed offline on your GPU</p>
             </div>
         </div>
+    </div>
 
-        <div class="popular-targets-links">
-             <label class="section-label">Common Requirements</label>
-             <div class="quick-link-row">
-                 <a href="/compress-image-20kb" class="quick-link">Compress to 20KB ⮕</a>
-                 <a href="/compress-image-50kb" class="quick-link">Compress to 50KB ⮕</a>
-                 <a href="/compress-image-100kb" class="quick-link">Compress to 100KB ⮕</a>
-             </div>
-        </div>
+    <!-- 3. Result Stage -->
+    <div id="advanced-result" class="stage-panel hidden">
+        <div class="result-hub">
+            <div class="success-indicator animate-in">
+                <div class="icon-pulse">✓</div>
+                <div class="text-content">
+                    <h4>Compression Complete</h4>
+                    <p>Successfully hit target with high fidelity.</p>
+                </div>
+            </div>
 
-        <div class="custom-kb-section">
-             <label class="section-label">Or Specify Custom Target (KB)</label>
-             <div class="input-group-premium">
-                  <input type="number" id="custom-kb" placeholder="e.g. 75" min="5" max="10000" value={initialTarget === 'auto' ? '' : initialTarget} />
-                  <span class="suffix">KB Target</span>
-             </div>
-        </div>
+            <div class="stats-row mb-32">
+                <div class="data-card active">
+                    <span class="d-label">Final Size</span>
+                    <span id="final-stat" class="d-value">0 KB</span>
+                </div>
+                <div class="data-card">
+                    <span class="d-label">Target Met</span>
+                    <span id="accuracy-stat" class="d-value">100%</span>
+                </div>
+            </div>
 
-        <div class="action-footer">
-            <button id="compress-btn" class="primary-btn wide-btn pulse-glow">
-                <span id="btn-label">Optimize Image Now</span>
-                <div id="loader" class="mini-spinner hidden"></div>
-            </button>
+            <div class="comparison-visuals mb-40">
+                <div class="compare-box">
+                    <span class="badge">Original</span>
+                    <div class="display-pane">
+                        <img id="orig-preview" src="" alt="Before" />
+                    </div>
+                </div>
+                <div class="compare-box active">
+                    <span class="badge accent">Result</span>
+                    <div class="display-pane">
+                        <img id="final-preview" src="" alt="After" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="final-actions">
+                <a id="download-btn" href="#" class="primary-btn btn-glow flex-2" style="text-decoration:none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download Optimized Image
+                </a>
+                <button id="reset-tool" class="secondary-btn flex-1">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    New Image
+                </button>
+            </div>
+
+            <div class="viral-share-row mt-24">
+                <p class="share-hint">Love FormFix? Spread the word!</p>
+                <div class="share-flex">
+                    <a id="share-x" href="#" target="_blank" class="mini-share-btn x-color">Share on X</a>
+                    <a id="share-wa" href="#" target="_blank" class="mini-share-btn wa-color">WhatsApp</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div id="advanced-result" class="result-stage hidden animate-fade-up">
-    <div class="result-stats-v2 glass-card shadow-sm">
-         <div class="stat-v2-item highlighted">
-             <span class="l">Resulting Size</span>
-             <span id="final-stat" class="v">99.8 KB</span>
-         </div>
-         <div class="stat-v2-item">
-             <span class="l">Accuracy</span>
-             <span id="accuracy-stat" class="v">99.8%</span>
-         </div>
-    </div>
+<script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileIn = document.getElementById('file-input');
+        const ctrl = document.getElementById('controls');
+        const uBox = document.getElementById('u-box-container');
+        const cBtn = document.getElementById('compress-btn');
+        const btnTxt = document.getElementById('btn-label');
+        const ldr = document.getElementById('loader');
+        const presets = document.querySelectorAll('.preset-chip');
+        const customIn = document.getElementById('custom-kb');
+        const resBox = document.getElementById('advanced-result');
 
-    <div class="comparison-grid">
-        <div class="compare-card">
-            <div class="v-label">Before</div>
-            <div class="zoom-viewport">
-                <img id="orig-preview" src="" draggable="false" alt="Original image preview" />
-            </div>
-        </div>
-        <div class="compare-card result">
-            <div class="v-label">After Compression</div>
-            <div class="zoom-viewport">
-                 <img id="final-preview" src="" draggable="false" alt="Compressed result preview" />
-            </div>
-        </div>
-    </div>
+        let fileObj = null, targetKB = document.querySelector('.preset-chip.active')?.dataset.kb || 20;
 
-    <div class="final-actions">
-         <a id="download-btn" href="#" class="primary-btn download-btn">Download Image</a>
-         <button id="reset-tool" class="secondary-btn">New Image</button>
-    </div>
-</div>
-
-<script>
-    const fileInput = document.getElementById('file-input') as HTMLInputElement;
-    const controls = document.getElementById('controls') as HTMLElement;
-    const compressBtn = document.getElementById('compress-btn') as HTMLElement;
-    const btnLabel = document.getElementById('btn-label');
-    const loader = document.getElementById('loader');
-    const targetPills = document.querySelectorAll('.target-pill');
-    const customInput = document.getElementById('custom-kb') as HTMLInputElement;
-
-    let workingFile: File | null = null;
-    let targetKB: any = document.querySelector('.target-pill.active')?.getAttribute('data-kb') || 'auto';
-
-    // 1. Detect Upload
-    fileInput?.addEventListener('change', (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (file) {
-            workingFile = file;
-            controls.classList.remove('hidden');
-            
-            const rd = new FileReader();
-            rd.onload = (ev) => (document.getElementById('orig-preview') as HTMLImageElement).src = ev.target?.result as string;
-            rd.readAsDataURL(file);
-
-            setTimeout(() => controls.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-        }
-    });
-
-    // 2. Control Pill Logic
-    targetPills.forEach(pill => pill.addEventListener('click', () => {
-         targetPills.forEach(p => p.classList.remove('active'));
-         pill.classList.add('active');
-         targetKB = (pill as HTMLElement).dataset.kb!;
-         
-         if (targetKB !== 'auto') {
-             customInput.value = targetKB;
-         } else {
-             customInput.value = '';
-         }
-    }));
-
-    customInput?.addEventListener('input', () => {
-         if (customInput.value) {
-             targetPills.forEach(p => p.classList.remove('active'));
-             targetKB = parseInt(customInput.value);
-         }
-    });
-
-    // 3. Compression Engine (RBQS)
-    compressBtn?.addEventListener('click', async () => {
-        if (!workingFile) return;
-        
-        btnLabel!.textContent = 'Optimizing...';
-        loader!.classList.remove('hidden');
-        compressBtn.classList.add('loading');
-
-        // Calculate final target
-        let finalTargetKB = 100;
-        if (targetKB === 'auto') {
-            const size = workingFile.size / 1024;
-            if (size > 2000) finalTargetKB = size * 0.15;
-            else if (size > 1000) finalTargetKB = size * 0.3;
-            else finalTargetKB = size * 0.5;
-        } else {
-            finalTargetKB = parseInt(targetKB);
-        }
-
-        const result = await runRBQS(workingFile, finalTargetKB);
-        
-        if (result) {
-            const url = URL.createObjectURL(result.blob);
-            (document.getElementById('final-preview') as HTMLImageElement).src = url;
-            document.getElementById('final-stat')!.textContent = (result.blob.size / 1024).toFixed(1) + ' KB';
-            
-            const accuracy = Math.min(100, (result.blob.size / (finalTargetKB * 1024)) * 100);
-            document.getElementById('accuracy-stat')!.textContent = accuracy.toFixed(1) + '%';
-            
-            (document.getElementById('download-btn') as HTMLAnchorElement).href = url;
-            (document.getElementById('download-btn') as HTMLAnchorElement).download = `formfix-${Math.round(finalTargetKB)}kb.jpg`;
-
-            document.querySelector('.tool-content')?.classList.add('hidden');
-            document.getElementById('advanced-result')?.classList.remove('hidden');
-            document.getElementById('advanced-result')?.scrollIntoView({ behavior: 'smooth' });
-            
-            // Trigger WOW Confetti Effect
-            if (typeof (window as any).triggerConfetti === 'function') {
-                (window as any).triggerConfetti();
-            }
-        }
-
-        btnLabel!.textContent = 'Optimize Image Now';
-        loader!.classList.add('hidden');
-        compressBtn.classList.remove('loading');
-    });
-
-    async function runRBQS(file: File, target: number) {
-        // High-speed offscreen processing
-        const img = await createImageBitmap(file);
-        const targetBytes = target * 1024;
-        
-        let initialScale = 1.0;
-        if (target < 50) initialScale = 0.6;
-        if (target < 20) initialScale = 0.4;
-
-        let currentWidth = Math.max(1, Math.floor(img.width * initialScale));
-        let currentHeight = Math.max(1, Math.floor(img.height * initialScale));
-        
-        let bestBlob: Blob | null = null;
-        // Use Hardware Accelerated OffscreenCanvas if available
-        const canvas = window.OffscreenCanvas ? new OffscreenCanvas(currentWidth, currentHeight) : document.createElement('canvas');
-        const ctx = canvas.getContext('2d', { alpha: false }) as any; 
-
-        // Reduced iterations for <1s processing
-        for (let scaleAttempt = 0; scaleAttempt < 2; scaleAttempt++) {
-            canvas.width = currentWidth;
-            canvas.height = currentHeight;
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, currentWidth, currentHeight);
-
-            let low = 0.05, high = 0.95;
-            for (let i = 0; i < 5; i++) { 
-                let quality = (low + high) / 2;
+        if (fileIn) {
+            fileIn.addEventListener('change', (e) => {
+                const f = e.target.files[0]; if(!f) return;
+                fileObj = f; 
+                uBox.classList.add('hidden'); 
+                ctrl.classList.remove('hidden');
                 
-                let blob;
-                if ((canvas as any).toBlob) {
-                    blob = await new Promise<Blob>(res => (canvas as HTMLCanvasElement).toBlob(b => res(b!), 'image/jpeg', quality));
-                } else {
-                    blob = await (canvas as OffscreenCanvas).convertToBlob({ type: 'image/jpeg', quality });
-                }
+                const r = new FileReader(); 
+                r.onload = (ev) => {
+                    const img = document.getElementById('orig-preview');
+                    if (img) img.src = ev.target.result;
+                }; 
+                r.readAsDataURL(f);
+            });
+        }
 
-                if (blob.size <= targetBytes) {
-                    bestBlob = blob;
-                    low = quality;
-                    if (targetBytes - blob.size < 1024) break; 
-                } else {
-                    high = quality;
+        presets.forEach(p => p.onclick = () => {
+             presets.forEach(b => b.classList.remove('active')); p.classList.add('active');
+             targetKB = p.dataset.kb; customIn.value = targetKB;
+        });
+
+        if (customIn) {
+            customIn.oninput = () => {
+                 if(customIn.value) {
+                     presets.forEach(b => b.classList.remove('active')); targetKB = customIn.value;
+                     const m = document.querySelector(`.preset-chip[data-kb="${customIn.value}"]`); if(m) m.classList.add('active');
+                 }
+            };
+        }
+
+        if (cBtn) {
+            cBtn.onclick = async () => {
+                if(!fileObj) return;
+                btnTxt.textContent = 'Analyzing Layers...'; ldr.classList.remove('hidden'); cBtn.disabled = true;
+
+                const res = await runRBQS(fileObj, parseInt(targetKB));
+                if(res) {
+                    const url = URL.createObjectURL(res.blob);
+                    document.getElementById('final-preview').src = url;
+                    document.getElementById('final-stat').textContent = (res.blob.size / 1024).toFixed(1) + ' KB';
+                    const acc = Math.min(100, (res.blob.size / (targetKB * 1024)) * 100);
+                    document.getElementById('accuracy-stat').textContent = acc.toFixed(1) + '%';
+                    
+                    const dl = document.getElementById('download-btn'); dl.href = url; dl.download = `formfix-${targetKB}kb.jpg`;
+                    ctrl.classList.add('hidden'); resBox.classList.remove('hidden');
+                    
+                    // Viral Share Logic
+                    const shareX = document.getElementById('share-x');
+                    const shareWA = document.getElementById('share-wa');
+                    const shareTxt = `I just compressed my photo to ${targetKB}KB exactly using FormFix! It's 100% private and runs in the browser. No uploads. Check it out: https://formfix.pages.dev`;
+                    
+                    if(shareX) shareX.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTxt)}`;
+                    if(shareWA) shareWA.href = `https://wa.me/?text=${encodeURIComponent(shareTxt)}`;
+
+                    if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
                 }
+                btnTxt.textContent = 'Optimize Image Now'; ldr.classList.add('hidden'); cBtn.disabled = false;
+            };
+        }
+
+        async function runRBQS(file, target) {
+            const img = await createImageBitmap(file), targetBytes = target * 1024;
+            let scale = target < 30 ? 0.6 : target < 80 ? 0.8 : 1.0;
+            let w = Math.max(1, Math.floor(img.width * scale)), h = Math.max(1, Math.floor(img.height * scale));
+            let best = null; const cvs = document.createElement('canvas'), ctx = cvs.getContext('2d', {alpha:false});
+            for(let s=0; s<3; s++) {
+                cvs.width = w; cvs.height = h; ctx.fillStyle="#fff"; ctx.fillRect(0,0,w,h); ctx.drawImage(img,0,0,w,h);
+                let low=0.01, hi=0.98;
+                for(let i=0; i<7; i++) {
+                    let q = (low+hi)/2; let b = await new Promise(r => cvs.toBlob(bl => r(bl), 'image/jpeg', q));
+                    if(b.size <= targetBytes) { best = b; low = q; if(targetBytes-b.size < 512) break; } else hi = q;
+                }
+                if(best) break; w = Math.floor(w*0.75); h = Math.floor(h*0.75);
             }
-
-            if (bestBlob) break;
-            
-            currentWidth = Math.max(1, Math.floor(currentWidth * 0.7));
-            currentHeight = Math.max(1, Math.floor(currentHeight * 0.7));
+            if(!best) best = await new Promise(r => cvs.toBlob(bl => r(bl), 'image/jpeg', 0.01));
+            return { blob: best };
         }
 
-        let fallbackBlob;
-        if ((canvas as any).toBlob) {
-             fallbackBlob = await new Promise<Blob>(res => (canvas as HTMLCanvasElement).toBlob(b => res(b!), 'image/jpeg', 0.01));
-        } else {
-             fallbackBlob = await (canvas as OffscreenCanvas).convertToBlob({ type: 'image/jpeg', quality: 0.01 });
+        const resetBtn = document.getElementById('reset-tool');
+        if (resetBtn) {
+            resetBtn.onclick = () => location.reload();
         }
-        return { blob: bestBlob || fallbackBlob };
-    }
-
-    document.getElementById('reset-tool')?.addEventListener('click', () => location.reload());
+    });
 </script>
 
 <style>
-    .tool-controls { margin-top: 40px; border-top: 1.5px solid var(--border); padding-top: 40px; }
-
-    .pill-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
-    .target-pill { 
-        flex: 1 1 calc(33.33% - 12px); min-width: 100px; 
-        padding: 16px 12px; border: 1.8px solid var(--border); border-radius: 16px; 
-        background: #fff; font-weight: 900; cursor: pointer; transition: 0.3s;
-        font-size: 0.92rem; display: flex; flex-direction: column; align-items: center; gap: 4px;
-    }
-    .target-pill .p-s { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; color: var(--gray); }
-    .target-pill:hover { border-color: var(--primary); }
-    .target-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-    .target-pill.active .p-s { color: rgba(255,255,255,0.7); }
+    .compress-workspace { width: 100%; max-width: 800px; margin: 0 auto; }
     
-    .target-pill.auto { background: #fdf2f2; border-color: #fca5a5; color: #b91c1c; flex: 1 1 100%; }
-    .target-pill.auto.active { background: #b91c1c; border-color: #b91c1c; color: #fff; }
+    .settings-hub { padding: 40px; background: #fff; }
+    .config-header { margin-bottom: 32px; }
+    .config-header h3 { font-size: 1.5rem; font-weight: 850; margin-bottom: 4px; }
+    .config-header p { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; }
 
-    .custom-kb-section { margin: 32px 0 16px; }
-    .popular-targets-links { margin-bottom: 32px; }
-    .quick-link-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-    .quick-link { 
-        padding: 8px 14px; background: #fff; border: 1.5px solid var(--border); 
-        border-radius: 12px; font-size: 0.75rem; font-weight: 900; color: var(--slate); 
-        text-decoration: none; transition: 0.2s; 
-    }
-    .quick-link:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-    .quick-link:hover { transform: translateX(3px); }
+    .section-group { margin-bottom: 32px; }
+    .group-label { display: block; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
 
-    .input-group-premium { display: flex; align-items: center; background: #fff; border: 1.5px solid var(--border); border-radius: 16px; padding: 0 24px; max-width: 300px; transition: 0.3s; margin: 16px 0; }
-    .input-group-premium:focus-within { border-color: var(--primary); }
-    .input-group-premium input { border: none; background: transparent; padding: 18px 0; width: 100%; font-weight: 950; font-size: 1.2rem; outline: none; color: var(--dark); }
-    .input-group-premium .suffix { font-weight: 1000; color: var(--gray); text-transform: uppercase; font-size: 0.72rem; }
+    .preset-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .preset-chip { height: 52px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; font-weight: 850; font-size: 0.9rem; cursor: pointer; transition: 0.2s; color: var(--text-main); }
+    .preset-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .preset-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: var(--shadow-md); }
 
-    .action-footer { margin-top: 40px; text-align: center; }
-    .wide-btn { width: 100%; height: 72px; font-size: 1.2rem; font-weight: 1000; border-radius: 20px; }
+    .custom-input-wrap { position: relative; display: flex; align-items: center; }
+    .premium-field { width: 100%; height: 56px; padding: 0 100px 0 20px; border-radius: 14px; border: 1.5px solid var(--border-subtle); background: var(--surface-50); font-weight: 850; font-size: 1rem; outline: none; transition: 0.2s; }
+    .premium-field:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08); }
+    .field-suffix { position: absolute; right: 20px; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; pointer-events: none; }
 
-    /* Comparison Stage */
-    .result-stage { margin-top: 40px; }
-    .result-stats-v2 { display: flex; gap: 16px; justify-content: center; margin-bottom: 32px; }
-    .stat-v2-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 20px; border-radius: 24px; border: 1.5px solid var(--border); background: #fff; }
-    .stat-v2-item.highlighted { border-color: var(--primary); background: var(--primary-light); }
-    .stat-v2-item .l { font-size: 0.72rem; font-weight: 900; color: #94a3b8; text-transform: uppercase; margin-bottom: 2px; }
-    .stat-v2-item .v { font-size: 1.4rem; font-weight: 1000; color: var(--dark); }
+    .lg-btn { height: 64px; font-size: 1.1rem; border-radius: 18px; margin-top: 12px; }
+    .fun-spinner-sm { width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .privacy-tiny { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 16px; font-style: italic; }
 
-    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
-    .compare-card { position: relative; border-radius: 24px; overflow: hidden; border: 1.5px solid var(--border); box-shadow: var(--shadow-soft); }
-    .v-label { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 12px; border-radius: 100px; font-size: 0.7rem; font-weight: 1000; z-index: 5; }
-    .zoom-viewport { width: 100%; aspect-ratio: 1; background: #f8fafc; display: flex; align-items: center; justify-content: center; }
-    .zoom-viewport img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    /* Result UI */
+    .result-hub { animation: fadeSlideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .success-indicator { display: flex; align-items: center; gap: 20px; background: #f0fdf4; border: 1.5px solid #dcfce7; padding: 24px; border-radius: 20px; margin-bottom: 32px; }
+    .icon-pulse { width: 44px; height: 44px; background: var(--success); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 900; }
+    .text-content h4 { font-size: 1.15rem; font-weight: 850; margin-bottom: 2px; color: #166534; }
+    .text-content p { color: #166534; opacity: 0.8; font-size: 0.9rem; font-weight: 600; }
 
-    @media (max-width: 768px) {
-        .pill-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-        .target-pill.auto { grid-column: span 2; }
-        .target-pill { min-width: unset; padding: 12px 8px; font-size: 0.85rem; }
-        .comparison-grid { grid-template-columns: 1fr; gap: 16px; }
-        .input-group-premium { max-width: 100%; }
-        .stat-v2-item .v { font-size: 1.15rem; }
-        .stat-v2-item { padding: 14px; }
-        .tool-controls { margin-top: 24px; padding-top: 24px; }
-        .wide-btn { height: 60px; font-size: 1.1rem; }
-        .action-footer { margin-top: 24px; }
-        .custom-kb-section { margin: 24px 0; }
-        .result-stage { margin-top: 24px; }
+    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .data-card { background: #fff; border: 1.5px solid var(--border-subtle); padding: 24px; border-radius: 20px; text-align: center; transition: 0.3s; }
+    .data-card.active { border-color: var(--accent); background: #f8faff; transform: translateY(-2px); }
+    .d-label { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 8px; }
+    .d-value { font-size: 1.75rem; font-weight: 950; color: var(--text-main); }
+    .data-card.active .d-value { color: var(--accent); }
+
+    .comparison-visuals { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .compare-box { display: flex; flex-direction: column; gap: 12px; position: relative; }
+    .badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); padding: 6px 14px; border-radius: 100px; font-size: 0.7rem; font-weight: 900; color: #fff; text-transform: uppercase; z-index: 10; backdrop-filter: blur(8px); }
+    .badge.accent { background: var(--accent); }
+    .display-pane { background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 20px; height: 320px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .display-pane img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .compare-box.active .display-pane { border: 2px solid var(--accent); background: #fff; }
+
+    .final-actions { display: flex; gap: 16px; }
+    .flex-1 { flex: 1; height: 60px; font-weight: 850; border-radius: 16px; }
+    .flex-2 { flex: 2; height: 60px; font-weight: 850; border-radius: 16px; display: flex; gap: 10px; align-items: center; justify-content: center; }
+
+    .viral-share-row { text-align: center; border-top: 1.5px dashed var(--border-subtle); padding-top: 24px; }
+    .share-hint { font-size: 0.85rem; font-weight: 800; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .share-flex { display: flex; gap: 12px; justify-content: center; }
+    .mini-share-btn { padding: 10px 20px; border-radius: 99px; font-size: 0.85rem; font-weight: 800; text-decoration: none; color: #fff; transition: 0.2s; }
+    .mini-share-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+    .x-color { background: #000; }
+    .wa-color { background: #25d366; }
+
+    .mt-24 { margin-top: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+    .mb-40 { margin-bottom: 40px; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 600px) {
+        .preset-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .stats-row, .comparison-visuals, .final-actions { grid-template-columns: 1fr; display: flex; flex-direction: column; gap: 16px; }
+        .display-pane { height: 260px; }
+        .settings-hub { padding: 24px 16px; }
+        .success-indicator { padding: 16px; gap: 12px; }
+        .d-value { font-size: 1.4rem; }
     }
 </style>

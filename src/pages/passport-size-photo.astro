@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Passport Size Photo Maker Online (3.5 x 4.5 cm) | FormFix';
 const PAGE_DESC = 'Create official 3.5cm x 4.5cm passport photos for SSC, UPSC, and Banking exams. 1-click crop, background fix, and instant download. 100% private & free.';
-const PAGE_KEYWORDS = 'passport photo maker online, 3.5x4.5 photo resize, ssc photo compressor, upsc photo maker, banking form photo maker, official passport size photo';
+const PAGE_KEYWORDS = 'passport photo maker online, 3.5x4.5 photo resize, ssc photo compressor, upsc photo maker, banking form photo maker, official passport size photo, create passport photo free';
 
 const customSchema = {
   "@context": "https://schema.org",
@@ -26,125 +26,162 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="passport-maker" canonicalPath="/passport-size-photo">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">🪄 Pro Form Toolkit</div>
-             <h1 class="main-h1">Passport <span class="highlight">& Signature</span> Maker</h1>
-             <p class="hero-sub">Get your photo and signature ready for any official application in 1-Click.</p>
-        </header>
+    <ToolWrapper title="Official Form Maker" subtitle="Generate standardized passport photos and digital signatures for competitive exams." currentTool="passport-maker">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <!-- 1. Selection Step -->
+                  <div id="selection-panel" class="selection-workspace show">
+                       <div class="choice-grid">
+                            <button class="choice-card shadow-sm" onclick="document.getElementById('photo-input').click()">
+                                 <div class="choice-icon">👤</div>
+                                 <div class="choice-text">
+                                      <h4>Passport Photo</h4>
+                                      <p>Resize to 3.5cm x 4.5cm</p>
+                                 </div>
+                                 <input type="file" id="photo-input" accept="image/*" class="hidden" />
+                            </button>
 
-        <div class="glass-card tool-content shadow-lg">
-            <!-- 1. Selection Step -->
-            <div id="selection-panel" class="step-panel text-center">
-                <h3 class="step-title">Choose your document type</h3>
-                <div class="choice-grid mt-32">
-                    <button class="choice-card" onclick="document.getElementById('photo-input').click()">
-                        <div class="choice-icon">📸</div>
-                        <div class="choice-text">
-                            <h4>Passport Photo</h4>
-                            <p>Auto-Crop to 3.5cm x 4.5cm</p>
-                        </div>
-                        <input type="file" id="photo-input" accept="image/*" style="display:none" />
-                    </button>
+                            <button class="choice-card shadow-sm" onclick="document.getElementById('sign-input').click()">
+                                 <div class="choice-icon">✒️</div>
+                                 <div class="choice-text">
+                                      <h4>Digital Signature</h4>
+                                      <p>Background removal & Ink fix</p>
+                                 </div>
+                                 <input type="file" id="sign-input" accept="image/*" class="hidden" />
+                            </button>
+                       </div>
+                  </div>
 
-                    <button class="choice-card" onclick="document.getElementById('sign-input').click()">
-                        <div class="choice-icon">✍️</div>
-                        <div class="choice-text">
-                            <h4>Signature Maker</h4>
-                            <p>Remove Background & Fix Ink</p>
-                        </div>
-                        <input type="file" id="sign-input" accept="image/*" style="display:none" />
-                    </button>
-                </div>
-                <p class="u-sub mt-48">100% Private: All processing happens on your device.</p>
-            </div>
+                  <!-- 2. Workspace Panel -->
+                  <div id="workspace-panel" class="hidden">
+                       <div class="editor-layout">
+                            <!-- Preview Area -->
+                            <div class="preview-stage shadow-sm">
+                                 <div class="preview-header">
+                                      <span class="preview-badge" id="mode-badge">Editor</span>
+                                 </div>
+                                 <div class="canvas-frame checkerboard" id="pinch-area">
+                                      <canvas id="active-canvas"></canvas>
+                                      <div id="crop-overlay" class="crop-frame" style="display: none;"></div>
+                                 </div>
+                                 <p class="hint-pill mt-16" id="drag-hint">👉 Drag to center your photo correctly.</p>
+                            </div>
 
-            <!-- 2. Workspace Panel -->
-            <div id="workspace-panel" class="step-panel" style="display: none;">
-                <div class="workspace-header mb-24">
-                    <div class="flex-between">
-                        <h2 id="work-title" class="section-title">Editing Document</h2>
-                        <button class="secondary-btn btn-sm" onclick="location.reload()">↺ Change Image</button>
-                    </div>
-                </div>
+                            <!-- Controls Area -->
+                            <div class="sidebar-controls">
+                                 <div class="settings-card shadow-sm">
+                                      <div class="d-flex justify-between align-center mb-24">
+                                           <label class="section-label">Tools</label>
+                                           <button class="secondary-btn btn-xs" onclick="location.reload()">↺ Start Over</button>
+                                      </div>
 
-                <div class="workspace-layout">
-                    <!-- Preview Area -->
-                    <div class="preview-wrap">
-                        <div class="canvas-container shadow-lg checkerboard" id="pinch-area">
-                            <canvas id="active-canvas"></canvas>
-                            <!-- Interactive Crop Overlay for Photos -->
-                            <div id="crop-overlay" class="crop-frame" style="display:none;"></div>
-                        </div>
-                        <p class="hint-text text-center mt-12" id="drag-hint">👉 Use mouse to drag and center your photo.</p>
-                    </div>
+                                      <!-- Passport Controls -->
+                                      <div id="photo-controls" class="hidden">
+                                           <div class="setting-item mb-24">
+                                                <label class="section-label mb-8">Base Color</label>
+                                                <div class="pill-toggle-group">
+                                                     <button class="toggle-pill active" id="bg-orig">Native</button>
+                                                     <button class="toggle-pill" id="bg-white">Pure White</button>
+                                                </div>
+                                           </div>
+                                           
+                                           <div class="setting-item mb-24">
+                                                <div class="d-flex justify-between align-center mb-12">
+                                                     <label class="section-label">Brightness</label>
+                                                     <span id="bright-val" class="status-pill gray">100%</span>
+                                                </div>
+                                                <input type="range" id="photo-bright" min="50" max="150" value="100" class="unified-slider" />
+                                           </div>
 
-                    <!-- Controls Area -->
-                    <div class="controls-area">
-                        <!-- Passport Controls -->
-                        <div id="photo-controls" style="display: none;">
-                            <div class="control-box">
-                                <label>Paper Background</label>
-                                <div class="toggle-group">
-                                    <button class="toggle-btn active" id="bg-orig">Original</button>
-                                    <button class="toggle-btn" id="bg-white">Pure White</button>
-                                </div>
-                            </div>
-                            <div class="control-box mt-24">
-                                <label>Image Settings</label>
-                                <div class="slider-item">
-                                    <span>Brightness</span>
-                                    <input type="range" id="photo-bright" min="50" max="150" value="100" class="styled-slider" />
-                                </div>
-                                <div class="slider-item mt-16">
-                                    <span>Zoom Image</span>
-                                    <input type="range" id="photo-zoom" min="0.5" max="3" step="0.05" value="1" class="styled-slider" />
-                                </div>
-                            </div>
-                            <div class="action-box mt-48">
-                                <button id="dl-photo" class="primary-btn full-w pulse-glow shadow-md">Download Passport (JPG)</button>
-                                <div class="spec-badge mt-16 text-center">Format: 3.5cm x 4.5cm (Official)</div>
-                            </div>
-                        </div>
+                                           <div class="setting-item mb-24">
+                                                <div class="d-flex justify-between align-center mb-12">
+                                                     <label class="section-label">Manual Zoom</label>
+                                                     <span id="zoom-val" class="status-pill gray">1.0x</span>
+                                                </div>
+                                                <input type="range" id="photo-zoom" min="0.5" max="3" step="0.05" value="1" class="unified-slider" />
+                                           </div>
 
-                        <!-- Signature Controls -->
-                        <div id="sign-controls" style="display: none;">
-                            <div class="control-box">
-                                <label>Enhancement</label>
-                                <div class="slider-item">
-                                    <span>Ink Sensitivity</span>
-                                    <input type="range" id="sign-thresh" min="50" max="230" value="180" class="styled-slider" />
-                                </div>
+                                           <button id="dl-photo" class="primary-btn wide-btn pulse-glow">Download Photo (JPG)</button>
+                                      </div>
+
+                                      <!-- Signature Controls -->
+                                      <div id="sign-controls" class="hidden">
+                                           <div class="setting-item mb-24">
+                                                <div class="d-flex justify-between align-center mb-12">
+                                                     <label class="section-label">Ink Sensitivity</label>
+                                                     <span id="sign-thresh-val" class="status-pill gray">180</span>
+                                                </div>
+                                                <input type="range" id="sign-thresh" min="50" max="230" value="180" class="unified-slider" />
+                                           </div>
+                                           
+                                           <div class="setting-item mb-24">
+                                                <label class="section-label mb-8">Color Correction</label>
+                                                <div class="pill-toggle-group">
+                                                     <button class="toggle-pill active" id="ink-orig">Auto</button>
+                                                     <button class="toggle-pill" id="ink-black">Black</button>
+                                                     <button class="toggle-pill" id="ink-blue">Blue</button>
+                                                </div>
+                                           </div>
+                                           <button id="dl-sign" class="primary-btn wide-btn pulse-glow">Download Signature (PNG)</button>
+                                      </div>
+                                 </div>
+                                 <p class="privacy-note text-center mt-16">🔒 Local Processing Engine</p>
                             </div>
-                            <div class="control-box mt-24">
-                                <label>Ink Color</label>
-                                <div class="toggle-group">
-                                    <button class="toggle-btn active" id="ink-orig">Original</button>
-                                    <button class="toggle-btn" id="ink-black">Pure Black</button>
-                                    <button class="toggle-btn" id="ink-blue">Blue Ink</button>
-                                </div>
-                            </div>
-                            <div class="action-box mt-48">
-                                <button id="dl-sign" class="primary-btn full-w pulse-glow shadow-md">Download Signature (PNG)</button>
-                                <div class="spec-badge mt-16 text-center">Pure Transparent Background</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                       </div>
+                  </div>
+             </div>
         </div>
 
-        <RelatedTools currentTool="passport-maker" />
-    </div>
+        <div slot="tool-info">
+             <article class="prose">
+                 <h2>Professional Passport Photo & Signature Tool</h2>
+                 <p>Preparing for an online application (SSC, UPSC, Banking, etc)? This dedicated tool specifically targets the <strong>3.5cm x 4.5cm</strong> requirement used in India and internationally. All edits happen instantly within your browser RAM, ensuring your sensitive ID documents never leave your local device.</p>
+                 
+                 <h2>Standard Dimensions for Official Forms</h2>
+                 <p>Different exam boards have slightly different requirements. Here is a quick reference guide to help you choose the right settings:</p>
+                 <ul>
+                     <li><strong>SSC (CGL, CHSL, MTS):</strong> 3.5cm x 4.5cm for photo, 4.0cm x 2.0cm for signature.</li>
+                     <li><strong>UPSC:</strong> 350px x 350px minimum for both.</li>
+                     <li><strong>Banking (IBPS, SBI):</strong> 4.5cm x 3.5cm (Note the orientation swap in some bank forms).</li>
+                     <li><strong>NEET:</strong> 3.5cm x 4.5cm (Passport) and 4"x6" (Postcard).</li>
+                 </ul>
+
+                 <h2>How to make a Passport Size Photo online</h2>
+                 <ol>
+                     <li><strong>Upload:</strong> Click the "Passport Photo" card above and choose your image.</li>
+                     <li><strong>Crop:</strong> Our editor shows a standard 3.5x4.5cm bounding box. Align your face so it covers about 80% of the box.</li>
+                     <li><strong>Enhance:</strong> Adjust brightness if the photo is too dark. Official forms require clear visibility of features.</li>
+                     <li><strong>Download:</strong> Click download to get your JPEG. Use our <a href="/compress-image">Compressor</a> if you need to hit a specific KB limit like 20KB or 50KB.</li>
+                 </ol>
+
+                 <div class="faq-grid mt-32">
+                      <details class="faq-item">
+                           <summary>What is the exact dimension for SSC/UPSC? <span class="indicator">+</span></summary>
+                           <div class="faq-body">
+                               <p>Most Indian examination boards require a <strong>3.5cm width by 4.5cm height</strong> photo. Our tool automatically locks the aspect ratio to this standard so you can simply drag to fit.</p>
+                           </div>
+                      </details>
+                      <details class="faq-item">
+                           <summary>How does the Signature Maker work? <span class="indicator">+</span></summary>
+                           <div class="faq-body">
+                               <p>It uses threshold-based filtering to isolate ink from paper. Once you upload your signed paper, use 'Ink Sensitivity' to clean up shadows and export a transparent PNG ready for uploading.</p>
+                           </div>
+                      </details>
+                      <details class="faq-item">
+                           <summary>Is this tool free and private? <span class="indicator">+</span></summary>
+                           <div class="faq-body">
+                               <p>Yes. FormFix is 100% free and processes everything locally in your browser. We never see or store your photos, making it the safest way to prepare official documents.</p>
+                           </div>
+                      </details>
+                 </div>
+             </article>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
 <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
-        const pInput = document.getElementById('photo-input');
-        const sInput = document.getElementById('sign-input');
-        const canvas = document.getElementById('active-canvas');
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        
         const selectionPanel = document.getElementById('selection-panel');
         const workspacePanel = document.getElementById('workspace-panel');
         const photoControls = document.getElementById('photo-controls');
@@ -152,12 +189,10 @@ const customSchema = {
         const cropOverlay = document.getElementById('crop-overlay');
         const dragHint = document.getElementById('drag-hint');
 
-        let originalImg = null;
-        let mode = ''; 
-        let imgX = 0, imgY = 0, imgScale = 1, baseScale = 1;
-        let isDragging = false, lastMouseX = 0, lastMouseY = 0;
-        let activeBg = 'orig';
-        let activeInk = 'orig';
+        const canvas = document.getElementById('active-canvas');
+        const ctx = canvas.getContext('2d');
+        const pInput = document.getElementById('photo-input');
+        const sInput = document.getElementById('sign-input');
 
         pInput.addEventListener('change', (e) => handleUpload(e, 'photo'));
         sInput.addEventListener('change', (e) => handleUpload(e, 'sign'));
@@ -239,11 +274,19 @@ const customSchema = {
              ctx.putImageData(imgData, 0, 0);
         }
 
+        let originalImg = null;
+        let mode = ''; 
+        let imgX = 0, imgY = 0, imgScale = 1, baseScale = 1;
+        let isDragging = false, lastMouseX = 0, lastMouseY = 0;
+        let activeBg = 'orig';
+        let activeInk = 'orig';
+
         // INTERACTION LOGIC
         canvas.addEventListener('pointerdown', (e) => {
             if (mode !== 'photo') return;
             isDragging = true;
             lastMouseX = e.clientX; lastMouseY = e.clientY;
+            canvas.setPointerCapture(e.pointerId);
         });
 
         let isRenderPending = false;
@@ -263,7 +306,44 @@ const customSchema = {
             }
         });
 
-        window.addEventListener('pointerup', () => isDragging = false);
+        window.addEventListener('pointerup', (e) => {
+            isDragging = false;
+            if (e.pointerType === 'touch') {
+                evCache = evCache.filter(ev => ev.pointerId !== e.pointerId);
+                if (evCache.length < 2) prevDiff = -1;
+            }
+        });
+
+        // Touch Zoom Support (Pinch)
+        let evCache = [];
+        let prevDiff = -1;
+
+        canvas.addEventListener('pointerdown', (e) => {
+            if (e.pointerType === 'touch') evCache.push(e);
+        });
+
+        canvas.addEventListener('pointermove', (e) => {
+            if (e.pointerType !== 'touch' || evCache.length !== 2) return;
+            
+            // Find this event in the cache and update its record
+            const index = evCache.findIndex(ev => ev.pointerId === e.pointerId);
+            if (index > -1) evCache[index] = e;
+
+            // Calculate distance between the two pointers
+            const curDiff = Math.hypot(evCache[0].clientX - evCache[1].clientX, evCache[0].clientY - evCache[1].clientY);
+
+            if (prevDiff > 0) {
+                if (curDiff > prevDiff) {
+                    imgScale *= 1.02;
+                } else if (curDiff < prevDiff) {
+                    imgScale *= 0.98;
+                }
+                const zoomInput = document.getElementById('photo-zoom');
+                if (zoomInput) zoomInput.value = (imgScale / baseScale).toString();
+                render();
+            }
+            prevDiff = curDiff;
+        });
 
         // CONTROLS LISTENERS
         document.getElementById('photo-bright').addEventListener('input', render);
@@ -313,63 +393,54 @@ const customSchema = {
 </script>
 
 <style>
-    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 4px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; }
-    .tool-wrapper { max-width: 1000px; margin: 0 auto; padding-bottom: 100px; }
+    .selection-workspace { padding: 40px 0; }
+    .choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .choice-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 32px; cursor: pointer; transition: 0.2s; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
+    .choice-card:hover { border-color: var(--accent); background: var(--surface-50); transform: translateY(-4px); }
+    .choice-icon { width: 64px; height: 64px; background: var(--surface-100); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; transition: 0.2s; }
+    .choice-card:hover .choice-icon { background: var(--accent); color: #fff; }
+    .choice-text h4 { font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
+    .choice-text p { font-size: 0.85rem; color: var(--text-muted); }
 
-    .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    @media (max-width: 700px) { .choice-grid { grid-template-columns: 1fr; } }
-
-    .choice-card { 
-        background: #fff; border: 1.5px solid var(--border-light); border-radius: 28px; padding: 40px; 
-        text-align: left; cursor: pointer; transition: var(--transition-smooth); display: flex; align-items: center; gap: 24px;
-        box-shadow: var(--shadow-sm);
-    }
-    .choice-card:hover { border-color: var(--primary-mid); background: var(--bg-subtle); transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-    .choice-icon { font-size: 2.5rem; background: var(--primary-light); width: 84px; height: 84px; display: flex; align-items: center; justify-content: center; border-radius: 22px; transition: 0.3s; }
-    .choice-card:hover .choice-icon { transform: scale(1.1) rotate(5deg); background: var(--primary); color: #fff; }
-
-    .workspace-layout { display: grid; grid-template-columns: 1fr 340px; gap: 40px; }
-    @media (max-width: 900px) { .workspace-layout { grid-template-columns: 1fr; } }
-
-    .canvas-container { 
-        background: #f4f6f8; border-radius: 24px; min-height: 500px; display: flex; 
-        align-items: center; justify-content: center; overflow: hidden; border: 2.5px solid var(--border);
-        position: relative; cursor: move;
-    }
-    #active-canvas { max-width: 100%; max-height: 700px; box-shadow: var(--shadow-lg); transition: filter 0.2s; }
+    .workspace-grid { display: grid; grid-template-columns: 1fr 340px; gap: 40px; align-items: start; }
     
-    @media (max-width: 768px) {
-        .canvas-container { min-height: 380px; }
-        #active-canvas { max-height: 450px; }
-        .controls-area { padding: 24px; }
-        .choice-card { padding: 24px; flex-direction: column; text-align: center; gap: 16px; }
-    }
-
-    .crop-frame { 
-        position: absolute; top: 10%; left: 15%; right: 15%; bottom: 10%; 
-        border: 2.5px dashed var(--primary); pointer-events: none; border-radius: 4px;
-        box-shadow: 0 0 0 1000px rgba(0,0,0,0.4);
-    }
-
-    .controls-area { background: #fff; border-radius: 28px; padding: 36px; border: 1.5px solid var(--border-light); box-shadow: var(--shadow-soft); }
-    .control-box label { display: block; font-size: 0.72rem; font-weight: 1000; color: var(--gray); text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.08em; }
+    .crop-frame { position: absolute; inset: 10%; border: 2px solid rgba(255,255,255,0.5); pointer-events: none; border-radius: 4px; box-shadow: 0 0 0 1000px rgba(0,0,0,0.5); z-index: 10; }
     
-    .slider-item { color: var(--slate); font-weight: 800; font-size: 0.9rem; }
-    .slider-item input { margin-top: 10px; }
+    .settings-card-plain { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 24px; }
+    
+    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: block; }
+    .l-text { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
+    
+    .toggle-pill-group { display: flex; gap: 8px; }
+    .toggle-pill { flex: 1; padding: 10px; border-radius: 12px; border: 1px solid var(--border-subtle); background: #fff; font-weight: 800; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+    .toggle-pill.active { background: var(--text-main); color: #fff; border-color: var(--text-main); }
 
-    .toggle-group { display: flex; gap: 8px; }
-    .toggle-btn { flex: 1; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); background: #fff; font-weight: 800; cursor: pointer; transition: 0.2s; }
-    .toggle-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
-
-    .spec-badge { background: #f1f5f9; padding: 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 900; color: var(--slate); letter-spacing: 0.05em; border: 1px dashed var(--border); }
-
+    #active-canvas { max-width: 100%; max-height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.1)); }
+    
+    .hidden { display: none; }
+    .d-flex { display: flex; }
+    .justify-between { justify-content: space-between; }
+    .align-center { align-items: center; }
+    .mb-0 { margin-bottom: 0 !important; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mt-12 { margin-top: 12px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+    .btn-xs { padding: 6px 12px; font-size: 0.75rem; }
+    .flex-1 { flex: 1; }
+    
     .checkerboard { 
         background-color: #ffffff;
-        background-image: linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9), 
-                          linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9);
+        background-image: linear-gradient(45deg, #f8f9fa 25%, transparent 25%, transparent 75%, #f8f9fa 75%, #f8f9fa), 
+                          linear-gradient(45deg, #f8f9fa 25%, transparent 25%, transparent 75%, #f8f9fa 75%, #f8f9fa);
         background-size: 20px 20px;
         background-position: 0 0, 10px 10px;
     }
-    .full-w { width: 100%; height: 68px; border-radius: 20px; font-size: 1.15rem; }
+
+    @media (max-width: 600px) {
+        .choice-grid { grid-template-columns: 1fr; gap: 16px; }
+        .workspace-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
 </style>

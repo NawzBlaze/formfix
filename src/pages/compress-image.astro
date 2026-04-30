@@ -3,6 +3,7 @@ import BaseLayout from '../components/BaseLayout.astro';
 import UploadBox from '../components/UploadBox.astro';
 import RelatedTools from '../components/RelatedTools.astro';
 import CompressTool from '../components/tools/CompressTool.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Compress Image to 20KB, 50KB & 100KB Online | FormFix';
 const PAGE_DESC = 'The best free online image compressor. Compress photos to exactly 20KB, 50KB, or 100KB for government forms (SSC, UPSC). 100% private, zero uploads.';
@@ -65,58 +66,38 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="compress" canonicalPath="/compress-image">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">Client-Side Compression</div>
-             <h1 class="main-h1">Free Online <span class="highlight">Image Compressor</span></h1>
-             <p class="hero-sub">Compress photos to exactly 20KB, 50KB, or 100KB for government forms. 100% private — no uploads.</p>
-        </header>
+    <ToolWrapper title="Online Image Compressor" subtitle="Compress photos to exactly 20KB, 50KB, or 100KB for government forms. 100% private." currentTool="compress">
+        
+        <div slot="tool-ui">
+             <CompressTool />
+        </div>
 
-        <CompressTool />
-
-        <article class="pro-seo-article container mt-48">
+        <div slot="tool-info">
              <h2>The Professional Image Compressor Online</h2>
-             <p>FormFix is the highest-precision <strong>online image compressor</strong> for users who need to hit exact file size targets. We ensure that you keep maximum sharpness and readability whether you are aiming for a strict <strong>20kb</strong> limit for a signature, or a <strong>500kb</strong> limit for a website hero image. Perfect for professional portals that require strict adherence to file size constraints.</p>
+             <p>FormFix is the highest-precision <strong>online image compressor</strong> for users who need to hit exact file size targets. We ensure that you keep maximum sharpness and readability.</p>
              
-             <h3 class="mt-32">Frequently Asked Questions</h3>
-             <details class="faq-item">
-                  <summary>How to compress image to 20kb?</summary>
-                  <p>Simply upload your image, click on the "20 KB" preset target button, and hit optimize. Our advanced algorithm will automatically adjust quality until the final generated file size is exactly 20KB or less.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>How can I compress to 5kb, 500kb or any specific size?</summary>
-                  <p>Use the "Custom Target (KB)" input box. Just type "5" for 5KB or "500" for 500KB. The <strong>smart image compressor</strong> will instantly recalibrate the mathematical engine to ensure the final output strictly matches your chosen limit.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>Does it reduce quality?</summary>
-                  <p>Our compressor uses a smart mathematical engine (RBQS) which drops file size drastically by stripping invisible metadata and intelligently reducing color depth, aiming to keep the visual quality almost identical to the original.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>Is it safe?</summary>
-                  <p>Yes, it's 100% safe. We utilize local browser processing, meaning your images stay in your computer's memory. No uploads are sent to our servers, keeping your private documents perfectly secure.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>Which image formats are supported?</summary>
-                  <p>Our tool currently supports <strong>JPG, PNG, and WebP</strong> formats. For best compression results, we recommend converting PNGs to JPG or WebP if you need to hit very small targets like 20KB.</p>
-             </details>
-        </article>
-
-        <RelatedTools currentTool="compress" />
-    </div>
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>How to compress image to 20kb?</summary>
+                       <p>Simply upload your image, click on the "20 KB" preset target button, and hit optimize.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>Is it safe?</summary>
+                       <p>Yes, it's 100% safe. Processing happens locally in your browser.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
 <style>
-    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
-    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
-    
     /* FAQ */
-    .faq-item { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
-    .faq-item summary { font-weight: 900; font-size: 1.1rem; padding: 20px; cursor: pointer; color: var(--dark); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 24px; font-weight: bold; font-size: 1.4rem; color: var(--primary); }
+    .faq-grid { display: grid; gap: 16px; }
+    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; }
+    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
     .faq-item[open] summary::after { content: '−'; }
-    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 1rem; color: var(--slate); line-height: 1.6; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
-    .mt-48 { margin-top: 48px; }
     .mt-32 { margin-top: 32px; }
 </style>

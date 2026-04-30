@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Age Calculator Free – Exact Age in Years, Months, Days';
 const PAGE_DESC = 'Calculate your exact age in years, months, and days instantly. Free online age calculator for birthdays, anniversaries, and date differences.';
@@ -8,70 +8,74 @@ const PAGE_KEYWORDS = 'age calculator, calculate age, exact age, date difference
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} active="tools" canonicalPath="/age-calculator">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">⏱️ Date Mathematics</div>
-             <h1 class="main-h1">Age <span class="highlight">Calculator</span></h1>
-             <p class="hero-sub">Enter your birth date to find your exact age and next birthday.</p>
-        </header>
+    <ToolWrapper title="Age Calculator" subtitle="Precisely measure how long you've been on this planet, down to the day." currentTool="age-calculator">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <div class="settings-card shadow-sm mb-24">
+                       <div class="date-grid">
+                           <div class="setting-item">
+                                <label class="section-label m-0 mb-8">Date of Birth</label>
+                                <input type="date" id="dob-input" class="modern-input" />
+                           </div>
+                           <div class="setting-item">
+                                <label class="section-label m-0 mb-8">Calculate Age At</label>
+                                <input type="date" id="target-input" class="modern-input" />
+                           </div>
+                       </div>
+                  </div>
 
-        <div class="glass-card tool-content shadow-lg">
-             <div class="date-inputs">
-                  <div class="date-group shadow-sm">
-                       <label>Date of Birth</label>
-                       <input type="date" id="dob" />
-                  </div>
-                  <div class="date-group shadow-sm">
-                       <label>Age at the date of</label>
-                       <input type="date" id="target-date" />
-                  </div>
-             </div>
+                  <div class="result-box shadow-sm px-24 py-32">
+                       <div class="result-header text-center mb-32">
+                            <span class="status-pill mb-16">LIVE CALCULATION</span>
+                            <h3 class="h3-age m-0 font-850">Your Exact Age</h3>
+                       </div>
 
-             <div class="res-stage mt-48 text-center" id="res-box">
-                  <h3 class="res-title">Exact Age</h3>
-                  <div class="age-big">
-                      <span id="res-years">0</span> <small>Years</small>
-                      <span id="res-months">0</span> <small>Months</small>
-                      <span id="res-days">0</span> <small>Days</small>
+                       <div class="age-stats-grid">
+                            <div class="age-block shadow-sm">
+                                 <span id="res-years" class="age-n">0</span>
+                                 <label class="age-l">Years</label>
+                            </div>
+                            <div class="age-block shadow-sm">
+                                 <span id="res-months" class="age-n">0</span>
+                                 <label class="age-l">Months</label>
+                            </div>
+                            <div class="age-block shadow-sm">
+                                 <span id="res-days" class="age-n">0</span>
+                                 <label class="age-l">Days</label>
+                            </div>
+                       </div>
                   </div>
+
+                  <p class="privacy-note text-center mt-24 mb-0 text-muted font-600">🔒 Your private dates never leave this browser.</p>
              </div>
         </div>
 
-        <article class="pro-seo-article container mt-48">
-             <h2>Calculate Age Instantly</h2>
-             <p>Our completely free <strong>age calculator</strong> computes your exact chronological age in years, months, and days. It handles leap years automatically and provides a precise time gap between any two calendar dates. Whether you are checking your <strong>birthday calculator</strong> result or calculating the duration of a project or legal contract, our tool delivers <strong>exact age in days</strong> instantly with absolute accuracy.</p>
+        <div slot="tool-info">
+             <h2>Accurate Age Measurement</h2>
+             <p>Our <strong>Universal Age Calculator</strong> handles complex calendar logic—including leap years and varying month lengths—to output your precise chronological age. Ideal for checking eligibility, calculating service length, or birth anniversaries.</p>
              
-             <h3 class="mt-32">Frequently Asked Questions</h3>
-             <details class="faq-item">
-                  <summary>How to calculate my exact age?</summary>
-                  <p>Choose your birth date from the "Date of Birth" selector. Our <strong>online age tool</strong> will instantly compare it with today's date (or any target date you specify) and show you how many years, months, and days you have lived.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>Does it account for leap years?</summary>
-                  <p>Yes. Our mathematical algorithm accurately calculates the variable number of days in February and the 366-day cycle of leap years to provide a perfect result.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>Can I calculate the age between two past dates?</summary>
-                  <p>Absolutely. You can change the "Age at the date of" field to any date in history to calculate the time distance between any two points in time.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>Is this data private?</summary>
-                  <p>Yes. Like all FormFix tools, the <strong>age calculation</strong> happens strictly in your browser. We do not store or transmit your birth date to any server.</p>
-             </details>
-        </article>
-
-        <RelatedTools currentTool="tools" />
-    </div>
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>How does the calculation handle leap years?</summary>
+                       <p>We use the standard gregorian calendar logic. If you were born on Feb 29, the calculator correctly accounts for the extra day in leap years during every 4-year cycle.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>Can I calculate age for historical dates?</summary>
+                       <p>Absolutely. You can change the "Calculate Age At" field to any date in the past or future to see exactly how old you would be on that specific day.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
-<script>
+<script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
-        const dobInput = document.getElementById('dob') as HTMLInputElement;
-        const targetInput = document.getElementById('target-date') as HTMLInputElement;
-
-        const ry = document.getElementById('res-years') as HTMLElement;
-        const rm = document.getElementById('res-months') as HTMLElement;
-        const rd = document.getElementById('res-days') as HTMLElement;
+        const dobInput = document.getElementById('dob-input');
+        const targetInput = document.getElementById('target-input');
+        const ry = document.getElementById('res-years');
+        const rm = document.getElementById('res-months');
+        const rd = document.getElementById('res-days');
 
         // Set to today
         const today = new Date();
@@ -120,35 +124,55 @@ const PAGE_KEYWORDS = 'age calculator, calculate age, exact age, date difference
 </script>
 
 <style>
-    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; }
-    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
+    .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 800px; margin: 0 auto; }
     
-    .date-inputs { display: flex; gap: 24px; flex-wrap: wrap; }
-    .date-group { flex: 1; background: #fff; border: 1.5px solid var(--border); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 12px; }
-    .date-group label { font-size: 0.85rem; font-weight: 900; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
-    .date-group input { width: 100%; border: none; font-size: 1.4rem; font-weight: 950; color: var(--dark); outline: none; cursor: pointer; background: transparent; }
-
-    .res-stage { background: #f8fafc; border: 1.5px solid var(--border); border-radius: 24px; padding: 48px 24px; }
-    .res-title { font-weight: 950; font-size: 1.2rem; margin-bottom: 20px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; }
+    .settings-card { background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 24px; }
+    .date-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     
-    .age-big { display: flex; justify-content: center; gap: 24px; align-items: baseline; flex-wrap: wrap; }
-    .age-big span { font-size: 4.5rem; font-weight: 1000; color: var(--primary); line-height: 1; }
-    .age-big small { font-size: 1.2rem; font-weight: 850; color: var(--slate); text-transform: uppercase; margin-left: -12px; }
+    .section-label { font-size: 0.72rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    
+    .modern-input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border-subtle); background: #fff; font-size: 1.1rem; font-weight: 700; color: var(--text-main); outline: none; transition: 0.2s; cursor: pointer; box-sizing: border-box; }
+    .modern-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1); }
 
-    .mt-48 { margin-top: 48px; }
-    .mt-32 { margin-top: 32px; }
+    .result-box { background: #fff; border: 1px solid var(--border-subtle); border-radius: 32px; }
+    
+    .status-pill { display: inline-block; background: #e0e7ff; color: #4338ca; padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; }
+    .h3-age { font-size: 1.8rem; }
+
+    .age-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .age-block { background: var(--surface-50); padding: 32px 16px; border-radius: 20px; border: 1px solid var(--border-subtle); text-align: center; }
+    .age-block.shadow-sm { box-shadow: var(--shadow-sm); }
+    
+    .age-n { display: block; font-size: 3.5rem; font-weight: 1000; color: var(--accent); line-height: 1; margin-bottom: 12px; }
+    .age-l { display: block; font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
 
     /* FAQ */
-    .faq-item { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; text-align: left; margin-top: 16px; }
-    .faq-item summary { font-weight: 900; font-size: 1.1rem; padding: 20px; cursor: pointer; color: var(--dark); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 24px; font-weight: bold; font-size: 1.4rem; color: var(--primary); }
+    .faq-grid { display: grid; gap: 16px; }
+    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
     .faq-item[open] summary::after { content: '−'; }
-    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 1rem; color: var(--slate); line-height: 1.6; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+
+    .m-0 { margin: 0; }
+    .mb-0 { margin-bottom: 0; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+    .mt-24 { margin-top: 24px; }
+    .mt-32 { margin-top: 32px; }
+    .py-32 { padding-top: 32px; padding-bottom: 32px; }
+    .px-24 { padding-left: 24px; padding-right: 24px; }
+    .text-center { text-align: center; }
+    .font-850 { font-weight: 850; }
+    .font-600 { font-weight: 600; }
+    .text-muted { color: var(--text-muted); }
 
     @media (max-width: 640px) {
-        .date-inputs { flex-direction: column; gap: 16px; }
-        .age-big span { font-size: 3rem; }
-        .age-big gap { gap: 12px; }
+        .date-grid { grid-template-columns: 1fr; gap: 16px; }
+        .age-stats-grid { grid-template-columns: 1fr; gap: 16px; }
+        .age-n { font-size: 3rem; }
+        .age-block { padding: 24px 16px; }
     }
 </style>

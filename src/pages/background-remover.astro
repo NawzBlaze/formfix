@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
-const PAGE_TITLE = 'Online Background Remover - Free, Instant & Private - FormFix';
-const PAGE_DESC = 'Remove background from images instantly in your browser. Perfect for signatures, product photos, and profile pictures. 100% private, no uploads.';
-const PAGE_KEYWORDS = 'remove background from image, background remover online, transparent background maker, signature background remover, white background removal';
+const PAGE_TITLE = 'Background Color Remover - Free & Private | FormFix';
+const PAGE_DESC = 'Remove white, black, or any solid color background from signatures, logos and photos instantly. 100% private, browser-based processing.';
+const PAGE_KEYWORDS = 'remove background from image, background remover online, transparent background maker, signature background reducer, white background removal';
 
 const customSchema = {
   "@context": "https://schema.org",
@@ -13,7 +13,7 @@ const customSchema = {
       "@type": "SoftwareApplication",
       "name": "FormFix Background Remover",
       "applicationCategory": "MultimediaApplication",
-      "operatingSystem": "All",
+      "operatingSystem": "All Platforms",
       "description": PAGE_DESC,
       "offers": {
         "@type": "Offer",
@@ -26,289 +26,223 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/background-remover">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">🪄 Precision Chroma Key</div>
-             <h1 class="main-h1">Solid Color <span class="highlight">Background</span> Remover</h1>
-             <p class="hero-sub">Remove white, blue, or any solid background color from signatures & logos instantly.</p>
-             
-             <!-- Clarification Note -->
-             <div class="clarification-banner animate-fade-up">
-                 <span class="info-icon">ℹ️</span>
-                 <p><strong>Note:</strong> This tool is for <strong>Solid Color Removal</strong> (Chroma Key). It will not cutout people/objects from complex backgrounds. Use it for signatures, logos, or green screens.</p>
+    <ToolWrapper title="Background Remover" subtitle="Remove solid backgrounds from signatures and logos with chroma-key precision." currentTool="background-remover">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <!-- 1. Selection Stage -->
+                  <div id="selection-stage" class="upload-container">
+                       <div class="upload-box shadow-sm" id="drop-zone" onclick="document.getElementById('img-input').click()">
+                            <input type="file" id="img-input" accept="image/*" class="hidden" />
+                            <div class="upload-content">
+                                 <div class="upload-icon">🎨</div>
+                                 <h3 class="font-850 m-0 mb-8">Select Image to Fix</h3>
+                                 <p class="text-muted m-0 mb-24 font-600">Clear white backgrounds from signatures & logos instantly.</p>
+                                 <button class="primary-btn px-40">Upload Photo</button>
+                            </div>
+                       </div>
+                  </div>
+
+                  <!-- 2. Editor Stage -->
+                  <div id="editor-stage" class="hidden">
+                       <div class="chroma-grid">
+                            <div class="preview-panel shadow-sm scroll-container">
+                                 <div class="canvas-viewport checkerboard" id="pick-area">
+                                      <canvas id="main-canvas"></canvas>
+                                 </div>
+                                 <div class="hint-badge mt-16 font-600">
+                                      <span>👉 Click target color on image to remove it</span>
+                                 </div>
+                            </div>
+
+                            <div class="controls-sidebar">
+                                 <div class="settings-card shadow-sm mb-24">
+                                      <div class="section mb-24">
+                                           <label class="section-label m-0 mb-12">Preset Removal</label>
+                                           <div class="d-flex gap-12">
+                                                <button class="preset-btn flex-1" id="remove-white">White</button>
+                                                <button class="preset-btn flex-1" id="remove-black">Black</button>
+                                           </div>
+                                      </div>
+
+                                      <div class="section mb-24">
+                                           <div class="d-flex justify-between align-center mb-16">
+                                                <label class="section-label m-0">Tolerance</label>
+                                                <span id="tol-val" class="status-pill highlight m-0" style="padding: 4px 12px;">20</span>
+                                           </div>
+                                           <input type="range" id="tolerance" min="1" max="100" value="20" class="unified-slider w-100" />
+                                      </div>
+
+                                      <div class="section">
+                                           <div class="d-flex justify-between align-center mb-16">
+                                                <label class="section-label m-0">Edge Softness</label>
+                                                <span id="smooth-val" class="status-pill highlight m-0" style="padding: 4px 12px;">1</span>
+                                           </div>
+                                           <input type="range" id="smoothing" min="0" max="10" value="1" class="unified-slider w-100" />
+                                      </div>
+                                 </div>
+
+                                 <div class="action-stack">
+                                      <button id="dl-btn" class="primary-btn wide-btn pulse-glow mb-12">⬇️ Download Transparent PNG</button>
+                                      <button class="secondary-btn wide-btn" onclick="location.reload()">↺ Start New</button>
+                                 </div>
+                                 <p class="privacy-note text-center mt-16 mb-0 font-600 text-muted">🔒 Local processing, files stay on your device.</p>
+                            </div>
+                       </div>
+                  </div>
              </div>
-        </header>
-
-        <div class="glass-card tool-content shadow-lg">
-            <div id="selection-panel" class="step-panel text-center">
-                <div class="u-box" id="drop-zone" onclick="document.getElementById('img-input').click()">
-                    <div class="u-icon-big glow-icon">🖼️</div>
-                    <h3>Upload Image to Remove Color</h3>
-                    <p>Perfect for <strong>Signatures</strong>, <strong>Logos</strong> & <strong>Solid Screens</strong>.</p>
-                    <div class="primary-btn btn-upload mt-24">Select Image</div>
-                    <input type="file" id="img-input" accept="image/*" style="display:none" />
-                </div>
-            </div>
-
-            <div id="workspace-panel" class="step-panel" style="display: none;">
-                <div class="workspace-header mb-24">
-                    <div class="flex-between">
-                         <h2 class="section-title">Remove Background</h2>
-                         <button class="secondary-btn btn-sm" onclick="location.reload()">↺ New Image</button>
-                    </div>
-                </div>
-
-                <div class="workspace-layout">
-                    <!-- Preview Area -->
-                    <div class="preview-wrap">
-                        <div class="canvas-container checkerboard shadow-inner" id="pick-area">
-                            <canvas id="main-canvas"></canvas>
-                        </div>
-                        <p class="hint-text text-center mt-12" id="drag-hint">👉 Click anywhere on the background to remove that color.</p>
-                    </div>
-
-                    <!-- Controls -->
-                    <div class="controls-area">
-                        <div class="control-box">
-                            <label>Quick Presets</label>
-                            <div class="btn-group-v2">
-                                <button class="p-preset-btn" id="remove-white">Remove White</button>
-                                <button class="p-preset-btn" id="remove-black">Remove Black</button>
-                            </div>
-                        </div>
-
-                        <div class="control-box mt-24">
-                            <label>Tolerance (Sensitivity)</label>
-                            <div class="slider-item">
-                                <span id="tol-val">20</span>
-                                <input type="range" id="tolerance" min="1" max="100" value="20" class="styled-slider" />
-                            </div>
-                        </div>
-
-                        <div class="control-box mt-24">
-                           <label>Smoothing</label>
-                           <div class="slider-item">
-                               <span id="smooth-val">1</span>
-                               <input type="range" id="smoothing" min="0" max="10" value="1" class="styled-slider" />
-                           </div>
-                        </div>
-
-                        <div class="action-box mt-48">
-                            <button id="dl-btn" class="primary-btn full-w pulse-glow shadow-md">Download (PNG)</button>
-                            <div class="spec-badge mt-16 text-center">Result: Transparent PNG</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <article class="pro-seo-article container mt-48">
-             <h2>The Fastest Signature & Background Remover</h2>
-             <p>FormFix Background Remover is designed for documents, signatures, and product photos. Unlike heavy AI tools, we use <strong>client-side chroma keying</strong> and mathematical color subtraction to remove backgrounds instantly without uploading your files. This makes it the #1 choice for security-conscious users needing to <strong>remove background from signatures</strong> or ID cards.</p>
-             <h3>How to remove white background from image?</h3>
-             <p>Upload your document or photo, and click the "Remove White" preset. Alternatively, you can click on any pixel in the preview to select that specific color as the background. Adjust the <strong>Tolerance</strong> slider to fine-tune the removal and get a crisp, transparent result.</p>
-        </article>
-
-        <RelatedTools currentTool="bg-remover" />
-    </div>
+        <div slot="tool-info">
+             <h2>Signature & Logo Background Removal</h2>
+             <p>Our <strong>Online Color Remover</strong> uses a professional chroma-key algorithm to identify and strip away solid color backgrounds. Whether you need to <strong>remove white from a signature</strong> or isolate a logo from its canvas, FormFix provides pixel-perfect transparency without uploading your data to any server. This ensures your sensitive documents and branding assets remain private and secure.</p>
+             
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>Does this work for complex backgrounds?</summary>
+                       <p>This tool is specialized for <strong>Solid Color Removal</strong>. It works best on signatures, clear logos, or images shot against a green/white screen. For complex landscape or portrait backgrounds, use a professional AI segmentation tool.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>Will the final file stay transparent?</summary>
+                       <p>Yes. We export the result as a <strong>32-bit PNG</strong> which preserves full alpha transparency. This ensures the background remains invisible when you place the image on other documents, resumes, or websites.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
 <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
-        const input = document.getElementById('img-input');
-        const canvas = document.getElementById('main-canvas');
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        
-        const selectionPanel = document.getElementById('selection-panel');
-        const workspacePanel = document.getElementById('workspace-panel');
-        const tolInput = document.getElementById('tolerance');
-        const smoothInput = document.getElementById('smoothing');
-        
-        let originalImg = null;
-        let originalData = null;
-        let selectedColor = null; // {r, g, b}
+        const input = document.getElementById('img-input'), canvas = document.getElementById('main-canvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const tolInput = document.getElementById('tolerance'), smoothInput = document.getElementById('smoothing');
+        let originalImg = null, originalData = null, selectedColor = null;
 
-        input.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+        input.onchange = (e) => {
+            const file = e.target.files[0]; if (!file) return;
             const reader = new FileReader();
             reader.onload = (ev) => {
                 originalImg = new Image();
                 originalImg.onload = () => {
-                   setupCanvas();
-                   selectionPanel.style.display = 'none';
-                   workspacePanel.style.display = 'block';
-                   render();
+                   const max = 800; let w = originalImg.width, h = originalImg.height;
+                   if (w > max) { h = (max / w) * h; w = max; } if (h > max) { w = (max / h) * w; h = max; }
+                   canvas.width = w; canvas.height = h; ctx.drawImage(originalImg, 0, 0, w, h);
+                   originalData = ctx.getImageData(0, 0, w, h).data;
+                   document.getElementById('selection-stage').classList.add('hidden');
+                   document.getElementById('editor-stage').classList.remove('hidden'); render();
                 };
                 originalImg.src = ev.target.result;
             };
             reader.readAsDataURL(file);
-        });
-
-        function setupCanvas() {
-            const maxW = 800;
-            const maxH = 800;
-            let w = originalImg.width;
-            let h = originalImg.height;
-
-            if (w > maxW) { h = (maxW / w) * h; w = maxW; }
-            if (h > maxH) { w = (maxH / h) * w; h = maxH; }
-
-            canvas.width = w;
-            canvas.height = h;
-            ctx.drawImage(originalImg, 0, 0, w, h);
-            originalData = ctx.getImageData(0, 0, w, h).data;
-        }
+        };
 
         function render() {
             if (!originalImg) return;
-            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imgData.data;
-            const tol = parseInt(tolInput.value);
-            const smooth = parseInt(smoothInput.value);
-
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height), data = imgData.data;
+            const tol = parseInt(tolInput.value), smooth = parseInt(smoothInput.value) * 10;
             if (selectedColor) {
                 for (let i = 0; i < data.length; i += 4) {
-                    const r = originalData[i];
-                    const g = originalData[i+1];
-                    const b = originalData[i+2];
-                    
-                    const diff = Math.sqrt(
-                        Math.pow(r - selectedColor.r, 2) +
-                        Math.pow(g - selectedColor.g, 2) +
-                        Math.pow(b - selectedColor.b, 2)
-                    );
-
-                    if (diff < tol) {
-                        data[i+3] = 0;
-                    } else if (diff < tol + smooth * 10) {
-                        // Anti-aliasing / soft edges
-                        const alpha = ((diff - tol) / (smooth * 10)) * 255;
-                        data[i+3] = Math.min(data[i+3], alpha);
-                    } else {
-                        data[i] = originalData[i];
-                        data[i+1] = originalData[i+1];
-                        data[i+2] = originalData[i+2];
-                        data[i+3] = originalData[i+3];
-                    }
+                    const r = originalData[i], g = originalData[i+1], b = originalData[i+2];
+                    const diff = Math.sqrt(Math.pow(r-selectedColor.r,2)+Math.pow(g-selectedColor.g,2)+Math.pow(b-selectedColor.b,2));
+                    if (diff < tol) data[i+3] = 0;
+                    else if (diff < tol + smooth) data[i+3] = Math.min(data[i+3], ((diff - tol) / smooth) * 255);
+                    else { data[i]=originalData[i]; data[i+1]=originalData[i+1]; data[i+2]=originalData[i+2]; data[i+3]=originalData[i+3]; }
                 }
-            } else {
-                // Just copy original
-                for (let i = 0; i < data.length; i++) data[i] = originalData[i];
-            }
-
+            } else { for (let i = 0; i < data.length; i++) data[i] = originalData[i]; }
             ctx.putImageData(imgData, 0, 0);
         }
 
-        canvas.addEventListener('click', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const x = Math.floor((e.clientX - rect.left) * (canvas.width / rect.width));
-            const y = Math.floor((e.clientY - rect.top) * (canvas.height / rect.height));
-            
+        canvas.onclick = (e) => {
+            const rect = canvas.getBoundingClientRect(), x = Math.floor((e.clientX - rect.left) * (canvas.width / rect.width)), y = Math.floor((e.clientY - rect.top) * (canvas.height / rect.height));
             const idx = (y * canvas.width + x) * 4;
             selectedColor = { r: originalData[idx], g: originalData[idx+1], b: originalData[idx+2] };
             render();
-        });
+        };
 
-        document.getElementById('remove-white').addEventListener('click', () => {
-            selectedColor = { r: 255, g: 255, b: 255 };
-            tolInput.value = 30;
-            document.getElementById('tol-val').innerText = 30;
-            render();
-        });
-
-        document.getElementById('remove-black').addEventListener('click', () => {
-            selectedColor = { r: 0, g: 0, b: 0 };
-            tolInput.value = 30;
-            document.getElementById('tol-val').innerText = 30;
-            render();
-        });
-
-        tolInput.addEventListener('input', () => {
-            document.getElementById('tol-val').innerText = tolInput.value;
-            render();
-        });
-
-        smoothInput.addEventListener('input', () => {
-            document.getElementById('smooth-val').innerText = smoothInput.value;
-            render();
-        });
-
-        document.getElementById('dl-btn').addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.download = "formfix_no_bg.png";
-            link.href = canvas.toDataURL('image/png');
-            link.click();
+        document.getElementById('remove-white').onclick = () => { selectedColor = {r:255,g:255,b:255}; tolInput.value = 30; document.getElementById('tol-val').innerText = 30; render(); };
+        document.getElementById('remove-black').onclick = () => { selectedColor = {r:0,g:0,b:0}; tolInput.value = 30; document.getElementById('tol-val').innerText = 30; render(); };
+        tolInput.oninput = () => { document.getElementById('tol-val').innerText = tolInput.value; render(); };
+        smoothInput.oninput = () => { document.getElementById('smooth-val').innerText = smoothInput.value; render(); };
+        document.getElementById('dl-btn').onclick = () => {
+            const a = document.createElement('a'); a.download = "no-bg.png"; a.href = canvas.toDataURL('image/png'); a.click();
             if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
-        });
+        };
     });
 </script>
 
 <style>
-    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 4px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; }
-    .tool-wrapper { max-width: 1000px; margin: 0 auto; padding-bottom: 100px; }
-
-    /* Clarification Banner */
-    .clarification-banner {
-        background: #fdf2f2; border: 1.5px solid #fee2e2; border-radius: 12px; padding: 14px 20px;
-        display: inline-flex; align-items: center; gap: 12px; margin-bottom: 40px; text-align: left;
-        max-width: 600px; line-height: 1.4;
-    }
-    .clarification-banner p { font-size: 0.9rem; color: #b91c1c; font-weight: 600; margin: 0; }
-    .info-icon { font-size: 1.1rem; }
-
-    .u-box { 
-        border: 2px dashed var(--border); border-radius: 24px; padding: 60px; 
-        cursor: pointer; transition: 0.3s; background: #fff;
-    }
-    .u-box:hover { border-color: var(--primary); background: #f8fafc; }
-    .u-icon-big { font-size: 4rem; margin-bottom: 16px; }
-    .u-box h3 { font-size: 1.5rem; font-weight: 950; color: var(--dark); margin-bottom: 8px; }
-    .u-box p { color: var(--slate); font-weight: 600; }
-    .btn-upload { min-width: 200px; pointer-events: none; }
-
-    .workspace-layout { display: grid; grid-template-columns: 1fr 340px; gap: 40px; }
-    @media (max-width: 900px) { .workspace-layout { grid-template-columns: 1fr; } }
-
-    .canvas-container { 
-        background: #f4f6f8; border-radius: 24px; min-height: 400px; display: flex; 
-        align-items: center; justify-content: center; overflow: hidden; border: 2.5px solid var(--border);
-        position: relative; cursor: crosshair;
-    }
-    #main-canvas { max-width: 100%; max-height: 700px; box-shadow: var(--shadow-lg); transition: filter 0.2s; }
-
-    .controls-area { background: #fff; border-radius: 24px; padding: 32px; border: 1.5px solid var(--border); box-shadow: var(--shadow-sm); height: fit-content; }
-    .control-box label { display: block; font-size: 0.82rem; font-weight: 900; color: var(--gray); text-transform: uppercase; margin-bottom: 12px; }
+    .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; }
     
-    .btn-group-v2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .p-preset-btn { 
-        padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); 
-        background: #fff; font-weight: 850; cursor: pointer; transition: 0.2s; font-size: 0.85rem;
-    }
-    .p-preset-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .upload-container { display: flex; justify-content: center; }
+    .upload-box { background: var(--surface-50); border: 2.5px dashed var(--border-subtle); border-radius: 32px; padding: 60px 40px; text-align: center; width: 100%; cursor: pointer; transition: 0.2s; }
+    .upload-box:hover { border-color: var(--accent); background: var(--surface-100); }
+    .upload-icon { font-size: 3.5rem; margin-bottom: 24px; }
 
-    .slider-item { display: flex; flex-direction: column; gap: 8px; font-weight: 850; color: var(--dark); }
-    .slider-item span { font-size: 1.1rem; color: var(--primary); }
-
-    .spec-badge { background: #f1f5f9; padding: 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 900; color: var(--slate); letter-spacing: 0.05em; border: 1px dashed var(--border); }
-
+    .chroma-grid { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
+    .preview-panel { background: #fff; border: 1px solid var(--border-subtle); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px; }
+    
     .checkerboard { 
-        background-color: #ffffff;
+        background-color: #fff;
         background-image: linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9), 
                           linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9);
-        background-size: 20px 20px;
-        background-position: 0 0, 10px 10px;
+        background-size: 20px 20px; background-position: 0 0, 10px 10px;
+        border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-sm);
     }
-    .full-w { width: 100%; height: 68px; border-radius: 20px; font-size: 1.15rem; }
-    .flex-between { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-    .btn-sm { padding: 8px 16px; min-height: 48px; border-radius: 12px; font-size: 0.85rem; }
+    #main-canvas { max-width: 100%; height: auto; display: block; filter: drop-shadow(0 15px 40px rgba(0,0,0,0.1)); cursor: crosshair; }
+    
+    .hint-badge { display: inline-block; font-size: 0.85rem; color: var(--text-muted); background: var(--surface-100); padding: 8px 20px; border-radius: 100px; border: 1px solid var(--border-subtle); }
 
-    @media (max-width: 768px) {
-        .main-h1 { font-size: 2.2rem; }
-        .u-box { padding: 40px 20px; }
-        .clarification-banner { margin-inline: 0; padding: 12px; flex-direction: column; text-align: center; }
-        .canvas-container { min-height: 300px; border-radius: 16px; }
-        .controls-area { padding: 24px 16px; border-radius: 16px; }
+    .controls-sidebar { display: flex; flex-direction: column; gap: 24px; }
+    .settings-card { background: var(--surface-50); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); }
+    
+    .preset-btn { padding: 12px; border-radius: 12px; border: 1px solid var(--border-subtle); background: #fff; font-weight: 800; color: var(--text-main); cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
+    .preset-btn:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--shadow-sm); }
+    
+    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    
+    .status-pill { font-size: 0.75rem; font-weight: 800; color: var(--accent); background: #fff; padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; }
+    .status-pill.highlight { border-color: var(--accent); }
+
+    .unified-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--border-subtle); appearance: none; outline: none; margin: 0; }
+    .unified-slider::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; background: var(--accent); border-radius: 50%; border: 4px solid #fff; box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
+    .unified-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
+
+    .action-stack { display: flex; flex-direction: column; }
+    .wide-btn { width: 100%; height: 60px; font-weight: 850; font-size: 1rem; border-radius: 16px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
+    .privacy-note { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* FAQ */
+    .faq-grid { display: grid; gap: 16px; }
+    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+
+    .d-flex { display: flex; }
+    .justify-between { justify-content: space-between; }
+    .align-center { align-items: center; }
+    .text-center { text-align: center; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mt-8 { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-32 { margin-top: 32px; }
+    .gap-12 { gap: 12px; }
+    .font-800 { font-weight: 800; }
+    .font-850 { font-weight: 850; }
+    .font-600 { font-weight: 600; }
+    .text-muted { color: var(--text-muted); }
+    .flex-1 { flex: 1; }
+    .px-40 { padding-left: 40px; padding-right: 40px; }
+    .m-0 { margin: 0; }
+    .mb-0 { margin-bottom: 0; }
+    .w-100 { width: 100%; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 900px) {
+        .chroma-grid { grid-template-columns: 1fr; }
+        .preview-panel { min-height: 350px; padding: 16px; }
     }
 </style>

@@ -1,90 +1,29 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
-import CompressTool from '../components/tools/CompressTool.astro';
-import SocialShare from '../components/SocialShare.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
-const PAGE_TITLE = 'SSC Photo Compressor 20KB - Official Size Reducer for SSC CGL, CHSL, GD';
-const PAGE_DESC = 'Compress and resize your photo and signature to exactly 20KB for SSC online application forms (CGL, CHSL, MTS, GD). 100% private, free and secure.';
-const PAGE_KEYWORDS = 'ssc photo compressor, ssc photo size 20kb, ssc chsl photo resize, ssc gd photo compressor, ssc signature 10 to 20kb';
+const PAGE_TITLE = 'SSC Photo Compressor Online (20KB - 50KB) | FormFix';
+const PAGE_DESC = 'Compress and resize your photo and signature for SSC CGL, CHSL, MTS, and GD Constable exams. Guarantees 20KB-50KB size with exact 3.5x4.5cm dimensions. 100% private.';
+const PAGE_KEYWORDS = 'ssc photo compressor, ssc signature resizer, ssc cgl photo size, ssc chsl photo resize online, compress photo for ssc exam, ssc photo maker';
 
 const customSchema = {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "SoftwareApplication",
-      "name": "SSC Photo Compressor - FormFix",
-      "operatingSystem": "All Platforms",
-      "applicationCategory": "UtilitiesApplication",
-      "description": PAGE_DESC,
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    },
-    {
-      "@type": "Guide",
-      "name": "SSC Online Form Photo & Signature Guidelines",
-      "description": "Standard requirements for Staff Selection Commission (SSC) applications.",
-      "text": "Photo Size: 20KB to 50KB. Signature Size: 10KB to 20KB. Format: JPEG/JPG."
-    }
-  ]
+  "@type": "WebApplication",
+  "name": "SSC Photo & Signature Resizer",
+  "description": "Optimized tool for Staff Selection Commission (SSC) exam applications. Handles photo and signature requirements perfectly.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "All"
 };
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/ssc-photo-compressor">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">🇮🇳 SSC Aspirant Special</div>
-             <h1 class="main-h1">SSC <span class="highlight">Photo Compressor</span> 20KB</h1>
-             <p class="hero-sub">Get your SSC CGL, CHSL, or GD application photo ready in 5 seconds. No uploads, total privacy guaranteed.</p>
-        </header>
 
-        <section class="ssc-guidelines mb-32 p-20 glass-inner shadow-sm rounded-2xl">
-            <h2 class="text-xl font-black mb-10">SSC Official Requirements:</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="g-item p-16 bg-primary/5 rounded-xl border border-primary/10">
-                    <strong class="block text-primary">Passport Photo</strong>
-                    <span>20KB to 50KB | 3.5cm x 4.5cm</span>
-                </div>
-                <div class="g-item p-16 bg-purple/5 rounded-xl border border-purple/10">
-                    <strong class="block text-purple">Signature</strong>
-                    <span>10KB to 20KB | 4.0cm x 2.0cm</span>
-                </div>
-            </div>
-        </section>
-
-        <CompressTool />
-
-        <article class="pro-seo-article container mt-48">
-             <h2>The Safest Way to Resize Photos for SSC Forms</h2>
-             <p>As an <strong>SSC aspirant</strong>, you know how frustrating the Staff Selection Commission (SSC) online portal can be when your photo or signature is even 1KB over the limit. FormFix provides a dedicated <strong>SSC photo size reducer</strong> to solve this. Whether it's for <strong>SSC CGL, CHSL, MTS, or GD Constable</strong>, our tool ensures your file is perfectly optimized for the 20KB limit.</p>
-             
-             <h3 class="mt-32">How to use the SSC Photo Compressor:</h3>
-             <ol>
-                <li>Upload your clear passport photo or signature.</li>
-                <li>Set the target size (e.g., 20) in the custom KB box.</li>
-                <li>Download the result instantly.</li>
-                <li>Upload to the SSC portal with zero errors.</li>
-             </ol>
-
-             <p class="mt-20"><strong>Note:</strong> Since we use on-device processing, your photos never leave your phone/laptop. This is crucial for privacy-conscious students.</p>
-        </article>
-
-        <SocialShare title="Used this to fix my SSC photo in 5 seconds. Life-saver for aspirants!" url="https://formfix.pages.dev/ssc-photo-compressor" />
-
-        <RelatedTools currentTool="compress" />
-    </div>
-</BaseLayout>
 
 <style>
-    .main-h1 { font-size: 3rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 24px; max-width: 600px; margin-inline: auto; }
-    .tool-wrapper { max-width: 860px; margin: 0 auto; padding-bottom: 100px; }
-    .mt-48 { margin-top: 48px; }
-    .mt-32 { margin-top: 32px; }
-    .mb-32 { margin-bottom: 32px; }
-    .p-20 { padding: 20px; }
-    .p-16 { padding: 16px; }
+    .ssc-workspace { text-align: center; padding: 20px 0; }
+    .ssc-alert { background: #fff8e1; border-left: 4px solid #ffc107; padding: 16px; border-radius: 8px; margin-bottom: 32px; color: #856404; font-size: 0.95rem; }
+    .tool-actions-centered { display: flex; gap: 16px; justify-content: center; align-items: center; }
+    .guideline-card { background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 24px; border-radius: 16px; }
+    .guideline-card h3 { margin-bottom: 12px; font-size: 1.1rem; }
+    .guideline-card ul { padding-left: 20px; color: var(--text-muted); }
+    .guideline-card li { margin-bottom: 8px; }
 </style>

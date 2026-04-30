@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
-const PAGE_TITLE = 'Rotate PDF Pages Online - Free & Secure Editor';
+const PAGE_TITLE = 'Rotate PDF Pages Online - Free & Secure Editor | FormFix';
 const PAGE_DESC = 'Rotate upside-down PDF pages instantly in your browser with live preview. 100% free, no uploads, and perfectly secure. Rotate left or right and download.';
 const PAGE_KEYWORDS = 'rotate pdf online, rotate pdf pages, preview pdf rotation, flip pdf, secure pdf editor, free rotate pdf tool';
 
@@ -26,77 +26,88 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/rotate-pdf">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">🔄 Live PDF Engine</div>
-             <h1 class="main-h1">Rotate <span class="highlight">PDF Pages</span></h1>
-             <p class="hero-sub">Fix upside-down scanned PDFs securely with a live visual preview. Fast, free, and completely offline.</p>
-        </header>
+    <ToolWrapper title="Rotate PDF Files" subtitle="Fix upside-down scanned PDFs securely with a live visual preview." currentTool="rotate-pdf">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <!-- 1. Selection Step -->
+                  <div id="upload-stage" class="upload-zone show">
+                       <div class="upload-icon-circle">🔄</div>
+                       <h3 class="zone-title">Rotate PDF Pages</h3>
+                       <p class="zone-sub">Upload PDF to fix page orientation</p>
+                       <button class="primary-btn px-32" onclick="document.getElementById('pdf-upload').click()">Select PDF File</button>
+                       <input type="file" id="pdf-upload" class="hidden" accept="application/pdf" />
+                  </div>
 
-        <div class="glass-card tool-content shadow-lg max-w-lg mx-auto">
-            
-            <div id="upload-stage" class="upload-container shadow-sm">
-                 <div class="upload-circle mb-16"><span class="u-icon">📄</span></div>
-                 <h3 class="u-title">Select a PDF</h3>
-                 <p class="u-sub">Works with any PDF document or scan.</p>
-                 <button class="primary-btn wide-btn profile-btn pulse-glow" onclick="document.getElementById('pdf-upload').click()">Browse PDF</button>
-                 <input type="file" id="pdf-upload" class="hidden" accept="application/pdf" />
-            </div>
+                  <!-- 2. Workspace Step -->
+                  <div id="editor-stage" class="hidden">
+                       <div class="editor-layout">
+                            <div class="preview-stage shadow-sm">
+                                 <div class="preview-header">
+                                      <span class="preview-badge">Live PDF Preview</span>
+                                 </div>
+                                 <div class="canvas-frame checkerboard">
+                                      <canvas id="pdf-preview"></canvas>
+                                 </div>
+                                 <div class="info-pill mt-16 shadow-xs">
+                                      <span id="doc-name" class="name">document.pdf</span>
+                                      <span class="sep">|</span>
+                                      <span id="doc-pages" class="count">Detecting pages...</span>
+                                 </div>
+                            </div>
+                            
+                            <div class="sidebar-controls">
+                                 <div class="settings-card shadow-sm mb-24">
+                                      <label class="section-label mb-16">Rotation Controls</label>
+                                      <div class="rotation-grid">
+                                           <button id="rotate-left-btn" class="secondary-btn flex-1 py-16">
+                                                <span class="d-block mb-4">↺</span>
+                                                <span class="text-xs">Left 90°</span>
+                                           </button>
+                                           <button id="rotate-right-btn" class="secondary-btn flex-1 py-16">
+                                                <span class="d-block mb-4">↻</span>
+                                                <span class="text-xs">Right 90°</span>
+                                           </button>
+                                      </div>
+                                 </div>
 
-            <div id="editor-stage" class="hidden">
-                 
-                 <!-- Live Visual Preview -->
-                 <div class="preview-stage mb-24">
-                      <div class="canvas-wrapper">
-                           <canvas id="pdf-preview" class="pdf-canvas"></canvas>
-                      </div>
-                      <span class="preview-badge">Live Preview (Page 1)</span>
-                 </div>
-
-                 <div class="info-banner mb-24 shadow-sm">
-                     <span class="f-icon">📜</span>
-                     <div class="f-text">
-                         <span class="f-name" id="doc-name">document.pdf</span>
-                         <span class="f-size" id="doc-pages">1 Page loaded</span>
-                     </div>
-                 </div>
-                 
-                 <div class="d-flex gap-16 justify-center mb-32 wrap-mobile">
-                      <button id="rotate-left-btn" class="secondary-btn wide-btn-half text-lg hover-scale">↺ Left Rotation</button>
-                      <button id="rotate-right-btn" class="secondary-btn wide-btn-half text-lg hover-scale">Right Rotation ↻</button>
-                 </div>
-                 
-                 <div class="d-flex gap-16 wrap-mobile">
-                      <button id="reset-btn" class="secondary-btn wide-btn-half profile-btn">🗑️ Start Over</button>
-                      <button id="download-btn" class="primary-btn wide-btn profile-btn pulse-glow" style="flex:1;">⬇️ Apply & Save PDF</button>
-                 </div>
-            </div>
-
+                                 <div class="action-footer vertical">
+                                      <button id="download-btn" class="primary-btn wide-btn pulse-glow">Apply & Save PDF</button>
+                                      <button class="secondary-btn wide-btn" onclick="location.reload()">↺ Change File</button>
+                                 </div>
+                                 <p class="privacy-note text-center mt-16 font-600">🔒 Local PDF processing.</p>
+                            </div>
+                       </div>
+                  </div>
+             </div>
         </div>
 
-        <article class="pro-seo-article container mt-48">
+        <div slot="tool-info">
              <h2>The Fastest Way to Rotate Upside-Down PDFs</h2>
-             <p>Scanners and phone cameras often save documents in the wrong orientation. Our <strong>Free PDF Rotator</strong> provides a beautiful live preview, allowing you to visually confirm the correct orientation of your document instantly before saving. Unlike other websites that require you to upload your sensitive tax documents or IDs to their server, our system alters the standard PDF rotation metadata directly inside your computer's RAM.</p>
+             <p>Scanners and phone cameras often save documents in the incorrect orientation. Our <strong>Free PDF Rotator</strong> provides a beautiful live preview, allowing you to visually confirm the correct orientation of your document instantly before saving. Unlike other websites that require you to upload your sensitive tax documents or IDs to their server, our system alters the standard PDF rotation metadata directly inside your computer's RAM.</p>
              
-             <h3 class="mt-32">Data Privacy Guaranteed</h3>
-             <ul style="color:var(--slate); line-height:1.8; margin-left:20px; font-size:1.1rem">
-                <li><strong>No Server Uploads:</strong> Because no file is transported over the web, there are no file size limits, no waiting for uploads, and absolutely no risk of data theft.</li>
-                <li><strong>Retains Quality:</strong> Fixing the rotation does not blurry images or alter text. We strictly modify the internal bounding box matrices locally so your document retains its original crisp 100% quality.</li>
-             </ul>
-        </article>
-
-        <RelatedTools currentTool="rotate-pdf" />
-    </div>
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>Will this reduce my PDF quality?</summary>
+                       <p>Absolutely not. Fixing the rotation does not blur images or alter text. We strictly modify the internal bounding box matrices locally, meaning your document retains its original crisp 100% quality.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>How many pages can I rotate?</summary>
+                       <p>Our tool rotates all pages in the PDF simultaneously. There is no hard limit on the number of pages, as long as your browser has enough memory to handle the file size.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
-<script>
+<script is:inline>
     const loadPdfJs = async () => {
-        if ((window as any).pdfjsLib) return;
+        if (window.pdfjsLib) return;
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
             script.onload = () => {
-                (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
                 resolve(true);
             };
             script.onerror = reject;
@@ -105,7 +116,7 @@ const customSchema = {
     };
 
     const loadPdfLib = async () => {
-        if ((window as any).PDFLib) return;
+        if (window.PDFLib) return;
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
@@ -116,29 +127,27 @@ const customSchema = {
     };
 
     document.addEventListener('DOMContentLoaded', () => {
-        const fileInput = document.getElementById('pdf-upload') as HTMLInputElement;
-        const uploadStage = document.getElementById('upload-stage') as HTMLElement;
-        const editorStage = document.getElementById('editor-stage') as HTMLElement;
-        const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
-        const resetBtn = document.getElementById('reset-btn') as HTMLButtonElement;
+        const fileInput = document.getElementById('pdf-upload');
+        const uploadStage = document.getElementById('upload-stage');
+        const editorStage = document.getElementById('editor-stage');
+        const downloadBtn = document.getElementById('download-btn');
+        const resetBtn = document.getElementById('reset-btn');
         
-        const docName = document.getElementById('doc-name') as HTMLElement;
-        const docPages = document.getElementById('doc-pages') as HTMLElement;
-        const previewCanvas = document.getElementById('pdf-preview') as HTMLCanvasElement;
-        const ctx = previewCanvas.getContext('2d')!;
+        const docName = document.getElementById('doc-name');
+        const docPages = document.getElementById('doc-pages');
+        const previewCanvas = document.getElementById('pdf-preview');
+        const ctx = previewCanvas.getContext('2d');
 
-        let pdfBytesOriginal: ArrayBuffer | null = null;
+        let pdfBytesOriginal = null;
         let fileName = 'document.pdf';
         
-        // Track relative rotation sum (+90 or -90)
         let totalRotation = 0;
 
-        async function renderPreview(arrayBuffer: ArrayBuffer) {
+        async function renderPreview(arrayBuffer) {
              const typedarray = new Uint8Array(arrayBuffer.slice(0));
-             const pdf = await (window as any).pdfjsLib.getDocument({ data: typedarray }).promise;
-             const page = await pdf.getPage(1); // Preview first page
+             const pdf = await window.pdfjsLib.getDocument({ data: typedarray }).promise;
+             const page = await pdf.getPage(1);
              
-             // Base scale for generic preview container
              const viewport = page.getViewport({ scale: 1.0 });
              const scale = Math.min(600 / viewport.width, 1.5);
              const scaledViewport = page.getViewport({ scale });
@@ -153,7 +162,7 @@ const customSchema = {
              previewCanvas.style.transform = `rotate(${totalRotation}deg)`;
         }
 
-        fileInput.addEventListener('change', async (e: any) => {
+        fileInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if(!file) return;
             fileName = file.name;
@@ -163,19 +172,16 @@ const customSchema = {
             
             const reader = new FileReader();
             reader.onload = async (event) => {
-                pdfBytesOriginal = event.target?.result as ArrayBuffer;
+                pdfBytesOriginal = event.target.result;
                 
                 try {
-                    // Load dependencies concurrently
                     await Promise.all([loadPdfJs(), loadPdfLib()]);
 
-                    // Count Pages via pdf-lib
-                    const { PDFDocument } = (window as any).PDFLib;
+                    const { PDFDocument } = window.PDFLib;
                     const pdfDoc = await PDFDocument.load(pdfBytesOriginal.slice(0));
                     const pages = pdfDoc.getPages();
                     docPages.textContent = `${pages.length} Pages loaded`;
                     
-                    // Render Visual Preview via pdf.js
                     await renderPreview(pdfBytesOriginal);
                     
                     uploadStage.classList.add('hidden');
@@ -194,29 +200,30 @@ const customSchema = {
             reader.readAsArrayBuffer(file);
         });
 
-        document.getElementById('rotate-left-btn')!.addEventListener('click', () => {
+        document.getElementById('rotate-left-btn').addEventListener('click', () => {
              totalRotation -= 90;
              updatePreviewTransform();
         });
 
-        document.getElementById('rotate-right-btn')!.addEventListener('click', () => {
+        document.getElementById('rotate-right-btn').addEventListener('click', () => {
              totalRotation += 90;
              updatePreviewTransform();
         });
 
-        resetBtn.addEventListener('click', () => {
-            pdfBytesOriginal = null;
-            fileInput.value = '';
-            totalRotation = 0;
-            updatePreviewTransform();
-            uploadStage.classList.remove('hidden');
-            editorStage.classList.add('hidden');
-        });
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                pdfBytesOriginal = null;
+                fileInput.value = '';
+                totalRotation = 0;
+                updatePreviewTransform();
+                uploadStage.classList.remove('hidden');
+                editorStage.classList.add('hidden');
+            });
+        }
 
         downloadBtn.addEventListener('click', async () => {
             if (!pdfBytesOriginal) return;
 
-            // Optional: If they didn't rotate, warn them
             if (totalRotation % 360 === 0) {
                  const proceed = confirm("You haven't rotated the document visually. Save anyway?");
                  if (!proceed) return;
@@ -226,14 +233,12 @@ const customSchema = {
             downloadBtn.style.pointerEvents = 'none';
 
             try {
-                const { PDFDocument, degrees } = (window as any).PDFLib;
+                const { PDFDocument, degrees } = window.PDFLib;
                 
-                // Reload clean doc safely using sliced buffer
                 const pdfDoc = await PDFDocument.load(pdfBytesOriginal.slice(0));
                 const pages = pdfDoc.getPages();
 
-                // Apply relative angles across the board perfectly
-                pages.forEach((page: any) => {
+                pages.forEach((page) => {
                     const rotObj = page.getRotation();
                     const currentAngle = rotObj ? (rotObj.angle || 0) : 0;
                     page.setRotation(degrees(currentAngle + totalRotation));
@@ -254,7 +259,7 @@ const customSchema = {
                  downloadBtn.textContent = '⬇️ Apply & Save PDF';
                  downloadBtn.style.pointerEvents = 'all';
                  totalRotation = 0;
-                 updatePreviewTransform(); // Reset visual
+                 updatePreviewTransform();
             }
         });
     });

@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+
+const title = "How to Remove White Background from Signature (Transparent Signature)";
+const description = "Learn how to make your signature background transparent for online forms and digital documents using FormFix's private tools.";
+---
+
+<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/make-signature-transparent">
+    <section class="page-header">
+        <div class="container">
+            <h1>How to Make Signature Background Transparent</h1>
+            <p class="subtitle">Easiest way to get a clean digital signature from a phone photo.</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container container-narrow">
+            <article class="prose">
+                <p>When applying for jobs or signing digital contracts, you are often asked to upload a "clean" signature. Most people take a photo of their signature on a piece of paper, but it often ends up looking grey, yellowish, or has shadows. This guide shows you how to turn that photo into a professional <strong>transparent PNG signature</strong>.</p>
+                
+                <h2>The Problem with Photos of Signatures</h2>
+                <p>Smartphone cameras are great, but they are not scanners. Even if you use a white paper, the lighting in your room will create shadows or a slight tint. When you place such a photo on a white PDF document, the "grey box" around the signature looks unprofessional and can sometimes be rejected by automated verification systems.</p>
+                
+                <h2>How to Get a Transparent Signature in 3 Steps</h2>
+                <p>Using FormFix, you can process your signature locally on your device without ever uploading it to a server.</p>
+                
+                <ol>
+                    <li><strong>Capture properly:</strong> Sign on a plain white paper using a dark blue or black pen. Take the photo in bright, natural light (near a window) to minimize shadows.</li>
+                    <li><strong>Use the Background Remover:</strong> Use our <a href="/background-remover">Background Remover</a> tool. It uses advanced AI that runs directly in your browser to detect the paper and remove it.</li>
+                    <li><strong>Download as PNG:</strong> Unlike JPG, PNG supports transparency. Downloading as a PNG ensures that only the ink remains, and the rest is invisible.</li>
+                </ol>
+
+                <h2>Alternative: Draw it Digitally</h2>
+                <p>If you don't want to deal with photos and lighting, you can simply use our <a href="/signature-maker">Digital Signature Maker</a>. You can draw your signature with your finger on your smartphone screen or using your mouse on a desktop. It generates a perfect, high-resolution transparent PNG instantly.</p>
+
+                <h2>Why use FormFix for Signatures?</h2>
+                <p>Your signature is one of your most sensitive personal identifiers. Using "free" online background removers that require an upload is a security risk. FormFix processes everything **offline in your browser**, meaning your signature never leaves your computer. It is the most secure way to create digital assets.</p>
+
+                <div class="cta-box mt-32">
+                    <h3>Clean your signature now</h3>
+                    <p>Free, fast, and 100% private.</p>
+                    <a href="/background-remover" class="primary-btn">Remove Background Now</a>
+                </div>
+            </article>
+        </div>
+    </section>
+</BaseLayout>
+
+<style>
+    .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
+    .content-section { padding: 60px 0; }
+    .prose { line-height: 1.8; color: var(--slate); }
+    .prose h2 { color: var(--dark); margin-top: 2rem; margin-bottom: 1rem; }
+    .prose p { margin-bottom: 1.5rem; }
+    .prose ul, .prose ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+    .container-narrow { max-width: 800px; }
+    .cta-box { background: var(--primary-light); padding: 32px; border-radius: 16px; border: 1px solid var(--primary-mid); text-align: center; }
+</style>

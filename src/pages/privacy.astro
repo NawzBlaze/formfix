@@ -46,47 +46,53 @@ const PAGE_DESC = 'Read the privacy policy for formfix. We do not upload your im
 <style>
     .legal-page {
         max-width: 900px !important;
-        margin: 0 auto;
+        margin: 60px auto;
         padding: 60px !important;
+        background: #fff;
+        border: 1px solid var(--border-subtle);
+        border-radius: 24px;
     }
 
     h1 {
-        font-size: 2.5rem;
+        font-size: 3rem;
         font-weight: 800;
-        margin-bottom: 24px;
-        letter-spacing: -0.04em;
+        margin-bottom: 12px;
+        letter-spacing: -0.05em;
+        color: var(--text-main);
     }
 
     .updated {
-        color: var(--gray);
-        margin-bottom: 40px;
+        color: var(--text-muted);
+        margin-bottom: 48px;
+        font-size: 0.95rem;
     }
 
     .legal-section {
-        margin-bottom: 40px;
+        margin-bottom: 48px;
     }
 
     .legal-section h2 {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
         margin-bottom: 16px;
-        color: var(--dark);
-        font-weight: 700;
+        color: var(--text-main);
+        font-weight: 800;
+        letter-spacing: -0.03em;
     }
 
     .legal-section p {
         font-size: 1.1rem;
         line-height: 1.7;
-        color: var(--gray);
+        color: var(--surface-700);
     }
 
     .legal-section strong {
-        color: var(--dark);
+        color: var(--text-main);
     }
 
     .legal-section a {
-        color: var(--primary);
+        color: var(--accent);
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 700;
     }
 
     .legal-section a:hover {
@@ -94,7 +100,12 @@ const PAGE_DESC = 'Read the privacy policy for formfix. We do not upload your im
     }
 
     @media (max-width: 768px) {
-        .legal-page { padding: 30px !important; }
-        h1 { font-size: 2rem; }
+        .legal-page { 
+            padding: 32px 20px !important; 
+            margin: 20px auto;
+            border: none;
+        }
+        h1 { font-size: 2.2rem; }
+        .legal-section h2 { font-size: 1.5rem; }
     }
 </style>

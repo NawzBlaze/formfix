@@ -1,9 +1,8 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import UploadBox from '../components/UploadBox.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
-const PAGE_TITLE = 'Circle Crop Online - Free Profile Picture Generator';
+const PAGE_TITLE = 'Circle Crop Online - Free Profile Picture Generator | FormFix';
 const PAGE_DESC = 'Create perfect circular profile pictures for LinkedIn, social media, and Gmail IDs. Fast, private, and 100% free circle cut tool with transparent background.';
 const PAGE_KEYWORDS = 'circle crop online, circular profile pic maker, linkedin photo cropper, round image maker, free profile picture editor';
 
@@ -13,7 +12,7 @@ const customSchema = {
     {
       "@type": "SoftwareApplication",
       "name": "Circle Crop - Profile Pic Maker",
-      "operatingSystem": "All",
+      "operatingSystem": "All Platforms",
       "applicationCategory": "DesignApplication",
       "description": "Premium tool to create perfectly circular profile photos with transparent backgrounds.",
       "offers": {
@@ -26,132 +25,162 @@ const customSchema = {
 };
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} active="crop">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">👤 Smart Avatar Engine</div>
-             <h1>Circle <span class="highlight">Profile Cut</span></h1>
-             <p>Perfectly round avatars for LinkedIn, Gmail, and Social Media IDs.</p>
-        </header>
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/circle-crop">
+    <ToolWrapper title="Circle Profile Cut" subtitle="Perfectly round avatars for LinkedIn, Gmail, and Social Media IDs." currentTool="circle-crop">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <!-- 1. Selection Stage -->
+                  <div id="u-box-container" class="upload-container">
+                       <div class="upload-box shadow-sm" id="drop-zone" onclick="document.getElementById('crop-input').click()">
+                            <input type="file" id="crop-input" class="hidden" accept="image/*" />
+                            <div class="upload-content">
+                                 <div class="upload-icon">✂️</div>
+                                 <h3 class="font-850 m-0 mb-8">Select Image to Crop</h3>
+                                 <p class="text-muted m-0 mb-24 font-600">Upload a photo to create a perfectly round profile picture.</p>
+                                 <button class="primary-btn px-40">Browse Photo</button>
+                            </div>
+                       </div>
+                  </div>
 
-        <div class="glass-card tool-content shadow-lg">
-            <div id="u-box-container">
-                <UploadBox />
-            </div>
+                  <!-- 2. Editor Stage -->
+                  <div id="controls" class="hidden">
+                       <div class="crop-grid">
+                            <div class="preview-panel shadow-sm p-0 m-0 overflow-hidden">
+                                 <div id="viewport" class="crop-viewport" style="touch-action: none;">
+                                      <div id="img-container" class="img-zoom-box" style="touch-action: none;">
+                                           <img id="source" draggable="false" alt="Image for circular cropping" />
+                                      </div>
+                                      <div id="mask" class="outer-mask"></div>
+                                      <div id="circle" class="crop-circle" style="touch-action: none;">
+                                           <div class="drag-handle br" data-dir="br"></div>
+                                      </div>
+                                 </div>
+                            </div>
 
-            <div id="controls" class="tool-controls hidden">
-                <div class="crop-playground">
-                    <div id="viewport" class="viewport shadow-lg" style="touch-action: none;">
-                        <div id="image-container" class="image-container" style="touch-action: none;">
-                             <img id="source" class="source" draggable="false" alt="Image for circular cropping" />
-                        </div>
-                        <div id="mask" class="mask"></div>
-                        
-                        <div id="circle" class="crop-circle" style="touch-action: none;">
-                             <div class="handle br" data-dir="br"></div>
-                             <div id="circle-light" class="circle-highlight"></div>
-                        </div>
-                    </div>
+                            <div class="controls-sidebar">
+                                 <div class="settings-card shadow-sm mb-24">
+                                      <div class="section">
+                                           <div class="d-flex justify-between align-center mb-16">
+                                                <label class="section-label m-0">🔍 Image Zoom</label>
+                                                <span id="zoom-val" class="status-pill highlight m-0" style="padding: 4px 12px;">1.0x</span>
+                                           </div>
+                                           <input type="range" id="zoom-slider" class="unified-slider w-100" min="1" max="4" step="0.05" value="1" />
+                                      </div>
+                                 </div>
 
-                    <div class="zoom-toolbar shadow-lg">
-                         <div class="zoom-item">
-                             <label>Image Zoom</label>
-                             <input type="range" id="zoom-slider" min="1" max="4" step="0.05" value="1" />
-                         </div>
-                    </div>
-                </div>
+                                 <div class="action-stack">
+                                      <button id="apply-btn" class="primary-btn wide-btn pulse-glow mb-12">⬇️ Generate Circle Profile</button>
+                                      <button class="secondary-btn wide-btn" onclick="location.reload()">↺ Change Photo</button>
+                                 </div>
+                                 <p class="privacy-note text-center mt-16 mb-0 font-600 text-muted">🔒 Processed entirely in browser RAM.</p>
+                            </div>
+                       </div>
+                  </div>
 
-                <div class="action-footer">
-                    <button id="apply-btn" class="primary-btn wide-btn profile-btn pulse-glow">
-                        <span>Save Profile Photo (PNG)</span>
-                    </button>
-                    <p class="hint-text">Selection is automatically centered in a circle with transparent background.</p>
-                </div>
-            </div>
+                  <!-- 3. Result Stage -->
+                  <div id="result-stage" class="result-stage hidden">
+                       <div class="result-card shadow-sm">
+                            <div class="success-banner mb-32">
+                                 <div class="check-icon">✔</div>
+                                 <div class="success-info">
+                                      <h4 class="font-850 m-0 mb-8">Profile Photo Ready</h4>
+                                      <p class="text-muted m-0 small font-600">Perfect circle cut with transparent background</p>
+                                 </div>
+                            </div>
+
+                            <div class="d-flex justify-center mb-32">
+                                 <div class="circle-preview-box shadow-md checkerboard">
+                                      <img id="image-preview" src="" alt="Circularly cropped result" />
+                                 </div>
+                            </div>
+
+                            <div class="stats-grid mb-32">
+                                 <div class="mini-stat active">
+                                      <label>Format</label>
+                                      <span>PNG</span>
+                                 </div>
+                                 <div class="mini-stat">
+                                      <label>Optimized For</label>
+                                      <span>Social Media</span>
+                                 </div>
+                            </div>
+
+                            <div class="d-flex gap-16">
+                                 <a id="download-btn" href="#" class="primary-btn flex-2 wide-btn" style="text-decoration:none;">⬇️ Download Profile Photo</a>
+                                 <button class="secondary-btn flex-1 wide-btn" onclick="location.reload()">↺ Start New</button>
+                            </div>
+                       </div>
+                  </div>
+             </div>
         </div>
 
-        <!-- Result Preview Section -->
-        <div id="result-stage" class="result-stage hidden animate-fade-up">
-            <div class="glass-card result-panel shadow-lg">
-                <div class="res-header">
-                     <span class="status-badge">✔ Profile Ready</span>
-                     <h3>Final Result Preview</h3>
-                </div>
-                
-                <div class="res-body">
-                     <div class="circle-preview-box shadow-lg">
-                          <img id="image-preview" src="" alt="Circularly cropped image preview" />
-                     </div>
-                     <div class="res-stats">
-                          <div class="stat-p">
-                               <span class="l">Format</span>
-                               <span class="v">PNG (Transparent)</span>
-                          </div>
-                     </div>
-                </div>
-
-                <div class="res-footer">
-                     <a id="download-btn" href="#" class="primary-btn download-btn">Download Final Photo</a>
-                     <button id="reset-tool" class="secondary-btn">New Image</button>
-                </div>
-            </div>
-        </div>
-
-        <article class="pro-seo-article container mt-48">
-             <h2>Professional Circular Profile Pictures</h2>
-             <p>Need a clean, professional profile photo? Most company portals and social networks like LinkedIn, Gmail, and Twitter now use circular avatars. FormFix provides a dedicated <strong>Circle Crop</strong> tool that ensures your face is perfectly centered and the edges are smooth with automatic anti-aliasing. Our <strong>online profile pic maker</strong> works locally in your browser, keeping your personal photos 100% private.</p>
+        <div slot="tool-info">
+             <h2>The Perfect Round Avatar</h2>
+             <p>Our <strong>Universal Circle Cropper</strong> helps you create the ideal "Headshot" for professional platforms. Most digital hubs like <strong>LinkedIn</strong>, <strong>Gmail</strong>, and <strong>Discord</strong> use circular masks. By pre-cropping your image into a perfect circle, you ensure your face is never accidentally cut off by automated site filters.</p>
              
-             <h3 class="mt-32">Frequently Asked Questions</h3>
-             <details class="faq-item">
-                  <summary>How to create a circular profile picture?</summary>
-                  <p>Upload your square or rectangular photo, adjust the circular selection box to center your face, use the zoom slider for perfect framing, and click "Save Profile Photo". Our tool creates a PNG with transparent corners instantly.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>Why use a circle crop tool?</summary>
-                  <p>Manually cropping for a circle in standard editors often leaves white or black corners. Our tool uses transparent Alpha channels (PNG) to ensure your photo fits perfectly into any modern app's circular interface.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>Does it work for LinkedIn?</summary>
-                  <p>Yes! This is the perfect <strong>LinkedIn profile crop tool</strong>. We recommend using a high-resolution source image and centering your face with the grid to looks professional.</p>
-             </details>
-             <details class="faq-item">
-                  <summary>Is my photo safe?</summary>
-                  <p>Since all processing happens on your own computer (client-side), your photos are never uploaded or stored on any server. It's the safest way to edit personal profile pictures.</p>
-             </details>
-        </article>
-
-        <RelatedTools currentTool="circle-crop" />
-    </div>
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>Will the background be transparent?</summary>
+                       <p>Yes. Our tool exports in <strong>PNG format</strong> with full alpha transparency. This means everything outside the circle will be invisible when you upload it to your profile.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>Does this work for Square logos too?</summary>
+                       <p>If you need a square crop, check out our <strong>Standard Photo Cropper</strong>. This specific tool is optimized for 1:1 circular aspect ratios favored by modern app UIs.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
-<script>
+<script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
-        const fileInput = document.getElementById('file-input') as HTMLInputElement;
-        const controls = document.getElementById('controls') as HTMLElement;
-        const source = document.getElementById('source') as HTMLImageElement;
-        const imgContainer = document.getElementById('image-container') as HTMLElement;
-        const viewport = document.getElementById('viewport') as HTMLElement;
-        const circle = document.getElementById('circle') as HTMLElement;
-        const zoomSlider = document.getElementById('zoom-slider') as HTMLInputElement;
-        const applyBtn = document.getElementById('apply-btn') as HTMLButtonElement;
-        const resultStage = document.getElementById('result-stage') as HTMLElement;
+        const uploadBox = document.getElementById('u-box-container');
+        const controls = document.getElementById('controls');
+        const fileInput = document.getElementById('crop-input');
+        
+        const viewport = document.getElementById('viewport');
+        const imgContainer = document.getElementById('img-container');
+        const source = document.getElementById('source');
+        const circle = document.getElementById('circle');
+        const zoomSlider = document.getElementById('zoom-slider');
+        const zoomVal = document.getElementById('zoom-val');
+        const applyBtn = document.getElementById('apply-btn');
+        const resultStage = document.getElementById('result-stage');
 
         let currentZoom = 1;
-        let originalFile: File | null = null;
+        let originalFile = null;
 
         fileInput.addEventListener('change', (e) => {
-            const file = (e.target as HTMLInputElement).files?.[0];
+            const file = e.target.files?.[0];
             if (file) handleFile(file);
         });
 
-        async function handleFile(file: File) {
+        uploadBox.addEventListener('dragover', (e) => {
+             e.preventDefault();
+             uploadBox.querySelector('.upload-box').classList.add('drag-active');
+        });
+        uploadBox.addEventListener('dragleave', () => {
+             uploadBox.querySelector('.upload-box').classList.remove('drag-active');
+        });
+        uploadBox.addEventListener('drop', (e) => {
+             e.preventDefault();
+             uploadBox.querySelector('.upload-box').classList.remove('drag-active');
+             if (e.dataTransfer?.files.length) {
+                 fileInput.files = e.dataTransfer.files;
+                 handleFile(e.dataTransfer.files[0]);
+             }
+        });
+
+        function handleFile(file) {
             originalFile = file;
             const reader = new FileReader();
             reader.onload = (e) => {
-                source.src = e.target?.result as string;
+                source.src = e.target.result;
                 source.onload = () => {
+                    uploadBox.classList.add('hidden');
                     controls.classList.remove('hidden');
-                    initBox();
+                    setTimeout(initBox, 50); // wait for layout rendering
                 };
             };
             reader.readAsDataURL(file);
@@ -159,7 +188,7 @@ const customSchema = {
 
         function initBox() {
             const vW = viewport.clientWidth, vH = viewport.clientHeight;
-            const dim = Math.min(vW, vH) * 0.7;
+            const dim = Math.min(vW, vH) * 0.6;
             circle.style.width = dim + 'px'; circle.style.height = dim + 'px';
             circle.style.left = (vW - dim) / 2 + 'px'; circle.style.top = (vH - dim) / 2 + 'px';
         }
@@ -167,6 +196,7 @@ const customSchema = {
         // ── Navigation Engine (Zoom) ──
         zoomSlider.addEventListener('input', () => {
              currentZoom = parseFloat(zoomSlider.value);
+             zoomVal.textContent = currentZoom.toFixed(1) + 'x';
              imgContainer.style.transform = `scale(${currentZoom})`;
         });
 
@@ -174,17 +204,16 @@ const customSchema = {
         let cap = '', sx = 0, sy = 0, cl = 0, ct = 0, cw = 0;
         let ticking = false;
 
-        const onStart = (e: PointerEvent, type: string) => {
+        const onStart = (e, type) => {
             e.preventDefault();
             cap = type; sx = e.clientX; sy = e.clientY;
             cl = circle.offsetLeft; ct = circle.offsetTop;
             cw = circle.clientWidth;
             
-            document.body.style.overflow = 'hidden';
-            (e.target as HTMLElement).setPointerCapture(e.pointerId);
+            e.target.setPointerCapture(e.pointerId);
         };
 
-        const onMove = (e: PointerEvent) => {
+        const onMove = (e) => {
             if (!cap) return;
             e.preventDefault();
             if (!ticking) {
@@ -196,7 +225,7 @@ const customSchema = {
             }
         };
 
-        function updateCircle(clientX: number, clientY: number) {
+        function updateCircle(clientX, clientY) {
             const dx = clientX - sx; const dy = clientY - sy;
             const vW = viewport.clientWidth; const vH = viewport.clientHeight;
 
@@ -213,10 +242,9 @@ const customSchema = {
             }
         }
 
-        const onEnd = (e: PointerEvent) => { 
+        const onEnd = (e) => { 
             cap = ''; 
-            document.body.style.overflow = 'auto';
-            (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+            e.target.releasePointerCapture(e.pointerId);
         };
 
         circle.addEventListener('pointerdown', (e) => onStart(e, 'move'));
@@ -224,81 +252,150 @@ const customSchema = {
         circle.addEventListener('pointerup', onEnd);
         circle.addEventListener('pointercancel', onEnd);
 
-        circle.querySelector('.handle')?.addEventListener('pointerdown', (e: any) => { 
+        circle.querySelector('.drag-handle').addEventListener('pointerdown', (e) => { 
             e.stopPropagation(); 
             onStart(e, 'br'); 
         });
 
         // ── Final Crop ──
         applyBtn.addEventListener('click', () => {
+            applyBtn.textContent = 'Processing...'; applyBtn.disabled = true;
+            
             const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d')!;
+            const ctx = canvas.getContext('2d');
             const imgRect = source.getBoundingClientRect();
             const boxRect = circle.getBoundingClientRect();
+            
             const scaleX = source.naturalWidth / imgRect.width;
+            
+            // Calculate relative positions to the true image dimensions
             const relativeX = (boxRect.left - imgRect.left) * scaleX;
-            const relativeY = (boxRect.top - imgRect.top) * scaleX; // Assume square
+            const relativeY = (boxRect.top - imgRect.top) * scaleX;
             const relativeW = boxRect.width * scaleX;
+            
             canvas.width = relativeW; canvas.height = relativeW;
-            ctx.beginPath(); ctx.arc(relativeW/2, relativeW/2, relativeW/2, 0, Math.PI * 2); ctx.clip();
+            
+            // Draw circular clipping path
+            ctx.beginPath(); 
+            ctx.arc(relativeW/2, relativeW/2, relativeW/2, 0, Math.PI * 2); 
+            ctx.clip();
+            
             ctx.drawImage(source, relativeX, relativeY, relativeW, relativeW, 0, 0, relativeW, relativeW);
+            
             canvas.toBlob(blob => {
-                 const url = URL.createObjectURL(blob!);
-                 (document.getElementById('image-preview') as HTMLImageElement).src = url;
-                 (document.getElementById('download-btn') as HTMLAnchorElement).href = url;
-                 (document.getElementById('download-btn') as HTMLAnchorElement).download = `formfix-circle-profile.png`;
-                 document.querySelector('.tool-content')?.classList.add('hidden');
+                 const url = URL.createObjectURL(blob);
+                 document.getElementById('image-preview').src = url;
+                 document.getElementById('download-btn').href = url;
+                 document.getElementById('download-btn').download = `formfix-circle-profile.png`;
+                 
+                 controls.classList.add('hidden');
                  resultStage.classList.remove('hidden');
                  resultStage.scrollIntoView({ behavior: 'smooth' });
+                 
+                 applyBtn.textContent = '⬇️ Generate Circle Profile'; applyBtn.disabled = false;
+                 if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
             }, 'image/png');
         });
-
-        document.getElementById('reset-tool')?.addEventListener('click', () => location.reload());
     });
 </script>
 
 <style>
-    .brand-badge { display: inline-block; background: #ede9fe; color: #7c3aed; padding: 8px 16px; border-radius: 100px; font-weight: 850; font-size: 0.8rem; margin-bottom: 12px; }
-    .tool-wrapper { max-width: 900px; margin: 0 auto; padding-bottom: 80px; }
-    .tool-controls { margin-top: 32px; border-top: 2px solid #f1f5f9; padding-top: 32px; }
+    .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; }
+    
+    .upload-container { display: flex; justify-content: center; }
+    .upload-box { background: var(--surface-50); border: 2.5px dashed var(--border-subtle); border-radius: 32px; padding: 60px 40px; text-align: center; width: 100%; cursor: pointer; transition: 0.2s; }
+    .upload-box:hover, .upload-box.drag-active { border-color: var(--accent); background: var(--surface-100); }
+    .upload-icon { font-size: 3.5rem; margin-bottom: 24px; }
 
-    .crop-playground { position: relative; background: #f8fafc; border-radius: 28px; padding: 32px; margin-bottom: 40px; border: 1.5px solid var(--border); }
-    .viewport { position: relative; width: 100%; height: 500px; border-radius: 12px; overflow: hidden; background: #e2e8f0; display: flex; align-items: center; justify-content: center; touch-action: none; }
-    .image-container { position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transform-origin: center; transition: transform 0.1s ease-out; }
-    .source { max-width: 90%; max-height: 90%; display: block; filter: brightness(0.6); }
+    .crop-grid { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
+    
+    .preview-panel { background: #fff; border: 1px solid var(--border-subtle); border-radius: 24px; position: relative; height: 500px; display: flex; align-items: center; justify-content: center; }
+    .crop-viewport { position: relative; width: 100%; height: 100%; background: #111; overflow: hidden; border-radius: 23px; }
+    
+    .img-zoom-box { position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transform-origin: center; transition: transform 0.1s ease-out; }
+    #source { max-width: 90%; max-height: 90%; display: block; filter: brightness(0.7); }
 
-    .crop-circle { position: absolute; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 0 0 5000px rgba(0,0,0,0.7); z-index: 20; cursor: move; }
-    .circle-highlight { position: absolute; inset: -4px; border: 2px solid rgba(139, 92, 246, 0.4); border-radius: 50%; pointer-events: none; }
+    .outer-mask { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+    .crop-circle { position: absolute; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5); z-index: 20; cursor: move; }
+    
+    .drag-handle { position: absolute; width: 24px; height: 24px; background: #fff; border: 3px solid var(--accent); border-radius: 50%; box-shadow: var(--shadow-md); z-index: 30; }
+    .drag-handle.br { bottom: -12px; right: -12px; cursor: nwse-resize; }
 
-    .handle { position: absolute; width: 32px; height: 32px; background: #fff; border: 4px solid #8b5cf6; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 30; }
-    .handle.br { bottom: -16px; right: -16px; cursor: nwse-resize; }
+    .controls-sidebar { display: flex; flex-direction: column; }
+    .settings-card { background: var(--surface-50); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); }
+    
+    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    .status-pill { font-size: 0.75rem; font-weight: 800; color: var(--accent); background: #fff; padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; }
+    .status-pill.highlight { border-color: var(--accent); }
 
-    .zoom-toolbar { position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%); background: #fff; padding: 12px 24px; border-radius: 100px; display: flex; align-items: center; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1.5px solid var(--border); }
-    .zoom-item { display: flex; align-items: center; gap: 12px; }
-    .zoom-item label { font-size: 0.8rem; font-weight: 850; color: #64748b; }
+    .unified-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--border-subtle); appearance: none; outline: none; margin: 0; }
+    .unified-slider::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; background: var(--accent); border-radius: 50%; border: 4px solid #fff; box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
+    .unified-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
 
-    .wide-btn.profile-btn { width: 100%; height: 72px; font-size: 1.25rem; font-weight: 850; border-radius: 20px; }
-    .hint-text { text-align: center; margin-top: 16px; font-size: 0.85rem; color: #94a3b8; font-weight: 700; }
+    .action-stack { display: flex; flex-direction: column; }
+    .wide-btn { height: 60px; font-weight: 850; font-size: 1rem; border-radius: 16px; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
+    .privacy-note { font-size: 0.8rem; color: var(--text-muted); }
 
-    /* Result */
-    .result-stage { margin-top: 40px; }
-    .circle-preview-box { width: 200px; height: 200px; border-radius: 50%; border: 4px solid var(--primary); overflow: hidden; margin-bottom: 24px; }
-    .circle-preview-box img { width: 100%; height: 100%; object-fit: cover; }
-    .res-body { display: flex; flex-direction: column; align-items: center; }
-
-    @media (max-width: 640px) {
-        .viewport { height: 400px; }
-        .zoom-toolbar { bottom: 32px; width: 90%; }
-        .zoom-item input { width: 100px; }
+    /* Result Stage */
+    .result-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: 32px; padding: 40px; }
+    .success-banner { display: flex; align-items: center; gap: 16px; background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 20px; border-radius: 20px; }
+    .check-icon { width: 40px; height: 40px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: bold; flex-shrink: 0; }
+    
+    .circle-preview-box { width: 220px; height: 220px; border-radius: 50%; border: 1px solid var(--border-subtle); overflow: hidden; background: #fff; }
+    .circle-preview-box img { width: 100%; height: 100%; object-fit: contain; }
+    .checkerboard { 
+        background: #fff;
+        background-image: linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9), 
+                          linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9);
+        background-size: 20px 20px; background-position: 0 0, 10px 10px;
     }
 
-    /* FAQ */
-    .faq-item { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
-    .faq-item summary { font-weight: 900; font-size: 1.1rem; padding: 20px; cursor: pointer; color: var(--dark); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 24px; font-weight: bold; font-size: 1.4rem; color: var(--primary); }
-    .faq-item[open] summary::after { content: '−'; }
-    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 1rem; color: var(--slate); line-height: 1.6; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .mini-stat { background: var(--surface-50); padding: 24px; border-radius: 20px; border: 1px solid var(--border-subtle); text-align: center; }
+    .mini-stat.active { border-color: var(--accent); background: #fff; box-shadow: var(--shadow-sm); }
+    .mini-stat label { font-size: 0.72rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
+    .mini-stat span { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
 
-    .mt-48 { margin-top: 48px; }
+    /* FAQ */
+    .faq-grid { display: grid; gap: 16px; }
+    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+    .mt-12 { margin-top: 12px; }
+    .mt-16 { margin-top: 16px; }
     .mt-32 { margin-top: 32px; }
+    .gap-16 { gap: 16px; }
+    .font-800 { font-weight: 800; }
+    .font-850 { font-weight: 850; }
+    .font-600 { font-weight: 600; }
+    .small { font-size: 0.85rem; }
+    .px-40 { padding-left: 40px; padding-right: 40px; }
+    .m-0 { margin: 0; }
+    .mb-0 { margin-bottom: 0; }
+    .p-0 { padding: 0; }
+    .w-100 { width: 100%; }
+    .flex-1 { flex: 1; }
+    .flex-2 { flex: 2; }
+    .d-flex { display: flex; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .align-center { align-items: center; }
+    .text-center { text-align: center; }
+    .overflow-hidden { overflow: hidden; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 900px) {
+        .crop-grid { grid-template-columns: 1fr; }
+        .preview-panel { height: 400px; }
+        .stats-grid { grid-template-columns: 1fr; }
+        .d-flex.gap-16 { flex-direction: column; }
+    }
 </style>

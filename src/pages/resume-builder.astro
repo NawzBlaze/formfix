@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
-const PAGE_TITLE = 'Pro Resume Builder - Create 1-Min Professional CV for Free';
+const PAGE_TITLE = 'Pro Resume Builder - Create 1-Min Professional CV for Free | FormFix';
 const PAGE_DESC = 'Generate a clean, modern, and ATS-friendly resume in less than 60 seconds. Fill the form and download your professional PDF instantly.';
 const PAGE_KEYWORDS = 'free resume builder, online cv maker, 1-minute resume, professional pdf resume, ats-friendly cv, job application toolkit';
 
@@ -26,379 +26,436 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/resume-builder">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">👔 Career Accelerator Studio</div>
-             <h1 class="main-h1">1-Min <span class="highlight">Resume Builder</span></h1>
-             <p class="hero-sub">Generate a clean, professional PDF resume in seconds. ATS-friendly and 100% free.</p>
-        </header>
+    <ToolWrapper title="1-Min Resume Builder" subtitle="Create a professional, ATS-friendly CV instantly. 100% free and private." currentTool="resume-builder">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <div class="builder-grid">
+                       <!-- 1. Editor Sidebar -->
+                       <div class="editor-sidebar">
+                            <div class="editor-card glass-card mb-24">
+                                 <div class="section mb-24">
+                                      <label class="section-label mb-16">1. Personal Info</label>
+                                      <div class="grid-2col gap-12 mb-12">
+                                           <input type="text" id="res-name" placeholder="Full Name" class="modern-input" />
+                                           <input type="text" id="res-title" placeholder="Job Title" class="modern-input" />
+                                      </div>
+                                      <div class="grid-2col gap-12 mb-12">
+                                           <input type="email" id="res-email" placeholder="Email Address" class="modern-input" />
+                                           <input type="text" id="res-phone" placeholder="Phone Number" class="modern-input" />
+                                      </div>
+                                      <input type="text" id="res-location" placeholder="City, Country" class="modern-input mb-12" />
+                                      <textarea id="res-summary" placeholder="Professional Summary (1-2 sentences)..." class="modern-textarea-sm"></textarea>
+                                 </div>
 
-        <div class="resume-studio grid-2x">
-            <!-- Left: Inputs -->
-            <div class="glass-card editor-pane shadow-lg">
-                 
-                 <!-- Personal Info -->
-                 <div class="pane-section mb-32">
-                      <h3 class="section-title-sm mb-16 underline-purple">1. Personal Details</h3>
-                      <div class="grid-2col mb-16">
-                           <div class="input-group">
-                                <label class="pane-label">Full Name</label>
-                                <input type="text" id="res-name" placeholder="John Doe" class="modern-input" />
-                           </div>
-                           <div class="input-group">
-                                <label class="pane-label">Job Title</label>
-                                <input type="text" id="res-title" placeholder="Software Engineer" class="modern-input" />
-                           </div>
-                      </div>
-                      <div class="grid-2col mb-16">
-                           <div class="input-group">
-                                <label class="pane-label">Email</label>
-                                <input type="email" id="res-email" placeholder="john@example.com" class="modern-input" />
-                           </div>
-                           <div class="input-group">
-                                <label class="pane-label">Phone</label>
-                                <input type="text" id="res-phone" placeholder="+1 234 567 890" class="modern-input" />
-                           </div>
-                      </div>
-                      <div class="input-group">
-                           <label class="pane-label">Location</label>
-                           <input type="text" id="res-location" placeholder="New York, USA" class="modern-input" />
-                      </div>
-                      <div class="input-group mt-16">
-                           <label class="pane-label">Summary</label>
-                           <textarea id="res-summary" placeholder="Briefly describe your career goals and key achievements..." class="modern-textarea-sm"></textarea>
-                      </div>
-                 </div>
+                                 <div class="section mb-24">
+                                      <label class="section-label mb-16">2. Career Experience</label>
+                                      <div class="experience-entry">
+                                           <input type="text" id="exp-comp" placeholder="Company & Current Role" class="modern-input mb-12" />
+                                           <input type="text" id="exp-dur" placeholder="Duration (e.g. 2021 - Present)" class="modern-input mb-12" />
+                                           <textarea id="exp-desc" placeholder="Responsibilities & Key Achievements..." class="modern-textarea-sm"></textarea>
+                                      </div>
+                                 </div>
 
-                 <!-- Experience -->
-                 <div class="pane-section mb-32">
-                      <h3 class="section-title-sm mb-16 underline-purple">2. Work Experience</h3>
-                      <div id="exp-fields">
-                           <div class="repeat-field mb-16">
-                                <input type="text" placeholder="Company & Role" class="modern-input mb-8 exp-comp" />
-                                <input type="text" placeholder="Duration (e.g. 2021 - Present)" class="modern-input mb-8 exp-dur" />
-                                <textarea placeholder="Describe your responsibilities..." class="modern-textarea-sm exp-desc"></textarea>
-                           </div>
-                      </div>
-                      <p class="text-tiny text-slate mt-8 italic">* Keep it concise for better layout.</p>
-                 </div>
+                                 <div class="section mb-24">
+                                      <label class="section-label mb-16">3. Education & Skills</label>
+                                      <div class="grid-2col gap-12 mb-12">
+                                           <input type="text" id="edu-inst" placeholder="Degree / Institution" class="modern-input" />
+                                           <input type="text" id="edu-year" placeholder="Year" class="modern-input" />
+                                      </div>
+                                      <input type="text" id="res-skills" placeholder="Skills (React, Python, Management...)" class="modern-input" />
+                                 </div>
 
-                 <!-- Education -->
-                 <div class="pane-section mb-32">
-                      <h3 class="section-title-sm mb-16 underline-purple">3. Education</h3>
-                      <div id="edu-fields">
-                           <div class="repeat-field mb-16">
-                                <input type="text" placeholder="Degree / Institution" class="modern-input mb-8 edu-inst" />
-                                <input type="text" placeholder="Year" class="modern-input mb-8 edu-year" />
-                           </div>
-                      </div>
-                 </div>
+                                 <div class="section mb-24 border-t pt-24">
+                                      <label class="section-label mb-16 text-primary">4. Layout & Personalization</label>
+                                      
+                                      <div class="control-row mb-16">
+                                           <div class="control-item">
+                                                <label class="p-label">Base Font Size</label>
+                                                <div class="d-flex align-center gap-8">
+                                                     <input type="range" id="size-body" min="8" max="14" value="10" class="unified-slider flex-1" />
+                                                     <span class="size-val" id="val-body">10pt</span>
+                                                </div>
+                                           </div>
+                                           <div class="control-item">
+                                                <label class="p-label">Heading Scale</label>
+                                                <div class="d-flex align-center gap-8">
+                                                     <input type="range" id="size-head" min="1.5" max="3" step="0.1" value="2.6" class="unified-slider flex-1" />
+                                                     <span class="size-val" id="val-head">2.6x</span>
+                                                </div>
+                                           </div>
+                                      </div>
 
-                 <!-- Skills -->
-                 <div class="pane-section mb-32">
-                      <h3 class="section-title-sm mb-16 underline-purple">4. Top Skills</h3>
-                      <input type="text" id="res-skills" placeholder="React, Python, Project Management, SEO..." class="modern-input" />
-                      <p class="text-tiny text-slate mt-8 italic">* Separate skills with commas.</p>
-                 </div>
+                                      <div class="control-row mb-16">
+                                           <div class="control-item">
+                                                <label class="p-label">Accent Color</label>
+                                                <div class="color-swatches" id="accent-picker">
+                                                     <button class="swatch active" data-color="#2563eb" style="background: #2563eb;"></button>
+                                                     <button class="swatch" data-color="#0f172a" style="background: #0f172a;"></button>
+                                                     <button class="swatch" data-color="#7c3aed" style="background: #7c3aed;"></button>
+                                                     <button class="swatch" data-color="#059669" style="background: #059669;"></button>
+                                                </div>
+                                           </div>
+                                           <div class="control-item">
+                                                <label class="p-label">Font Style</label>
+                                                <select id="font-pair" class="modern-select">
+                                                     <option value="helvetica" selected>Classic Clean</option>
+                                                     <option value="times">Traditional Serif</option>
+                                                     <option value="courier">Modern Minimal</option>
+                                                </select>
+                                           </div>
+                                      </div>
+                                 </div>
 
-                 <div class="action-wrap mt-32">
-                      <button id="download-btn" class="primary-btn wide-btn profile-btn pulse-glow">⬇️ Download Professional PDF</button>
-                      <p class="text-tiny text-center text-slate mt-12">Format: Standard A4 PDF (ATS-Friendly)</p>
-                 </div>
-            </div>
+                                 <button id="download-btn" class="primary-btn wide-btn pulse-glow lg-btn">Download Professional PDF</button>
+                                 <p class="privacy-tiny">🔒 Zero Data Retention. Privacy First.</p>
+                            </div>
+                       </div>
 
-            <!-- Right: Live Preview -->
-            <div class="preview-pane">
-                 <div class="preview-sticky">
-                      <div class="resume-preview-card shadow-2xl" id="resume-canvas">
-                           <div class="p-40">
-                                <h1 id="pv-name" class="pv-name-txt">Full Name</h1>
-                                <p id="pv-title" class="pv-title-txt">Your Profession</p>
-                                
-                                <div class="d-flex gap-16 text-xs text-slate mt-8">
-                                     <span id="pv-email">email@example.com</span>
-                                     <span id="pv-phone">+00 0000 0000</span>
-                                     <span id="pv-location">City, Country</span>
-                                </div>
-                                
-                                <hr class="my-24 opacity-20" />
-                                
-                                <section>
-                                     <h3 class="res-sec-head">SUMMARY</h3>
-                                     <p id="pv-summary" class="text-sm leading-relaxed text-slate">Your professional summary will appear here...</p>
-                                </section>
-                                
-                                <section class="mt-20">
-                                     <h3 class="res-sec-head">EXPERIENCE</h3>
-                                     <div id="pv-exp-list" class="text-sm text-slate">
-                                          <div>
-                                               <strong>Company Role</strong> | <span class="italic text-xs">Duration</span>
-                                               <p>Responsibility description...</p>
-                                          </div>
-                                     </div>
-                                </section>
+                       <!-- 2. Live Preview Stage -->
+                       <div class="preview-stage">
+                            <div class="preview-header mb-16">
+                                 <span class="preview-badge">Live ATS-Friendly Preview</span>
+                            </div>
+                            <div class="cv-preview shadow-lg" id="cv-container">
+                                 <div class="cv-sheet">
+                                      <div class="cv-header mb-24">
+                                           <h1 id="pv-name">Full Name</h1>
+                                           <p id="pv-title" class="text-accent font-700">Expert Job Title</p>
+                                           <div class="cv-meta mt-8">
+                                                <span id="pv-email">email@example.com</span>
+                                                <span class="dot">•</span>
+                                                <span id="pv-phone">+00 000 0000</span>
+                                                <span class="dot">•</span>
+                                                <span id="pv-location">Location</span>
+                                           </div>
+                                      </div>
+                                      
+                                      <div class="cv-section mb-24">
+                                           <h3 class="cv-sec-title">PROFESSIONAL SUMMARY</h3>
+                                           <p id="pv-summary" class="cv-text">Summarize your professional journey and key focus areas here...</p>
+                                      </div>
 
-                                <section class="mt-20">
-                                     <h3 class="res-sec-head">EDUCATION</h3>
-                                     <div id="pv-edu-list" class="text-sm text-slate">
-                                          <div><strong>Institution</strong> | <span class="italic text-xs">Year</span></div>
-                                     </div>
-                                </section>
+                                      <div class="cv-section mb-24">
+                                           <h3 class="cv-sec-title">EXPERIENCE</h3>
+                                           <div id="pv-exp-list">
+                                                <div class="exp-row">
+                                                     <div class="d-flex justify-between align-center mb-4">
+                                                          <strong id="pv-exp-comp" class="cv-strong">Company Name</strong>
+                                                          <span id="pv-exp-dur" class="cv-meta-sm">2021 - Present</span>
+                                                     </div>
+                                                     <p id="pv-exp-desc" class="cv-text text-muted">A detailed description of your professional impact and responsibilities...</p>
+                                                </div>
+                                           </div>
+                                      </div>
 
-                                <section class="mt-20">
-                                     <h3 class="res-sec-head">SKILLS</h3>
-                                     <div id="pv-skills" class="text-sm text-slate">Your skills here...</div>
-                                </section>
-                           </div>
-                      </div>
-                      <div class="preview-badge mt-16 shadow-lg">Standard Professional Layout</div>
-                 </div>
-            </div>
+                                      <div class="cv-section mb-24">
+                                           <h3 class="cv-sec-title">EDUCATION</h3>
+                                           <div id="pv-edu-list">
+                                                <div class="d-flex justify-between align-center">
+                                                     <strong id="pv-edu-inst" class="cv-strong">Degree / Institution</strong>
+                                                     <span id="pv-edu-year" class="cv-meta-sm">Year Finished</span>
+                                                </div>
+                                           </div>
+                                      </div>
+
+                                      <div class="cv-section">
+                                           <h3 class="cv-sec-title">SKILLS & EXPERTISE</h3>
+                                           <p id="pv-skills" class="cv-text">Core Competencies, Tech Stack, Soft Skills...</p>
+                                      </div>
+                                 </div>
+                            </div>
+                       </div>
+                  </div>
+             </div>
         </div>
 
-        <article class="pro-seo-article container mt-60">
-             <div class="divider-line mb-48"></div>
-             
-             <div class="pro-features-grid">
-                <div class="feat-card">
-                    <span class="feat-icon">📄</span>
-                    <h3>ATS-Friendly Layout</h3>
-                    <p>Our standard professional template is designed to pass through Applicant Tracking Systems (ATS) used by top recruiters, ensuring your profile gets noticed.</p>
-                </div>
-                <div class="feat-card">
-                    <span class="feat-icon">⚡</span>
-                    <h3>Speed & Simplicity</h3>
-                    <p>Forget complex Word templates. Just enter your details and get a ready-to-use professional PDF in less than 60 seconds.</p>
-                </div>
-                <div class="feat-card">
-                    <span class="feat-icon">🛡️</span>
-                    <h3>Private & Secure</h3>
-                    <p>Your personal career data never leaves your computer. We do not store your information on any server—ever.</p>
-                </div>
+        <div slot="tool-info">
+             <div class="pro-article">
+                 <h2>One-Minute Professional Resume Builder</h2>
+                 <p>Our <strong>Professional Resume Builder</strong> is designed to help job seekers create optimized, ATS-friendly CVs in seconds. Fill in your details and download a print-ready PDF immediately. We use a standardized single-column layout which is proven to be the most compatible with Applicant Tracking Systems (ATS).</p>
+                 
+                 <div class="faq-accordion mt-32">
+                      <details class="faq-item">
+                           <summary>Will this pass recruiter filters (ATS)?</summary>
+                           <div class="ans">Yes. We use a standard single-column layout with clean headings and standard fonts, which is the most reliable way to ensure your resume is indexed correctly by ATS software used by most modern companies.</div>
+                      </details>
+                      <details class="faq-item">
+                           <summary>Is my career data saved?</summary>
+                           <div class="ans">No. We operate on a 'Zero Data Retention' policy. Your data is processed entirely in your browser's RAM and is purged the moment you close the tab. We never store or transmit your personal career information to any server.</div>
+                      </details>
+                 </div>
              </div>
-
-             <h2 class="mt-48 text-center">Resume Writing Expert Tips</h2>
-             <p class="text-center text-slate max-w-sm mx-auto mb-40">Follow these guidelines to make sure your resume stands out from the competition.</p>
-
-             <div class="steps-path">
-                <div class="path-step">
-                    <div class="step-num">01</div>
-                    <div class="step-info">
-                        <strong>Quantify Results:</strong> Instead of saying "Managed a team," say "Led a team of 10 to increase efficiency by 20%." Numbers grab attention.
-                    </div>
-                </div>
-                <div class="path-step">
-                    <div class="step-num">02</div>
-                    <div class="step-info">
-                        <strong>Use Keywords:</strong> Match the job description by including relevant skills and industry-standard terminology in your summary.
-                    </div>
-                </div>
-                <div class="path-step">
-                    <div class="step-num">03</div>
-                    <div class="step-info">
-                        <strong>Keep it Minimal:</strong> Stick to one page for the most impact. Focus on your most recent and relevant experiences only.
-                    </div>
-                </div>
-             </div>
-        </article>
-
-        <RelatedTools currentTool="resume-builder" />
-    </div>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
-<script>
-    import { jsPDF } from "jspdf";
-
+<script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
         const inputs = ['res-name', 'res-title', 'res-email', 'res-phone', 'res-location', 'res-summary', 'res-skills'];
         const pvs = ['pv-name', 'pv-title', 'pv-email', 'pv-phone', 'pv-location', 'pv-summary', 'pv-skills'];
         
-        const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
+        const downloadBtn = document.getElementById('download-btn');
 
         // Live Preview Binding
         inputs.forEach((id, i) => {
-            const el = document.getElementById(id) as HTMLInputElement;
-            el.addEventListener('input', () => {
-                document.getElementById(pvs[i])!.textContent = el.value || (id.split('-')[1].charAt(0).toUpperCase() + id.split('-')[1].slice(1));
-            });
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', () => {
+                    const pv = document.getElementById(pvs[i]);
+                    // @ts-ignore
+                    if (pv) pv.textContent = (el).value || (id.split('-')[1].charAt(0).toUpperCase() + id.split('-')[1].slice(1));
+                });
+            }
         });
 
-        // Dynamic Fields
-        const expFields = document.querySelector('.repeat-field.mb-16')!;
-        ['exp-comp', 'exp-dur', 'exp-desc'].forEach(cls => {
-             const input = expFields.querySelector('.'+cls) as any;
-             input.addEventListener('input', updateLists);
-        });
-        
-        ['edu-inst', 'edu-year'].forEach(cls => {
-             const input = document.querySelector('.'+cls) as any;
-             input.addEventListener('input', updateLists);
+        // Dynamic Field Listeners
+        const dynamicFields = ['exp-comp', 'exp-dur', 'exp-desc', 'edu-inst', 'edu-year'];
+        dynamicFields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', updateLists);
         });
 
         function updateLists() {
-             // Simplified for this version
-             const comp = (document.querySelector('.exp-comp') as HTMLInputElement).value || 'Company Role';
-             const dur = (document.querySelector('.exp-dur') as HTMLInputElement).value || 'Duration';
-             const desc = (document.querySelector('.exp-desc') as HTMLTextAreaElement).value || 'Description';
+             const comp = (document.getElementById('exp-comp')).value || 'Company Name';
+             const dur = (document.getElementById('exp-dur')).value || '2021 - Present';
+             const desc = (document.getElementById('exp-desc')).value || 'Responsibilities...';
              
-             document.getElementById('pv-exp-list')!.innerHTML = `<div><strong>${comp}</strong> | <span class="text-xs">${dur}</span><p class="mt-4">${desc}</p></div>`;
+             const expList = document.getElementById('pv-exp-list');
+             if (expList) {
+                expList.innerHTML = `
+                   <div class="exp-row">
+                        <div class="d-flex justify-between align-center mb-4">
+                             <strong class="cv-strong">${comp}</strong>
+                             <span class="cv-meta-sm">${dur}</span>
+                        </div>
+                        <p class="cv-text text-muted">${desc}</p>
+                   </div>`;
+             }
              
-             const inst = (document.querySelector('.edu-inst') as HTMLInputElement).value || 'Institution';
-             const year = (document.querySelector('.edu-year') as HTMLInputElement).value || 'Year';
-             document.getElementById('pv-edu-list')!.innerHTML = `<div><strong>${inst}</strong> | <span class="text-xs">${year}</span></div>`;
+             const inst = (document.getElementById('edu-inst')).value || 'Degree / Institution';
+             const year = (document.getElementById('edu-year')).value || 'Year';
+             const eduList = document.getElementById('pv-edu-list');
+             if (eduList) {
+                eduList.innerHTML = `
+                   <div class="d-flex justify-between align-center">
+                        <strong class="cv-strong">${inst}</strong>
+                        <span class="cv-meta-sm">${year}</span>
+                   </div>`;
+             }
         }
 
-        downloadBtn.addEventListener('click', () => {
-            const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+        // Personalization Listeners
+        const sizeBody = document.getElementById('size-body');
+        const sizeHead = document.getElementById('size-head');
+        const valBody = document.getElementById('val-body');
+        const valHead = document.getElementById('val-head');
+        const fontPair = document.getElementById('font-pair');
+        const swatches = document.querySelectorAll('.swatch');
+        let currentAccent = '#2563eb';
+
+        function applyStyles() {
+            const bodyVal = (sizeBody).value;
+            const headScale = (sizeHead).value;
+            const fontVal = (fontPair).value;
+            const cvSheet = document.querySelector('.cv-sheet');
             
-            const name = (document.getElementById('res-name') as HTMLInputElement).value || "John Doe";
-            const title = (document.getElementById('res-title') as HTMLInputElement).value || "Software Engineer";
-            const email = (document.getElementById('res-email') as HTMLInputElement).value;
-            const phone = (document.getElementById('res-phone') as HTMLInputElement).value;
-            const loc = (document.getElementById('res-location') as HTMLInputElement).value;
-            const sum = (document.getElementById('res-summary') as HTMLTextAreaElement).value;
-            const skills = (document.getElementById('res-skills') as HTMLInputElement).value;
+            if (valBody) valBody.textContent = `${bodyVal}pt`;
+            if (valHead) valHead.textContent = `${headScale}x`;
 
-            const expComp = (document.querySelector('.exp-comp') as HTMLInputElement).value || "Role";
-            const expDur = (document.querySelector('.exp-dur') as HTMLInputElement).value || "Duration";
-            const expDesc = (document.querySelector('.exp-desc') as HTMLTextAreaElement).value || "Description";
+            if (cvSheet) {
+                (cvSheet).style.setProperty('--cv-base-size', `${bodyVal}pt`);
+                (cvSheet).style.setProperty('--cv-head-size', `${bodyVal * headScale}pt`);
+                (cvSheet).style.setProperty('--cv-accent', currentAccent);
+                
+                let fontStack = 'system-ui, sans-serif';
+                if(fontVal === 'times') fontStack = '"Times New Roman", serif';
+                if(fontVal === 'courier') fontStack = '"Courier New", monospace';
+                (cvSheet).style.fontFamily = fontStack;
+            }
+        }
 
-            const eduInst = (document.querySelector('.edu-inst') as HTMLInputElement).value || "Institution";
-            const eduYear = (document.querySelector('.edu-year') as HTMLInputElement).value || "Year";
-
-            // Draw PDF
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(28);
-            doc.text(name.toUpperCase(), 40, 60);
-
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(14);
-            doc.setTextColor(100);
-            doc.text(title, 40, 80);
-
-            doc.setFontSize(10);
-            doc.text(`${email}  |  ${phone}  |  ${loc}`, 40, 100);
-
-            doc.setDrawColor(200); doc.line(40, 115, 550, 115);
-
-            let cursorY = 145;
-
-            // Summary
-            doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(0);
-            doc.text("PROFESSIONAL SUMMARY", 40, cursorY);
-            cursorY += 20;
-            doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(80);
-            const sumSplit = doc.splitTextToSize(sum, 510);
-            doc.text(sumSplit, 40, cursorY);
-            cursorY += sumSplit.length * 14 + 20;
-
-            // Experience
-            doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(0);
-            doc.text("EXPERIENCE", 40, cursorY);
-            cursorY += 20;
-            doc.setFont("helvetica", "bold"); doc.setFontSize(10);
-            doc.text(expComp, 40, cursorY); 
-            doc.setFont("helvetica", "italic"); doc.text(expDur, 500, cursorY, { align: 'right' });
-            cursorY += 15;
-            doc.setFont("helvetica", "normal"); doc.setTextColor(80);
-            const expSplit = doc.splitTextToSize(expDesc, 510);
-            doc.text(expSplit, 40, cursorY);
-            cursorY += expSplit.length * 14 + 20;
-
-            // Education
-            doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(0);
-            doc.text("EDUCATION", 40, cursorY);
-            cursorY += 20;
-            doc.setFont("helvetica", "bold"); doc.setFontSize(10);
-            doc.text(eduInst, 40, cursorY);
-            doc.setFont("helvetica", "italic"); doc.text(eduYear, 500, cursorY, { align: 'right' });
-            cursorY += 30;
-
-            // Skills
-            doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(0);
-            doc.text("SKILLS", 40, cursorY);
-            cursorY += 20;
-            doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(80);
-            const skillsSplit = doc.splitTextToSize(skills, 510);
-            doc.text(skillsSplit, 40, cursorY);
-
-            doc.save(`${name.replace(/\s+/g, '_')}_Resume.pdf`);
+        if (sizeBody) sizeBody.addEventListener('input', applyStyles);
+        if (sizeHead) sizeHead.addEventListener('input', applyStyles);
+        if (fontPair) fontPair.addEventListener('change', applyStyles);
+        swatches.forEach(s => {
+            s.addEventListener('click', () => {
+                swatches.forEach(sw => sw.classList.remove('active'));
+                s.classList.add('active');
+                currentAccent = (s).dataset.color;
+                applyStyles();
+            });
         });
+
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', async () => {
+                // @ts-ignore
+                const { jsPDF } = await import('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+                // @ts-ignore
+                const doc = new jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+                
+                const baseSize = parseInt((sizeBody).value);
+                const headSize = baseSize * parseFloat((sizeHead).value);
+                const fontVal = (fontPair).value;
+                const activeFont = fontVal === 'times' ? 'times' : (fontVal === 'courier' ? 'courier' : 'helvetica');
+                
+                const name = (document.getElementById('res-name')).value || "Full Name";
+                const title = (document.getElementById('res-title')).value || "Job Title";
+                const email = (document.getElementById('res-email')).value || "email@example.com";
+                const phone = (document.getElementById('res-phone')).value || "+00 000 000";
+                const loc = (document.getElementById('res-location')).value || "Location";
+                const sum = (document.getElementById('res-summary')).value || "Professional Summary";
+                const skills = (document.getElementById('res-skills')).value || "Skills & Expertise";
+
+                const expComp = (document.getElementById('exp-comp')).value || "Company Name";
+                const expDur = (document.getElementById('exp-dur')).value || "Duration";
+                const expDesc = (document.getElementById('exp-desc')).value || "Experience detail...";
+
+                const eduInst = (document.getElementById('edu-inst')).value || "Institution";
+                const eduYear = (document.getElementById('edu-year')).value || "Year";
+
+                function hexToRgb(hex) {
+                    const r = parseInt(hex.slice(1, 3), 16);
+                    const g = parseInt(hex.slice(3, 5), 16);
+                    const b = parseInt(hex.slice(5, 7), 16);
+                    return [r, g, b];
+                }
+                const accentRGB = hexToRgb(currentAccent);
+
+                // --- PDF GENERATION ENGINE ---
+                const margin = 45;
+                const pageWide = 595 - (margin * 2);
+                let y = 60;
+
+                // Header
+                doc.setFont(activeFont, "bold");
+                doc.setFontSize(headSize);
+                doc.text(name.toUpperCase(), margin, y);
+                y += (headSize * 0.8);
+
+                doc.setFont(activeFont, "bold");
+                doc.setFontSize(baseSize * 1.5);
+                doc.setTextColor(accentRGB[0], accentRGB[1], accentRGB[2]);
+                doc.text(title, margin, y);
+                y += 22;
+
+                doc.setFont(activeFont, "normal");
+                doc.setFontSize(baseSize * 0.9);
+                doc.setTextColor(110);
+                doc.text(`${email}  |  ${phone}  |  ${loc}`, margin, y);
+                
+                y += 12;
+                doc.setDrawColor(230);
+                doc.setLineWidth(1);
+                doc.line(margin, y, 595 - margin, y);
+                y += 35;
+
+                // Section Helper
+                const renderSection = (title, content, isList = false) => {
+                    doc.setFont(activeFont, "bold");
+                    doc.setFontSize(baseSize * 1.1);
+                    doc.setTextColor(15);
+                    doc.text(title.toUpperCase(), margin, y);
+                    
+                    y += 6;
+                    doc.setDrawColor(accentRGB[0], accentRGB[1], accentRGB[2]);
+                    doc.setLineWidth(1.5);
+                    doc.line(margin, y, margin + 40, y);
+                    y += 18;
+
+                    doc.setFont(activeFont, "normal");
+                    doc.setFontSize(baseSize);
+                    doc.setTextColor(60);
+                    
+                    const splitText = doc.splitTextToSize(content, pageWide);
+                    doc.text(splitText, margin, y);
+                    y += (splitText.length * (baseSize * 1.45)) + 24;
+                };
+
+                // Workflow
+                renderSection("About Me", sum);
+                
+                // Exp (Custom for dual column line)
+                doc.setFont(activeFont, "bold");
+                doc.setFontSize(baseSize * 1.1);
+                doc.setTextColor(15);
+                doc.text("EXPERIENCE", margin, y);
+                y += 6;
+                doc.line(margin, y, margin + 40, y);
+                y += 18;
+
+                doc.setFont(activeFont, "bold"); doc.setFontSize(baseSize); doc.setTextColor(20);
+                doc.text(expComp, margin, y);
+                doc.setFont(activeFont, "italic"); doc.setFontSize(baseSize * 0.9);
+                doc.text(expDur, 595 - margin, y, { align: 'right' });
+                y += 15;
+                doc.setFont(activeFont, "normal"); doc.setFontSize(baseSize); doc.setTextColor(60);
+                const expLines = doc.splitTextToSize(expDesc, pageWide);
+                doc.text(expLines, margin, y);
+                y += (expLines.length * (baseSize * 1.45)) + 24;
+
+                renderSection("Education", `${eduInst} (${eduYear})`);
+                renderSection("Skills", skills);
+
+                doc.save(`${name.replace(/\s+/g, '_')}_Resume.pdf`);
+                // @ts-ignore
+                if (window.triggerConfetti) window.triggerConfetti();
+            });
+        }
     });
 </script>
 
 <style>
-    .main-h1 { font-size: 3.5rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 8px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.15rem; margin-bottom: 32px; }
-    .tool-wrapper { max-width: 1200px; margin: 0 auto; padding-bottom: 100px; }
+    .workspace-editor { width: 100%; }
+    .builder-grid { display: grid; grid-template-columns: 480px 1fr; gap: 40px; align-items: start; }
 
-    .resume-studio { display: grid; grid-template-columns: 480px 1fr; gap: 40px; align-items: start; }
-    @media (max-width: 1050px) { .resume-studio { grid-template-columns: 1fr; } }
-    
-    .editor-pane { background: #fff; padding: 32px; border-radius: 24px; border: 1.5px solid var(--border); overflow-y: auto; max-height: 80vh; }
-    .pane-label { display: block; font-size: 0.72rem; font-weight: 1000; color: var(--slate); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.05em; }
-    .section-title-sm { font-size: 1rem; font-weight: 1000; color: var(--dark); }
-    .underline-purple { position: relative; display: inline-block; }
-    .underline-purple::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 3px; background: var(--primary-light); border-radius: 10px; }
+    .editor-sidebar { position: sticky; top: 20px; }
+    .editor-card { padding: 32px; background: #fff; }
+    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
 
-    .modern-input { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid var(--border); background: #f8fafc; font-weight: 600; font-size: 0.95rem; outline: none; }
-    .modern-textarea-sm { width: 100%; height: 100px; border-radius: 12px; border: 1.5px solid var(--border); padding: 14px; background: #f8fafc; font-weight: 600; outline: none; resize: vertical; }
+    .modern-input { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: var(--surface-50); font-weight: 600; font-size: 0.95rem; outline: none; transition: 0.2s; }
+    .modern-input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
     
+    .modern-textarea-sm { width: 100%; height: 100px; border-radius: 12px; border: 1.5px solid var(--border-subtle); padding: 14px; background: var(--surface-50); font-weight: 600; outline: none; resize: vertical; }
+    .modern-textarea-sm:focus { border-color: var(--accent); background: #fff; }
+
     .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-    .preview-pane { position: relative; }
-    .preview-sticky { position: sticky; top: 20px; }
-    .resume-preview-card { background: #fff; border: 1px solid var(--border); overflow: hidden; min-height: 842px; transform-origin: top center; background-image: linear-gradient(rgba(0,0,0,0.02) 2px, transparent 2px), linear-gradient(90deg, rgba(0,0,0,0.02) 2px, transparent 2px); background-size: 40px 40px; }
+    /* Preview UI */
+    .preview-stage { min-width: 0; }
+    .preview-badge { display: inline-block; background: var(--accent); color: #fff; padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
     
-    .p-40 { padding: 40px 60px; }
-    .pv-name-txt { font-size: 2.2rem; font-weight: 1000; color: var(--dark); line-height: 1; }
-    .pv-title-txt { font-size: 1.1rem; color: var(--primary); font-weight: 700; margin-top: 4px; }
-    .res-sec-head { font-size: 0.85rem; font-weight: 1000; color: #000; letter-spacing: 0.1em; border-bottom: 1.5px solid #eee; padding-bottom: 4px; margin-bottom: 12px; }
+    .cv-preview { background: #eaeff5; padding: 40px; border-radius: 12px; display: flex; justify-content: center; overflow: hidden; }
+    .cv-sheet { width: 100%; max-width: 595pt; background: #fff; padding: 60pt 50pt; box-shadow: 0 10px 40px rgba(0,0,0,0.1); color: #1e293b; text-align: left; --cv-base-size: 10pt; --cv-head-size: 28pt; --cv-accent: #2563eb; }
+    
+    .cv-header h1 { font-size: var(--cv-head-size); font-weight: 900; color: #0f172a; line-height: 1.1; margin-bottom: 4pt; }
+    .cv-meta { display: flex; align-items: center; gap: 8pt; font-size: calc(var(--cv-base-size) * 0.9); color: #64748b; font-weight: 600; }
+    .dot { opacity: 0.5; }
 
-    .preview-badge { display: inline-block; background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 100px; font-weight: 1000; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    .wide-btn { padding: 22px 32px; font-weight: 1000; font-size: 1.2rem; border-radius: 100px; width: 100%; box-shadow: var(--shadow-lg); border: none; cursor: pointer; transition: 0.3s; }
-    .wide-btn:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: var(--shadow-xl); }
+    /* Personalization UI Updates */
+    .size-val { font-size: 0.8rem; font-weight: 800; color: var(--accent); min-width: 40px; text-align: right; }
+    .modern-select { width: 100%; padding: 8px; border-radius: 10px; border: 1.5px solid var(--border-subtle); background: var(--surface-100); font-weight: 600; outline: none; cursor: pointer; }
+    .swatch { width: 24px; height: 24px; }
+    
+    .cv-sheet { width: 100%; max-width: 595pt; background: #fff; padding: 60pt 50pt; box-shadow: 0 10px 40px rgba(0,0,0,0.1); color: #1e293b; text-align: left; --cv-base-size: 10pt; --cv-head-size: 28pt; --cv-accent: #2563eb; transition: font-family 0.3s; }
+    .text-muted { color: #64748b; }
 
-    .pro-features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 60px; }
-    .feat-card { background: #fff; border: 1.5px solid var(--border-light); border-radius: 20px; padding: 32px; transition: 0.3s; }
-    .feat-icon { font-size: 2.2rem; margin-bottom: 16px; display: block; }
-    .feat-card h3 { font-size: 1.15rem; font-weight: 1000; margin-bottom: 8px; color: var(--dark); }
-    .feat-card p { font-size: 0.95rem; color: var(--slate); line-height: 1.6; font-weight: 500; }
+    .lg-btn { width: 100%; height: 64px; font-size: 1.1rem; border-radius: 18px; margin-top: 12px; }
+    .privacy-tiny { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 16px; }
 
-    .steps-path { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-    .path-step { display: flex; gap: 20px; }
-    .step-num { font-size: 2rem; font-weight: 1000; color: var(--primary-light); opacity: 0.8; line-height: 1; }
-    .step-info strong { display: block; margin-bottom: 6px; color: var(--dark); }
-    .step-info { font-size: 0.92rem; color: var(--slate); line-height: 1.6; font-weight: 500; }
-
-    .divider-line { width: 100%; height: 1.5px; background: #eee; border-radius: 10px; }
-    .mt-60 { margin-top: 60px; }
-    .max-w-sm { max-width: 500px; }
-    .text-center { text-align: center; }
-    .mx-auto { margin-inline: auto; }
+    /* Info */
+    .pro-article h2 { font-size: 1.75rem; font-weight: 850; margin-bottom: 24px; }
+    .ans { padding: 12px 0; color: var(--text-muted); font-size: 0.95rem; }
 
     .d-flex { display: flex; }
-    .gap-16 { gap: 16px; }
-    .mt-4 { margin-top: 4px; }
-    .mt-8 { margin-top: 8px; }
-    .mt-12 { margin-top: 12px; }
-    .mt-20 { margin-top: 20px; }
-    .mb-8 { margin-bottom: 8px; }
-    .mb-16 { margin-bottom: 16px; }
-    .mb-24 { margin-bottom: 24px; }
-    .mb-32 { margin-bottom: 32px; }
-    .mb-40 { margin-bottom: 40px; }
-    .mb-48 { margin-bottom: 48px; }
-    .my-24 { margin-top: 24px; margin-bottom: 24px; }
-    .text-xs { font-size: 0.75rem; }
-    .text-sm { font-size: 0.9rem; }
-    .text-slate { color: var(--slate); }
-    .italic { font-style: italic; }
-    .leading-relaxed { line-height: 1.6; }
+    .justify-between { justify-content: space-between; }
+    .align-center { align-items: center; }
+    .text-accent { color: var(--accent); }
 
-    @media (max-width: 1050px) {
-        .pro-features-grid, .steps-path { grid-template-columns: 1fr; }
-        .resume-studio { grid-template-columns: 1fr; }
-        .main-h1 { font-size: 2.4rem; }
+    @media (max-width: 1100px) {
+        .builder-grid { grid-template-columns: 1fr; }
+        .editor-sidebar { position: static; }
+        .cv-preview { padding: 20px; }
+        .cv-sheet { padding: 40pt 30pt; }
     }
 </style>

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Professional QR Code Generator with Logo | Custom QR Maker | FormFix';
 const PAGE_DESC = 'Create custom QR codes with your logo online. Professional QR generator with high-res export (PNG/SVG). 100% private, free, and secure design studio.';
@@ -9,354 +9,345 @@ const PAGE_KEYWORDS = 'professional qr code generator, custom qr maker with logo
 const customSchema = {
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "SoftwareApplication", "name": "FormFix Pro QR Designer", "description": "Luxury designer QR suite with couture aesthetic presets and precision circular branding." }
+    { 
+        "@type": "SoftwareApplication", 
+        "name": "FormFix Pro QR Designer", 
+        "operatingSystem": "All Platforms",
+        "description": "Luxury designer QR suite with couture aesthetic presets and precision circular branding." 
+    }
   ]
 };
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/qr-code-generator">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">👑 Diamond Studio V17 (Ultra Couture)</div>
-             <h1 class="main-h1">Professional <span class="highlight">QR Generator</span></h1>
-             <p class="hero-sub">Create custom, high-resolution QR codes with your branding. 100% private.</p>
-        </header>
+    <ToolWrapper title="Professional QR Designer" subtitle="Create high-resolution, custom-branded QR codes instantly. 100% private." currentTool="qr-code-generator">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <div class="designer-grid">
+                       <!-- 1. Settings Sidebar -->
+                       <div class="settings-sidebar shadow-sm">
+                            <div class="setting-item mb-24">
+                                 <label class="section-label m-0 mb-8">1. Connect Data</label>
+                                 <input type="text" id="qr-input" class="modern-input" placeholder="https://example.com" />
+                            </div>
 
-        <div class="studio-layout">
-            
-            <!-- Left: Settings Panel -->
-            <div class="glass-card settings-card">
-                 
-                 <!-- Step 1: Input -->
-                 <div class="control-group mb-32">
-                      <div class="d-flex justify-between align-center mb-12">
-                           <span class="step-num">01</span>
-                           <label class="s-label">QR DESTINATION</label>
-                      </div>
-                      <div class="luxe-input-wrapper">
-                           <textarea id="qr-input" class="couture-textarea" rows="1" placeholder="https://formfix.pages.dev"></textarea>
-                      </div>
-                 </div>
+                            <div class="setting-item mb-24">
+                                 <label class="section-label m-0 mb-8">2. Visual Presets</label>
+                                 <div class="presets-grid" id="presets-container">
+                                      <!-- Injected by JS -->
+                                 </div>
+                            </div>
 
-                 <!-- Step 2: Couture Presets -->
-                 <div class="control-group mb-32">
-                      <div class="d-flex justify-between align-center mb-16">
-                           <span class="step-num">02</span>
-                           <label class="s-label">COUTURE PRESETS</label>
-                      </div>
-                      <div class="couture-grid" id="style-grid"></div>
-                 </div>
+                            <div class="setting-item mb-24">
+                                 <label class="section-label m-0 mb-8">3. Pattern Style</label>
+                                 <div class="toggle-pill-group" id="pattern-toggles">
+                                      <button class="setting-pill active" data-val="square">Square</button>
+                                      <button class="setting-pill" data-val="dots">Dots</button>
+                                      <button class="setting-pill" data-val="rounded">Rounded</button>
+                                 </div>
+                            </div>
 
-                 <!-- Step 3: Architecture Patterns -->
-                 <div class="control-group mb-32">
-                      <div class="d-flex justify-between align-center mb-16">
-                           <span class="step-num">03</span>
-                           <label class="s-label">ARCHITECTURE PATTERNS</label>
-                      </div>
-                      
-                      <div class="geo-panel">
-                           <div class="geo-row">
-                                <label class="geo-label">Matrix Dot Pattern</label>
-                                <div class="couture-toggle" id="dot-opts">
-                                     <button class="couture-btn active" data-val="square">Square</button>
-                                     <button class="couture-btn" data-val="dots">Dots</button>
-                                     <button class="couture-btn" data-val="rounded">Rounded</button>
-                                     <button class="couture-btn" data-val="classy">Classy</button>
-                                </div>
-                           </div>
-                           <div class="geo-row mt-12">
-                                <label class="geo-label">Corner Eye Architecture</label>
-                                <div class="couture-toggle" id="frame-opts">
-                                     <button class="couture-btn active" data-val="square">Square</button>
-                                     <button class="couture-btn" data-val="dot">Circular</button>
-                                     <button class="couture-btn" data-val="rounded">Rounded</button>
-                                </div>
-                           </div>
-                      </div>
-                 </div>
+                            <div class="setting-item">
+                                 <label class="section-label m-0 mb-8">4. Add Branding</label>
+                                 <div class="upload-zone" id="logo-zone">
+                                      <input type="file" id="logo-input" class="hidden" accept="image/*" />
+                                      <div id="logo-prompt" class="upload-prompt">
+                                           <div class="l-ico mb-8">✨</div>
+                                           <div class="l-txt">Upload Logo</div>
+                                      </div>
+                                      <div id="logo-preview-box" class="hidden" style="position:relative;">
+                                           <img id="logo-pre" src="" alt="User uploaded QR code logo preview" />
+                                           <button id="remove-logo" class="remove-btn">×</button>
+                                      </div>
+                                 </div>
+                            </div>
 
-                 <!-- Step 4: Circular Branding -->
-                 <div class="control-group mb-32 branding-box">
-                      <div class="d-flex justify-between align-center mb-16">
-                           <span class="step-num gold-num">04</span>
-                           <label class="s-label gold-lbl">CIRCULAR BRANDING</label>
-                      </div>
+                            <div id="logo-opts" class="hidden mt-24">
+                                 <div class="d-flex justify-between align-center mb-16">
+                                      <label class="section-label m-0">Logo Scale</label>
+                                      <span id="logo-val" class="status-pill highlight m-0" style="padding: 4px 12px;">40%</span>
+                                 </div>
+                                 <input type="range" id="logo-size" min="10" max="80" value="40" class="unified-slider w-100" />
+                                 <label class="config-toggle-pill mt-16 cursor-pointer">
+                                      <input type="checkbox" id="logo-halo" checked /> Include Whitespace Halo
+                                 </label>
+                            </div>
+                            
+                            <!-- Hidden inputs for legacy API compatibility -->
+                            <input type="hidden" id="bg-color" value="#ffffff" />
+                            <input type="color" id="qr-color" value="#1e1b4b" class="hidden" />
+                            <input type="checkbox" id="do-grad" class="hidden" />
+                            <input type="color" id="g-s" value="#1e1b4b" class="hidden" />
+                            <input type="color" id="g-e" value="#1e1b4b" class="hidden" />
+                       </div>
 
-                      <div class="couture-logo-studio" id="logo-drop">
-                           <input type="file" id="logo-file" class="hidden" accept="image/*" />
-                           <div class="l-ux">
-                                <div class="l-ic-bg"><span class="l-ico">✨</span></div>
-                                <b class="mt-8">UPLOAD BRAND LOGO</b>
-                                <p>Integrated Circular Mask Engine</p>
-                           </div>
-                           <img id="logo-pre" class="hidden" alt="QR code logo overlay preview" />
-                      </div>
-                      
-                      <div id="logo-opts" class="hidden mt-20 p-20 glass-inner shadow-sm">
-                           <div class="d-flex justify-between align-center mb-12">
-                                <label class="geo-label mb-0">Logo Scale Strength</label>
-                                <span id="logo-val" class="v-tag">45%</span>
-                           </div>
-                           <input type="range" id="logo-size" min="10" max="80" value="45" class="couture-range" />
-                           <div class="mt-16">
-                                <label class="couture-check"><input type="checkbox" id="logo-halo" checked /> Scannable Safe Buffer (White Halo)</label>
-                           </div>
-                      </div>
-                 </div>
+                       <!-- 2. Preview & Action Stage -->
+                       <div class="preview-stage">
+                            <div class="preview-frame text-center">
+                                 <div class="preview-header mb-24">
+                                      <span class="preview-badge">Live QR Render</span>
+                                 </div>
+                                 <div id="qr-result" class="d-flex justify-center mt-16"></div>
+                            </div>
 
-                 <!-- Footer Controls -->
-                 <div class="accordion">
-                      <details>
-                           <summary>Elite Colors & Dual Gradients</summary>
-                           <div class="acc-body pt-16">
-                                <div class="d-flex gap-16">
-                                     <div class="c-field flex-1"><label class="geo-label">Main Matrix</label><input type="color" id="qr-color" value="#1e1b4b" /></div>
-                                     <div class="c-field flex-1"><label class="geo-label">Canvas Background</label><input type="color" id="bg-color" value="#ffffff" /></div>
-                                </div>
-                                <div class="mt-20">
-                                     <label class="couture-check font-bold"><input type="checkbox" id="do-grad" /> Enable Gilded Gradient Mode</label>
-                                </div>
-                                <div id="grad-area" class="hidden mt-16">
-                                     <div class="d-flex gap-16">
-                                          <div class="c-field flex-1"><label class="geo-label">Hue Start</label><input type="color" id="g-s" value="#6366f1" /></div>
-                                          <div class="c-field flex-1"><label class="geo-label">Hue End</label><input type="color" id="g-e" value="#ec4899" /></div>
-                                     </div>
-                                </div>
-                           </div>
-                      </details>
-                 </div>
-            </div>
-
-            <!-- Right: Production Preview -->
-            <div class="master-preview">
-                 <div class="couture-stage shadow-2xl" id="stage">
-                      <div id="qr-box"></div>
-                      <div class="stage-footer">MASTER V17 PRODUCTION</div>
-                 </div>
-
-                 <div class="mt-40 w-100">
-                      <button id="dl-btn" class="elite-btn xl-btn pulse-glow">⬇️ Export High-Res (PNG)</button>
-                      <div class="elite-badges mt-24">
-                           <span>300 DPI Clear View</span> • <span>Privacy Lock Rendering</span> • <span>Cloud Optimized</span>
-                      </div>
-                 </div>
-            </div>
-
+                            <div class="action-footer mt-24">
+                                 <button id="download-btn" class="primary-btn wide-btn pulse-glow">⬇️ Download High-Res</button>
+                                 <p class="privacy-note text-center mt-16 mb-0 font-600 text-muted">🔒 Production-ready SVG & PNG output.</p>
+                            </div>
+                       </div>
+                  </div>
+             </div>
         </div>
 
-        <RelatedTools currentTool="qr-code-generator" />
-    </div>
+        <div slot="tool-info">
+             <h2>Professional QR Design Suite</h2>
+             <p>Our <strong>Professional QR Designer</strong> helps you create luxury, branded QR codes instantly. Choose from custom patterns, gradients, and integrated circular branding to match your brand's aesthetic. Generation happens entirely locally within your browser, ensuring your links and branding data remain 100% private.</p>
+             
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>Can I use my own logo?</summary>
+                       <p>Yes, you can upload any image (PNG/JPG) to center within your QR code. We automatically crop it into a clean circle for a professional designer look that doesn't break the code scanability.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>Are these codes permanent?</summary>
+                       <p>Yes. These are static QR codes that encode your data directly. They never expire, have no scan limits, and will work forever without any subscription.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
-<script>
-    import QRCodeStyling from 'qr-code-styling';
+<script is:inline src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
 
-    const box = document.getElementById('qr-box');
-    const dlBtn = document.getElementById('dl-btn');
-    const qrIn = document.getElementById('qr-input');
-    const qCol = document.getElementById('qr-color');
-    const bCol = document.getElementById('bg-color');
-    const doGrad = document.getElementById('do-grad');
-    const gs = document.getElementById('g-s');
-    const ge = document.getElementById('g-e');
-    const logoFile = document.getElementById('logo-file');
-    const logoDrop = document.getElementById('logo-drop');
-    const logoSize = document.getElementById('logo-size');
-    const logoVal = document.getElementById('logo-val');
-    const logoHalo = document.getElementById('logo-halo');
-    const logoPre = document.getElementById('logo-pre');
-    const logoOpts = document.getElementById('logo-opts');
-    const styleGrid = document.getElementById('style-grid');
+<script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        const qrIn = document.getElementById('qr-input');
+        const qCol = document.getElementById('qr-color');
+        const bCol = document.getElementById('bg-color');
+        const doGrad = document.getElementById('do-grad');
+        const gs = document.getElementById('g-s');
+        const ge = document.getElementById('g-e');
+        
+        const logoFile = document.getElementById('logo-input');
+        const logoDrop = document.getElementById('logo-zone');
+        const logoSize = document.getElementById('logo-size');
+        const logoVal = document.getElementById('logo-val');
+        const logoHalo = document.getElementById('logo-halo');
+        const logoPre = document.getElementById('logo-pre');
+        const logoOpts = document.getElementById('logo-opts');
+        const logoBox = document.getElementById('logo-preview-box');
+        const rmLogoBtn = document.getElementById('remove-logo');
+        const styleGrid = document.getElementById('presets-container');
+        const box = document.getElementById('qr-result');
+        const dlBtn = document.getElementById('download-btn');
 
-    let currentLogo = '';
-    let curDot = 'square';
-    let curFrame = 'square';
+        let currentLogo = '';
+        let curDot = 'square';
+        let curFrame = 'square';
 
-    const qr = new QRCodeStyling({
-        width: 320,
-        height: 320,
-        type: 'svg',
-        data: 'https://formfix.pages.dev',
-        dotsOptions: { color: "#1e1b4b", type: "square" },
-        backgroundOptions: { color: "#ffffff" },
-        cornersSquareOptions: { color: "#1e1b4b", type: "square" },
-        imageOptions: { margin: 15, crossOrigin: 'anonymous', imageSize: 0.45, hideBackgroundDots: true }
-    });
+        if(typeof QRCodeStyling === 'undefined') {
+            console.error("QR Library failed to load");
+            return;
+        }
 
-    qr.append(box);
-
-    const PRESETS = [
-        { name: 'Couture Navy', col: '#1e1b4b', bg: '#ffffff', dt: 'square', ft: 'square', g: false },
-        { name: '👑 Royal Gold', col: '#854d0e', bg: '#fffbeb', dt: 'classy', ft: 'rounded', g: true, s: '#854d0e', e: '#fde047' },
-        { name: '🌌 Urban Neon', col: '#c026d3', bg: '#020617', dt: 'dots', ft: 'dot', g: true, s: '#22d3ee', e: '#c026d3' },
-        { name: '🎀 Rose Luxe', col: '#db2777', bg: '#fdf2f8', dt: 'rounded', ft: 'rounded', g: false },
-        { name: '🖤 Obsidian', col: '#ffffff', bg: '#09090b', dt: 'rounded', ft: 'rounded', g: false },
-        { name: '🔥 Sunset Edge', col: '#ea580c', bg: '#fff7ed', dt: 'extra-rounded', ft: 'rounded', g: true, s: '#ea580c', e: '#facc15' },
-        { name: '🌿 Moss Green', col: '#064e3b', bg: '#f0fdf4', dt: 'rounded', ft: 'dot', g: false },
-        { name: '☁️ Cloud Pure', col: '#334155', bg: '#ffffff', dt: 'rounded', ft: 'rounded', g: false }
-    ];
-
-    PRESETS.forEach(p => {
-        const chip = document.createElement('button');
-        chip.className = 'couture-chip';
-        chip.innerHTML = `<span class="c-dot" style="background:${p.col}"></span> ${p.name}`;
-        chip.onclick = () => {
-             qCol.value = p.col; bCol.value = p.bg; curDot = p.dt; curFrame = p.ft;
-             doGrad.checked = p.g; if(p.g) { gs.value = p.s; ge.value = p.e; }
-             
-             document.querySelectorAll('#dot-opts .couture-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.val === curDot));
-             document.querySelectorAll('#frame-opts .couture-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.val === curFrame));
-             
-             update();
-        };
-        styleGrid.appendChild(chip);
-    });
-
-    document.querySelectorAll('.couture-btn').forEach(btn => btn.addEventListener('click', () => {
-         const parent = btn.parentElement;
-         parent.querySelectorAll('.couture-btn').forEach(b => b.classList.remove('active'));
-         btn.classList.add('active');
-         if(parent.id === 'dot-opts') curDot = btn.dataset.val;
-         else curFrame = btn.dataset.val;
-         update();
-    }));
-
-    logoDrop.onclick = () => logoFile.click();
-    logoFile.onchange = (e) => {
-        const file = e.target.files[0];
-        if(!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-             const img = new Image();
-             img.onload = () => {
-                  const cvs = document.createElement('canvas');
-                  const ctx = cvs.getContext('2d');
-                  const s = 1000; cvs.width = s; cvs.height = s;
-                  ctx.beginPath(); ctx.arc(s/2, s/2, s/2, 0, Math.PI*2); ctx.closePath(); ctx.clip();
-                  ctx.drawImage(img, 0, 0, s, s);
-                  currentLogo = cvs.toDataURL('image/png');
-                  logoPre.src = currentLogo;
-                  logoPre.classList.remove('hidden');
-                  logoDrop.querySelector('.l-ux').classList.add('hidden');
-                  logoOpts.classList.remove('hidden');
-                  update();
-             };
-             img.src = ev.target.result;
-        };
-        reader.readAsDataURL(file);
-    };
-
-    function update() {
-        if(logoVal) logoVal.textContent = `${logoSize.value}%`;
-        document.getElementById('grad-area').classList.toggle('hidden', !doGrad.checked);
-        qr.update({
-            data: qrIn.value || 'https://formfix.pages.dev',
-            image: currentLogo || undefined,
-            dotsOptions: {
-                type: curDot,
-                color: doGrad.checked ? undefined : qCol.value,
-                gradient: doGrad.checked ? {
-                    type: 'linear',
-                    colorStops: [{ offset: 0, color: gs.value }, { offset: 1, color: ge.value }]
-                } : undefined
-            },
-            backgroundOptions: { color: bCol.value },
-            cornersSquareOptions: { type: curFrame, color: qCol.value },
-            cornersDotOptions: { type: curFrame, color: qCol.value },
-            imageOptions: { 
-                imageSize: parseFloat(logoSize.value) / 100, 
-                margin: 15, 
-                hideBackgroundDots: logoHalo.checked,
-                crossOrigin: 'anonymous'
-            }
+        const qr = new QRCodeStyling({
+            width: 320,
+            height: 320,
+            type: 'svg',
+            data: 'https://formfix.pages.dev',
+            dotsOptions: { color: "#1e1b4b", type: "square" },
+            backgroundOptions: { color: "#ffffff" },
+            cornersSquareOptions: { color: "#1e1b4b", type: "square" },
+            imageOptions: { margin: 15, crossOrigin: 'anonymous', imageSize: 0.45, hideBackgroundDots: true }
         });
-    }
 
-    [qrIn, qCol, bCol, doGrad, gs, ge, logoSize, logoHalo].forEach(el => el.oninput = update);
-    dlBtn.onclick = () => {
-        qr.download({ name: 'formfix-couture-qr', extension: 'png' });
-        if (typeof (window as any).triggerConfetti === 'function') (window as any).triggerConfetti();
-    };
-    update();
+        qr.append(box);
+
+        const PRESETS = [
+            { name: 'Midnight', col: '#1e1b4b', bg: '#ffffff', dt: 'square', ft: 'square', g: false },
+            { name: 'Royal', col: '#854d0e', bg: '#fffbeb', dt: 'square', ft: 'rounded', g: true, s: '#854d0e', e: '#fde047' },
+            { name: 'Neon', col: '#c026d3', bg: '#020617', dt: 'dots', ft: 'square', g: true, s: '#22d3ee', e: '#c026d3' },
+            { name: 'Candy', col: '#db2777', bg: '#fdf2f8', dt: 'rounded', ft: 'rounded', g: false }
+        ];
+
+        PRESETS.forEach(p => {
+            const chip = document.createElement('button');
+            chip.className = 'preset-chip';
+            chip.innerHTML = `<span class="c-dot" style="background:${p.col}"></span> ${p.name}`;
+            chip.onclick = () => {
+                 qCol.value = p.col; bCol.value = p.bg; curDot = p.dt; curFrame = p.ft;
+                 doGrad.checked = p.g; if(p.g) { gs.value = p.s; ge.value = p.e; }
+                 
+                 document.querySelectorAll('#pattern-toggles .setting-pill').forEach(btn => 
+                    btn.classList.toggle('active', btn.dataset.val === curDot)
+                 );
+                 update();
+            };
+            styleGrid.appendChild(chip);
+        });
+
+        document.querySelectorAll('#pattern-toggles .setting-pill').forEach(btn => btn.addEventListener('click', () => {
+             document.querySelectorAll('#pattern-toggles .setting-pill').forEach(b => b.classList.remove('active'));
+             btn.classList.add('active');
+             curDot = btn.dataset.val;
+             update();
+        }));
+
+        logoDrop.onclick = (e) => {
+            if(e.target === rmLogoBtn) return;
+            logoFile.click();
+        };
+
+        rmLogoBtn.onclick = (e) => {
+            e.stopPropagation();
+            currentLogo = '';
+            logoPre.src = '';
+            logoBox.classList.add('hidden');
+            document.getElementById('logo-prompt').classList.remove('hidden');
+            logoOpts.classList.add('hidden');
+            logoFile.value = '';
+            update();
+        };
+
+        logoFile.onchange = (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                 const img = new Image();
+                 img.onload = () => {
+                      const cvs = document.createElement('canvas');
+                      const ctx = cvs.getContext('2d');
+                      const s = 1000; cvs.width = s; cvs.height = s;
+                      ctx.beginPath(); ctx.arc(s/2, s/2, s/2, 0, Math.PI*2); ctx.closePath(); ctx.clip();
+                      ctx.drawImage(img, 0, 0, s, s);
+                      currentLogo = cvs.toDataURL('image/png');
+                      logoPre.src = currentLogo;
+                      logoBox.classList.remove('hidden');
+                      document.getElementById('logo-prompt').classList.add('hidden');
+                      logoOpts.classList.remove('hidden');
+                      update();
+                 };
+                 img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        function update() {
+            if(logoVal) logoVal.textContent = `${logoSize.value}%`;
+            qr.update({
+                data: qrIn.value || 'https://formfix.pages.dev',
+                image: currentLogo || undefined,
+                dotsOptions: {
+                    type: curDot,
+                    color: doGrad.checked ? undefined : qCol.value,
+                    gradient: doGrad.checked ? {
+                        type: 'linear',
+                        colorStops: [{ offset: 0, color: gs.value }, { offset: 1, color: ge.value }]
+                    } : undefined
+                },
+                backgroundOptions: { color: bCol.value },
+                cornersSquareOptions: { type: curFrame, color: qCol.value },
+                cornersDotOptions: { type: curFrame, color: qCol.value },
+                imageOptions: { 
+                    imageSize: parseFloat(logoSize.value) / 100, 
+                    margin: 15, 
+                    hideBackgroundDots: logoHalo.checked,
+                    crossOrigin: 'anonymous'
+                }
+            });
+        }
+
+        [qrIn, qCol, bCol, doGrad, gs, ge, logoSize, logoHalo].forEach(el => el.addEventListener('input', update));
+        dlBtn.onclick = () => qr.download({ name: 'formfix-qr', extension: 'png' });
+        
+        update();
+    });
 </script>
 
 <style>
-    .main-h1 { font-size: 3.5rem; font-weight: 1000; color: var(--dark); line-height: 1; margin-bottom: 8px; letter-spacing: -0.05em; }
-    .hero-sub { font-size: 1.25rem; font-weight: 600; color: #64748b; margin-bottom: 56px; }
-    .tool-wrapper { max-width: 1140px; margin: 0 auto; padding-bottom: 120px; }
+    .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; }
+    .designer-grid { display: grid; grid-template-columns: 320px 1fr; gap: 32px; }
+    
+    .settings-sidebar { display: flex; flex-direction: column; background: var(--surface-50); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); height: fit-content; }
+    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    
+    .modern-input { width: 100%; padding: 12px 16px; border: 1px solid var(--border-subtle); border-radius: 12px; font-size: 0.95rem; font-weight: 700; color: var(--text-main); outline: none; transition: 0.2s; box-sizing: border-box; }
+    .modern-input:focus { border-color: var(--accent); background: #fff; box-shadow: var(--shadow-sm); }
+    
+    .presets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .preset-chip { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; font-size: 0.8rem; font-weight: 800; cursor: pointer; transition: 0.2s; color: var(--text-main); }
+    .preset-chip:hover { border-color: var(--accent); background: var(--surface-100); }
+    .c-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 
-    .studio-layout { display: grid; grid-template-columns: 1fr 450px; gap: 48px; align-items: start; }
-    .glass-card { background: #fff; border: 1.5px solid #f1f5f9; border-radius: 56px; padding: 56px; box-shadow: 0 40px 100px -20px rgba(0,0,0,0.05); }
+    .toggle-pill-group { display: flex; background: var(--border-subtle); padding: 6px; border-radius: 100px; gap: 4px; }
+    .setting-pill { flex: 1; padding: 10px; border-radius: 100px; font-weight: 800; font-size: 0.85rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
+    .setting-pill:hover { color: var(--text-main); }
+    .setting-pill.active { background: #fff; color: var(--text-main); box-shadow: var(--shadow-sm); }
 
-    .step-num { font-size: 0.75rem; font-weight: 1000; color: var(--primary); background: var(--primary-light); padding: 4px 10px; border-radius: 6px; letter-spacing: 0.1em; }
-    .s-label { font-weight: 1000; color: var(--dark); font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; }
+    .upload-zone { background: #fff; border: 2.5px dashed var(--border-subtle); border-radius: 16px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .upload-zone:hover { border-color: var(--accent); background: var(--surface-50); }
+    .l-ico { font-size: 1.5rem; line-height: 1; }
+    .l-txt { font-size: 0.8rem; font-weight: 850; color: var(--text-muted); text-transform: uppercase; }
+    #logo-pre { width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: #fff; }
+    
+    .remove-btn { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; border-radius: 50%; background: var(--text-main); color: #fff; border: none; font-size: 1rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    .remove-btn:hover { background: #ef4444; }
 
-    /* Couture Textarea */
-    .couture-textarea { width: 100%; border: 3px solid #f1f5f9; background: #f8fafc; padding: 24px 32px; border-radius: 24px; font-weight: 700; font-family: inherit; font-size: 1.15rem; resize:none; transition: 0.3s; color: var(--dark); }
-    .couture-textarea:focus { border-color: var(--primary); background: #fff; box-shadow: 0 20px 40px rgba(79, 70, 229, 0.08); outline: none; }
+    .preview-stage { display: flex; flex-direction: column; }
+    .preview-frame { background: #fff; border: 1px solid var(--border-subtle); border-radius: 24px; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); min-height: 400px; width: 100%; box-sizing: border-box; }
+    
+    .preview-badge { display: inline-block; background: var(--text-main); color: #fff; padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+    
+    .status-pill { font-size: 0.75rem; font-weight: 800; color: var(--accent); background: #fff; padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; }
+    .status-pill.highlight { border-color: var(--accent); }
 
-    /* Couture Grid */
-    .couture-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-    .couture-chip { display: flex; align-items: center; gap: 12px; padding: 18px 24px; background: #fff; border: 2.5px solid #f8fafc; border-radius: 20px; font-weight: 950; font-size: 0.9rem; cursor: pointer; transition: 0.3s; color: #334155; }
-    .c-dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .couture-chip:hover { border-color: var(--primary); transform: translateX(10px); background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+    .unified-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--border-subtle); appearance: none; outline: none; margin: 0; }
+    .unified-slider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--accent); border-radius: 50%; border: 3px solid #fff; box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
+    .unified-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
 
-    /* Couture Toggles */
-    .geo-panel { background: #f8fafc; padding: 24px; border-radius: 32px; }
-    .geo-label { display: block; font-size: 0.75rem; font-weight: 1000; color: #94a3b8; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
-    .couture-toggle { display: flex; gap: 8px; background: #f1f5f9; padding: 6px; border-radius: 18px; }
-    .couture-btn { flex: 1; min-width: 70px; border: none; padding: 12px; border-radius: 12px; font-weight: 1000; font-size: 0.75rem; cursor: pointer; background: transparent; color: #64748b; transition: 0.25s; text-transform: uppercase; }
-    .couture-btn.active { background: #fff; color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .config-toggle-pill { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); cursor: pointer; }
+    .config-toggle-pill input { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
+    .config-toggle-pill:hover { color: var(--text-main); }
 
-    /* Couture Branding */
-    .branding-box { background: #fdfaf5; border: 2px solid #f973161a; padding: 32px; border-radius: 40px; }
-    .gold-num { background: #fef3c7; color: #d97706; }
-    .gold-lbl { color: #92400e; }
-    .couture-logo-studio { background: #fff; border: 2.5px dashed #fcd34d; border-radius: 32px; padding: 40px; text-align: center; cursor: pointer; transition: 0.4s; min-height: 180px; display:flex; align-items:center; justify-content:center; position: relative; }
-    .couture-logo-studio:hover { border-color: #f59e0b; transform: translateY(-5px); box-shadow: 0 20px 40px rgba(245, 158, 11, 0.1); }
-    #logo-pre { height: 110px; width: 110px; border-radius: 50%; border: 6px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-    .l-ic-bg { background: #fef3c7; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
-    .l-ico { font-size: 2rem; }
-    .l-ux b { font-size: 0.9rem; font-weight: 1000; color: #92400e; letter-spacing: 0.05em; }
-    .l-ux p { font-size: 0.75rem; font-weight: 700; color: #d97706; opacity: 0.7; }
+    .wide-btn { width: 100%; height: 60px; font-size: 1rem; font-weight: 850; border-radius: 16px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+    .privacy-note { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
 
-    .glass-inner { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border-radius: 24px; border: 1.5px solid #fff; }
-    .couture-range { width: 100%; height: 6px; appearance: none; background: #e2e8f0; border-radius: 100px; outline: none; }
-    .couture-range::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: #f59e0b; border: 4px solid #fff; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    .v-tag { background: #f59e0b; color: #fff; padding: 4px 12px; border-radius: 100px; font-weight: 1000; font-size: 0.7rem; }
-    .couture-check { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.85rem; font-weight: 1000; color: #92400e; }
-    .couture-check input { width: 22px; height: 22px; cursor: pointer; accent-color: #f59e0b; }
+    /* FAQ */
+    .faq-grid { display: grid; gap: 16px; }
+    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
-    /* Production Stage */
-    .master-preview { position: sticky; top: 40px; display: flex; flex-direction: column; align-items: center; }
-    .couture-stage { background: #fff; padding: 56px; border-radius: 80px; border: 5px solid #f8fafc; position: relative; width: 450px; height: 450px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 10% 10%, #fff, #f1f5f9); }
-    .stage-footer { position: absolute; bottom: 32px; font-weight: 1000; color: #cbd5e1; font-size: 0.75rem; letter-spacing: 0.4em; }
-
-    #qr-box { transform: scale(1.1); transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); }
-    .elite-btn { width: 100%; padding: 32px; font-size: 1.5rem; border-radius: 100px; border: none; font-weight: 1000; background: var(--primary); color: #fff; cursor: pointer; box-shadow: 0 30px 70px rgba(79, 70, 229, 0.4); }
-    .elite-badges { font-size: 0.75rem; font-weight: 1000; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.15em; }
-
-    .accordion summary { cursor: pointer; list-style: none; font-weight: 1000; color: #1e1b4b; display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; border-top: 1.5px solid #f1f5f9; padding-top: 32px; }
-    input[type="color"] { height: 60px; width: 100%; border-radius: 20px; border: 3px solid #f1f5f9; cursor: pointer; background: #fff;-webkit-appearance:none; padding:6px;}
-
-    .hidden { display: none !important; }
-    .w-100 { width: 100%; }
-    .mb-0 { margin-bottom: 0 !important; }
-    .mb-32 { margin-bottom: 32px; }
+    .d-flex { display: flex; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .align-center { align-items: center; }
+    .text-center { text-align: center; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
     .mb-16 { margin-bottom: 16px; }
-    .mt-8 { margin-top: 8px; }
+    .mb-24 { margin-bottom: 24px; }
     .mt-12 { margin-top: 12px; }
     .mt-16 { margin-top: 16px; }
-    .mt-20 { margin-top: 20px; }
-    .mt-40 { margin-top: 40px; }
-    .mt-48 { margin-top: 48px; }
-    .p-20 { padding: 20px; }
-    .pt-16 { padding-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+    .mt-32 { margin-top: 32px; }
+    .m-0 { margin: 0; }
+    .mb-0 { margin-bottom: 0; }
+    .w-100 { width: 100%; }
+    .cursor-pointer { cursor: pointer; }
+    .font-800 { font-weight: 800; }
+    .font-850 { font-weight: 850; }
+    .font-600 { font-weight: 600; }
+    .text-muted { color: var(--text-muted); }
+    .hidden { display: none !important; }
 
-    @media (max-width: 1024px) {
-        .studio-layout { grid-template-columns: 1fr; }
-        .master-preview { position: static; margin-top: 56px; }
-        .couture-stage { width: 100%; height: auto; aspect-ratio: 1; padding: 40px; }
-        .couture-chip { transform: none !important; }
+    @media (max-width: 900px) {
+        .designer-grid { grid-template-columns: 1fr; }
+        .settings-sidebar { position: static; padding: 20px; }
+        .preview-frame { min-height: 300px; padding: 20px; }
     }
 </style>

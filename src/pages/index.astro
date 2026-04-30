@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
 
-const PAGE_TITLE = 'FormFix – Online Image Compressor and PDF Toolkit';
-const PAGE_DESC = 'FormFix provides browser-based tools to compress images, merge PDFs, generate QR codes, and create passport photos. High privacy with no file uploads.';
-const PAGE_KEYWORDS = 'image compressor, pdf merger, digital tools, signature maker, passport photo maker, formfix';
+
 
 const customSchema = {
   "@context": "https://schema.org",
@@ -90,6 +88,12 @@ const topTools = [
         icon: '🪄',
         href: '/background-remover',
         desc: 'Erase backgrounds from your photos or signatures instantly using our on-device AI algorithms.',
+    },
+    {
+        title: 'Signature Maker',
+        icon: '✒️',
+        href: '/digital-signature-maker',
+        desc: 'Draw your signature online and download a transparent PNG. Perfect for official exam forms.',
     }
 ];
 
@@ -135,10 +139,10 @@ const faqs = [
             </p>
 
             <div class="hero-cta-box mt-32 animate-in delay-100">
-                <a href="/compress-image" class="primary-btn hero-btn btn-elevate">
-                    Start Compressing Free <span class="btn-arrow">→</span>
+                <a href="/tools" class="primary-btn hero-btn btn-elevate">
+                    Open Digital Workspace <span class="btn-arrow">→</span>
                 </a>
-                <p class="hero-trust-signal">✓ Used by students, recruiters & professionals daily</p>
+
             </div>
         </div>
 
@@ -211,12 +215,12 @@ const faqs = [
 <section class="top-tools-section section-spacer bg-soft">
     <div class="container">
         <div class="section-title-wrap center">
-            <h2>Essential Web Tools</h2>
+            <h2>Essential Tools</h2>
         </div>
 
         <div class="bento-grid">
             <a href={topTools[0].href} class="clean-tool-card featured">
-                <span class="tool-icon large">{topTools[0].icon}</span>
+                <svg class="tool-svg large" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                 <div class="tool-head">
                     <h3>{topTools[0].title}</h3>
                 </div>
@@ -225,14 +229,14 @@ const faqs = [
             </a>
             <div class="bento-vertical-stack">
                 <a href={topTools[1].href} class="clean-tool-card horizontal">
-                    <span class="tool-icon">{topTools[1].icon}</span>
+                    <svg class="tool-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                     <div class="tool-content">
                         <h3>{topTools[1].title}</h3>
                         <p>{topTools[1].desc}</p>
                     </div>
                 </a>
                 <a href={topTools[2].href} class="clean-tool-card horizontal">
-                    <span class="tool-icon">{topTools[2].icon}</span>
+                    <svg class="tool-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 2-2 2m-7.61 7.61a2 2 0 1 1-2.83 2.83"/><path d="M21 12a9 9 0 1 1-9-9"/><path d="M10.79 5.29a9 9 0 0 1 7.92 7.92"/><path d="M11 5a9 9 0 0 0-6 6"/><path d="M7 9a4 4 0 1 0 0 8"/></svg>
                     <div class="tool-content">
                         <h3>{topTools[2].title}</h3>
                         <p>{topTools[2].desc}</p>
@@ -241,8 +245,8 @@ const faqs = [
             </div>
         </div>
 
-        <div class="all-tools-link mt-32">
-            <a href="/tools" class="secondary-btn">View All 30+ Free Tools →</a>
+        <div class="all-tools-link">
+            <a href="/tools" class="secondary-btn">View All Tools →</a>
         </div>
     </div>
 </section>
@@ -296,35 +300,25 @@ const faqs = [
     <div class="container">
         <div class="discovery-grid">
             
-            <div class="discovery-col">
-                <h4>Exact KB Targeting</h4>
-                <div class="discovery-links">
-                    <a href="/compress-image-to-20kb" class="text-link">Compress to 20KB</a>
-                    <a href="/compress-image-to-50kb" class="text-link">Compress to 50KB</a>
-                    <a href="/compress-image-to-100kb" class="text-link">Compress to 100KB</a>
-                    <a href="/compress-image-to-200kb" class="text-link">Compress to 200KB</a>
-                </div>
-            </div>
 
-            <div class="discovery-col">
-                <h4>Social & Official Sizes</h4>
-                <div class="discovery-links">
-                    <a href="/resize-image-for-passport" class="text-link">Passport Photo Resizer</a>
-                    <a href="/resize-image-for-instagram" class="text-link">Instagram Square Crop</a>
-                    <a href="/resize-image-for-linkedin" class="text-link">LinkedIn Profile Fit</a>
-                    <a href="/resize-image-for-youtube" class="text-link">YouTube Thumbnail</a>
-                </div>
-            </div>
 
-            <div class="discovery-col">
-                <h4>Technical Guides</h4>
-                <div class="discovery-links">
-                    <a href="/blog/how-to-compress-image-to-20kb" class="text-link">How to hit 20KB</a>
-                    <a href="/blog/best-image-size-for-online-forms" class="text-link">Form Dimension Standards</a>
-                    <a href="/blog/reduce-image-size-without-losing-quality" class="text-link">Lossless Guide</a>
-                </div>
-            </div>
 
+
+        </div>
+    </div>
+</section>
+
+<!-- 📣 SPREAD THE WORD -->
+<section class="share-section section-spacer bg-app">
+    <div class="container text-center">
+        <div class="share-card box-depth p-48 br-24">
+            <h2 class="mb-16">Love FormFix? Help others find us!</h2>
+            <p class="text-muted mb-32 max-600 mx-auto">We spend $0 on marketing to keep this tool free and private. If you found it useful, please share it with your friends or colleagues.</p>
+            <div class="share-buttons">
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20FormFix%20%E2%80%94%20the%20most%20private%20way%20to%20compress%20images%2C%20merge%20PDFs%2C%20and%20more.%20100%25%20browser-based.%20%23Privacy%20%23TechTools&url=https%3A%2F%2Fformfix.pages.dev" target="_blank" class="share-btn twitter">Share on X</a>
+                <a href="https://www.reddit.com/submit?url=https://formfix.pages.dev&title=A%20100%25%20private%2C%20zero-upload%20digital%20toolkit%20for%20everyone." target="_blank" class="share-btn reddit">Share on Reddit</a>
+                <a href="https://wa.me/?text=I%20found%20this%20amazing%20private%20tool%20to%20compress%20images%20and%20edit%20PDFs%20without%20uploading%20anything.%20Check%20it%20out:%20https://formfix.pages.dev" target="_blank" class="share-btn whatsapp">Share on WhatsApp</a>
+            </div>
         </div>
     </div>
 </section>
@@ -582,12 +576,12 @@ const faqs = [
 }
 .premium-stat-card {
     background: #1a1a1a;
-    padding: 16px 24px;
+    padding: 16px 20px;
     border-radius: 12px;
     border: 1px solid #222;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     transition: 0.3s;
 }
 .premium-stat-card:hover { border-color: #333; background: #222; }
@@ -647,6 +641,22 @@ const faqs = [
     transform: translateY(0);
 }
 
+/* ───── SHARE SECTION ───── */
+.share-card { background: var(--surface-100); border: 1px solid var(--border-subtle); max-width: 900px; margin: 0 auto; }
+.text-center { text-align: center; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.max-600 { max-width: 600px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-32 { margin-bottom: 32px; }
+.p-48 { padding: 48px; }
+.br-24 { border-radius: 24px; }
+.share-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.share-btn { padding: 12px 24px; border-radius: 99px; font-weight: 700; text-decoration: none; color: #fff; transition: 0.2s; font-size: 0.95rem; }
+.share-btn.twitter { background: #000; }
+.share-btn.reddit { background: #ff4500; }
+.share-btn.whatsapp { background: #25d366; }
+.share-btn:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1); }
+
 /* ───── RESPONSIVE CONSTRAINTS ───── */
 @media (max-width: 1024px) {
     .trust-banner { flex-direction: column; padding: 48px; text-align: center; }
@@ -655,29 +665,90 @@ const faqs = [
     .hero-container { grid-template-columns: 1fr; gap: 64px; text-align: center; }
     .hero-subtitle { margin: 0 auto 40px auto; }
     .hero-btn { width: 100%; display: flex; align-items: center; justify-content: center; }
+    /* Hero Trust Marquee */
+    .hero-trust-marquee { display: flex; align-items: center; gap: 16px; opacity: 0; animation: fadeIn 0.8s forwards 0.5s; flex-wrap: wrap; }
+    .trust-label { font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .trust-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+    .t-tag { padding: 6px 14px; background: var(--surface-100); border: 1.5px solid var(--border-subtle); border-radius: 100px; font-size: 0.8rem; font-weight: 800; color: var(--text-main); transition: 0.3s; }
+    .t-tag:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* Comparison Slider */
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
+    .comparison-card { background: #fff; padding: 16px; border-radius: 32px; border: 1.5px solid var(--border-subtle); }
+    .comparison-wrap { position: relative; width: 100%; height: 340px; border-radius: 20px; overflow: hidden; }
+    .comparison-img-box { position: absolute; inset: 0; overflow: hidden; }
+    .img-placeholder { width: 100%; height: 100%; background-size: cover; background-position: center; }
+    .after { border-left: 2px solid #fff; animation: autoSlide 6s ease-in-out infinite; width: 50%; z-index: 5; }
+    .tag-absolute { position: absolute; top: 16px; left: 16px; padding: 6px 12px; border-radius: 100px; font-size: 0.7rem; font-weight: 900; color: #fff; background: rgba(0,0,0,0.6); z-index: 10; backdrop-filter: blur(4px); }
+    .slider-handle { position: absolute; top: 0; bottom: 0; right: 0; width: 2px; background: #fff; z-index: 10; }
+    .slider-handle::after { content: ""; position: absolute; top: 50%; right: -12px; width: 24px; height: 24px; background: #fff; border-radius: 50%; transform: translateY(-50%); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+    @keyframes autoSlide {
+        0%, 100% { width: 20%; }
+        50% { width: 80%; }
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Why FormFix Pillars */
+    .feature-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 48px; }
+    .pillar-card { background: #fff; padding: 40px 32px; border-radius: 32px; border: 1.5px solid var(--border-subtle); transition: 0.3s; }
+    .pillar-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--shadow-lg); }
+    .pillar-icon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 24px; }
+    .pillar-card h3 { font-size: 1.4rem; font-weight: 850; margin-bottom: 12px; letter-spacing: -0.02em; }
+    .pillar-card p { color: var(--text-muted); font-weight: 500; line-height: 1.6; }
+
+    /* Live Impact */
+    .live-impact-section { padding: 48px 0; }
+    .impact-shield { background: var(--text-main); color: #fff; padding: 32px; border-radius: 24px; display: inline-block; min-width: 320px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+    .impact-num { display: block; font-size: 3rem; font-weight: 950; letter-spacing: -0.05em; color: var(--accent); margin-bottom: 4px; }
+    .impact-lbl { font-size: 0.9rem; font-weight: 700; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    @media (max-width: 900px) {
+        .feature-pillars { grid-template-columns: 1fr; gap: 20px; }
+        .pillar-card { padding: 32px 24px; }
+    }
     .product-preview-card { margin: 0 auto; width: 100%; }
 }
 
 @media (max-width: 768px) {
-    .bento-grid { grid-template-columns: 1fr; }
-    .clean-tool-card.featured { padding: 32px; }
-    .action-arrow { display: none; }
+    .saas-hero { padding: 100px 0 60px; text-align: center; }
+    .hero-title { font-size: 2.2rem; }
+    .text-gradient-tool { font-size: 2.25rem; }
+    .subtitle { font-size: 1rem; padding: 0 20px; }
+    .tool-main-workspace { border-radius: 16px; margin-bottom: 48px; }
+    .workspace-inner { padding: 24px 16px; }
+    .article-card { padding: 32px 20px; border-radius: 16px; }
+    .tool-info-article { margin-bottom: 48px; }
+
+    .hero-title { font-size: 2.2rem; line-height: 1.1; }
+    .hero-subtitle { font-size: 1rem; margin-bottom: 24px; }
+    .hero-btn { width: 100%; height: 56px; }
     
-    .workflow-grid { grid-template-columns: 1fr; gap: 40px; }
-    .section-spacer { padding: 56px 0; }
-    .trust-section { padding-bottom: 64px; }
-    .trust-banner { padding: 32px 24px; border-radius: 16px; }
-    .hero-title { font-size: 2.8rem; }
-    .saas-hero { padding: 80px 0 40px; }
+    .bento-grid { grid-template-columns: 1fr; gap: 16px; }
+    .clean-tool-card { padding: 24px; }
+    .clean-tool-card.featured { min-height: unset; padding: 32px 24px; }
+    .clean-tool-card.horizontal { padding: 20px; }
+    
+    .workflow-grid { grid-template-columns: 1fr; gap: 32px; }
+    .section-spacer { padding: 48px 0; }
+    
+    .trust-section-premium { padding: 64px 0; }
+    .trust-grid-layout { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+    .trust-copy h2 { font-size: 2rem; }
+    .trust-copy p { margin: 0 auto; }
+    .trust-badges { align-items: stretch; }
+    .premium-stat-card { justify-content: center; }
+
     .discovery-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
-    .minimal-faq summary { padding: 20px; font-size: 1rem; }
-    .faq-body { padding: 0 20px 20px; }
+    .minimal-faq summary { padding: 20px 0; font-size: 1rem; }
+    .faq-body { padding-bottom: 20px; }
 }
 </style>
 
 <script>
-    // Smooth reveal animations
     document.addEventListener('DOMContentLoaded', () => {
+        // Smooth reveal animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '50px'
@@ -687,13 +758,12 @@ const faqs = [
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Stop watching once visible
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
         document.querySelectorAll('.animate-fade-up').forEach(el => {
-            // Check if already in viewport
             const rect = el.getBoundingClientRect();
             if (rect.top < window.innerHeight && rect.bottom > 0) {
                 el.classList.add('visible');
@@ -703,17 +773,37 @@ const faqs = [
         });
 
         // Interactive Product Demo Logic
-        const dropZone = document.getElementById('demo-drop');
-        const triggerBtn = document.getElementById('demo-btn');
-        const resetBtn = document.getElementById('demo-reset');
+        const dropZone = document.getElementById('demo-drop') as HTMLElement | null;
+        const triggerBtn = document.getElementById('demo-btn') as HTMLElement | null;
+        const resetBtn = document.getElementById('demo-reset') as HTMLElement | null;
         
-        const stateDefault = document.getElementById('demo-default');
-        const stateLoading = document.getElementById('demo-loading');
-        const stateSuccess = document.getElementById('demo-success');
-        const progressFill = document.querySelector('.progress-fill');
+        const stateDefault = document.getElementById('demo-default') as HTMLElement | null;
+        const stateLoading = document.getElementById('demo-loading') as HTMLElement | null;
+        const stateSuccess = document.getElementById('demo-success') as HTMLElement | null;
+        const progressFill = document.querySelector('.progress-fill') as HTMLElement | null;
+
+        function initiateOptimization() {
+            if (dropZone && stateDefault && stateLoading && progressFill) {
+                dropZone.style.borderColor = 'var(--accent)';
+                dropZone.style.background = 'var(--surface-100)';
+                
+                stateDefault.classList.add('hidden');
+                stateLoading.classList.remove('hidden');
+                progressFill.style.width = '0%';
+                
+                setTimeout(() => { 
+                    progressFill.style.width = '100%'; 
+                    setTimeout(() => {
+                        if (stateLoading && stateSuccess) {
+                            stateLoading.classList.add('hidden');
+                            stateSuccess.classList.remove('hidden');
+                        }
+                    }, 100);
+                }, 500);
+            }
+        }
 
         if (dropZone && triggerBtn) {
-            // Simulate dragging in a file
             dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = '#0070f3'; dropZone.style.background = '#f0f7ff'; });
             dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.style.borderColor = ''; dropZone.style.background = ''; });
             dropZone.addEventListener('drop', (e) => { e.preventDefault(); initiateOptimization(); });
@@ -721,32 +811,21 @@ const faqs = [
             triggerBtn.addEventListener('click', () => { initiateOptimization(); });
         }
 
-        if (resetBtn) {
+        if (resetBtn && stateSuccess && stateDefault) {
             resetBtn.addEventListener('click', () => {
                 stateSuccess.classList.add('hidden');
                 stateDefault.classList.remove('hidden');
             });
         }
 
-        function initiateOptimization() {
-            // Visual feedback on start
-            if (dropZone) {
-                dropZone.style.borderColor = 'var(--accent)';
-                dropZone.style.background = 'var(--surface-100)';
-            }
-
-            stateDefault.classList.add('hidden');
-            stateLoading.classList.remove('hidden');
-            progressFill.style.width = '0%';
-            
-            // Fast simulation for professional feel
-            setTimeout(() => { 
-                progressFill.style.width = '100%'; 
-                setTimeout(() => {
-                    stateLoading.classList.add('hidden');
-                    stateSuccess.classList.remove('hidden');
-                }, 100);
-            }, 500);
+        // Live Counter Logic
+        const liveCounter = document.getElementById('live-counter');
+        if (liveCounter) {
+            let count = 241509;
+            setInterval(() => {
+                count += Math.floor(Math.random() * 3) + 1;
+                liveCounter.textContent = count.toLocaleString();
+            }, 3000);
         }
     });
 </script>

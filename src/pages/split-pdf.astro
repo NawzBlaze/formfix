@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
 
-const PAGE_TITLE = 'Split PDF Online - Extract Pages from PDF for Free';
+const PAGE_TITLE = 'Split PDF Online - Extract Pages from PDF for Free | FormFix';
 const PAGE_DESC = 'Easily extract specific pages from your PDF document or split it into multiple files. 100% free, private, and works locally in your browser without uploads.';
 const PAGE_KEYWORDS = 'split pdf, extract pdf pages, burst pdf, separate pdf pages online, free pdf splitter, private pdf split';
 
@@ -26,101 +26,112 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/split-pdf">
-    <div class="tool-wrapper animate-in">
-        <header class="tool-intro text-center">
-             <div class="brand-badge shadow-sm">✂️ PDF Splitter Engine</div>
-             <h1 class="main-h1">Split & <span class="highlight">Extract PDF</span></h1>
-             <p class="hero-sub">Select pages you want to keep and instantly create a new PDF. 100% private.</p>
-        </header>
+    <ToolWrapper title="Split PDF Files" subtitle="Extract specific pages from any PDF document quickly and securely." currentTool="split-pdf">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <!-- 1. Selection Step -->
+                  <div id="upload-stage" class="upload-zone show">
+                       <div class="upload-icon-circle">✂️</div>
+                       <h3 class="zone-title">Select PDF to Split</h3>
+                       <p class="zone-sub">Upload document to extract or remove pages</p>
+                       <button class="primary-btn px-32" onclick="document.getElementById('pdf-upload').click()">Browse PDF File</button>
+                       <input type="file" id="pdf-upload" class="hidden" accept="application/pdf" />
+                  </div>
 
-        <div class="glass-card tool-content shadow-lg max-w-lg mx-auto" id="main-card">
-            
-            <div id="upload-stage" class="upload-container shadow-sm">
-                 <div class="upload-circle mb-16"><span class="u-icon pulse-glow">✂️</span></div>
-                 <h3 class="u-title">Select PDF to Split</h3>
-                 <p class="u-sub">Load any PDF to extract specific pages.</p>
-                 <button class="primary-btn wide-btn profile-btn pulse-glow" onclick="document.getElementById('pdf-upload').click()">Browse PDF</button>
-                 <input type="file" id="pdf-upload" class="hidden" accept="application/pdf" />
-            </div>
+                  <!-- 2. Workspace Step -->
+                  <div id="editor-stage" class="hidden">
+                       <div class="workspace-layout">
+                            <div class="selection-grid-area">
+                                 <div class="grid-header mb-16">
+                                      <div class="d-flex align-center gap-12">
+                                           <h4 class="m-0 font-800">Select Pages</h4>
+                                           <span id="select-count" class="status-pill inverse">0 Selected</span>
+                                      </div>
+                                      <div class="bulk-actions">
+                                           <button id="select-all" class="text-link">Select All</button>
+                                           <span class="sep">|</span>
+                                           <button id="clear-all" class="text-link">Clear</button>
+                                      </div>
+                                 </div>
+                                 
+                                 <div id="pages-grid" class="pages-grid scroll-container shadow-inner">
+                                      <!-- Injected by JS -->
+                                 </div>
+                            </div>
 
-            <div id="loading-stage" class="hidden text-center py-48">
-                 <div class="mini-spinner mt-24 mb-16" style="margin: 0 auto; width: 40px; height: 40px;"></div>
-                 <p class="font-bold text-lg text-slate">Reading Document...</p>
-            </div>
-
-            <div id="editor-stage" class="hidden">
-                 
-                 <div class="info-banner mb-24 shadow-sm">
-                     <span class="f-icon">📜</span>
-                     <div class="f-text">
-                         <span class="f-name" id="doc-name">document.pdf</span>
-                         <span class="f-size" id="doc-pages">1 Page loaded</span>
-                     </div>
-                 </div>
-                 
-                 <p class="hint-text text-center mb-16">Click on pages below to select or deselect them. The highlighted pages will be extracted.</p>
-
-                 <!-- Pages Selection Grid -->
-                 <div id="pages-grid" class="pages-grid mb-24">
-                      <!-- Rendered Pages go here -->
-                 </div>
-                 
-                 <div class="selection-controls mb-24">
-                      <button id="select-all-btn" class="secondary-btn text-sm">Select All</button>
-                      <button id="clear-all-btn" class="secondary-btn text-sm">Clear Selection</button>
-                 </div>
-                 
-                 <div class="d-flex gap-16 wrap-mobile">
-                      <button id="reset-btn" class="secondary-btn wide-btn-half profile-btn">🗑️ Start Over</button>
-                      <button id="extract-btn" class="primary-btn wide-btn profile-btn pulse-glow" style="flex:1;">⬇️ Extract Selected Pages</button>
-                 </div>
-            </div>
-
+                            <div class="sidebar-controls">
+                                 <div class="settings-card shadow-sm mb-24">
+                                      <label class="section-label mb-16">File Metadata</label>
+                                      <div class="info-pill mb-24">
+                                           <span id="doc-name" class="name">document.pdf</span>
+                                           <span class="sep">|</span>
+                                           <span id="doc-pages" class="count">0 Pages</span>
+                                      </div>
+                                      
+                                      <button id="extract-btn" class="primary-btn wide-btn pulse-glow">Extract Selected Pages</button>
+                                 </div>
+                                 <div class="action-footer vertical">
+                                      <button class="secondary-btn wide-btn" onclick="location.reload()">↺ Change File</button>
+                                 </div>
+                                 <p class="privacy-note text-center mt-16 font-600">🔒 100% Client-side processing.</p>
+                            </div>
+                       </div>
+                  </div>
+             </div>
         </div>
 
-        <article class="pro-seo-article container mt-48">
+        <div slot="tool-info">
              <h2>The Fastest Way to Extract PDF Pages</h2>
-             <p>Need just one or two pages from a massive PDF report? Our <strong>Free PDF Splitter</strong> allows you to visually select exactly the pages you need and extract them into a brand new document instantly. The best part? It uses a revolutionary client-side engine meaning your sensitive documents are <strong>never uploaded to a server</strong>. The processing happens instantly right within your computer's RAM.</p>
+             <p>Need just one or two pages from a massive PDF report? Our <strong>Free PDF Splitter</strong> allows you to visually select exactly the pages you need and extract them into a brand new document instantly. The best part? It uses a revolutionary client-side engine meaning your sensitive documents are <strong>never uploaded to a server</strong>.</p>
              
-             <h3 class="mt-32">Data Privacy Guaranteed</h3>
-             <ul style="color:var(--slate); line-height:1.8; margin-left:20px; font-size:1.1rem">
-                <li><strong>No Server Uploads:</strong> Absolutely no risk of data theft. Your files never leave your browser for extraction.</li>
-                <li><strong>Retains Quality:</strong> Fixing your documents does not alter text or blurry images. We strictly extract the original vectors to retain a crisp 100% quality.</li>
-             </ul>
-        </article>
-
-        <RelatedTools currentTool="split-pdf" />
-    </div>
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>Will the extracted PDF be lower quality?</summary>
+                       <p>Absolutely not. We extract the original page data directly from the source PDF. This preserves all text vectors, images, and fonts at the original 100% resolution.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>Can I extract multiple non-sequential pages?</summary>
+                       <p>Yes. You can click on any individual pages across the entire document. Our tool will bundle all selected pages into a single new PDF document in the order they appear.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
 </BaseLayout>
 
-<script>
-    import { PDFDocument } from 'pdf-lib';
-    import * as pdfjsLib from 'pdfjs-dist';
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
-    // Set worker
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+<script is:inline>
+    const loadPdfLib = async () => {
+        if (window.PDFLib) return;
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+            script.onload = resolve; script.onerror = reject; document.head.appendChild(script);
+        });
+    };
 
     document.addEventListener('DOMContentLoaded', () => {
-        const fileInput = document.getElementById('pdf-upload') as HTMLInputElement;
-        const uploadStage = document.getElementById('upload-stage') as HTMLElement;
-        const loadingStage = document.getElementById('loading-stage') as HTMLElement;
-        const editorStage = document.getElementById('editor-stage') as HTMLElement;
-        const extractBtn = document.getElementById('extract-btn') as HTMLButtonElement;
-        const resetBtn = document.getElementById('reset-btn') as HTMLButtonElement;
-        const mainCard = document.getElementById('main-card') as HTMLElement;
+        const fileInput = document.getElementById('pdf-upload');
+        const uploadStage = document.getElementById('upload-stage');
+        const loadingStage = document.getElementById('loading-stage');
+        const editorStage = document.getElementById('editor-stage');
+        const extractBtn = document.getElementById('extract-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const mainCard = document.getElementById('main-card');
         
-        const docName = document.getElementById('doc-name') as HTMLElement;
-        const docPages = document.getElementById('doc-pages') as HTMLElement;
-        const pagesGrid = document.getElementById('pages-grid') as HTMLElement;
-        const selectAllBtn = document.getElementById('select-all-btn') as HTMLElement;
-        const clearAllBtn = document.getElementById('clear-all-btn') as HTMLElement;
+        const docName = document.getElementById('doc-name');
+        const docPages = document.getElementById('doc-pages');
+        const pagesGrid = document.getElementById('pages-grid');
+        const selectAllBtn = document.getElementById('select-all-btn');
+        const clearAllBtn = document.getElementById('clear-all-btn');
 
-        let pdfBytesOriginal: ArrayBuffer | null = null;
+        let pdfBytesOriginal = null;
         let fileName = 'document.pdf';
         let totalPagesNum = 0;
-        let selectedIndices = new Set<number>(); // 0-indexed
+        let selectedIndices = new Set(); // 0-indexed
 
-        fileInput.addEventListener('change', async (e: any) => {
+        fileInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if(!file || file.type !== 'application/pdf') return;
             fileName = file.name;
@@ -144,7 +155,7 @@ const customSchema = {
                     const page = await pdf.getPage(i);
                     const viewport = page.getViewport({ scale: 0.4 });
                     const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d')!;
+                    const ctx = canvas.getContext('2d');
                     canvas.width = viewport.width;
                     canvas.height = viewport.height;
                     
@@ -164,7 +175,7 @@ const customSchema = {
                     `;
                     
                     item.addEventListener('click', () => {
-                         const idx = parseInt(item.dataset.index!);
+                         const idx = parseInt(item.dataset.index);
                          if (selectedIndices.has(idx)) {
                              selectedIndices.delete(idx);
                              item.classList.remove('selected');
