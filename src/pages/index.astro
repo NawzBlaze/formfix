@@ -1,17 +1,69 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+
+const PAGE_TITLE = 'FormFix - 100% Private Image Compressor, Passport Photo Maker & PDF Tools';
+const PAGE_DESC = 'The safest way to prepare official documents. 100% private image compressor, global passport photo maker, signature resizer, and PDF tools. No server uploads.';
+const PAGE_KEYWORDS = 'image compressor to 20kb, professional photo resizer, global passport maker, signature maker online, merge pdf online free, formfix private tools';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "FormFix - Free Online Tool Hub",
+      "url": "https://formfix.pages.dev/",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "FormFix is a free, private digital toolkit for images, PDFs, and utilities. 100% privacy with zero server uploads. Features high-quality photo resizer, PDF tools, and 30+ other free utilities.",
+      "featureList": [
+        "Compress image to exact KB size (20KB, 50KB, 100KB)",
+        "100% Private local browser processing",
+        "Complete PDF Suite (Merge, Split, Rotate)",
+        "QR Code & Digital Signature Maker",
+        "AI-powered Background Remover & OCR"
+      ]
+    },
+    {
+      "@type": "Organization",
+      "url": "https://formfix.pages.dev/",
+      "logo": "https://formfix.pages.dev/favicon.png?v=5",
+      "name": "FormFix",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "formfix.support@gmail.com",
+        "contactType": "customer support"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
         {
           "@type": "Question",
-          "name": "Which tool provides the best passport size photo maker?",
+          "name": "What is the best and most private free image compressor?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "FormFix provides the most accurate passport photo maker globally. It automatically sets official dimensions and allows you to compress the image precisely to any KB requirement seamlessly."
+            "text": "FormFix is widely considered the best multi-tool because it processes images 100% completely offline in your browser. Unlike other online tools, FormFix never uploads your sensitive data to cloud servers. This guarantees ultimate privacy while compressing photos to exact targets like 20KB or 50KB."
           }
         },
         {
           "@type": "Question",
-          "name": "Is there an alternative to standard online PDF mergers that is actually private?",
+          "name": "How can I resize a photo to 2x2 inches for a US visa?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, FormFix acts as the most secure alternative. Because it utilizes WebAssembly and JavaScript, it merges PDF files directly using your device's memory. Your PDFs are never exposed to the internet."
+            "text": "Our Global Passport Studio supports US 2x2 inch standards perfectly. Simply upload your photo, select the US Passport preset, and our tool will handle the DPI and dimension conversion locally in your browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it safe to merge PDF files online?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "With FormFix, it is 100% safe. We use client-side PDF libraries, meaning the merging happens on your computer, not our server. Your private documents are never seen by us or stored anywhere."
           }
         }
       ]
@@ -19,272 +71,173 @@
   ]
 };
 
-const topTools = [
-    {
-        title: 'Image Compressor',
-        icon: '🎯',
-        href: '/compress-image',
-        desc: 'Reduce photo file size accurately to specific targets like 20KB or 50KB without noticeable quality loss.',
-        featured: true
-    },
-    {
-        title: 'PDF Merger',
-        icon: '📄',
-        href: '/merge-pdf',
-        desc: 'Combine multiple PDF documents into a single file quickly. 100% local processing keeps your documents private.',
-    },
-    {
-        title: 'Background Remover',
-        icon: '🪄',
-        href: '/background-remover',
-        desc: 'Erase backgrounds from your photos or signatures instantly using our on-device AI algorithms.',
-    },
-    {
-        title: 'Signature Maker',
-        icon: '✒️',
-        href: '/digital-signature-maker',
-        desc: 'Draw your signature online and download a transparent PNG. Perfect for official exam forms.',
-    }
-];
-
-const howItWorks = [
-    { step: '01', title: 'Select File', desc: 'Drag and drop your image or document. It stays strictly in your browser.' },
-    { step: '02', title: 'Set Target', desc: 'Choose precise KB sizes, document orders, or visual tool settings easily.' },
-    { step: '03', title: 'Instant Output', desc: 'Download your optimized file immediately with zero server wait times.' },
-];
-
-const faqs = [
-    {
-        q: 'Does FormFix upload my files to any server?',
-        a: 'Absolutely not. FormFix processes everything directly inside your web browser using JavaScript. Your files never leave your device. This makes it 100% safe for sensitive documents.'
-    },
-    {
-        q: 'How do I compress an image to exactly 20KB?',
-        a: 'Navigate to the Image Compressor tool, upload your photo, type your target KB, and hit compress. Our smart algorithm handles the rest.'
-    },
-    {
-        q: 'Is FormFix genuinely free?',
-        a: 'Yes, 100% free. No watermarks, no sign-ups, and no daily file limits. Tools should be fast and accessible.'
-    },
-    {
-        q: 'What formats are supported?',
-        a: 'We support JPG, JPEG, PNG, WebP, and standard PDF formats across all integrated tools.'
-    }
-];
+const faqs = customSchema["@graph"][2].mainEntity.map(q => ({ q: q.name, a: q.acceptedAnswer.text }));
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="home" canonicalPath="/">
-
-<!-- 🌟 FOCUSED HERO SECTION -->
-<section class="saas-hero">
-    <div class="container hero-container">
-        <div class="hero-content animate-in">
-
-            <h1 class="hero-title">
-                Compress Images to Exact KB Size — <span class="text-gradient">No Uploads, No Quality Loss</span>
-            </h1>
-            
-            <p class="hero-subtitle">
-                A professional-grade toolkit that processes your files securely in your browser. Global Standard Sizes for web portals.
-            </p>
-
-            <div class="hero-cta-box mt-32 animate-in delay-100">
-                <a href="/tools" class="primary-btn hero-btn btn-elevate">
-                    Open Digital Workspace <span class="btn-arrow">→</span>
-                </a>
-
-            </div>
-        </div>
-
-        <div class="hero-visual animate-in delay-200">
-            <div class="product-preview-card box-depth signature-card" id="demo-card">
-                <div class="preview-header">
-                    <div class="window-dots">
-                        <span class="dot-red"></span>
-                        <span class="dot-yellow"></span>
-                        <span class="dot-green"></span>
-                    </div>
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema}>
+    
+    <!-- 🚀 GLOBAL HERO -->
+    <section class="saas-hero">
+        <div class="container hero-content-grid">
+            <div class="hero-text-wrap animate-in">
+                <div class="badge-row">
+                    <span class="premium-badge"><span class="icon">✨</span> 100% Private & Browser-Based</span>
                 </div>
+                <h1>
+                    Professional Digital Toolkit <br />
+                    <span class="text-gradient">For Every Requirement.</span>
+                </h1>
                 
-                <!-- DEFAULT STATE -->
-                <div class="preview-body" id="demo-default">
-                    <div class="preview-upload-zone" id="demo-drop">
-                        <div class="upload-icon-box">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <p class="hero-subtitle">
+                    A professional-grade toolkit that processes your files securely in your browser. Global Standard Sizes for web portals.
+                </p>
+
+                <div class="hero-cta-box mt-32 animate-in delay-100">
+                    <a href="/tools" class="primary-btn hero-btn btn-elevate">
+                        Open Digital Workspace <span class="btn-arrow">→</span>
+                    </a>
+                    <div class="hero-trust-marquee mt-24">
+                        <span class="trust-label">Optimized for:</span>
+                        <div class="trust-tags">
+                            <a href="/compress-image-to-20kb" class="t-tag">20KB/50KB</a>
+                            <a href="/resize-image-for-linkedin" class="t-tag">LinkedIn</a>
+                            <a href="/resize-image-for-instagram" class="t-tag">Instagram</a>
+                            <a href="/official-passport-photo-maker" class="t-tag">Global Passports</a>
+                            <a href="/signature-maker" class="t-tag">E-Signatures</a>
                         </div>
-                        <div class="upload-label">Drag & Drop Image</div>
-                    </div>
-                    <div class="preview-controls">
-                        <div class="control-row">
-                            <span class="control-label">Target Size:</span>
-                            <div class="control-input">
-                                <span class="kb-val">20 KB</span>
-                            </div>
-                        </div>
-                        <button class="preview-btn active-state brand-btn" id="demo-btn">
-                            Optimize Image
-                        </button>
                     </div>
                 </div>
+            </div>
 
-                <!-- LOADING STATE -->
-                <div class="preview-body hidden" id="demo-loading">
-                    <div class="loading-state text-center">
-                        <div class="fun-spinner"></div>
-                        <p class="loading-text">Processing locally...</p>
-                        <div class="progress-track"><div class="progress-fill"></div></div>
-                    </div>
-                </div>
-
-                <!-- SUCCESS STATE -->
-                <div class="preview-body hidden" id="demo-success">
-                    <div class="success-state text-center">
-                        <h4 class="success-title">Compression Complete</h4>
-                        <div class="stat-compare">
-                            <div class="stat-box">
-                                <span class="stat-label">Original</span>
-                                <span class="stat-old">2.4 MB</span>
-                            </div>
-                            <div class="stat-box">
-                                <span class="stat-label">Result</span>
-                                <span class="stat-new">19.8 KB</span>
-                            </div>
+            <div class="hero-visual animate-in delay-200">
+                <div class="product-preview-card box-depth signature-card" id="demo-card">
+                    <div class="preview-header">
+                        <div class="window-dots">
+                            <span class="dot-red"></span>
+                            <span class="dot-yellow"></span>
+                            <span class="dot-green"></span>
                         </div>
-                        <button class="preview-btn success-btn" id="demo-reset">
-                            Download File
-                        </button>
+                    </div>
+                    
+                    <!-- DEFAULT STATE -->
+                    <div class="preview-body" id="demo-default">
+                        <div class="preview-upload-zone" id="demo-drop">
+                            <div class="upload-icon-circle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            </div>
+                            <h3>Drag document here</h3>
+                            <p>or click to select file</p>
+                            <span class="tiny-text">Max size 25MB • Secure Local Processing</span>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- 🛠️ BENTO TOOLS GRID -->
-<section class="top-tools-section section-spacer bg-soft">
-    <div class="container">
-        <div class="section-title-wrap center">
-            <h2>Essential Tools</h2>
-        </div>
-
-        <div class="bento-grid">
-            <a href={topTools[0].href} class="clean-tool-card featured">
-                <svg class="tool-svg large" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                <div class="tool-head">
-                    <h3>{topTools[0].title}</h3>
-                </div>
-                <p>{topTools[0].desc}</p>
-                <div class="featured-arrow">→</div>
-            </a>
-            <div class="bento-vertical-stack">
-                <a href={topTools[1].href} class="clean-tool-card horizontal">
-                    <svg class="tool-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <div class="tool-content">
-                        <h3>{topTools[1].title}</h3>
-                        <p>{topTools[1].desc}</p>
-                    </div>
+    <!-- ⚡ CORE FEATURES GRID -->
+    <section class="tools-grid-section section-spacer" id="popular-tools">
+        <div class="container">
+            <div class="section-title-wrap center">
+                <div class="sub-label">Instant Access</div>
+                <h2>The Essentials</h2>
+            </div>
+            
+            <div class="bento-grid">
+                <a href="/compress-image" class="bento-card tool-card animate-in">
+                    <div class="card-icon blue">📸</div>
+                    <h3>Image Compressor</h3>
+                    <p>Reduce file size without losing sharpness. Target 20KB, 50KB, or custom targets.</p>
                 </a>
-                <a href={topTools[2].href} class="clean-tool-card horizontal">
-                    <svg class="tool-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 2-2 2m-7.61 7.61a2 2 0 1 1-2.83 2.83"/><path d="M21 12a9 9 0 1 1-9-9"/><path d="M10.79 5.29a9 9 0 0 1 7.92 7.92"/><path d="M11 5a9 9 0 0 0-6 6"/><path d="M7 9a4 4 0 1 0 0 8"/></svg>
-                    <div class="tool-content">
-                        <h3>{topTools[2].title}</h3>
-                        <p>{topTools[2].desc}</p>
-                    </div>
+                <a href="/official-passport-photo-maker" class="bento-card tool-card animate-in delay-50">
+                    <div class="card-icon purple">🛂</div>
+                    <h3>Passport Studio</h3>
+                    <p>US, UK, EU, and Global ID photo maker with precise alignment guides.</p>
+                </a>
+                <a href="/merge-pdf" class="bento-card tool-card animate-in delay-100">
+                    <div class="card-icon orange">📄</div>
+                    <h3>PDF Toolkit</h3>
+                    <p>Merge, Split, and Rotate PDFs 100% locally on your computer.</p>
+                </a>
+                <a href="/signature-maker" class="bento-card tool-card animate-in delay-150">
+                    <div class="card-icon green">✍️</div>
+                    <h3>Signature Maker</h3>
+                    <p>Draw or type your digital signature with professional transparency.</p>
                 </a>
             </div>
         </div>
+    </section>
 
-        <div class="all-tools-link">
-            <a href="/tools" class="secondary-btn">View All Tools →</a>
-        </div>
-    </div>
-</section>
-
-<!-- ⚡ HOW IT WORKS -->
-<section class="workflow-section section-spacer bg-light">
-    <div class="container">
-        <div class="section-title-wrap center">
-            <h2>Frictionless Workflow</h2>
-        </div>
-        <div class="workflow-grid">
-            {howItWorks.map(step => (
-                <div class="workflow-step">
-                    <div class="step-num">{step.step}</div>
-                    <h3>{step.title}</h3>
-                    <p>{step.desc}</p>
-                </div>
-            ))}
-        </div>
-    </div>
-</section>
-
-<!-- 🛡️ TRUST SECTION (Dark Palette) -->
-<section class="trust-section-premium section-spacer">
-    <div class="container">
-        <div class="trust-grid-layout">
-            <div class="trust-copy">
-                <h2>Zero-Persistence Architecture.</h2>
-                <p>FormFix fundamentally respects your privacy. Every action—compressing photos, merging PDFs, generating signatures—happens <strong>locally inside your web browser</strong> via modern JavaScript APIs. We never receive, process, or store your personal files on our servers.</p>
-            </div>
-            <div class="trust-badges">
-                <div class="premium-stat-card">
-                    <span class="p-icon">🛡️</span>
-                    <div class="p-text"><strong>100%</strong> Client-Side</div>
-                </div>
-                <div class="premium-stat-card">
-                    <span class="p-icon">⚡</span>
-                    <div class="p-text"><strong>Instant</strong> Offline Execution</div>
-                </div>
-                <div class="premium-stat-card">
-                    <span class="p-icon">🔒</span>
-                    <div class="p-text"><strong>Zero</strong> Server Logs</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 🌍 GLOBAL SEO DISCOVERY FOOTER -->
-<section class="niche-tools-section">
-    <div class="container">
-
-    </div>
-</section>
-
-<!-- 📣 SPREAD THE WORD -->
-<section class="share-section section-spacer bg-app">
-    <div class="container text-center">
-        <div class="share-card box-depth p-48 br-24">
-            <h2 class="mb-16">Love FormFix? Help others find us!</h2>
-            <p class="text-muted mb-32 max-600 mx-auto">We spend $0 on marketing to keep this tool free and private. If you found it useful, please share it with your friends or colleagues.</p>
-            <div class="share-buttons">
-                <a href="https://twitter.com/intent/tweet?text=Check%20out%20FormFix%20%E2%80%94%20the%20most%20private%20way%20to%20compress%20images%2C%20merge%20PDFs%2C%20and%20more.%20100%25%20browser-based.%20%23Privacy%20%23TechTools&url=https%3A%2F%2Fformfix.pages.dev" target="_blank" class="share-btn twitter">Share on X</a>
-                <a href="https://www.reddit.com/submit?url=https://formfix.pages.dev&title=A%20100%25%20private%2C%20zero-upload%20digital%20toolkit%20for%20everyone." target="_blank" class="share-btn reddit">Share on Reddit</a>
-                <a href="https://wa.me/?text=I%20found%20this%20amazing%20private%20tool%20to%20compress%20images%20and%20edit%20PDFs%20without%20uploading%20anything.%20Check%20it%20out:%20https://formfix.pages.dev" target="_blank" class="share-btn whatsapp">Share on WhatsApp</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ❓ FAQS -->
-<section class="faq-section section-spacer" id="faq">
-    <div class="container">
-        <div class="section-title-wrap center">
-            <h2>Frequently Asked Questions</h2>
-        </div>
-        <div class="faq-list">
-            {faqs.map(item => (
-                <details class="minimal-faq">
-                    <summary>{item.q} <span class="indicator">+</span></summary>
-                    <div class="faq-body">
-                        <p>{item.a}</p>
+    <!-- 🌍 GLOBAL SEO DISCOVERY FOOTER -->
+    <section class="niche-tools-section">
+        <div class="container">
+            <div class="discovery-grid">
+                <div class="discovery-col">
+                    <h4>Global Essentials</h4>
+                    <div class="discovery-links">
+                        <a href="/compress-image" class="text-link">Smart Compressor</a>
+                        <a href="/resize-image-for-linkedin" class="text-link">LinkedIn Profile</a>
+                        <a href="/resize-image-for-instagram" class="text-link">Instagram Square</a>
+                        <a href="/resize-image-for-us-passport" class="text-link">US Passport (2x2")</a>
                     </div>
-                </details>
-            ))}
+                </div>
+
+                <div class="discovery-col">
+                    <h4>Standardized Sizes</h4>
+                    <div class="discovery-links">
+                        <a href="/official-passport-photo-maker" class="text-link">Global Passport Studio</a>
+                        <a href="/compress-image-to-20kb" class="text-link">Compress to 20KB</a>
+                        <a href="/signature-maker" class="text-link">E-Signature Tool</a>
+                        <a href="/qr-code-generator" class="text-link">QR Code Generator</a>
+                    </div>
+                </div>
+
+                <div class="discovery-col">
+                    <h4>Technical Guides</h4>
+                    <div class="discovery-links">
+                        <a href="/blog/how-to-compress-image-to-20kb" class="text-link">How to hit 20KB exactly</a>
+                        <a href="/blog/best-image-size-for-online-forms" class="text-link">Portal Dimension Guide</a>
+                        <a href="/blog/reduce-image-size-without-losing-quality" class="text-link">Compression Secrets</a>
+                        <a href="/guides/make-signature-transparent" class="text-link">Clear Signature Guide</a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <!-- 📣 SPREAD THE WORD -->
+    <section class="share-section section-spacer bg-app">
+        <div class="container text-center">
+            <div class="share-card box-depth p-48 br-24">
+                <h2 class="mb-16">Love FormFix? Help others find us!</h2>
+                <p class="text-muted mb-32 max-600 mx-auto">We spend $0 on marketing to keep this tool free and private. If you found it useful, please share it with your friends or colleagues.</p>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?text=Check%20out%20FormFix%20%E2%80%94%20the%20most%20private%20way%20to%20compress%20images%2C%20merge%20PDFs%2C%20and%20more.%20100%25%20browser-based.%20%23Privacy%20%23TechTools&url=https%3A%2F%2Fformfix.pages.dev" target="_blank" class="share-btn twitter">Share on X</a>
+                    <a href="https://www.reddit.com/submit?url=https://formfix.pages.dev&title=A%20100%25%20private%2C%20zero-upload%20digital%20toolkit%20for%20everyone." target="_blank" class="share-btn reddit">Share on Reddit</a>
+                    <a href="https://wa.me/?text=I%20found%20this%20amazing%20private%20tool%20to%20compress%20images%20and%20edit%20PDFs%20without%20uploading%20anything.%20Check%20it%20out:%20https://formfix.pages.dev" target="_blank" class="share-btn whatsapp">Share on WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ❓ FAQS -->
+    <section class="faq-section section-spacer" id="faq">
+        <div class="container">
+            <div class="section-title-wrap center">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                {faqs.map(item => (
+                    <details class="minimal-faq">
+                        <summary>{item.q} <span class="indicator">+</span></summary>
+                        <div class="faq-body">
+                            <p>{item.a}</p>
+                        </div>
+                    </details>
+                ))}
+            </div>
+        </div>
+    </section>
 
 </BaseLayout>
 
@@ -297,479 +250,113 @@ const faqs = [
 .section-title-wrap { margin-bottom: 48px; }
 .section-title-wrap.center { text-align: center; }
 .section-title-wrap h2 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 12px; }
-.hero-trust-signal {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: 20px;
-}
+
 .btn-arrow { margin-left: 8px; font-weight: 400; transition: margin 0.2s; }
 .hero-btn:hover .btn-arrow { margin-left: 12px; }
 
 /* ───── CORE LAYOUT OVERRIDES ───── */
 .saas-hero {
     position: relative;
-    padding: 80px 0 60px;
-    background: var(--bg-app);
-    border-bottom: 1px solid var(--border-subtle);
-}
-
-.hero-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
-}
-
-.hero-title {
-    font-size: 3.5rem;
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.04em;
-    color: var(--text-main);
-    margin-bottom: 24px;
-}
-
-.text-gradient {
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* ───── HERO VISUAL PREVIEW ───── */
-.product-preview-card {
-    background: var(--surface-100);
-    border-radius: 12px;
-    border: 1px solid var(--border-subtle);
-    max-width: 440px;
-    margin-left: auto;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-}
-
-.preview-header {
-    background: var(--surface-50);
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border-subtle);
-    display: flex;
-    align-items: center;
-}
-
-.window-dots {
-    display: flex;
-    gap: 6px;
-}
-.window-dots span {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-.dot-red { background: #ff5f56; }
-.dot-yellow { background: #ffbd2e; }
-.dot-green { background: #27c93f; }
-
-.preview-title-bar { font-size: 0.75rem; font-weight: 700; color: var(--surface-600); text-transform: uppercase; letter-spacing: 0.05em; }
-
-.preview-body { padding: 24px; }
-.preview-upload-zone {
-    border: 2px dashed var(--surface-300);
-    border-radius: 8px;
-    background: #fafafa;
-    height: 160px;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    margin-bottom: 24px;
-    transition: all 0.2s;
-    cursor: pointer;
-}
-.preview-upload-zone:hover {
-    border-color: var(--accent);
+    padding: 120px 0 100px;
     background: #fff;
+    overflow: hidden;
 }
-.upload-icon-box {
-    margin-bottom: 12px;
-    color: var(--surface-400);
+
+.hero-content-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 64px;
+    align-items: center;
 }
-.upload-label { font-weight: 700; color: var(--text-main); font-size: 0.95rem; }
 
-.control-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.control-label { font-size: 0.85rem; font-weight: 600; color: var(--surface-600); }
-.control-input { background: var(--bg-app); border: 1px solid var(--border-subtle); padding: 6px 12px; border-radius: 4px; font-weight: 700; font-size: 0.9rem; }
+.hero-text-wrap h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.05em;
+    margin-bottom: 24px;
+    color: #111;
+}
 
-.preview-btn { width: 100%; border: none; padding: 12px; text-align: center; border-radius: 6px; font-weight: 700; font-size: 0.95rem; cursor: pointer; }
-.brand-btn { background: var(--text-main); color: var(--bg-app); }
-.brand-btn:hover { background: var(--surface-800); }
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: #555;
+    line-height: 1.6;
+    max-width: 540px;
+    margin-bottom: 32px;
+}
 
-/* Interactive Demo Core */
-.hidden { display: none !important; }
-.loading-state { padding: 24px 0; }
-.fun-spinner { width: 32px; height: 32px; border: 3px solid var(--surface-200); border-top-color: var(--text-main); border-radius: 50%; margin: 0 auto 16px auto; animation: spin 0.8s linear infinite; }
-@keyframes spin { 100% { transform: rotate(360deg); } }
-.loading-text { font-weight: 600; color: var(--surface-700); font-size: 0.95rem; }
-.progress-track { height: 4px; background: var(--surface-200); border-radius: 2px; overflow: hidden; width: 100%; margin-top: 16px; }
-.progress-fill { height: 100%; width: 0%; background: var(--text-main); transition: width 0.1s linear; }
-
-.success-state { padding: 8px 0; }
-.success-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; }
-.stat-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; padding: 16px; background: var(--surface-50); border-radius: 6px; }
-.stat-box { display: flex; flex-direction: column; gap: 2px; }
-.stat-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; color: var(--surface-500); }
-.stat-old { color: var(--surface-400); text-decoration: line-through; font-size: 0.9rem; }
-.stat-new { font-weight: 800; font-size: 1.1rem; color: var(--text-main); }
-.success-btn { background: var(--success); color: var(--bg-app); }
-
-/* ───── BENTO TOOLS GRID ───── */
+/* Tool Cards */
 .bento-grid {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 24px;
-    margin-bottom: 48px;
-}
-.bento-vertical-stack {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 24px;
 }
-.clean-tool-card {
-    background: var(--surface-100);
-    border: 1px solid #eee;
-    padding: 32px;
-    border-radius: 12px;
-    text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
-    display: flex; flex-direction: column;
-    position: relative;
-    overflow: hidden;
-}
-.clean-tool-card:hover {
-    border-color: var(--accent);
-    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.06);
-    transform: translateY(-4px);
-}
-.clean-tool-card.featured { justify-content: flex-start; min-height: 380px; }
-.clean-tool-card.horizontal { flex-direction: row; gap: 20px; align-items: center; padding: 24px 32px; }
-.tool-icon { font-size: 1.5rem; color: var(--accent); }
-.tool-icon.large { font-size: 2.5rem; margin-bottom: 24px; }
-.tool-head h3, .tool-content h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main); letter-spacing: -0.02em; }
-.clean-tool-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
-.featured-arrow { position: absolute; bottom: 32px; right: 32px; font-size: 1.5rem; color: #eee; transition: 0.3s; }
-.clean-tool-card:hover .featured-arrow { color: var(--accent); transform: translateX(8px); }
-.action-arrow { display: none; }
 
-.all-tools-link { 
-    text-align: center; 
-    display: flex;
-    justify-content: center;
-}
-.all-tools-link .secondary-btn {
+.bento-card {
     background: #fff;
-    border: 1px solid var(--border-subtle);
-    padding: 12px 24px;
-    border-radius: 99px;
-    font-weight: 700;
-    color: var(--text-main);
+    border: 1px solid rgba(0,0,0,0.06);
+    padding: 32px;
+    border-radius: 24px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
-    transition: 0.2s;
-}
-.all-tools-link .secondary-btn:hover {
-    background: var(--surface-50);
-    transform: translateY(-2px);
+    color: inherit;
 }
 
-/* ───── WORKFLOW ───── */
-.workflow-section { background: var(--bg-app); }
-.workflow-grid {
+.bento-card:hover {
+    transform: translateY(-8px);
+    border-color: #4f46e5;
+    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+/* Niche Discovery Grid */
+.niche-tools-section {
+    background: #fafafa;
+    border-top: 1px solid #f0f0f0;
+    padding: 80px 0;
+}
+
+.discovery-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 48px;
 }
-.workflow-step { position: relative; }
-.step-num { font-size: 1rem; font-weight: 800; color: var(--text-main); border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 8px; margin-bottom: 24px; }
-.workflow-step h3 { font-size: 1.25rem; margin-bottom: 12px; font-weight: 800; color: var(--text-main); }
-.workflow-step p { color: var(--text-muted); line-height: 1.6; }
 
-/* ───── TRUST SECTION ───── */
-.trust-section-premium { 
-    background: #111111; 
-    padding: 100px 0;
-    color: #fff;
+.discovery-col h4 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    margin-bottom: 24px;
 }
-.trust-grid-layout {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 80px;
-    align-items: center;
-}
-.trust-copy h2 { 
-    font-size: 2.5rem; 
-    font-weight: 800;
-    margin-bottom: 20px; 
-    letter-spacing: -0.04em;
-    color: #fff;
-}
-.trust-copy p { 
-    font-size: 1.1rem; 
-    color: #999; 
-    line-height: 1.7; 
-    max-width: 540px; 
-}
-.trust-badges { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 16px; 
-}
-.premium-stat-card {
-    background: #1a1a1a;
-    padding: 16px 20px;
-    border-radius: 12px;
-    border: 1px solid #222;
+
+.discovery-links {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 12px;
-    transition: 0.3s;
-}
-.premium-stat-card:hover { border-color: #333; background: #222; }
-.premium-stat-card .p-icon { font-size: 1.2rem; }
-.premium-stat-card .p-text { font-size: 0.95rem; font-weight: 600; color: #ccc; }
-.premium-stat-card strong { color: #fff; }
-
-/* ───── SEO DISCOVERY FOOTER ───── */
-.niche-tools-section { padding: 64px 0; background: var(--surface-50); border-top: 1px solid var(--border-subtle); }
-.discovery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; max-width: 1000px; margin: 0 auto; }
-.discovery-col h4 { font-size: 1rem; color: var(--text-main); margin-bottom: 20px; font-weight: 800; }
-.discovery-links { display: flex; flex-direction: column; gap: 12px; }
-.text-link { color: var(--text-muted); font-size: 0.95rem; font-weight: 600; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px; transition: 0.2s; }
-.text-link:hover { color: var(--text-main); text-decoration-color: var(--accent); }
-
-/* ───── FAQS ───── */
-.faq-section { background: #fff; border-top: 1px solid var(--border-subtle); }
-.faq-list { max-width: 800px; margin: 0 auto; }
-.minimal-faq { border-bottom: 1px solid var(--border-subtle); padding: 8px 0; }
-.minimal-faq:last-child { border-bottom: none; }
-.minimal-faq summary { 
-    padding: 24px 0; 
-    font-weight: 700; 
-    font-size: 1.1rem; 
-    cursor: pointer; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    list-style: none; 
-    color: var(--text-main); 
-}
-.minimal-faq summary::-webkit-details-marker { display: none; }
-.indicator { font-size: 1.2rem; color: var(--text-muted); font-weight: 400; }
-.minimal-faq[open] .indicator { transform: rotate(45deg); color: var(--text-main); }
-.faq-body { padding: 0 0 24px 0; color: var(--text-muted); line-height: 1.7; font-size: 1.05rem; }
-
-/* ───── ANIMATIONS ───── */
-.animate-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-.animate-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-.delay-100 { transition-delay: 0.1s; }
-.delay-200 { transition-delay: 0.2s; }
-
-.animate-fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.animate-fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
 }
 
-/* ───── SHARE SECTION ───── */
-.share-card { background: var(--surface-100); border: 1px solid var(--border-subtle); max-width: 900px; margin: 0 auto; }
-.text-center { text-align: center; }
-.mx-auto { margin-left: auto; margin-right: auto; }
-.max-600 { max-width: 600px; }
-.mb-16 { margin-bottom: 16px; }
-.mb-32 { margin-bottom: 32px; }
-.p-48 { padding: 48px; }
-.br-24 { border-radius: 24px; }
-.share-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.share-btn { padding: 12px 24px; border-radius: 99px; font-weight: 700; text-decoration: none; color: #fff; transition: 0.2s; font-size: 0.95rem; }
-.share-btn.twitter { background: #000; }
-.share-btn.reddit { background: #ff4500; }
-.share-btn.whatsapp { background: #25d366; }
-.share-btn:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1); }
-
-/* ───── RESPONSIVE CONSTRAINTS ───── */
-@media (max-width: 1024px) {
-    .trust-banner { flex-direction: column; padding: 48px; text-align: center; }
-    .trust-content p { max-width: 100%; margin: 0 auto; }
-    .trust-stats { flex-direction: row; flex-wrap: wrap; justify-content: center; }
-    .hero-container { grid-template-columns: 1fr; gap: 64px; text-align: center; }
-    .hero-subtitle { margin: 0 auto 40px auto; }
-    .hero-btn { width: 100%; display: flex; align-items: center; justify-content: center; }
-    /* Hero Trust Marquee */
-    .hero-trust-marquee { display: flex; align-items: center; gap: 16px; opacity: 0; animation: fadeIn 0.8s forwards 0.5s; flex-wrap: wrap; }
-    .trust-label { font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    .trust-tags { display: flex; gap: 10px; flex-wrap: wrap; }
-    .t-tag { padding: 6px 14px; background: var(--surface-100); border: 1.5px solid var(--border-subtle); border-radius: 100px; font-size: 0.8rem; font-weight: 800; color: var(--text-main); transition: 0.3s; }
-    .t-tag:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-
-    /* Comparison Slider */
-    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
-    .comparison-card { background: #fff; padding: 16px; border-radius: 32px; border: 1.5px solid var(--border-subtle); }
-    .comparison-wrap { position: relative; width: 100%; height: 340px; border-radius: 20px; overflow: hidden; }
-    .comparison-img-box { position: absolute; inset: 0; overflow: hidden; }
-    .img-placeholder { width: 100%; height: 100%; background-size: cover; background-position: center; }
-    .after { border-left: 2px solid #fff; animation: autoSlide 6s ease-in-out infinite; width: 50%; z-index: 5; }
-    .tag-absolute { position: absolute; top: 16px; left: 16px; padding: 6px 12px; border-radius: 100px; font-size: 0.7rem; font-weight: 900; color: #fff; background: rgba(0,0,0,0.6); z-index: 10; backdrop-filter: blur(4px); }
-    .slider-handle { position: absolute; top: 0; bottom: 0; right: 0; width: 2px; background: #fff; z-index: 10; }
-    .slider-handle::after { content: ""; position: absolute; top: 50%; right: -12px; width: 24px; height: 24px; background: #fff; border-radius: 50%; transform: translateY(-50%); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-
-    @keyframes autoSlide {
-        0%, 100% { width: 20%; }
-        50% { width: 80%; }
-    }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Why FormFix Pillars */
-    .feature-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 48px; }
-    .pillar-card { background: #fff; padding: 40px 32px; border-radius: 32px; border: 1.5px solid var(--border-subtle); transition: 0.3s; }
-    .pillar-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--shadow-lg); }
-    .pillar-icon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 24px; }
-    .pillar-card h3 { font-size: 1.4rem; font-weight: 850; margin-bottom: 12px; letter-spacing: -0.02em; }
-    .pillar-card p { color: var(--text-muted); font-weight: 500; line-height: 1.6; }
-
-    /* Live Impact */
-    .live-impact-section { padding: 48px 0; }
-    .impact-shield { background: var(--text-main); color: #fff; padding: 32px; border-radius: 24px; display: inline-block; min-width: 320px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-    .impact-num { display: block; font-size: 3rem; font-weight: 950; letter-spacing: -0.05em; color: var(--accent); margin-bottom: 4px; }
-    .impact-lbl { font-size: 0.9rem; font-weight: 700; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.1em; }
-
-    @media (max-width: 900px) {
-        .feature-pillars { grid-template-columns: 1fr; gap: 20px; }
-        .pillar-card { padding: 32px 24px; }
-    }
-    .product-preview-card { margin: 0 auto; width: 100%; }
+.text-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: color 0.2s;
 }
 
-@media (max-width: 768px) {
-    .saas-hero { padding: 100px 0 60px; text-align: center; }
-    .hero-title { font-size: 2.2rem; }
-    .text-gradient-tool { font-size: 2.25rem; }
-    .subtitle { font-size: 1rem; padding: 0 20px; }
-    .tool-main-workspace { border-radius: 16px; margin-bottom: 48px; }
-    .workspace-inner { padding: 24px 16px; }
-    .article-card { padding: 32px 20px; border-radius: 16px; }
-    .tool-info-article { margin-bottom: 48px; }
+.text-link:hover {
+    color: #4f46e5;
+}
 
-    .hero-title { font-size: 2.2rem; line-height: 1.1; }
-    .hero-subtitle { font-size: 1rem; margin-bottom: 24px; }
-    .hero-btn { width: 100%; height: 56px; }
-    
-    .bento-grid { grid-template-columns: 1fr; gap: 16px; }
-    .clean-tool-card { padding: 24px; }
-    .clean-tool-card.featured { min-height: unset; padding: 32px 24px; }
-    .clean-tool-card.horizontal { padding: 20px; }
-    
-    .workflow-grid { grid-template-columns: 1fr; gap: 32px; }
-    .section-spacer { padding: 48px 0; }
-    
-    .trust-section-premium { padding: 64px 0; }
-    .trust-grid-layout { grid-template-columns: 1fr; gap: 40px; text-align: center; }
-    .trust-copy h2 { font-size: 2rem; }
-    .trust-copy p { margin: 0 auto; }
-    .trust-badges { align-items: stretch; }
-    .premium-stat-card { justify-content: center; }
-
-    .discovery-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
-    .minimal-faq summary { padding: 20px 0; font-size: 1rem; }
-    .faq-body { padding-bottom: 20px; }
+@media (max-width: 968px) {
+    .hero-content-grid { grid-template-columns: 1fr; text-align: center; gap: 48px; }
+    .hero-text-wrap h1 { margin-inline: auto; }
+    .hero-subtitle { margin-inline: auto; }
+    .discovery-grid { grid-template-columns: 1fr; gap: 32px; }
 }
 </style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Smooth reveal animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '50px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.animate-fade-up').forEach(el => {
-            const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight && rect.bottom > 0) {
-                el.classList.add('visible');
-            } else {
-                observer.observe(el);
-            }
-        });
-
-        // Interactive Product Demo Logic
-        const dropZone = document.getElementById('demo-drop') as HTMLElement | null;
-        const triggerBtn = document.getElementById('demo-btn') as HTMLElement | null;
-        const resetBtn = document.getElementById('demo-reset') as HTMLElement | null;
-        
-        const stateDefault = document.getElementById('demo-default') as HTMLElement | null;
-        const stateLoading = document.getElementById('demo-loading') as HTMLElement | null;
-        const stateSuccess = document.getElementById('demo-success') as HTMLElement | null;
-        const progressFill = document.querySelector('.progress-fill') as HTMLElement | null;
-
-        function initiateOptimization() {
-            if (dropZone && stateDefault && stateLoading && progressFill) {
-                dropZone.style.borderColor = 'var(--accent)';
-                dropZone.style.background = 'var(--surface-100)';
-                
-                stateDefault.classList.add('hidden');
-                stateLoading.classList.remove('hidden');
-                progressFill.style.width = '0%';
-                
-                setTimeout(() => { 
-                    progressFill.style.width = '100%'; 
-                    setTimeout(() => {
-                        if (stateLoading && stateSuccess) {
-                            stateLoading.classList.add('hidden');
-                            stateSuccess.classList.remove('hidden');
-                        }
-                    }, 100);
-                }, 500);
-            }
-        }
-
-        if (dropZone && triggerBtn) {
-            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = '#0070f3'; dropZone.style.background = '#f0f7ff'; });
-            dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.style.borderColor = ''; dropZone.style.background = ''; });
-            dropZone.addEventListener('drop', (e) => { e.preventDefault(); initiateOptimization(); });
-            dropZone.addEventListener('click', () => { initiateOptimization(); });
-            triggerBtn.addEventListener('click', () => { initiateOptimization(); });
-        }
-
-        if (resetBtn && stateSuccess && stateDefault) {
-            resetBtn.addEventListener('click', () => {
-                stateSuccess.classList.add('hidden');
-                stateDefault.classList.remove('hidden');
-            });
-        }
-
-        // Live Counter Logic
-        const liveCounter = document.getElementById('live-counter');
-        if (liveCounter) {
-            let count = 241509;
-            setInterval(() => {
-                count += Math.floor(Math.random() * 3) + 1;
-                liveCounter.textContent = count.toLocaleString();
-            }, 3000);
-        }
-    });
-</script>
