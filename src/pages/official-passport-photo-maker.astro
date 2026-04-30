@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
+
+const PAGE_TITLE = 'Passport Photo Maker Online (US, UK, India, EU) | FormFix';
+const PAGE_DESC = 'Create official passport size photos for any country. Supports US 2x2", UK 35x45mm, India 3.5x4.5cm, and EU standards. 100% private and professional.';
+const PAGE_KEYWORDS = 'passport photo maker, 2x2 photo maker online, us passport photo size, uk passport photo maker, 35x45mm photo resize, official passport maker free';
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Global Passport Photo Maker",
+  "description": "Professional tool for creating standardized passport and ID photos for all countries.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/official-passport-photo-maker">
+    <ToolWrapper 
+        title="Global Passport Studio" 
+        subtitle="Format your ID photos to meet official standards for any country, 100% locally."
+        currentTool="global-passport"
+    >
+        <div slot="tool-ui">
+             <div class="global-workspace">
+                 <div class="global-alert">
+                     <strong>Privacy Guaranteed:</strong> Your identity documents stay on your device. We never upload your photos to any server.
+                 </div>
+                 <div class="tool-actions-centered">
+                     <a href="/passport-size-photo" class="primary-btn pulse-glow">Open Passport Studio →</a>
+                     <a href="/resize-image" class="secondary-btn">Custom Resize</a>
+                 </div>
+             </div>
+        </div>
+
+        <div slot="tool-info">
+             <article class="prose">
+                 <h2>International Passport Photo Standards</h2>
+                 <p>Different countries have very strict and specific requirements for passport and visa photographs. FormFix provides the exact aspect ratios needed to ensure your application is accepted on the first try.</p>
+                 
+                 <div class="specs-grid">
+                     <div class="spec-card">
+                         <h3>🇺🇸 USA (Passport/Visa)</h3>
+                         <p><strong>Size:</strong> 2 x 2 inches (51 x 51 mm)</p>
+                         <p><strong>Background:</strong> Plain White</p>
+                     </div>
+                     <div class="spec-card">
+                         <h3>🇬🇧 United Kingdom</h3>
+                         <p><strong>Size:</strong> 35 x 45 mm</p>
+                         <p><strong>Background:</strong> Cream or Light Grey</p>
+                     </div>
+                     <div class="spec-card">
+                         <h3>🇮🇳 India (Passport)</h3>
+                         <p><strong>Size:</strong> 3.5 x 4.5 cm</p>
+                         <p><strong>Background:</strong> White</p>
+                     </div>
+                     <div class="spec-card">
+                         <h3>🇪🇺 European Union</h3>
+                         <p><strong>Size:</strong> 35 x 45 mm</p>
+                         <p><strong>Background:</strong> Light Background</p>
+                     </div>
+                 </div>
+
+                 <h2>How to Create Your Passport Photo</h2>
+                 <ol>
+                     <li><strong>Choose Standard:</strong> Select your country from our list of presets in the editor.</li>
+                     <li><strong>Upload Image:</strong> Select a clear photo with even lighting on your face.</li>
+                     <li><strong>Align:</strong> Use the on-screen guides to position your eyes and chin correctly.</li>
+                     <li><strong>Export:</strong> Download as a high-resolution JPG or PNG.</li>
+                 </ol>
+
+                 <div class="faq-section mt-48">
+                     <h3>Frequently Asked Questions</h3>
+                     <details class="minimal-faq">
+                         <summary>Can I take a passport photo at home? <span class="indicator">+</span></summary>
+                         <div class="faq-body">
+                             <p>Yes, as long as you have a neutral background and good lighting. Our tool will help you crop it to the exact official dimensions required.</p>
+                         </div>
+                     </details>
+                     <details class="minimal-faq">
+                         <summary>What is the '80% Face' rule? <span class="indicator">+</span></summary>
+                         <div class="faq-body">
+                             <p>Many countries require your face to occupy roughly 70-80% of the photograph height. Our alignment guides help you achieve this perfectly.</p>
+                         </div>
+                     </details>
+                 </div>
+             </article>
+        </div>
+    </ToolWrapper>
+</BaseLayout>
+
+<style>
+    .global-workspace { text-align: center; padding: 20px 0; }
+    .global-alert { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; margin-bottom: 32px; color: #1e40af; font-size: 0.95rem; }
+    .tool-actions-centered { display: flex; gap: 16px; justify-content: center; align-items: center; }
+    .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
+    .spec-card { background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 20px; border-radius: 16px; text-align: left; }
+    .spec-card h3 { font-size: 1rem; margin-bottom: 8px; color: var(--text-main); }
+    .spec-card p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+    
+    @media (max-width: 600px) {
+        .specs-grid { grid-template-columns: 1fr; }
+    }
+</style>
