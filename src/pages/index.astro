@@ -7,101 +7,106 @@ const PAGE_DESC = 'The safest way to prepare official documents. 100% private im
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC}>
     
-    <!-- 🚀 CINEMATIC HERO -->
-    <section class="cinematic-hero">
-        <div class="hero-radial-glow"></div>
-        <div class="hero-floating-shapes">
-            <div class="shape shape-primary"></div>
-            <div class="shape shape-secondary"></div>
-        </div>
+    <!-- 🚀 SIGNATURE PRODUCT HERO -->
+    <section class="product-hero">
+        <div class="hero-light-beam"></div>
+        <div class="hero-ambient-blob"></div>
         
         <div class="container hero-content-grid">
             <div class="hero-text-wrap">
-                <div class="hero-badge">
-                    <span class="badge-glow"></span>
-                    <span>100% Local Browser Processing</span>
+                <div class="brand-eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    Local Browser Architecture
                 </div>
                 
-                <h1 class="cinematic-title">
-                    Digital Tools <br />
-                    <span class="gradient-text-animated">Perfected.</span>
+                <h1 class="hero-display">
+                    Process files with <br />
+                    <span class="word-dominant">Precision.</span>
                 </h1>
                 
-                <p class="hero-subtitle-cinematic">
-                    A visually rich, highly intelligent workspace for your documents. 
-                    Zero server uploads. Absolute privacy.
+                <p class="hero-lead">
+                    The highest standard of document preparation. Compress, convert, and sign without your data ever touching a server.
                 </p>
 
-                <div class="hero-cta-group-cinematic">
-                    <a href="/tools" class="btn-primary-cinematic">
+                <div class="hero-actions">
+                    <a href="/tools" class="btn-dominant">
                         <span class="btn-text">Open Workspace</span>
-                        <div class="btn-ambient-glow"></div>
+                        <div class="btn-glow-intense"></div>
                     </a>
-                    <a href="#popular-tools" class="btn-secondary-cinematic">
-                        Explore Tools
+                    <a href="#popular-tools" class="btn-subtle">
+                        Explore Suite
                     </a>
                 </div>
             </div>
 
-            <div class="hero-visual-cinematic">
-                <div class="cinematic-glass-card hover-lift">
-                    <div class="card-inner-glow"></div>
-                    <div class="icon-ring">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-primary"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div class="hero-visual">
+                <div class="hero-glass-panel">
+                    <div class="panel-edge-highlight"></div>
+                    <div class="panel-content">
+                        <div class="status-ring">
+                            <div class="core-pulse"></div>
+                        </div>
+                        <h3 class="panel-title">End-to-End Privacy</h3>
+                        <p class="panel-desc">All computations happen locally on your device.</p>
                     </div>
-                    <h3>Secure By Design</h3>
-                    <p>Every pixel is processed directly on your device. We never see your data.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ⚡ ELEGANT BENTO GRID -->
-    <section class="cinematic-bento-section section-spacer-xxl" id="popular-tools">
+    <!-- ⚡ TENSION BENTO GRID -->
+    <section class="bento-product-section section-spacer-xxl" id="popular-tools">
         <div class="container">
-            <div class="section-intro center">
-                <span class="section-kicker">Professional Suite</span>
-                <h2 class="cinematic-section-title">One Platform. <br/><span class="gradient-text-animated">Zero Compromise.</span></h2>
+            <div class="section-intro">
+                <h2 class="section-heading">The Core <span class="text-accent">Suite.</span></h2>
+                <p class="section-subheading">A meticulously crafted collection of essential utilities.</p>
             </div>
             
-            <div class="cinematic-grid stagger-container">
-                <a href="/compress-image" class="cinematic-card stagger-item">
-                    <div class="card-glow-border"></div>
-                    <div class="cinematic-card-inner">
-                        <div class="card-icon-wrap bg-blue-glow">📸</div>
-                        <h3>Image Compressor</h3>
-                        <p>Hit exact 20KB or 50KB targets effortlessly with smart resizing algorithms.</p>
-                        <span class="card-action-link">Open Tool <span class="arrow">→</span></span>
+            <div class="tension-grid stagger-container">
+                <!-- CARD 1: FEATURED (Larger, Spans 2 Cols) -->
+                <a href="/compress-image" class="tension-card featured-card stagger-item">
+                    <div class="card-edge-highlight"></div>
+                    <div class="card-inner">
+                        <div class="card-icon blue-gradient">📸</div>
+                        <div class="card-text">
+                            <h3>Image Compressor Pro</h3>
+                            <p>Hit exact 20KB or 50KB targets effortlessly. The most powerful local compression engine on the web.</p>
+                        </div>
+                        <span class="card-arrow">→</span>
                     </div>
+                    <div class="card-ambient-glow"></div>
                 </a>
 
-                <a href="/official-passport-photo-maker" class="cinematic-card stagger-item">
-                    <div class="card-glow-border"></div>
-                    <div class="cinematic-card-inner">
-                        <div class="card-icon-wrap bg-purple-glow">🛂</div>
+                <!-- CARD 2: TINTED (Slight gradient background) -->
+                <a href="/official-passport-photo-maker" class="tension-card tinted-card stagger-item">
+                    <div class="card-edge-highlight"></div>
+                    <div class="card-inner">
+                        <div class="card-icon purple-gradient">🛂</div>
                         <h3>Passport Studio</h3>
                         <p>Generate perfect Visa and Passport photos aligned to global standards.</p>
-                        <span class="card-action-link">Open Tool <span class="arrow">→</span></span>
+                        <span class="card-arrow">→</span>
                     </div>
                 </a>
 
-                <a href="/merge-pdf" class="cinematic-card stagger-item">
-                    <div class="card-glow-border"></div>
-                    <div class="cinematic-card-inner">
-                        <div class="card-icon-wrap bg-orange-glow">📄</div>
-                        <h3>PDF Toolkit</h3>
-                        <p>Merge, split, and rotate confidential PDF documents securely offline.</p>
-                        <span class="card-action-link">Open Tool <span class="arrow">→</span></span>
+                <!-- CARD 3: GLOWING (Stronger hover glow) -->
+                <a href="/merge-pdf" class="tension-card glowing-card stagger-item">
+                    <div class="card-edge-highlight"></div>
+                    <div class="card-inner">
+                        <div class="card-icon orange-gradient">📄</div>
+                        <h3>PDF Master</h3>
+                        <p>Merge, split, and rotate confidential PDF documents securely.</p>
+                        <span class="card-arrow">→</span>
                     </div>
                 </a>
 
-                <a href="/signature-maker" class="cinematic-card stagger-item">
-                    <div class="card-glow-border"></div>
-                    <div class="cinematic-card-inner">
-                        <div class="card-icon-wrap bg-green-glow">✍️</div>
+                <!-- CARD 4: STANDARD -->
+                <a href="/signature-maker" class="tension-card standard-card stagger-item">
+                    <div class="card-edge-highlight"></div>
+                    <div class="card-inner">
+                        <div class="card-icon green-gradient">✍️</div>
                         <h3>E-Signatures</h3>
                         <p>Draw transparent, high-resolution digital signatures for legal use.</p>
-                        <span class="card-action-link">Open Tool <span class="arrow">→</span></span>
+                        <span class="card-arrow">→</span>
                     </div>
                 </a>
             </div>
@@ -109,8 +114,8 @@ const PAGE_DESC = 'The safest way to prepare official documents. 100% private im
     </section>
 
     <script is:inline>
-        // Staggered Entrance Observer
-        const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
+        // Staggered Entrance
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -126,280 +131,212 @@ const PAGE_DESC = 'The safest way to prepare official documents. 100% private im
 </BaseLayout>
 
 <style>
-/* ───── CINEMATIC HERO ───── */
-.cinematic-hero {
+/* ───── PRODUCT HERO ───── */
+.product-hero {
     position: relative;
-    padding: 180px 0 160px;
+    padding: 200px 0 160px;
     background: transparent;
     overflow: hidden;
-    min-height: 90vh;
+    min-height: 95vh;
     display: flex;
     align-items: center;
 }
 
-.hero-radial-glow {
+.hero-light-beam {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80vw;
-    height: 80vw;
-    max-width: 1000px;
-    max-height: 1000px;
-    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 60%);
-    z-index: 0;
+    top: -20%; left: 10%;
+    width: 60vw; height: 100vh;
+    background: radial-gradient(ellipse at 50% 0%, var(--accent-glow) 0%, transparent 70%);
+    transform: rotate(-15deg);
     pointer-events: none;
-    opacity: 0.6;
+    z-index: 0;
+    opacity: 0.8;
 }
 
-.dark .hero-radial-glow { opacity: 0.3; }
-
-.hero-floating-shapes {
+.hero-ambient-blob {
     position: absolute;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.shape {
-    position: absolute;
+    bottom: -10%; right: -10%;
+    width: 800px; height: 800px;
+    background: var(--accent-soft);
     border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.4;
-    animation: float 20s infinite alternate ease-in-out;
+    filter: blur(120px);
+    animation: blobBreathe 15s ease-in-out infinite alternate;
+    z-index: 0;
+    pointer-events: none;
 }
-.shape-primary { width: 400px; height: 400px; background: var(--accent-primary); top: -10%; right: -5%; }
-.shape-secondary { width: 300px; height: 300px; background: #c084fc; bottom: -10%; left: 10%; animation-delay: -10s; }
-.dark .shape { opacity: 0.15; }
-
-@keyframes float {
-    from { transform: translate(0, 0) scale(1); }
-    to { transform: translate(60px, 40px) scale(1.1); }
-}
+@keyframes blobBreathe { 0% { transform: scale(1) translate(0, 0); } 100% { transform: scale(1.1) translate(-50px, -50px); } }
 
 .hero-content-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 80px;
-    align-items: center;
-    position: relative;
-    z-index: 10;
+    display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px;
+    align-items: center; position: relative; z-index: 10;
 }
 
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 24px;
-    background: var(--surface-2);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-full);
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-bottom: 32px;
-    box-shadow: var(--shadow-soft);
-}
-
-.badge-glow {
-    width: 8px;
-    height: 8px;
-    background: var(--accent-primary);
-    border-radius: 50%;
-    box-shadow: 0 0 15px var(--accent-primary);
-    animation: badge-pulse 2s infinite;
-}
-@keyframes badge-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
-
-.cinematic-title {
-    font-size: clamp(3.5rem, 8vw, 6rem);
-    font-weight: 900;
-    line-height: 1.05;
-    letter-spacing: -0.05em;
+.brand-eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 0.85rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.15em; color: var(--text-secondary);
     margin-bottom: 24px;
-    position: relative;
+}
+.eyebrow-dot { width: 6px; height: 6px; background: var(--accent-primary); border-radius: 50%; box-shadow: 0 0 10px var(--accent-primary); }
+
+.hero-display {
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: 800; line-height: 1; letter-spacing: -0.04em;
+    margin-bottom: 32px; color: var(--text-primary);
 }
 
-.gradient-text-animated {
+.word-dominant {
+    display: block;
+    font-size: clamp(4rem, 10vw, 7.5rem);
+    font-weight: 900;
+    letter-spacing: -0.06em;
     background: var(--accent-gradient);
-    background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: textShine 5s linear infinite;
-    filter: drop-shadow(0 4px 12px var(--accent-glow));
-}
-@keyframes textShine { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
-
-.hero-subtitle-cinematic {
-    font-size: 1.35rem;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    max-width: 580px;
-    margin-bottom: 48px;
-    font-weight: 500;
+    filter: drop-shadow(0 0 30px var(--accent-glow));
+    line-height: 1;
+    margin-top: 8px;
 }
 
-/* ───── BUTTONS ───── */
-.hero-cta-group-cinematic { display: flex; gap: 20px; align-items: center; }
+.hero-lead {
+    font-size: 1.4rem; line-height: 1.6; color: var(--text-secondary);
+    max-width: 540px; margin-bottom: 48px; font-weight: 500;
+}
 
-.btn-primary-cinematic {
+/* ───── HERO ACTIONS ───── */
+.hero-actions { display: flex; gap: 20px; align-items: center; }
+
+.btn-dominant {
     position: relative;
-    padding: 20px 48px;
+    padding: 22px 56px;
     background: var(--accent-gradient);
     color: #ffffff !important;
-    border-radius: var(--radius-md);
-    font-weight: 800;
-    font-size: 1.15rem;
-    box-shadow: 0 10px 30px var(--accent-glow);
-    overflow: visible;
-    z-index: 1;
+    border-radius: 12px;
+    font-weight: 800; font-size: 1.2rem;
+    overflow: visible; z-index: 1;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+.btn-dominant:hover { transform: scale(1.05); }
+.btn-dominant:active { transform: scale(0.98); }
 
-.btn-ambient-glow {
-    position: absolute;
-    inset: -2px;
-    background: var(--accent-gradient);
-    filter: blur(15px);
-    opacity: 0.5;
-    z-index: -1;
-    border-radius: inherit;
-    transition: 0.4s;
-    animation: ambientPulse 3s infinite;
+.btn-glow-intense {
+    position: absolute; inset: -4px;
+    background: var(--accent-gradient); filter: blur(20px);
+    opacity: 0.6; z-index: -1; border-radius: inherit;
+    animation: intenseGlow 3s infinite;
 }
+@keyframes intenseGlow { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.05); } }
 
-@keyframes ambientPulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.05); } }
-
-.btn-primary-cinematic:hover { transform: scale(1.03) translateY(-2px); }
-.btn-primary-cinematic:hover .btn-ambient-glow { opacity: 1; filter: blur(20px); }
-.btn-primary-cinematic:active { transform: scale(0.97); }
-
-.btn-secondary-cinematic {
-    padding: 18px 44px;
-    background: var(--glass-bg);
-    border: 1px solid var(--border-strong);
-    color: var(--text-primary);
-    border-radius: var(--radius-md);
-    font-weight: 800;
-    font-size: 1.15rem;
-    backdrop-filter: blur(12px);
-    box-shadow: var(--shadow-soft);
+.btn-subtle {
+    padding: 20px 48px; background: transparent; border: 1px solid var(--border-strong);
+    color: var(--text-primary); border-radius: 12px; font-weight: 700; font-size: 1.1rem;
+    transition: 0.3s;
 }
-.btn-secondary-cinematic:hover { background: var(--surface-3); border-color: var(--accent-primary); transform: translateY(-2px); }
+.btn-subtle:hover { background: var(--surface-2); border-color: var(--text-secondary); }
 
-/* ───── VISUAL CARD ───── */
-.cinematic-glass-card {
-    background: var(--surface-gradient);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius-lg);
-    padding: 60px 40px;
-    text-align: center;
-    position: relative;
-    box-shadow: var(--shadow-lift);
-    overflow: hidden;
+/* ───── HERO VISUAL ───── */
+.hero-glass-panel {
+    background: var(--surface-gradient); border: 1px solid var(--card-border);
+    border-radius: 24px; padding: 60px 40px; position: relative;
+    box-shadow: var(--shadow-lift); overflow: hidden;
+    transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
+.hero-glass-panel:hover { transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-10px); }
 
-.hover-lift { transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.hover-lift:hover { transform: translateY(-15px) scale(1.02); }
-
-.card-inner-glow {
+.panel-edge-highlight {
     position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-    opacity: 0.5;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+}
+.dark .panel-edge-highlight { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); }
+
+.status-ring { width: 80px; height: 80px; margin: 0 auto 32px; border-radius: 50%; border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; position: relative; }
+.core-pulse { width: 30px; height: 30px; background: var(--accent-primary); border-radius: 50%; box-shadow: 0 0 20px var(--accent-primary); animation: corePulse 2s infinite; }
+@keyframes corePulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.4; } }
+
+.panel-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; text-align: center; }
+.panel-desc { font-size: 1.1rem; color: var(--text-secondary); text-align: center; }
+
+/* ───── TENSION GRID (BREAKING MONOTONY) ───── */
+.section-spacer-xxl { padding: 140px 0; }
+.section-intro { margin-bottom: 80px; max-width: 600px; }
+.section-heading { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 900; letter-spacing: -0.04em; margin-bottom: 16px; line-height: 1.1; }
+.text-accent { color: var(--accent-primary); filter: drop-shadow(0 0 10px var(--accent-soft)); }
+.section-subheading { font-size: 1.25rem; color: var(--text-secondary); }
+
+.tension-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(300px, auto);
+    gap: 32px;
 }
 
-.icon-ring {
-    width: 90px; height: 90px; margin: 0 auto 32px;
-    background: var(--surface-2); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    border: 1px solid var(--border-strong);
-    box-shadow: inset 0 0 20px var(--accent-soft);
+/* Base Card */
+.tension-card {
+    position: relative; background: var(--surface-3); border-radius: 20px;
+    text-decoration: none; display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: var(--shadow-medium); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1; border: 1px solid var(--card-border);
 }
 
-.cinematic-glass-card h3 { font-size: 2rem; margin-bottom: 16px; }
-.cinematic-glass-card p { font-size: 1.15rem; color: var(--text-secondary); }
+.card-edge-highlight { position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); opacity: 0.5; z-index: 5; }
+.dark .card-edge-highlight { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); }
 
+.card-inner { padding: 40px; position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; }
+.card-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 32px; border: 1px solid rgba(255,255,255,0.1); box-shadow: var(--shadow-soft); }
 
-/* ───── CINEMATIC BENTO GRID ───── */
-.section-spacer-xxl { padding: 160px 0; }
-.section-intro { margin-bottom: 80px; }
-.section-kicker { font-weight: 800; text-transform: uppercase; color: var(--accent-primary); letter-spacing: 0.25em; font-size: 0.85rem; margin-bottom: 16px; display: block; }
-.cinematic-section-title { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; }
+.blue-gradient { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+.purple-gradient { background: linear-gradient(135deg, #a855f7, #7e22ce); color: white; }
+.orange-gradient { background: linear-gradient(135deg, #f97316, #ea580c); color: white; }
+.green-gradient { background: linear-gradient(135deg, #10b981, #059669); color: white; }
 
-.cinematic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+.tension-card h3 { font-size: 1.6rem; margin-bottom: 12px; font-weight: 800; }
+.tension-card p { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.6; flex-grow: 1; }
+.card-arrow { align-self: flex-end; font-size: 1.5rem; color: var(--text-muted); transition: 0.3s; transform: translateX(-10px); opacity: 0; }
 
-.cinematic-card {
-    position: relative;
-    background: var(--surface-3);
-    border-radius: var(--radius-lg);
-    text-decoration: none;
-    box-shadow: var(--shadow-medium);
-    display: block;
-    z-index: 1;
+.tension-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lift); }
+.tension-card:hover .card-arrow { color: var(--accent-primary); transform: translateX(0); opacity: 1; }
+
+/* VARIATIONS */
+.featured-card {
+    grid-column: span 2;
+    background: linear-gradient(135deg, var(--surface-3) 0%, var(--surface-2) 100%);
+    border-color: var(--border-strong);
+}
+.featured-card .card-inner { flex-direction: row; align-items: center; gap: 40px; }
+.featured-card .card-icon { width: 80px; height: 80px; font-size: 2.5rem; margin-bottom: 0; flex-shrink: 0; }
+.featured-card h3 { font-size: 2.2rem; }
+.featured-card p { font-size: 1.2rem; }
+.card-ambient-glow { position: absolute; inset: 0; background: radial-gradient(circle at 100% 100%, var(--accent-soft), transparent 60%); z-index: 1; pointer-events: none; opacity: 0; transition: 0.5s; }
+.featured-card:hover .card-ambient-glow { opacity: 1; }
+
+.tinted-card { background: linear-gradient(to bottom right, var(--surface-3), rgba(168, 85, 247, 0.03)); }
+
+.glowing-card { position: relative; }
+.glowing-card::after { content: ''; position: absolute; inset: -2px; background: var(--accent-gradient); border-radius: 22px; z-index: -1; opacity: 0; filter: blur(15px); transition: 0.4s; }
+.glowing-card:hover::after { opacity: 0.6; }
+
+@media (max-width: 1024px) {
+    .tension-grid { grid-template-columns: 1fr 1fr; }
+    .featured-card { grid-column: span 2; }
 }
 
-.cinematic-card-inner {
-    position: relative;
-    background: var(--surface-gradient);
-    border-radius: var(--radius-lg);
-    padding: 48px;
-    border: 1px solid var(--card-border);
-    height: 100%;
-    z-index: 2;
+@media (max-width: 768px) {
+    .hero-content-grid { grid-template-columns: 1fr; text-align: center; gap: 60px; }
+    .hero-actions { flex-direction: column; justify-content: center; }
+    .hero-display { font-size: 3.5rem; }
+    .word-dominant { font-size: 4.5rem; margin-top: 0; }
+    .hero-lead { margin-inline: auto; }
+    .brand-eyebrow { justify-content: center; }
+    
+    .tension-grid { grid-template-columns: 1fr; }
+    .featured-card { grid-column: span 1; }
+    .featured-card .card-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .card-arrow { align-self: flex-start; }
 }
-
-/* Hover Effects */
-.cinematic-card:hover { transform: translateY(-12px); box-shadow: var(--shadow-lift); }
-.cinematic-card:hover .cinematic-card-inner { border-color: var(--border-strong); }
-
-.card-glow-border {
-    position: absolute;
-    inset: -2px;
-    border-radius: calc(var(--radius-lg) + 2px);
-    background: var(--accent-gradient);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 0;
-    filter: blur(8px);
-}
-.cinematic-card:hover .card-glow-border { opacity: 0.5; }
-.dark .cinematic-card:hover .card-glow-border { opacity: 1; filter: blur(12px); }
-
-.card-icon-wrap {
-    width: 64px; height: 64px; border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem; margin-bottom: 32px;
-    background: var(--surface-2);
-    border: 1px solid var(--border-subtle);
-    transition: transform 0.4s;
-}
-
-.cinematic-card:hover .card-icon-wrap { transform: scale(1.15) rotate(5deg); }
-
-.bg-blue-glow { box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.1); }
-.bg-purple-glow { box-shadow: inset 0 0 20px rgba(168, 85, 247, 0.1); }
-.bg-orange-glow { box-shadow: inset 0 0 20px rgba(249, 115, 22, 0.1); }
-.bg-green-glow { box-shadow: inset 0 0 20px rgba(34, 197, 94, 0.1); }
-
-.cinematic-card h3 { font-size: 1.8rem; margin-bottom: 16px; }
-.cinematic-card p { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.6; }
-
-.card-action-link {
-    font-weight: 700; color: var(--text-primary); font-size: 1.05rem; display: flex; align-items: center; gap: 8px; transition: color 0.3s;
-}
-.cinematic-card:hover .card-action-link { color: var(--accent-primary); }
-.arrow { transform: translateX(0); transition: transform 0.3s; }
-.cinematic-card:hover .arrow { transform: translateX(6px); }
 
 /* Stagger Animation */
-.stagger-item { opacity: 0; transform: translateY(30px) scale(0.95); transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.stagger-item { opacity: 0; transform: translateY(30px) scale(0.98); transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
 .stagger-item.visible { opacity: 1; transform: translateY(0) scale(1); }
-
-@media (max-width: 968px) {
-    .hero-content-grid { grid-template-columns: 1fr; text-align: center; gap: 60px; }
-    .hero-cta-group-cinematic { flex-direction: column; align-items: stretch; }
-    .hero-subtitle-cinematic { margin-inline: auto; }
-}
 </style>
