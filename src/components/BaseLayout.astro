@@ -2,6 +2,7 @@
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import '../styles/global.css';
+import '../styles/theme.css';
 
 interface Props {
 	title: string;
@@ -111,6 +112,17 @@ const finalCanonical = SITE_URL + finalPath;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="theme-color" content="#4f46e5" />
 		
+        <!-- 🚀 THEME INITIALIZATION (Prevent FOUC) -->
+        <script is:inline>
+            (function() {
+                const theme = localStorage.getItem('ff-theme') || 
+                             (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                }
+            })();
+        </script>
+
 		<!-- 1. Core SEO Basics -->
 		<title>{title.includes('FormFix') ? title : `${title} | FormFix`}</title>
 		<meta name="description" content={description} />
@@ -275,6 +287,8 @@ const finalCanonical = SITE_URL + finalPath;
 				display: block;
 				overflow-x: hidden;
 				position: relative;
+                background-color: var(--bg-primary);
+                color: var(--text-primary);
 			}
 			
 			main { height: auto; z-index: 1; }
