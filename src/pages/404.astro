@@ -1,51 +1,167 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
 
-const PAGE_TITLE = 'Page Not Found | FormFix Digital Tool Hub';
-const PAGE_DESC = 'Oops! The page you are looking for does not exist on FormFix digital toolkit.';
+const PAGE_TITLE = 'Oops! Page Compressed to Zero | FormFix';
+const PAGE_DESC = 'We might have compressed this page a little too much. It seems to have disappeared into thin air!';
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} noindex={true}>
 
-    <div class="prism-404">
-        <div class="error-visual animate-fade-up">
-            <h1 class="prism-text">404</h1>
-        </div>
-        <div class="error-content animate-fade-up delay-100">
-            <h2 class="h-prism">Lost in Orbit?</h2>
-            <p>The workspace you're looking for doesn't exist or has been moved to a new system.</p>
-            <div class="cta-row">
-                <a href="/" class="primary-btn prism-glow">Return to Dashboard</a>
+    <div class="error-container">
+        <div class="galaxy-bg"></div>
+        
+        <div class="error-card animate-scale-in">
+            <div class="glitch-wrapper">
+                <h1 class="error-code" data-text="404">404</h1>
+            </div>
+            
+            <div class="content-box">
+                <h2 class="funny-headline">Whoops! Too much compression? 📉</h2>
+                <p class="funny-sub">
+                    We tried to optimize this page so hard that it actually shrunk out of existence. Or maybe you just took a wrong turn at the PDF Merger.
+                </p>
+                
+                <div class="action-grid">
+                    <a href="/" class="primary-btn pulse-glow">🏠 Teleport Home</a>
+                    <a href="/tools" class="secondary-btn">🧰 All Tools</a>
+                </div>
+
+                <div class="quick-jump">
+                    <span class="jump-label">Quick Jump to Saftey:</span>
+                    <div class="jump-links">
+                        <a href="/compress-image">Compress Image</a>
+                        <a href="/official-passport-photo-maker">Passport Maker</a>
+                        <a href="/merge-pdf">PDF Tools</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 </BaseLayout>
 
 <style>
-    .prism-404 {
+    .error-container {
+        position: relative;
+        min-height: 85vh;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 70vh;
-        text-align: center;
-        padding: 40px;
+        padding: 40px 20px;
+        overflow: hidden;
+        background: #fdfdfd;
     }
-    .prism-text {
-        font-size: clamp(6rem, 15vw, 10rem);
+
+    .galaxy-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
+        z-index: 0;
+    }
+
+    .error-card {
+        position: relative;
+        z-index: 1;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 64px 40px;
+        border-radius: 32px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .error-code {
+        font-size: clamp(6rem, 15vw, 9rem);
         font-weight: 900;
-        background: var(--grad-prism);
+        line-height: 1;
+        margin: 0;
+        background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         letter-spacing: -0.05em;
-        line-height: 1;
-        margin-bottom: 20px;
+        position: relative;
     }
-    p {
-        font-size: 1.25rem;
-        color: var(--surface-500);
-        margin: 20px 0 40px;
-        max-width: 480px;
+
+    .funny-headline {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: #111;
+        margin-top: 24px;
+        letter-spacing: -0.02em;
     }
-    .cta-row { display: flex; justify-content: center; }
+
+    .funny-sub {
+        font-size: 1.1rem;
+        color: #666;
+        line-height: 1.6;
+        margin: 16px auto 32px;
+        max-width: 400px;
+    }
+
+    .action-grid {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    .quick-jump {
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        padding-top: 32px;
+    }
+
+    .jump-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #999;
+        display: block;
+        margin-bottom: 16px;
+    }
+
+    .jump-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .jump-links a {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #4f46e5;
+        background: rgba(79, 70, 229, 0.05);
+        padding: 8px 16px;
+        border-radius: var(--radius-full);
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .jump-links a:hover {
+        background: #4f46e5;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    /* Animations */
+    .animate-scale-in {
+        animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.9) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+        .error-card { padding: 40px 24px; }
+        .action-grid { flex-direction: column; }
+    }
 </style>
