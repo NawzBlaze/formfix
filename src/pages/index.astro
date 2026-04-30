@@ -19,115 +19,62 @@ const customSchema = {
         "price": "0",
         "priceCurrency": "USD"
       },
-      "description": "FormFix is a free, private digital toolkit for images, PDFs, and utilities. 100% privacy with zero server uploads. Features high-quality photo resizer, PDF tools, and 30+ other free utilities.",
+      "description": "FormFix is a free, private digital toolkit for images, PDFs, and utilities.",
       "featureList": [
         "Compress image to exact KB size (20KB, 50KB, 100KB)",
         "100% Private local browser processing",
         "Complete PDF Suite (Merge, Split, Rotate)",
-        "QR Code & Digital Signature Maker",
-        "AI-powered Background Remover & OCR"
-      ]
-    },
-    {
-      "@type": "Organization",
-      "url": "https://formfix.pages.dev/",
-      "logo": "https://formfix.pages.dev/favicon.png?v=5",
-      "name": "FormFix",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "email": "formfix.support@gmail.com",
-        "contactType": "customer support"
-      }
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is the best and most private free image compressor?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "FormFix is widely considered the best multi-tool because it processes images 100% completely offline in your browser. Unlike other online tools, FormFix never uploads your sensitive data to cloud servers. This guarantees ultimate privacy while compressing photos to exact targets like 20KB or 50KB."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How can I resize a photo to 2x2 inches for a US visa?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Our Global Passport Studio supports US 2x2 inch standards perfectly. Simply upload your photo, select the US Passport preset, and our tool will handle the DPI and dimension conversion locally in your browser."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is it safe to merge PDF files online?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "With FormFix, it is 100% safe. We use client-side PDF libraries, meaning the merging happens on your computer, not our server. Your private documents are never seen by us or stored anywhere."
-          }
-        }
+        "QR Code & Digital Signature Maker"
       ]
     }
   ]
 };
 
-const faqs = customSchema["@graph"][2].mainEntity.map(q => ({ q: q.name, a: q.acceptedAnswer.text }));
+const faqs = [
+    { q: "What is the best and most private free image compressor?", a: "FormFix is considered the best because it processes images 100% locally in your browser. Your data is never uploaded to any server." },
+    { q: "How can I resize a photo to 2x2 inches?", a: "Our Global Passport Studio supports US 2x2 inch standards perfectly. Just select the US Passport preset." },
+    { q: "Is it safe to merge PDF files online?", a: "With FormFix, it is 100% safe. The merging happens on your computer, not our server." }
+];
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema}>
     
-    <!-- 🚀 GLOBAL HERO -->
-    <section class="saas-hero">
+    <!-- 🚀 PREMIUM HERO -->
+    <section class="saas-hero-premium">
+        <div class="hero-glow-layer"></div>
         <div class="container hero-content-grid">
             <div class="hero-text-wrap animate-in">
-                <div class="badge-row">
-                    <span class="premium-badge"><span class="icon">✨</span> 100% Private & Browser-Based</span>
+                <div class="badge-pill">
+                    <span class="pill-dot"></span> 100% Private Browser Processing
                 </div>
                 <h1>
-                    Professional Digital Toolkit <br />
-                    <span class="text-gradient">For Every Requirement.</span>
+                    Digital Workspace <br />
+                    <span class="text-gradient">Refined for Results.</span>
                 </h1>
                 
                 <p class="hero-subtitle">
-                    A professional-grade toolkit that processes your files securely in your browser. Global Standard Sizes for web portals.
+                    The web's most private toolkit. Compress, convert, and create professional documents without ever uploading your data.
                 </p>
 
-                <div class="hero-cta-box mt-32 animate-in delay-100">
-                    <a href="/tools" class="primary-btn hero-btn btn-elevate">
-                        Open Digital Workspace <span class="btn-arrow">→</span>
+                <div class="hero-cta-group mt-40">
+                    <a href="/tools" class="primary-btn-premium lg">
+                        Launch Dashboard
                     </a>
-                    <div class="hero-trust-marquee mt-24">
-                        <span class="trust-label">Optimized for:</span>
-                        <div class="trust-tags">
-                            <a href="/compress-image-to-20kb" class="t-tag">20KB/50KB</a>
-                            <a href="/resize-image-for-linkedin" class="t-tag">LinkedIn</a>
-                            <a href="/resize-image-for-instagram" class="t-tag">Instagram</a>
-                            <a href="/official-passport-photo-maker" class="t-tag">Global Passports</a>
-                            <a href="/signature-maker" class="t-tag">E-Signatures</a>
-                        </div>
-                    </div>
+                    <a href="#popular-tools" class="secondary-btn-premium lg">
+                        Explore Tools
+                    </a>
                 </div>
             </div>
 
             <div class="hero-visual animate-in delay-200">
-                <div class="product-preview-card box-depth signature-card" id="demo-card">
-                    <div class="preview-header">
-                        <div class="window-dots">
-                            <span class="dot-red"></span>
-                            <span class="dot-yellow"></span>
-                            <span class="dot-green"></span>
-                        </div>
+                <div class="window-mockup">
+                    <div class="mockup-header">
+                        <div class="dots"><span></span><span></span><span></span></div>
                     </div>
-                    
-                    <!-- DEFAULT STATE -->
-                    <div class="preview-body" id="demo-default">
-                        <div class="preview-upload-zone" id="demo-drop">
-                            <div class="upload-icon-circle">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                            </div>
-                            <h3>Drag document here</h3>
-                            <p>or click to select file</p>
-                            <span class="tiny-text">Max size 25MB • Secure Local Processing</span>
+                    <div class="mockup-body">
+                        <div class="empty-state">
+                            <div class="pulse-circle"></div>
+                            <p>Drop files here to start</p>
                         </div>
                     </div>
                 </div>
@@ -135,106 +82,71 @@ const faqs = customSchema["@graph"][2].mainEntity.map(q => ({ q: q.name, a: q.ac
         </div>
     </section>
 
-    <!-- ⚡ CORE FEATURES GRID -->
-    <section class="tools-grid-section section-spacer" id="popular-tools">
+    <!-- ⚡ BENTO TOOLS SECTION -->
+    <section class="tools-grid-section section-spacer-xl" id="popular-tools">
         <div class="container">
-            <div class="section-title-wrap center">
-                <div class="sub-label">Instant Access</div>
-                <h2>The Essentials</h2>
+            <div class="section-heading center">
+                <span class="sub-label">Instant Utility</span>
+                <h2>The Essential Suite</h2>
             </div>
             
-            <div class="bento-grid">
-                <a href="/compress-image" class="bento-card tool-card animate-in">
-                    <div class="card-icon blue">📸</div>
+            <div class="premium-bento-grid">
+                <a href="/compress-image" class="premium-card tool-card">
+                    <div class="card-glow"></div>
+                    <div class="card-icon-box blue">📸</div>
                     <h3>Image Compressor</h3>
-                    <p>Reduce file size without losing sharpness. Target 20KB, 50KB, or custom targets.</p>
+                    <p>High-fidelity compression for 20KB, 50KB, or custom targets.</p>
                 </a>
-                <a href="/official-passport-photo-maker" class="bento-card tool-card animate-in delay-50">
-                    <div class="card-icon purple">🛂</div>
+                <a href="/official-passport-photo-maker" class="premium-card tool-card">
+                    <div class="card-glow"></div>
+                    <div class="card-icon-box purple">🛂</div>
                     <h3>Passport Studio</h3>
-                    <p>US, UK, EU, and Global ID photo maker with precise alignment guides.</p>
+                    <p>US, UK, and Global ID photo maker with alignment guides.</p>
                 </a>
-                <a href="/merge-pdf" class="bento-card tool-card animate-in delay-100">
-                    <div class="card-icon orange">📄</div>
+                <a href="/merge-pdf" class="premium-card tool-card">
+                    <div class="card-glow"></div>
+                    <div class="card-icon-box orange">📄</div>
                     <h3>PDF Toolkit</h3>
-                    <p>Merge, Split, and Rotate PDFs 100% locally on your computer.</p>
+                    <p>Merge, Split, and Rotate PDFs without server uploads.</p>
                 </a>
-                <a href="/signature-maker" class="bento-card tool-card animate-in delay-150">
-                    <div class="card-icon green">✍️</div>
+                <a href="/signature-maker" class="premium-card tool-card">
+                    <div class="card-glow"></div>
+                    <div class="card-icon-box green">✍️</div>
                     <h3>Signature Maker</h3>
-                    <p>Draw or type your digital signature with professional transparency.</p>
+                    <p>Professional digital signatures with transparent backgrounds.</p>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- 🌍 GLOBAL SEO DISCOVERY FOOTER -->
-    <section class="niche-tools-section">
+    <!-- 🌍 DISCOVERY SECTION -->
+    <section class="discovery-section-premium section-spacer-xl">
         <div class="container">
             <div class="discovery-grid">
                 <div class="discovery-col">
-                    <h4>Global Essentials</h4>
-                    <div class="discovery-links">
-                        <a href="/compress-image" class="text-link">Smart Compressor</a>
-                        <a href="/resize-image-for-linkedin" class="text-link">LinkedIn Profile</a>
-                        <a href="/resize-image-for-instagram" class="text-link">Instagram Square</a>
-                        <a href="/resize-image-for-us-passport" class="text-link">US Passport (2x2")</a>
-                    </div>
+                    <h4 class="discovery-label">Global Access</h4>
+                    <ul class="discovery-list">
+                        <li><a href="/compress-image">Smart Compressor</a></li>
+                        <li><a href="/resize-image-for-linkedin">LinkedIn Profile</a></li>
+                        <li><a href="/resize-image-for-instagram">Instagram Square</a></li>
+                    </ul>
                 </div>
-
                 <div class="discovery-col">
-                    <h4>Standardized Sizes</h4>
-                    <div class="discovery-links">
-                        <a href="/official-passport-photo-maker" class="text-link">Global Passport Studio</a>
-                        <a href="/compress-image-to-20kb" class="text-link">Compress to 20KB</a>
-                        <a href="/signature-maker" class="text-link">E-Signature Tool</a>
-                        <a href="/qr-code-generator" class="text-link">QR Code Generator</a>
-                    </div>
+                    <h4 class="discovery-label">Official Tools</h4>
+                    <ul class="discovery-list">
+                        <li><a href="/official-passport-photo-maker">Passport Studio</a></li>
+                        <li><a href="/compress-image-to-20kb">Compress to 20KB</a></li>
+                        <li><a href="/signature-maker">E-Signatures</a></li>
+                    </ul>
                 </div>
-
                 <div class="discovery-col">
-                    <h4>Technical Guides</h4>
-                    <div class="discovery-links">
-                        <a href="/blog/how-to-compress-image-to-20kb" class="text-link">How to hit 20KB exactly</a>
-                        <a href="/blog/best-image-size-for-online-forms" class="text-link">Portal Dimension Guide</a>
-                        <a href="/blog/reduce-image-size-without-losing-quality" class="text-link">Compression Secrets</a>
-                        <a href="/guides/make-signature-transparent" class="text-link">Clear Signature Guide</a>
-                    </div>
+                    <h4 class="discovery-label">Resources</h4>
+                    <ul class="discovery-list">
+                        <li><a href="/blog/how-to-compress-image-to-20kb">Compression Guide</a></li>
+                        <li><a href="/blog/best-image-size-for-online-forms">Dimension Guide</a></li>
+                        <li><a href="/guides/make-signature-transparent">Clear Signatures</a></li>
+                    </ul>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 📣 SPREAD THE WORD -->
-    <section class="share-section section-spacer bg-app">
-        <div class="container text-center">
-            <div class="share-card box-depth p-48 br-24">
-                <h2 class="mb-16">Love FormFix? Help others find us!</h2>
-                <p class="text-muted mb-32 max-600 mx-auto">We spend $0 on marketing to keep this tool free and private. If you found it useful, please share it with your friends or colleagues.</p>
-                <div class="share-buttons">
-                    <a href="https://twitter.com/intent/tweet?text=Check%20out%20FormFix%20%E2%80%94%20the%20most%20private%20way%20to%20compress%20images%2C%20merge%20PDFs%2C%20and%20more.%20100%25%20browser-based.%20%23Privacy%20%23TechTools&url=https%3A%2F%2Fformfix.pages.dev" target="_blank" class="share-btn twitter">Share on X</a>
-                    <a href="https://www.reddit.com/submit?url=https://formfix.pages.dev&title=A%20100%25%20private%2C%20zero-upload%20digital%20toolkit%20for%20everyone." target="_blank" class="share-btn reddit">Share on Reddit</a>
-                    <a href="https://wa.me/?text=I%20found%20this%20amazing%20private%20tool%20to%20compress%20images%20and%20edit%20PDFs%20without%20uploading%20anything.%20Check%20it%20out:%20https://formfix.pages.dev" target="_blank" class="share-btn whatsapp">Share on WhatsApp</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ❓ FAQS -->
-    <section class="faq-section section-spacer" id="faq">
-        <div class="container">
-            <div class="section-title-wrap center">
-                <h2>Frequently Asked Questions</h2>
-            </div>
-            <div class="faq-list">
-                {faqs.map(item => (
-                    <details class="minimal-faq">
-                        <summary>{item.q} <span class="indicator">+</span></summary>
-                        <div class="faq-body">
-                            <p>{item.a}</p>
-                        </div>
-                    </details>
-                ))}
             </div>
         </div>
     </section>
@@ -242,146 +154,189 @@ const faqs = customSchema["@graph"][2].mainEntity.map(q => ({ q: q.name, a: q.ac
 </BaseLayout>
 
 <style>
-/* ───── CORE LAYOUT OVERRIDES ───── */
-.section-spacer { padding: 80px 0; }
-.section-spacer-sm { padding: 80px 0; }
-.mt-48 { margin-top: 48px; }
-
-.section-title-wrap { margin-bottom: 48px; }
-.section-title-wrap.center { text-align: center; }
-.section-title-wrap h2 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 12px; color: var(--text-primary); }
-
-.btn-arrow { margin-left: 8px; font-weight: 400; transition: margin 0.2s; }
-.hero-btn:hover .btn-arrow { margin-left: 12px; }
-
-/* ───── HERO SECTION ───── */
-.saas-hero {
+/* ───── PREMIUM HERO ───── */
+.saas-hero-premium {
     position: relative;
-    padding: 120px 0 100px;
-    background: var(--bg-primary);
+    padding: 140px 0 120px;
+    background: var(--surface-1);
     overflow: hidden;
+}
+
+.hero-glow-layer {
+    position: absolute;
+    top: -10%;
+    right: -10%;
+    width: 60%;
+    height: 80%;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
 }
 
 .hero-content-grid {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 64px;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 80px;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
-.hero-text-wrap h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+.badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+}
+
+.pill-dot { width: 6px; height: 6px; background: var(--accent-primary); border-radius: 50%; box-shadow: 0 0 10px var(--accent-primary); }
+
+.saas-hero-premium h1 {
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
     font-weight: 900;
     line-height: 1.05;
-    letter-spacing: -0.05em;
     margin-bottom: 24px;
     color: var(--text-primary);
+}
+
+.text-gradient {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: var(--text-secondary);
     line-height: 1.6;
-    max-width: 540px;
-    margin-bottom: 32px;
-}
-
-/* Tool Cards */
-.bento-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 24px;
-}
-
-.bento-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    padding: 32px;
-    border-radius: 24px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-decoration: none;
-    color: var(--text-primary);
-    box-shadow: var(--card-shadow);
-}
-
-.bento-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--accent-color);
-    box-shadow: var(--card-shadow-hover);
-}
-
-.bento-card p {
     color: var(--text-secondary);
+    max-width: 560px;
+    margin-bottom: 40px;
 }
 
-.card-icon {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-}
-
-/* Niche Discovery Grid */
-.niche-tools-section {
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border-subtle);
-    padding: 80px 0;
-}
-
-.discovery-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
-}
-
-.discovery-col h4 {
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    margin-bottom: 24px;
-}
-
-.discovery-links {
+.hero-cta-group {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    gap: 16px;
 }
 
-.text-link {
-    color: var(--text-primary);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.05rem;
-    transition: color 0.2s;
+/* ───── MOCKUP VISUAL ───── */
+.window-mockup {
+    background: var(--surface-3);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    overflow: hidden;
+    transform: perspective(1000px) rotateY(-5deg);
+    transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.text-link:hover {
-    color: var(--accent-color);
+.window-mockup:hover {
+    transform: perspective(1000px) rotateY(0deg) translateY(-10px);
 }
 
-/* Share Section */
-.share-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
+.mockup-header {
+    background: var(--surface-2);
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
-.share-card h2 { color: var(--text-primary); }
-.share-card p { color: var(--text-secondary); }
+.dots { display: flex; gap: 8px; }
+.dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--border-strong); }
 
-/* FAQ Styles */
-.minimal-faq {
-    border-bottom: 1px solid var(--border-color);
-    color: var(--text-primary);
+.mockup-body {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.faq-body p {
-    color: var(--text-secondary);
+.empty-state { text-align: center; }
+.pulse-circle {
+    width: 60px; height: 60px; border: 2px solid var(--accent-soft); border-radius: 50%; margin: 0 auto 16px;
+    animation: pulse 2s infinite;
 }
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ───── BENTO TOOLS ───── */
+.section-spacer-xl { padding: 120px 0; }
+
+.section-heading.center { text-align: center; margin-bottom: 64px; }
+.sub-label {
+    text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.8rem; font-weight: 800; color: var(--accent-primary);
+    display: block; margin-bottom: 12px;
+}
+
+.premium-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+}
+
+.premium-card {
+    background: var(--surface-3);
+    border: 1px solid var(--border-subtle);
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-medium);
+}
+
+.premium-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-lift);
+}
+
+.card-icon-box {
+    width: 56px; height: 56px; background: var(--surface-2); border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center; font-size: 1.75rem; margin-bottom: 24px;
+    transition: 0.3s;
+}
+
+.premium-card:hover .card-icon-box { transform: scale(1.1) rotate(5deg); background: var(--accent-soft); }
+
+.premium-card h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 12px; }
+.premium-card p { font-size: 1rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ───── DISCOVERY SECTION ───── */
+.discovery-section-premium {
+    background: var(--surface-2);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.discovery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 64px; }
+.discovery-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 800; color: var(--text-muted); margin-bottom: 24px; }
+.discovery-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.discovery-list a { font-weight: 600; color: var(--text-primary); font-size: 1.05rem; }
+.discovery-list a:hover { color: var(--accent-primary); transform: translateX(5px); }
+
+/* ───── BUTTONS ───── */
+.secondary-btn-premium {
+    background: transparent; border: 2px solid var(--border-strong); color: var(--text-primary);
+    padding: 12px 32px; border-radius: var(--radius-md); font-weight: 700; transition: 0.3s;
+}
+.secondary-btn-premium:hover { background: var(--surface-3); border-color: var(--accent-primary); color: var(--accent-primary); }
+
+.primary-btn-premium.lg { padding: 16px 40px; font-size: 1.1rem; }
+.secondary-btn-premium.lg { padding: 16px 40px; font-size: 1.1rem; }
 
 @media (max-width: 968px) {
     .hero-content-grid { grid-template-columns: 1fr; text-align: center; gap: 48px; }
-    .hero-text-wrap h1 { margin-inline: auto; }
+    .hero-cta-group { justify-content: center; }
     .hero-subtitle { margin-inline: auto; }
-    .discovery-grid { grid-template-columns: 1fr; gap: 32px; }
+    .window-mockup { transform: none; max-width: 500px; margin: 0 auto; }
+    .discovery-grid { grid-template-columns: 1fr; gap: 40px; }
 }
 </style>

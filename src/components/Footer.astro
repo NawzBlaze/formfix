@@ -2,11 +2,13 @@
 const YEAR = new Date().getFullYear();
 ---
 
-<footer class="prism-footer" role="contentinfo">
+<footer class="premium-footer" role="contentinfo">
     <div class="container footer-grid">
         <div class="footer-block-brand">
             <a href="/" class="f-logo">
-                <span class="f-logo-icon">F</span>
+                <div class="f-logo-box">
+                    <img src="/favicon.png?v=5" alt="FormFix" width="28" height="28" />
+                </div>
                 <span class="f-logo-text">FormFix</span>
             </a>
             <p class="f-tagline">
@@ -26,7 +28,7 @@ const YEAR = new Date().getFullYear();
                 <li><a href="/passport-size-photo">Passport Photo Maker</a></li>
                 <li><a href="/signature-maker">Digital Signature</a></li>
                 <li><a href="/merge-pdf">PDF Merger</a></li>
-                <li><a href="/tools">All Tools Dashboard</a></li>
+                <li><a href="/tools">Tools Dashboard</a></li>
             </ul>
         </div>
 
@@ -34,10 +36,8 @@ const YEAR = new Date().getFullYear();
             <h4 class="f-title">Resources</h4>
             <ul class="f-list">
                 <li><a href="/about">About Us</a></li>
-                <li><a href="/guides/how-to-compress-image-to-20kb">20KB Compression Guide</a></li>
-                <li><a href="/guides/how-to-compress-image-to-50kb">50KB Compression Guide</a></li>
-                <li><a href="/guides/make-signature-transparent">Transparent Signature Guide</a></li>
-                <li><a href="/guides/passport-photo-specifications">Photo Specifications</a></li>
+                <li><a href="/compress-image-to-20kb">20KB Guide</a></li>
+                <li><a href="/official-passport-photo-maker">Global Standards</a></li>
                 <li><a href="/contact">Contact Support</a></li>
             </ul>
         </div>
@@ -56,7 +56,7 @@ const YEAR = new Date().getFullYear();
     <div class="footer-bottom">
         <div class="container fb-inner">
             <div class="fb-left">
-                &copy; {YEAR} FormFix. Build with Privacy first.
+                &copy; {YEAR} FormFix. Privacy first, globally.
             </div>
             <div class="fb-right">
                 <span class="fb-status">
@@ -68,50 +68,51 @@ const YEAR = new Date().getFullYear();
 </footer>
 
 <style>
-.prism-footer {
-    background: var(--bg-app);
-    color: var(--text-muted);
-    padding-top: 40px;
+.premium-footer {
+    background: var(--surface-2);
+    color: var(--text-secondary);
+    padding-top: 80px;
     border-top: 1px solid var(--border-subtle);
+    position: relative;
+    z-index: 10;
 }
 
 .footer-grid {
     display: grid;
     grid-template-columns: 1.5fr 1fr 1fr 1fr;
     gap: 40px;
-    padding-bottom: 40px;
+    padding-bottom: 60px;
 }
 
 .f-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-bottom: 24px; }
-.f-logo-icon { width: 32px; height: 32px; background: var(--grad-prism); color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
-.f-logo-text { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--text-main); }
+.f-logo-box { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--surface-3); border-radius: 8px; border: 1px solid var(--border-subtle); }
+.f-logo-text { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--text-primary); }
 
-.f-tagline { font-size: 0.95rem; line-height: 1.6; max-width: 280px; margin-bottom: 24px; }
+.f-tagline { font-size: 0.95rem; line-height: 1.6; max-width: 300px; margin-bottom: 24px; color: var(--text-muted); }
 
 .f-social-row { display: flex; gap: 16px; }
-.f-social-row a { color: var(--text-muted); transition: 0.2s; }
-.f-social-row a:hover { color: var(--accent); }
+.f-social-row a { color: var(--text-muted); transition: 0.3s; }
+.f-social-row a:hover { color: var(--accent-primary); transform: translateY(-3px); }
 
-.f-title { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-main); margin-bottom: 24px; }
-.f-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
-.f-list a { text-decoration: none; color: inherit; font-size: 0.95rem; transition: 0.2s; }
-.f-list a:hover { color: var(--primary); }
+.f-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 800; color: var(--text-primary); margin-bottom: 24px; }
+.f-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.f-list a { text-decoration: none; color: var(--text-muted); font-size: 0.95rem; font-weight: 500; transition: 0.2s; }
+.f-list a:hover { color: var(--accent-primary); transform: translateX(5px); }
 
-.footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding: 32px 0; font-size: 0.85rem; }
+.footer-bottom { border-top: 1px solid var(--border-subtle); padding: 32px 0; font-size: 0.85rem; color: var(--text-muted); }
 .fb-inner { display: flex; justify-content: space-between; align-items: center; }
 
-.fb-status { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; background: rgba(16,185,129,0.1); color: #10b981; border-radius: 20px; font-weight: 700; }
-.fb-status .dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
+.fb-status { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: rgba(16,185,129,0.06); color: #10b981; border-radius: 100px; font-weight: 700; font-size: 0.75rem; border: 1px solid rgba(16,185,129,0.1); }
+.fb-status .dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; animation: pulse-glow 2s infinite; }
 
-@keyframes pulse {
+@keyframes pulse-glow {
     0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.5); opacity: 0.5; }
+    50% { transform: scale(1.4); opacity: 0.6; }
     100% { transform: scale(1); opacity: 1; }
 }
 
 @media (max-width: 1024px) {
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-    .f-tagline { max-width: 100%; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
 }
 
 @media (max-width: 640px) {
