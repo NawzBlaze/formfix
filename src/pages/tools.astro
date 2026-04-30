@@ -6,118 +6,90 @@ const PAGE_TITLE = 'Tool Dashboard | FormFix';
 const PAGE_DESC = 'Access your complete suite of 30+ free tools for images, PDFs, and more.';
 const PAGE_KEYWORDS = 'formfix dashboard, free online tools, image compressor, pdf tools';
 
-// Primary Featured Tool
-const featuredTool = {
-    id: 'compress-image',
-    title: 'Image Compressor Studio',
-    icon: '🎯',
-    href: '/compress-image',
-    desc: 'The ultimate tool to accurately reduce your photo file size to specific targets like 20KB or 50KB without noticeable quality loss.',
-    cta: 'Compress Now'
-};
-
 // All Categories
 const categories = [
     {
         id: 'image',
         title: 'Image Tools',
+        desc: 'Professional-grade image processing, resizing, and manipulation.',
         icon: '🖼️',
         tools: [
-            { id: 'compress-image', title: 'Image Compressor Studio', href: '/compress-image', desc: 'Hit exact file size targets like 20KB, 50KB or any custom limit.', cta: 'Compress Now' },
-            { id: 'ssc-photo-compressor', title: 'SSC Photo Optimizer', href: '/ssc-photo-compressor', desc: 'Guaranteed 20-50KB resize for SSC CGL, CHSL & MTS exams.', cta: 'SSC Tool' },
-            { id: 'upsc-photo-resizer', title: 'UPSC Photo Resizer', href: '/upsc-photo-resizer', desc: 'Exact 350x350px scaling for UPSC Civil Services forms.', cta: 'UPSC Tool' },
-            { id: 'neet-photo-compressor', title: 'NEET Form Optimizer', href: '/neet-photo-compressor', desc: 'Passport and Postcard (4x6) size maker for NTA NEET.', cta: 'NEET Tool' },
-            { id: 'cuet-photo-resizer', title: 'CUET Photo Resizer', href: '/cuet-photo-resizer', desc: 'NTA-compliant photo and signature resizer for CUET.', cta: 'CUET Tool' },
-            { id: 'passport-size-photo', title: 'Passport Photo Maker', href: '/passport-size-photo', desc: 'Official 3.5×4.5cm passport photos for all online forms.', cta: 'Create Photo' },
-            { id: 'crop-image', title: 'Crop Image Online', href: '/crop-image', desc: 'Precise cropping with ratio presets (1:1, 4:3, 16:9).', cta: 'Crop Now' },
-            { id: 'circle-crop', title: 'Circle Profile Maker', href: '/circle-crop', desc: 'Perfect circular avatars for CV, LinkedIn & social.', cta: 'Create Avatar' },
-            { id: 'resize-image', title: 'Resize Image Pixels', href: '/resize-image', desc: 'Change width/height proportionally in any resolution.', cta: 'Resize' },
-            { id: 'background-remover', title: 'Background Remover', href: '/background-remover', desc: 'Remove white or solid backgrounds from signatures & photos.', cta: 'Remove BG' },
-            { id: 'black-and-white', title: 'Black & White Filter', href: '/black-and-white', desc: 'Convert photos to elegant grayscale B&W.', cta: 'Apply Filter' },
-            { id: 'photo-to-sketch', title: 'Pencil Sketch Maker', href: '/photo-to-sketch', desc: 'Turn any photo into a beautiful pencil drawing instantly.', cta: 'Make Sketch' },
-            { id: 'text-to-handwriting', title: 'Assignment Studio', href: '/text-to-handwriting', desc: 'Convert typed text into realistic handwriting on notebook paper.', cta: 'Write Now' },
-            { id: 'image-to-text', title: 'Image to Text (OCR)', href: '/image-to-text', desc: 'Extract editable text from any image or document instantly.', cta: 'Scan Now' },
-            { id: 'resume-builder', title: 'Pro Resume Builder', href: '/resume-builder', desc: 'Create a professional modern resume in less than 60 seconds.', cta: 'Build CV' },
-            { id: 'convert-image', title: 'Format Converter', href: '/convert-image', desc: 'Convert between JPG, PNG & fast-loading WebP.', cta: 'Convert' },
-            { id: 'signature-maker', title: 'Digital Signature Maker', href: '/signature-maker', desc: 'Draw or type signatures in 60+ cursive fonts. Transparent PNG.', cta: 'Make Signature' },
-            { id: 'blur-image', title: 'Blur & Censor Image', href: '/blur-image', desc: 'Redact sensitive info, pixelate faces securely.', cta: 'Blur Now' },
-            { id: 'watermark-image', title: 'Watermark Engine', href: '/watermark-image', desc: 'Add text watermarks to protect your photography.', cta: 'Add Watermark' }
+            { id: 'compress-image', title: 'Image Compressor Studio', href: '/compress-image', desc: 'Hit exact file size targets like 20KB, 50KB or any custom limit.' },
+            { id: 'ssc-photo-compressor', title: 'SSC Photo Optimizer', href: '/ssc-photo-compressor', desc: 'Guaranteed 20-50KB resize for SSC exams.' },
+            { id: 'upsc-photo-resizer', title: 'UPSC Photo Resizer', href: '/upsc-photo-resizer', desc: 'Exact 350x350px scaling for UPSC forms.' },
+            { id: 'neet-photo-compressor', title: 'NEET Form Optimizer', href: '/neet-photo-compressor', desc: 'Passport & Postcard (4x6) size maker.' },
+            { id: 'cuet-photo-resizer', title: 'CUET Photo Resizer', href: '/cuet-photo-resizer', desc: 'NTA-compliant photo and signature resizer.' },
+            { id: 'passport-size-photo', title: 'Passport Photo Maker', href: '/passport-size-photo', desc: 'Official 3.5×4.5cm passport photos.' },
+            { id: 'crop-image', title: 'Crop Image Online', href: '/crop-image', desc: 'Precise cropping with ratio presets.' },
+            { id: 'circle-crop', title: 'Circle Profile Maker', href: '/circle-crop', desc: 'Perfect circular avatars for profiles.' },
+            { id: 'resize-image', title: 'Resize Image Pixels', href: '/resize-image', desc: 'Change width/height proportionally.' },
+            { id: 'background-remover', title: 'Background Remover', href: '/background-remover', desc: 'Remove white or solid backgrounds.' },
+            { id: 'black-and-white', title: 'Black & White Filter', href: '/black-and-white', desc: 'Convert photos to elegant grayscale.' },
+            { id: 'photo-to-sketch', title: 'Pencil Sketch Maker', href: '/photo-to-sketch', desc: 'Turn any photo into a pencil drawing.' },
+            { id: 'convert-image', title: 'Format Converter', href: '/convert-image', desc: 'Convert between JPG, PNG & WebP.' },
+            { id: 'blur-image', title: 'Blur & Censor', href: '/blur-image', desc: 'Redact sensitive info securely.' },
+            { id: 'watermark-image', title: 'Watermark Engine', href: '/watermark-image', desc: 'Add text watermarks to your photos.' }
         ]
     },
     {
         id: 'pdf',
-        title: 'PDF Tools',
+        title: 'Document & PDF',
+        desc: 'Merge, split, and extract documents completely offline.',
         icon: '📄',
         tools: [
-            { id: 'merge-pdf', title: 'Merge PDF Files', href: '/merge-pdf', desc: 'Combine multiple PDF documents into one file 100% offline.', cta: 'Merge PDFs' },
-            { id: 'rotate-pdf', title: 'Rotate PDF Pages', href: '/rotate-pdf', desc: 'Fix upside-down scanned PDFs without uploading.', cta: 'Rotate PDF' },
-            { id: 'image-to-pdf', title: 'Images to PDF', href: '/image-to-pdf', desc: 'Merge multiple JPG/PNG images into a single PDF.', cta: 'Create PDF' },
-            { id: 'pdf-to-image', title: 'PDF to Images', href: '/pdf-to-image', desc: 'Extract every page from a PDF as a high-quality image.', cta: 'Extract' },
-            { id: 'split-pdf', title: 'Split & Extract PDF', href: '/split-pdf', desc: 'Separate specific pages from any PDF instantly.', cta: 'Split PDF' },
+            { id: 'merge-pdf', title: 'Merge PDF Files', href: '/merge-pdf', desc: 'Combine multiple PDFs into one file.' },
+            { id: 'rotate-pdf', title: 'Rotate PDF Pages', href: '/rotate-pdf', desc: 'Fix upside-down scanned PDFs.' },
+            { id: 'image-to-pdf', title: 'Images to PDF', href: '/image-to-pdf', desc: 'Merge JPG/PNG images into a single PDF.' },
+            { id: 'pdf-to-image', title: 'PDF to Images', href: '/pdf-to-image', desc: 'Extract every page as a high-quality image.' },
+            { id: 'split-pdf', title: 'Split & Extract', href: '/split-pdf', desc: 'Separate specific pages from any PDF.' },
+            { id: 'resume-builder', title: 'Pro Resume Builder', href: '/resume-builder', desc: 'Create a modern resume in 60 seconds.' },
+            { id: 'text-to-handwriting', title: 'Assignment Studio', href: '/text-to-handwriting', desc: 'Convert text into realistic handwriting.' },
+            { id: 'signature-maker', title: 'E-Signature Maker', href: '/signature-maker', desc: 'Draw or type digital signatures.' }
         ]
     },
     {
         id: 'utilities',
-        title: 'Utilities',
+        title: 'Utilities & Calculators',
+        desc: 'Quick tools for everyday tasks and calculations.',
         icon: '🔐',
         tools: [
-            { id: 'qr-code-generator', title: 'QR Code Generator', href: '/qr-code-generator', desc: 'Create branded, permanent QR codes for URLs, WiFi & more.', cta: 'Make QR Code' },
-            { id: 'password-generator', title: 'Password Generator', href: '/password-generator', desc: 'Generate military-grade secure passwords locally.', cta: 'Generate' },
-            { id: 'file-size-converter', title: 'File Size Converter', href: '/file-size-converter', desc: 'Instant calculator for Bytes ⇄ KB ⇄ MB ⇄ GB.', cta: 'Calculate' },
-            { id: 'percentage-calculator', title: 'Percentage Calculator', href: '/percentage-calculator', desc: 'Quickly find % of numbers without page reload.', cta: 'Calculate %' },
-            { id: 'age-calculator', title: 'Age Calculator', href: '/age-calculator', desc: 'Calculate exact age in years, months, and days.', cta: 'Check Age' },
+            { id: 'qr-code-generator', title: 'QR Code Generator', href: '/qr-code-generator', desc: 'Create permanent QR codes.' },
+            { id: 'password-generator', title: 'Password Generator', href: '/password-generator', desc: 'Generate military-grade secure passwords.' },
+            { id: 'file-size-converter', title: 'File Size Converter', href: '/file-size-converter', desc: 'Instant calculator for Bytes ⇄ KB ⇄ MB.' },
+            { id: 'percentage-calculator', title: 'Percentage Calculator', href: '/percentage-calculator', desc: 'Quickly find % of numbers without reload.' },
+            { id: 'age-calculator', title: 'Age Calculator', href: '/age-calculator', desc: 'Calculate exact age in years, months, days.' },
         ]
     }
 ];
 
-// Flatten for quick lookup in client JS
-const allToolsFlat = categories.flatMap(c => c.tools);
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} active="tools" canonicalPath="/tools">
 
-<!-- DASHBOARD HEADER -->
-<div class="dashboard-shell">
-    <div class="container">
+<div class="dashboard-environment">
+    <div class="container dashboard-container">
         
+        <!-- DASHBOARD HEADER -->
         <header class="dashboard-header animate-in">
             <div class="header-titles">
-                <h1>Workspace</h1>
-                <p class="greeting-line">Welcome back — pick up right where you left off.</p>
+                <h1>Command Center</h1>
+                <p class="greeting-line">Welcome back. Select a utility to begin local processing.</p>
             </div>
             
-            <div class="header-stats">
-                <div class="stat-group">
-                    <span class="stat-val">240k+</span>
-                    <span class="stat-lbl">Processed</span>
-                </div>
-                <div class="stat-group">
-                    <span class="stat-val">100%</span>
-                    <span class="stat-lbl">Private</span>
-                </div>
+            <div class="quick-bar">
+                <a href="/compress-image?size=20" class="bar-link">20KB Optimizer</a>
+                <a href="/passport-size-photo" class="bar-link">Passport Maker</a>
+                <a href="/resume-builder" class="bar-link">Resume Studio</a>
             </div>
         </header>
 
-        <!-- QUICK ACTIONS BAR -->
-        <div class="quick-bar animate-in delay-100">
-            <span class="bar-lbl">Quick Actions:</span>
-            <div class="bar-actions">
-                <a href="/compress-image?size=20" class="bar-link">20KB Size</a>
-                <a href="/compress-image?size=50" class="bar-link">50KB Size</a>
-                <a href="/passport-size-photo" class="bar-link">Passport Photo</a>
-                <a href="/resume-builder" class="bar-link">New Resume</a>
-            </div>
-        </div>
-
-        <!-- WORKSPACE SECTION -->
-        <section class="workspace-section animate-in delay-200" id="top-dashboard-area">
-            <div class="workspace-card">
+        <!-- TOP ACTIVE WORKSPACE (High Emphasis) -->
+        <section class="workspace-section animate-in delay-100" id="top-dashboard-area">
+            <div class="workspace-focal-card">
                 <div class="workspace-header">
-                    <div class="header-left">
-                        <span class="workspace-tag">Active Workspace</span>
-                        <h2>Image Compressor Studio</h2>
-                        <p>Compress images to exact targets like 20KB or 50KB locally.</p>
-                    </div>
+                    <span class="workspace-tag">Featured Engine</span>
+                    <h2>Image Compressor Pro</h2>
+                    <p>Hit exact 20KB or 50KB targets with extreme precision locally.</p>
                 </div>
                 <div class="workspace-body">
                     <CompressTool initialTarget="20" />
@@ -125,32 +97,13 @@ const allToolsFlat = categories.flatMap(c => c.tools);
             </div>
         </section>
 
-        <!-- RECENT ACTIVITY BAR -->
-        <div class="activity-bar animate-in delay-300" id="activity-area">
-            <div class="activity-header">
-                <span class="activity-dot"></span>
-                <h3>Recent Activity</h3>
-                <button id="clear-recents" class="hidden clear-btn">Clear History</button>
-            </div>
-            <div id="recent-tools-container" class="recent-scroll-grid empty">
-                <!-- Will be populated by JS -->
-                <div class="empty-state">
-                    <p>Your recent tools and downloads will appear here for quick access.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="tools-grid-section">
-    <div class="container">
-        <!-- SEARCH & FILTERS -->
-        <div class="dashboard-controls animate-in">
+        <!-- SEARCH AND FILTER BAR -->
+        <div class="dashboard-controls animate-in delay-200">
             <div class="search-wrap">
-                <svg class="search-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <svg class="search-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 <input type="search" id="tool-search" placeholder="Search 30+ tools..." aria-label="Search tools" />
             </div>
-            <div class="filter-tabs" id="filter-tabs">
+            <div class="filter-tabs">
                 <button class="filter-tab active" data-filter="all">All Tools</button>
                 <button class="filter-tab" data-filter="image">Image</button>
                 <button class="filter-tab" data-filter="pdf">PDF</button>
@@ -158,41 +111,45 @@ const allToolsFlat = categories.flatMap(c => c.tools);
             </div>
         </div>
 
-        <!-- COLLAPSIBLE GROUPINGS -->
-        <div class="tool-groups-container" id="groups-container">
+        <!-- RECENT ACTIVITY (Medium Emphasis) -->
+        <div class="activity-bar hidden animate-in delay-300" id="activity-area">
+            <div class="activity-header">
+                <h3>Recent Activity</h3>
+                <button id="clear-recents" class="clear-btn">Clear</button>
+            </div>
+            <div id="recent-tools-container" class="recent-scroll-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- TOOL SECTIONS (Structured List) -->
+        <div class="tools-library" id="groups-container">
             {categories.map(cat => (
-                <details class="tool-group" data-category={cat.id} open>
-                    <summary class="group-summary">
-                        <div class="summary-left">
-                            <h2>{cat.title}</h2>
-                            <span class="count-badge">{cat.tools.length} Tools</span>
-                        </div>
-                        <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                    </summary>
+                <section class="tool-section" data-category={cat.id}>
+                    <header class="section-header">
+                        <h2>{cat.title}</h2>
+                        <p>{cat.desc}</p>
+                    </header>
                     
-                    <div class="group-grid">
+                    <div class="product-grid">
                         {cat.tools.map(tool => (
-                            <a href={tool.href} class="dashboard-card standard-card tracker-tool search-item" data-id={tool.id} data-title={tool.title} data-icon={cat.icon} data-href={tool.href} data-cta={tool.cta}>
-                                <div class="card-top">
-                                    <span class="tool-icon">{cat.icon}</span>
-                                    <div class="card-titles">
-                                        <h3>{tool.title}</h3>
-                                        <p>{tool.desc}</p>
-                                    </div>
+                            <a href={tool.href} class="product-card search-item tracker-tool" data-id={tool.id} data-title={tool.title} data-icon={cat.icon} data-href={tool.href}>
+                                <div class="card-icon-wrap">
+                                    <span class="card-icon">{cat.icon}</span>
                                 </div>
-                                <div class="card-bottom">
-                                    <button class="action-btn secondary">{tool.cta}</button>
-                                </div>
+                                <h3>{tool.title}</h3>
+                                <p>{tool.desc}</p>
+                                <div class="card-hover-border"></div>
                             </a>
                         ))}
                     </div>
-                </details>
+                </section>
             ))}
             
             <div id="no-results" class="hidden no-results-state">
-                <span class="sad-icon">🔍</span>
-                <h3>No tools found</h3>
-                <p>Try searching with different keywords.</p>
+                <div class="sad-icon">🔍</div>
+                <h3>No utilities found</h3>
+                <p>Try searching with a different keyword or category.</p>
             </div>
         </div>
 
@@ -202,242 +159,266 @@ const allToolsFlat = categories.flatMap(c => c.tools);
 </BaseLayout>
 
 <style>
-/* ───── UNIFIED DASHBOARD SYSTEM ───── */
-.dashboard-shell {
+/* ───── STRUCTURED SPACIOUS DASHBOARD ───── */
+.dashboard-environment {
     background: transparent;
-    padding: var(--space-xl) 0 0;
-}
-.tools-grid-section {
-    padding: var(--space-xl) 0 var(--space-2xl);
-    background: transparent;
+    padding: 100px 0 160px;
+    min-height: 100vh;
 }
 
+.dashboard-container {
+    max-width: 1280px; /* Spacious max-width */
+    padding: 0 48px; /* Increased horizontal padding */
+}
+
+@media (max-width: 768px) {
+    .dashboard-container { padding: 0 24px; }
+}
+
+/* Header */
 .dashboard-header {
-    margin-bottom: var(--space-md);
+    margin-bottom: 64px;
 }
 .header-titles h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 900;
     letter-spacing: -0.04em;
-    margin-bottom: var(--space-xs);
+    margin-bottom: 12px;
     color: var(--text-primary);
 }
-.greeting-line { font-size: 1.1rem; color: var(--text-secondary); }
+.greeting-line { 
+    font-size: 1.2rem; 
+    color: var(--text-secondary); 
+    font-weight: 500;
+}
 
-/* Quick Actions */
 .quick-bar {
     display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-xl);
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 32px;
 }
-.bar-lbl { font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); }
-.bar-actions { display: flex; gap: var(--space-sm); }
 .bar-link {
-    padding: 6px 14px;
+    padding: 10px 20px;
     background: var(--surface-2);
-    border: 1px solid var(--border-strong);
+    border: 1px solid var(--border-subtle);
     border-radius: var(--radius-full);
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: 0.95rem;
+    font-weight: 600;
     color: var(--text-primary);
     text-decoration: none;
-    transition: all 0.2s var(--ease-in-out);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .bar-link:hover { 
-    background: var(--accent-primary); 
-    color: #fff; 
+    background: var(--surface-3); 
     border-color: var(--accent-primary);
-    transform: translateY(-1px);
-}
-
-/* Workspace Section */
-.workspace-section {
-    margin-bottom: var(--space-lg);
-}
-.workspace-card {
-    background: var(--surface-3);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    padding: var(--space-lg);
-    box-shadow: var(--shadow-medium);
-}
-.workspace-header { margin-bottom: var(--space-xl); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-lg); }
-.workspace-tag {
-    display: inline-block;
-    padding: 4px 10px;
-    background: var(--accent-primary);
-    color: #fff;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    border-radius: var(--radius-sm);
-    margin-bottom: var(--space-sm);
-}
-.workspace-header h2 { font-size: 1.75rem; font-weight: 800; margin-bottom: var(--space-xs); color: var(--text-primary); }
-.workspace-header p { color: var(--text-secondary); }
-
-/* Activity Bar */
-.activity-bar {
-    background: transparent;
-    padding: 0;
-    margin-bottom: var(--space-xl);
-}
-.activity-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-md);
-    padding-left: 4px;
-}
-.activity-header h3 { font-size: 0.8rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; margin: 0; display: flex; align-items: center; gap: 8px; }
-.activity-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; }
-.recent-scroll-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--space-md);
-}
-.recent-scroll-grid.empty { display: none; }
-
-.mini-card {
-    background: var(--surface-2);
-    padding: 16px;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-strong);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-decoration: none;
-    transition: all 0.25s var(--spring-smooth);
+    color: var(--accent-primary);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-soft);
 }
-.mini-card:hover { transform: translateY(-2px); border-color: var(--accent-primary); box-shadow: var(--shadow-medium); }
-.mini-left { display: flex; align-items: center; gap: 12px; }
-.mini-icon { font-size: 1.2rem; width: 32px; height: 32px; background: var(--surface-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-.mini-title { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); }
-.mini-btn { font-size: 0.75rem; font-weight: 800; color: var(--accent-primary); padding: 4px 10px; background: var(--accent-soft); border-radius: 100px; }
 
-.clear-btn { background: none; border: none; font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); cursor: pointer; }
-.clear-btn:hover { color: #dc2626; }
+/* ───── FOCAL WORKSPACE (High Emphasis) ───── */
+.workspace-section {
+    margin-bottom: 80px;
+}
+.workspace-focal-card {
+    background: var(--surface-3);
+    border: 1px solid var(--border-strong);
+    border-radius: 24px;
+    padding: 48px;
+    box-shadow: var(--shadow-lift);
+    position: relative;
+    overflow: hidden;
+}
+.workspace-focal-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    z-index: 10;
+}
+.workspace-header { margin-bottom: 40px; }
+.workspace-tag {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--accent-soft);
+    color: var(--accent-primary);
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: var(--radius-full);
+    margin-bottom: 16px;
+}
+.workspace-header h2 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; color: var(--text-primary); }
+.workspace-header p { color: var(--text-secondary); font-size: 1.1rem; }
 
-/* Dashboard Controls */
+/* ───── SEARCH & FILTERS ───── */
 .dashboard-controls {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--space-lg);
-    gap: var(--space-xl);
+    margin-bottom: 64px;
+    gap: 32px;
+    background: var(--surface-2);
+    padding: 24px;
+    border-radius: 20px;
+    border: 1px solid var(--border-subtle);
 }
 .search-wrap {
     position: relative;
     flex: 1;
-    max-width: 400px;
+    min-width: 300px;
 }
 .search-svg {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-secondary);
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    color: var(--text-secondary); pointer-events: none;
 }
 #tool-search {
     width: 100%;
-    padding: 10px 14px 10px 44px;
+    padding: 16px 16px 16px 48px;
     border: 1px solid var(--border-strong);
-    border-radius: var(--radius-md);
-    background: var(--surface-2);
+    border-radius: 12px;
+    background: var(--surface-3);
     color: var(--text-primary);
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     outline: none;
-    transition: 0.2s;
+    transition: 0.3s;
 }
-#tool-search:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-soft); }
+#tool-search:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 4px var(--accent-soft); }
 
-.filter-tabs { display: flex; gap: var(--space-sm); }
+.filter-tabs { display: flex; flex-wrap: wrap; gap: 12px; }
 .filter-tab {
-    padding: 8px 16px;
+    padding: 12px 24px;
     border: 1px solid transparent;
-    border-radius: var(--radius-md);
+    border-radius: 12px;
     background: transparent;
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.3s;
 }
-.filter-tab:hover { background: var(--surface-2); color: var(--text-primary); }
-.filter-tab.active { background: var(--text-primary); color: var(--surface-1); }
+.filter-tab:hover { background: var(--surface-3); color: var(--text-primary); }
+.filter-tab.active { background: var(--text-primary); color: var(--surface-1); box-shadow: var(--shadow-soft); }
 
-/* Tool Grouping */
-.tool-group { margin-bottom: var(--space-lg); }
-.group-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--space-lg) 0;
-    cursor: pointer;
-    list-style: none;
-    outline: none;
-}
-.group-summary::-webkit-details-marker { display: none; }
-.summary-left { display: flex; align-items: center; gap: var(--space-md); }
-.summary-left h2 { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); }
-.count-badge { font-size: 0.8rem; color: var(--text-secondary); }
-.chevron-icon { color: var(--text-secondary); transition: 0.3s var(--ease-in-out); }
-.tool-group[open] .chevron-icon { transform: rotate(180deg); }
+/* ───── ACTIVITY BAR ───── */
+.activity-bar { margin-bottom: 80px; }
+.activity-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px; }
+.activity-header h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); }
+.clear-btn { background: none; border: none; font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: 0.2s; }
+.clear-btn:hover { color: #ef4444; }
 
-/* Grid & Cards */
-.group-grid {
+.recent-scroll-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--space-lg);
-    padding-bottom: var(--space-xl);
+    gap: 24px;
 }
-.standard-card {
+.mini-card {
+    background: var(--surface-2);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border-strong);
+    display: flex; align-items: center; gap: 16px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mini-card:hover { transform: translateY(-4px); border-color: var(--accent-primary); box-shadow: var(--shadow-medium); }
+.mini-icon { font-size: 1.5rem; width: 48px; height: 48px; background: var(--surface-3); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.mini-title { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); }
+
+/* ───── TOOL SECTIONS (Breathable Library) ───── */
+.tools-library {
+    opacity: 0.9; /* Slight fade to establish hierarchy vs workspace */
+}
+
+.tool-section {
+    margin-bottom: 100px; /* Massive spacing between categories */
+}
+
+.section-header {
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+.section-header h2 { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
+.section-header p { font-size: 1.1rem; color: var(--text-secondary); }
+
+/* Structured 3-4 Column Grid */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px; /* Large breathable gap */
+}
+
+@media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .product-grid { grid-template-columns: 1fr; } }
+
+/* ───── COMPONENT CARDS ───── */
+.product-card {
     background: var(--surface-3);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    padding: var(--space-lg);
+    border-radius: 20px;
+    padding: 32px;
     text-decoration: none;
-    transition: all 0.25s var(--spring-smooth);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: auto;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: var(--shadow-soft);
 }
-.standard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-medium);
-    border-color: var(--accent-primary);
-}
-.card-titles h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: var(--space-xs); color: var(--text-primary); }
-.card-titles p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
-.card-bottom { margin-top: var(--space-lg); opacity: 0; transform: translateY(6px); transition: 0.2s; }
-.standard-card:hover .card-bottom { opacity: 1; transform: translateY(0); }
-.action-btn.secondary {
-    width: 100%;
-    height: 38px;
+
+.card-icon-wrap {
+    width: 64px; height: 64px;
     background: var(--surface-2);
-    color: var(--text-primary);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px;
     border: 1px solid var(--border-strong);
-    border-radius: var(--radius-sm);
-    font-size: 0.85rem;
-    font-weight: 600;
-    transition: 0.2s;
+    transition: 0.4s;
 }
-.action-btn.secondary:hover {
-    background: var(--surface-3);
-    border-color: var(--accent-primary);
-    transform: translateY(-1px);
+.card-icon { font-size: 2rem; }
+
+.product-card h3 { font-size: 1.3rem; font-weight: 800; color: var(--text-primary); margin-bottom: 12px; }
+.product-card p { font-size: 1rem; color: var(--text-secondary); line-height: 1.6; }
+
+.card-hover-border {
+    position: absolute; inset: 0; border-radius: 20px;
+    border: 2px solid var(--accent-primary);
+    opacity: 0; transition: 0.4s; pointer-events: none;
 }
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-medium);
+}
+.product-card:hover .card-icon-wrap { transform: scale(1.1) rotate(5deg); background: var(--accent-soft); border-color: var(--accent-primary); }
+.product-card:hover .card-hover-border { opacity: 0.5; }
+.dark .product-card:hover .card-hover-border { opacity: 1; }
+
+/* Empty States */
+.no-results-state {
+    text-align: center; padding: 100px 0;
+}
+.sad-icon { font-size: 3rem; margin-bottom: 20px; }
+.no-results-state h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+.no-results-state p { color: var(--text-secondary); }
+
+/* Animation Utility */
+.animate-in { opacity: 0; animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+
+@keyframes fadeSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. RECENT TOOLS SYSTEM (LOCALSTORAGE) ---
+        // --- RECENT TOOLS ---
         const RECENT_KEY = 'formfix_recent_tools';
         const recentContainer = document.getElementById('recent-tools-container');
+        const activityArea = document.getElementById('activity-area');
         const clearBtn = document.getElementById('clear-recents');
         
         function renderRecents() {
@@ -445,16 +426,12 @@ const allToolsFlat = categories.flatMap(c => c.tools);
             const data = localStorage.getItem(RECENT_KEY);
             let recents = data ? JSON.parse(data) : [];
             
-            const activityArea = document.getElementById('activity-area');
-
             if (recents.length === 0) {
                 if(activityArea) activityArea.classList.add('hidden');
                 return;
             }
 
             if(activityArea) activityArea.classList.remove('hidden');
-            recentContainer.classList.remove('empty');
-            if(clearBtn) clearBtn.classList.remove('hidden');
             
             recentContainer.innerHTML = recents.map(t => `
                 <a href="${t.href}" class="mini-card">
@@ -462,7 +439,6 @@ const allToolsFlat = categories.flatMap(c => c.tools);
                         <span class="mini-icon">${t.icon}</span>
                         <span class="mini-title">${t.title}</span>
                     </div>
-                    <span class="mini-btn">${t.cta}</span>
                 </a>
             `).join('');
         }
@@ -473,27 +449,20 @@ const allToolsFlat = categories.flatMap(c => c.tools);
                 id: card.dataset.id,
                 title: card.dataset.title,
                 icon: card.dataset.icon,
-                href: card.dataset.href,
-                cta: card.dataset.cta
+                href: card.dataset.href
             };
 
             const data = localStorage.getItem(RECENT_KEY);
             let recents = data ? JSON.parse(data) : [];
             
-            // Remove if exists
             recents = recents.filter(t => t.id !== toolData.id);
-            // Add to front
             recents.unshift(toolData);
-            // Keep only top 3
-            if (recents.length > 3) recents = recents.slice(0, 3);
+            if (recents.length > 4) recents = recents.slice(0, 4);
             
             localStorage.setItem(RECENT_KEY, JSON.stringify(recents));
         }
 
-        // Init tracker on all tool cards
-        document.querySelectorAll('.tracker-tool').forEach(el => {
-            el.addEventListener('click', trackToolClick);
-        });
+        document.querySelectorAll('.tracker-tool').forEach(el => el.addEventListener('click', trackToolClick));
 
         if (clearBtn) {
             clearBtn.addEventListener('click', () => {
@@ -501,62 +470,54 @@ const allToolsFlat = categories.flatMap(c => c.tools);
                 renderRecents();
             });
         }
-
         renderRecents();
 
-        // --- 2. SEARCH AND FILTER LOGIC ---
+        // --- SEARCH & FILTER ---
         const searchInput = document.getElementById('tool-search');
         const filterBtns = document.querySelectorAll('.filter-tab');
-        const groups = document.querySelectorAll('.tool-group');
+        const sections = document.querySelectorAll('.tool-section');
         const topArea = document.getElementById('top-dashboard-area');
         const noResults = document.getElementById('no-results');
 
         let currentFilter = 'all';
         let currentSearch = '';
-
-        const activityArea = document.getElementById('activity-area');
         
         function runFilters() {
             let totalVisible = 0;
 
-            groups.forEach(group => {
-                const cat = group.dataset.category;
-                const items = group.querySelectorAll('.search-item');
+            sections.forEach(section => {
+                const cat = section.dataset.category;
+                const items = section.querySelectorAll('.search-item');
                 let groupHasVisibleItems = false;
                 
-                // Check if this entire group is filtered out by tabs
                 const matchesTab = (currentFilter === 'all' || currentFilter === cat);
 
                 items.forEach(item => {
                     const title = item.dataset.title.toLowerCase();
-                    const desc = item.querySelector('.card-titles p').innerText.toLowerCase();
-                    const matchesSearch = title.includes(currentSearch) || desc.includes(currentSearch);
+                    const matchesSearch = title.includes(currentSearch);
                     
-                    if (matchesTab && matchesSearch) {
-                        item.classList.remove('hidden');
+                    if (matchesTab && (currentSearch === '' || matchesSearch)) {
+                        item.style.display = 'flex';
                         groupHasVisibleItems = true;
                         totalVisible++;
                     } else {
-                        item.classList.add('hidden');
+                        item.style.display = 'none';
                     }
                 });
 
-                // Hide/show the entire group HTML
                 if (groupHasVisibleItems) {
-                    group.classList.remove('hidden');
-                    // Force open if searching actively/filtering
-                    if (currentSearch.length > 0 || currentFilter !== 'all') {
-                        group.setAttribute('open', '');
-                    }
+                    section.style.display = 'block';
                 } else {
-                    group.classList.add('hidden');
+                    section.style.display = 'none';
                 }
             });
 
             // Handle Top Area
             const isSearching = currentSearch.length > 0 || currentFilter !== 'all';
-            if (topArea) topArea.classList.toggle('hidden', isSearching);
-            if (activityArea) activityArea.classList.toggle('hidden', isSearching);
+            if (topArea) topArea.style.display = isSearching ? 'none' : 'block';
+            if (activityArea && !activityArea.classList.contains('hidden')) {
+                activityArea.style.display = isSearching ? 'none' : 'block';
+            }
 
             // Handle No Results
             if (totalVisible === 0) {
@@ -574,13 +535,12 @@ const allToolsFlat = categories.flatMap(c => c.tools);
         }
 
         filterBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', () => {
                 filterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentFilter = btn.dataset.filter;
                 runFilters();
             });
         });
-
     });
 </script>
