@@ -1,35 +1,20 @@
-/* ============================================================
-   FormFix — Global Unified Design System (V11)
-   ============================================================ */
+/* FormFix Global Styles */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-/* ───────────────────────────────────────────
-   SPACING & ANIMATION UTILITIES
-─────────────────────────────────────────── */
 :root {
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
+  --space-5: 20px;
+  --space-6: 28px;
   --space-8: 48px;
   --space-10: 64px;
   --space-12: 80px;
-
-  --spring-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --spring-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --duration-base: 0.3s;
 }
 
-/* ───────────────────────────────────────────
-   LAYOUT UTILITIES
-─────────────────────────────────────────── */
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1120px;
   margin: 0 auto;
   padding: 0 var(--space-5);
 }
@@ -38,127 +23,75 @@
   .container { padding: 0 var(--space-4); }
 }
 
-.section-spacer { padding: 60px 0; }
-
-/* ───────────────────────────────────────────
-   UNIFIED COMPONENTS
-─────────────────────────────────────────── */
-
-/* Universal Cards */
-.tool-card {
-  background: var(--surface-3);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5);
-  transition: all var(--duration-base) var(--ease-in-out);
-  box-shadow: var(--shadow-soft);
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-}
-
-.tool-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-medium);
-  border-color: var(--accent-primary);
-}
-
-/* Universal Buttons */
+/* Buttons */
 .primary-btn {
   width: 100%;
-  height: 52px;
-  background: var(--accent-gradient);
-  color: #ffffff !important;
+  height: 44px;
+  background: var(--accent-primary);
+  color: #fff !important;
   border: none;
-  border-radius: var(--radius-md);
-  font-weight: 700;
-  font-size: 1.05rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  transition: all var(--duration-base) var(--spring-bouncy);
-  box-shadow: 0 4px 15px var(--accent-glow);
 }
 
 .primary-btn:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 25px var(--accent-glow);
-}
-
-.primary-btn:active {
-  transform: scale(0.98);
+  background: var(--accent-hover);
 }
 
 .secondary-btn {
   background: var(--surface-2);
   color: var(--text-primary);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  padding: 12px 24px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  padding: 8px 16px;
+  font-size: 0.85rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  transition: all var(--duration-base);
 }
 
 .secondary-btn:hover {
-  background: var(--surface-3);
-  border-color: var(--accent-primary);
-  transform: translateY(-1px);
+  border-color: var(--border-strong);
 }
 
-/* Universal Upload Box */
+/* Upload Zone */
 .upload-zone {
   background: var(--surface-2);
-  border: 2px dashed var(--border-strong);
-  border-radius: var(--radius-lg);
-  padding: var(--space-8) var(--space-5);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 40px var(--space-5);
   text-align: center;
-  transition: all var(--duration-base);
   cursor: pointer;
   color: var(--text-secondary);
   position: relative;
-  overflow: hidden;
-}
-
-.upload-zone::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--accent-soft);
-  opacity: 0;
-  transition: opacity var(--duration-base);
-  pointer-events: none;
 }
 
 .upload-zone:hover {
   border-color: var(--accent-primary);
-  color: var(--text-primary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-soft);
+  border-style: solid;
 }
 
-.upload-zone:hover::before {
-  opacity: 1;
-}
-
-/* Universal Inputs */
+/* Inputs */
 input[type="text"],
 input[type="number"],
 select,
 textarea {
   background: var(--surface-2);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
   font-family: inherit;
-  transition: border-color var(--duration-base), box-shadow var(--duration-base);
+  font-size: 0.85rem;
 }
 
 input[type="text"]:focus,
@@ -167,13 +100,12 @@ select:focus,
 textarea:focus {
   outline: none;
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
-/* Legacy Support (Cleaning up hardcoded colors from old views) */
+/* Tool Preview */
 .tool-preview-area {
   width: 100%;
-  height: 350px;
+  height: 300px;
   background: var(--surface-2);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
@@ -184,7 +116,7 @@ textarea:focus {
   margin-bottom: var(--space-5);
 }
 
-.tool-preview-area img, 
+.tool-preview-area img,
 .tool-preview-area canvas {
   max-width: 100%;
   max-height: 100%;
@@ -195,47 +127,41 @@ textarea:focus {
   margin-top: var(--space-6);
   padding: var(--space-5);
   background: var(--surface-2);
-  border: 1px solid var(--accent-primary);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   text-align: center;
-  box-shadow: var(--shadow-soft);
 }
 
 .tool-info-section {
-  margin-top: 80px;
-  max-width: 850px;
+  margin-top: 60px;
+  max-width: 800px;
   margin-inline: auto;
 }
 
-/* ───────────────────────────────────────────
-   ANIMATIONS
-─────────────────────────────────────────── */
+/* Animations */
 .animate-in {
   opacity: 0;
-  animation: fadeSlideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: fadeSlideUp 0.4s ease forwards;
 }
 
 @keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ───────────────────────────────────────────
-   RESPONSIVE OVERRIDES
-─────────────────────────────────────────── */
+/* Responsive */
 @media (max-width: 768px) {
-  .section-spacer { padding: 40px 0; }
-  .primary-btn, .secondary-btn { height: 54px; }
+  .primary-btn, .secondary-btn { height: 44px; }
   .upload-zone { padding: var(--space-6) var(--space-4); }
-  .tool-preview-area { height: 280px; }
+  .tool-preview-area { height: 240px; }
 }
 
 @media (max-width: 480px) {
-  .tool-preview-area { height: 220px; }
+  .tool-preview-area { height: 200px; }
 }
 
-/* Suppression of empty containers */
-.output-preview:empty, 
+/* Empty state suppression */
+.output-preview:empty,
 .preview-container:empty,
 .result-stage:empty,
 .img-preview:empty,

@@ -1,180 +1,174 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 
-const PAGE_TITLE = '404 | Well... this is awkward | FormFix';
-const PAGE_DESC = 'The page you are looking for doesn’t exist, got lost, or never existed in the first place.';
+const PAGE_TITLE = '404 - Page Not Found | FormFix';
+const PAGE_DESC = 'The page you are looking for does not exist. Try searching or browse our popular tools below.';
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} noindex={true}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "404", path: "/" }]} />
 
-    <div class="void-404">
-        <!-- SIMPLIFIED BACKGROUND (No Particles for zero lag) -->
-        <div class="glow-bg"></div>
+    <div class="page-404">
+        <div class="container page-inner">
 
-        <div class="content-stage">
-            <!-- Animated Robot Mascot (Simplified for performance) -->
-            <div class="robot-wrap">
-                <svg width="180" height="180" viewBox="0 0 200 200" class="confused-robot">
-                    <rect x="50" y="40" width="100" height="80" rx="15" fill="#1e1b4b" stroke="#4f46e5" stroke-width="4" />
-                    <circle cx="80" cy="80" r="8" fill="#a855f7" />
-                    <circle cx="120" cy="80" r="8" fill="#a855f7" />
-                    <rect x="75" y="100" width="50" height="4" rx="2" fill="#4f46e5" />
-                    <line x1="100" y1="40" x2="100" y2="20" stroke="#4f46e5" stroke-width="3" />
-                    <circle cx="100" cy="20" r="5" fill="#a855f7" />
-                    <path d="M60 130 Q100 130 140 130 L150 180 L50 180 Z" fill="#1e1b4b" stroke="#4f46e5" stroke-width="4" />
-                </svg>
-            </div>
+            <h1 class="big-404">404</h1>
+            <p class="joke-text" id="joke-placeholder">This page doesn't exist.</p>
 
-            <div class="text-cluster">
-                <h1 class="big-404">404</h1>
-                <h2 class="awkward-heading">Well… this is awkward.</h2>
-                
-                <p class="joke-text" id="joke-placeholder">Even our AI couldn’t fix this one 🤖</p>
-                
-                <p class="search-msg">The page you’re looking for doesn’t exist, got lost, or never existed in the first place.</p>
+            <form class="search-404" action="/tools" method="GET">
+                <input type="text" name="q" placeholder="Search tools..." aria-label="Search tools" />
+                <button type="submit">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                </button>
+            </form>
+
+            <p class="pop-label">Popular Tools</p>
+            <div class="pop-grid">
+                <a href="/compress-image" class="pop-card">Compress Image</a>
+                <a href="/passport-size-photo" class="pop-card">Passport Photo</a>
+                <a href="/merge-pdf" class="pop-card">Merge PDF</a>
+                <a href="/signature-maker" class="pop-card">Signature Maker</a>
+                <a href="/qr-code-generator" class="pop-card">QR Code</a>
+                <a href="/resume-builder" class="pop-card">Resume Builder</a>
             </div>
 
             <div class="btn-group">
-                <a href="/" class="btn-neon-blue">Go Home</a>
-                <button onclick="history.back()" class="btn-outline-neon">Go Back</button>
+                <a href="/" class="btn-primary">Go Home</a>
+                <button onclick="history.back()" class="btn-secondary">Go Back</button>
             </div>
+
         </div>
     </div>
 
     <script is:inline>
         const jokes = [
-            "Even our AI couldn’t fix this one 🤖",
-            "We checked everywhere. Even under the couch.",
-            "This page ghosted you harder than your last chat.",
-            "Oops! Our intern probably deleted this page.",
-            "404: Brain not found. (Just kidding, it's the page).",
-            "You've wandered into a digital void.",
-            "We tried to optimize this into a single pixel. It vanished."
+            "This page doesn't exist.",
+            "This page went to grab coffee and never came back.",
+            "We looked everywhere. Checked under the digital couch too.",
+            "This link is as broken as a screen protector after a phone drop."
         ];
-        const jokePlaceholder = document.getElementById('joke-placeholder');
-        if(jokePlaceholder) {
-            jokePlaceholder.innerText = jokes[Math.floor(Math.random() * jokes.length)];
-        }
+        const el = document.getElementById('joke-placeholder');
+        if (el) el.innerText = jokes[Math.floor(Math.random() * jokes.length)];
     </script>
-
 </BaseLayout>
 
 <style>
-    .void-404 {
-        min-height: 80vh;
-        background: #020617; /* Solid dark background to prevent lag */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-        color: #fff;
-        padding: 40px 20px;
-        z-index: 1;
-    }
+.page-404 {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+.page-inner {
+    text-align: center;
+    max-width: 500px;
+}
+.big-404 {
+    font-size: clamp(3rem, 10vw, 5rem);
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+.joke-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+}
 
-    .glow-bg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 600px;
-        height: 600px;
-        background: radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, transparent 70%);
-        z-index: 2;
-        pointer-events: none;
-    }
+.search-404 {
+    display: flex;
+    max-width: 380px;
+    margin: 0 auto 28px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-2);
+}
+.search-404 input {
+    flex: 1;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    outline: none;
+    font-family: inherit;
+}
+.search-404 input::placeholder { color: var(--text-muted); }
+.search-404 button {
+    padding: 10px 14px;
+    background: var(--accent-primary);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.search-404 button:hover { background: var(--accent-hover); }
 
-    .content-stage {
-        position: relative;
-        z-index: 10; /* Ensure content is ALWAYS on top */
-        text-align: center;
-        max-width: 500px;
-        width: 100%;
-    }
+.pop-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+}
+.pop-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-width: 380px;
+    margin: 0 auto 28px;
+}
+.pop-card {
+    padding: 12px 8px;
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: center;
+}
+.pop-card:hover {
+    border-color: var(--border-strong);
+}
 
-    .robot-wrap {
-        margin-bottom: 24px;
-    }
+.btn-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+.btn-primary {
+    padding: 10px 24px;
+    background: var(--accent-primary);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+.btn-primary:hover { background: var(--accent-hover); color: #fff; }
+.btn-secondary {
+    padding: 10px 24px;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: inherit;
+}
+.btn-secondary:hover { border-color: var(--border-strong); }
 
-    .confused-robot {
-        animation: simpleHover 3s infinite ease-in-out;
-    }
-
-    @keyframes simpleHover {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-    }
-
-    .big-404 {
-        font-size: clamp(5rem, 15vw, 8rem);
-        font-weight: 900;
-        margin: 0;
-        line-height: 1;
-        background: linear-gradient(135deg, #6366f1, #a855f7);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        letter-spacing: -0.05em;
-    }
-
-    .awkward-heading {
-        font-size: clamp(1.5rem, 5vw, 2.25rem);
-        font-weight: 800;
-        margin-top: 10px;
-        color: #f8fafc;
-    }
-
-    .joke-text {
-        font-size: 1.1rem;
-        color: #94a3b8;
-        margin: 16px 0 8px;
-        font-style: italic;
-    }
-
-    .search-msg {
-        color: #64748b;
-        font-size: 1rem;
-        margin-bottom: 40px;
-        line-height: 1.5;
-    }
-
-    .btn-group {
-        display: flex;
-        gap: 16px;
-        justify-content: center;
-    }
-
-    .btn-neon-blue {
-        background: #4f46e5;
-        color: #fff;
-        padding: 14px 32px;
-        border-radius: 12px;
-        font-weight: 700;
-        text-decoration: none;
-        transition: transform 0.2s;
-    }
-
-    .btn-neon-blue:hover {
-        transform: translateY(-2px);
-    }
-
-    .btn-outline-neon {
-        background: transparent;
-        border: 2px solid #334155;
-        color: #94a3b8;
-        padding: 14px 32px;
-        border-radius: 12px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .btn-outline-neon:hover {
-        border-color: #6366f1;
-        color: #fff;
-    }
-
-    @media (max-width: 480px) {
-        .btn-group { flex-direction: column; }
-    }
+@media (max-width: 480px) {
+    .pop-grid { grid-template-columns: repeat(2, 1fr); }
+    .btn-group { flex-direction: column; }
+}
 </style>

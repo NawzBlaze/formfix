@@ -1,8 +1,24 @@
----
+﻿---
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import '../styles/global.css';
 import '../styles/theme.css';
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_AUTHOR,
+  SITE_LOCALE,
+  SITE_LOCALE_REGION,
+  DEFAULT_OG_IMAGE,
+  DEFAULT_FAVICON,
+  buildCanonical,
+  cleanPath,
+  titleToBreadcrumb,
+  organizationSchema,
+  websiteSchema,
+  breadcrumbSchema,
+  softwareAppSchema,
+} from '../seo';
 
 interface Props {
 	title: string;
@@ -12,165 +28,219 @@ interface Props {
 	canonicalPath?: string;
 	keywords?: string;
 	noindex?: boolean;
+	ogImage?: string;
+	ogType?: string;
+	breadcrumb?: Array<{ name: string; path: string }>;
+	faq?: Array<{ q: string; a: string }>;
+	author?: string;
+	publishedTime?: string;
+	modifiedTime?: string;
+	themeColor?: string;
 }
 
-
-const { 
-    title, 
-    description, 
-    active = 'home',
-    customSchema,
-    canonicalPath,
-    keywords = "formfix, image compressor, pdf tools, passport photo maker, crop image, merge pdf, qr code generator",
-    noindex = false
+const {
+	title,
+	description,
+	active = 'home',
+	customSchema,
+	canonicalPath,
+	keywords = 'free online image compressor, compress image to 20kb, passport photo maker online, pdf merger free, signature maker online, qr code generator, free browser tools',
+	noindex = false,
+	ogImage,
+	ogType = 'website',
+	breadcrumb,
+	faq,
+	author = SITE_AUTHOR,
+	publishedTime,
+	modifiedTime,
+	themeColor = 'var(--accent-primary)',
 } = Astro.props;
 
+const OG_IMAGE_URL = SITE_URL + (ogImage || DEFAULT_OG_IMAGE);
 
+// Final, deduplicated canonical path
+const cleaned = cleanPath(canonicalPath || Astro.url.pathname);
+const finalCanonical = buildCanonical(cleaned);
 
-const SITE_URL = 'https://formfix.pages.dev';
-const FAVICON = '/favicon.png?v=5';
-const OG_IMAGE = '/og-banner.png';
+// Page title with brand suffix
+const finalTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
 
+// Breadcrumb items
+const breadcrumbItems =
+	breadcrumb ||
+	([
+		{ name: 'Home', path: '/' },
+		...(cleaned !== '/' ? [{ name: titleToBreadcrumb(title), path: cleaned }] : []),
+	] as Array<{ name: string; path: string }>);
 
-// Default WebApplication Schema
-const defaultSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "FormFix",
-  "description": description,
-  "url": SITE_URL + (canonicalPath || ""),
-  "applicationCategory": "MultimediaApplication",
-  "operatingSystem": "All",
-  "browserRequirements": "Requires JavaScript",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "ratingCount": "1542"
-  },
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "FormFix",
-    "url": SITE_URL,
-    "logo": SITE_URL + '/favicon.png?v=5',
-    "sameAs": [
-      "https://github.com/NawzBlaze/formfix"
-    ],
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "email": "formfix.support@gmail.com",
-      "contactType": "customer service",
-      "url": SITE_URL + "/contact"
-    }
-  }
+// JSON-LD schema graph - merges everything we need into one valid structured block
+// Each @type is added only once to prevent duplicate schema warnings.
+const ldGraph: any[] = [organizationSchema(), websiteSchema(), breadcrumbSchema(breadcrumbItems)];
+
+const seenTypes = new Set<string>();
+const pushUnique = (schema: any) => {
+	if (!schema || !schema['@type']) {
+		ldGraph.push(schema);
+		return;
+	}
+	const types = Array.isArray(schema['@type']) ? schema['@type'] : [schema['@type']];
+	const primary = types[0];
+	if (seenTypes.has(primary)) return;
+	seenTypes.add(primary);
+	ldGraph.push(schema);
 };
 
-const finalSchema = customSchema || defaultSchema;
+if (customSchema) {
+	if ((customSchema as any)['@graph']) {
+		for (const s of (customSchema as any)['@graph']) {
+			pushUnique(s);
+		}
+	} else {
+		pushUnique(customSchema);
+	}
+}
 
-// SEO Power-up: Dynamic Breadcrumb Schema for Google Rich Snippets
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": SITE_URL
-    },
-    ...(canonicalPath && canonicalPath !== "/" && canonicalPath !== "" ? [{
-      "@type": "ListItem",
-      "position": 2,
-      "name": title.includes('|') ? title.split('|')[0].trim() : title.split(/-|–/)[0].trim(),
-      "item": SITE_URL + (canonicalPath.startsWith('/') ? canonicalPath : '/' + canonicalPath)
-    }] : [])
-  ]
+// Add FAQPage if FAQ items are provided
+if (faq && faq.length > 0) {
+	pushUnique({
+		'@context': 'https://schema.org',
+		'@type': 'FAQPage',
+		mainEntity: faq.map(({ q, a }) => ({
+			'@type': 'Question',
+			name: q,
+			acceptedAnswer: { '@type': 'Answer', text: a },
+		})),
+	});
+}
+
+// Always add a software/app schema to help SEO
+if (!customSchema || !(customSchema as any)['@graph']) {
+	ldGraph.push(
+		softwareAppSchema({
+			name: titleToBreadcrumb(title),
+			description,
+			path: cleaned,
+		}),
+	);
+}
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': ldGraph,
 };
-
-// Ensure finalURL doesn't have a trailing slash unless it's the home page
-let finalPath = canonicalPath || Astro.url.pathname;
-if (finalPath.endsWith('/') && finalPath.length > 1) {
-    finalPath = finalPath.slice(0, -1);
-}
-// Ensure it starts with a slash
-if (!finalPath.startsWith('/')) {
-    finalPath = '/' + finalPath;
-}
-const finalCanonical = SITE_URL + finalPath;
-
-
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="theme-color" content="#4f46e5" />
-		
-        <!-- 🚀 THEME INITIALIZATION -->
-        <script is:inline>
-            (function() {
-                const theme = localStorage.getItem('ff-theme') || 
-                             (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                }
-            })();
-        </script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content={themeColor} />
+		<meta name="color-scheme" content="light dark" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+		<!-- 🚀 THEME INITIALIZATION -->
+		<script is:inline>
+			(function() {
+				try {
+					const theme = localStorage.getItem('ff-theme') ||
+						(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+					if (theme === 'dark') {
+						document.documentElement.classList.add('dark');
+					}
+				} catch (e) {}
+			})();
+		</script>
 
 		<!-- 1. Core SEO Basics -->
-		<title>{title.includes('FormFix') ? title : `${title} | FormFix`}</title>
+		<title>{finalTitle}</title>
 		<meta name="description" content={description} />
 		<meta name="keywords" content={keywords} />
-		<meta name="robots" content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
+		<meta name="author" content={author} />
+		<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+		<meta name="googlebot" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+		<meta name="bingbot" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+		<meta name="rating" content="general" />
+		<meta name="distribution" content="global" />
+		<meta name="revisit-after" content="3 days" />
+		<meta name="language" content="English" />
+		<meta name="geo.region" content="IN" />
+		<meta name="geo.placename" content="India" />
+		<meta name="copyright" content={`© ${new Date().getFullYear()} ${SITE_NAME}`} />
+
 		<meta name="google-site-verification" content="FKfSex5XmAK3Fq6qySjak4KswvDlO1pUKmYXzbdy_WU" />
 
+		<!-- Canonical & Hreflang -->
 		<link rel="canonical" href={finalCanonical} />
 		<link rel="alternate" hreflang="x-default" href={finalCanonical} />
 		<link rel="alternate" hreflang="en" href={finalCanonical} />
-		<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+		<link rel="alternate" hreflang="en-IN" href={finalCanonical} />
+		<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap-index.xml" />
 
-		<meta name="application-name" content="FormFix" />
-		<meta name="apple-mobile-web-app-title" content="FormFix" />
-		<meta name="format-detection" content="telephone=no" />
+		<meta name="application-name" content={SITE_NAME} />
+		<meta name="apple-mobile-web-app-title" content={SITE_NAME} />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<meta name="mobile-web-app-capable" content="yes" />
+
 		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+		<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 		<link rel="dns-prefetch" href="https://www.clarity.ms" />
-		
-		<!-- 2. Social Media (Open Graph) -->
-		<meta property="og:type" content="website" />
+		<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+		<!-- 2. Open Graph -->
+		<meta property="og:type" content={ogType} />
 		<meta property="og:url" content={finalCanonical} />
-		<meta property="og:title" content={title} />
+		<meta property="og:title" content={finalTitle} />
 		<meta property="og:description" content={description} />
-		<meta property="og:image" content={SITE_URL + OG_IMAGE} />
+		<meta property="og:image" content={OG_IMAGE_URL} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
-        <meta property="og:site_name" content="FormFix" />
-		<meta property="og:locale" content="en_IN" />
+		<meta property="og:image:alt" content={titleToBreadcrumb(title)} />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:site_name" content={SITE_NAME} />
+		<meta property="og:locale" content={`${SITE_LOCALE}_${SITE_LOCALE_REGION}`} />
+		<meta property="og:locale:alternate" content="en_US" />
+		<meta property="og:locale:alternate" content="en_GB" />
+		{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+		{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
 
-		<!-- 3. Twitter Card Tags -->
+		<!-- 3. Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
+		<meta name="twitter:site" content="@formfix" />
+		<meta name="twitter:creator" content="@formfix" />
+		<meta name="twitter:title" content={finalTitle} />
 		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={SITE_URL + OG_IMAGE} />
+		<meta name="twitter:image" content={OG_IMAGE_URL} />
+		<meta name="twitter:image:alt" content={titleToBreadcrumb(title)} />
+		<meta name="twitter:url" content={finalCanonical} />
 
 		<!-- 4. Icons & PWA -->
-		<link rel="icon" type="image/png" href="/favicon.png?v=5" />
-		<link rel="apple-touch-icon" href="/favicon.png?v=5" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=3" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3" />
+		<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=3" />
+		<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png?v=3" />
+		<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png?v=3" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3" />
+		<link rel="mask-icon" href="/favicon.svg" color={themeColor} />
 		<link rel="manifest" href="/manifest.json" />
+		<meta name="msapplication-TileColor" content={themeColor} />
+		<meta name="msapplication-config" content="/browserconfig.xml" />
 
-		<!-- 5. Search Engine Discovery -->
-		<script type="application/ld+json" set:html={JSON.stringify(finalSchema)}></script>
-		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
+		<!-- 5. Structured Data (JSON-LD) -->
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline></script>
 
-		<!-- 6. Preconnects & Font Performance -->
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+		<!-- 6. Font Performance (using system fonts) -->
+
+		<!-- 7. Performance Hints -->
+		<meta http-equiv="x-dns-prefetch-control" content="on" />
 
 		<!-- Microsoft Clarity Tracking -->
 		<script is:inline>
@@ -180,87 +250,320 @@ const finalCanonical = SITE_URL + finalPath;
 			y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 		})(window, document, "clarity", "script", "w3sxusm4n2");
 		</script>
+
+		<!-- Plausible Analytics (privacy-friendly) -->
+		<script defer data-domain="formfix.pages.dev" src="https://plausible.io/js/script.js"></script>
+
+		<script is:inline define:vars={{ SITE_URL }}>
+window.__SITE_URL = SITE_URL;
+</script>
 	</head>
 
 	<body class="premium-theme">
-        <!-- 🌫️ Atmospheric Signature Layers -->
-        <div class="noise-overlay" aria-hidden="true"></div>
-        <div class="vignette-overlay" aria-hidden="true"></div>
+		<noscript>
+			<div style="position:fixed;top:0;left:0;right:0;z-index:99999;background:var(--error-soft);border-bottom:2px solid var(--error);color:var(--error);padding:16px 24px;text-align:center;font-family:system-ui,sans-serif;font-weight:600;">
+				FormFix requires JavaScript to run. Please enable JavaScript in your browser to use our tools.
+			</div>
+		</noscript>
+
+		<a href="#main-content" class="skip-link">Skip to main content</a>
 
 		<Header active={active} />
-		
-		<main id="app-container" class="page-entrance-impact">
+
+		<main id="main-content" class="page-entrance-impact" role="main" aria-label={titleToBreadcrumb(title)}>
 			<slot />
 		</main>
 
 		<Footer />
 
-        <script>
-            import confetti from 'canvas-confetti';
-            (window as any).triggerConfetti = () => {
-                const count = 200;
-                const defaults = { origin: { y: 0.7 } };
-                function fire(particleRatio: number, opts: any) {
-                    confetti(Object.assign({}, defaults, opts, {
-                        particleCount: Math.floor(count * particleRatio)
-                    }));
-                }
-                fire(0.25, { spread: 26, startVelocity: 55 });
-                fire(0.2, { spread: 60 });
-                fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
-                fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-                fire(0.1, { spread: 120, startVelocity: 45 });
-            };
-        </script>
+		<script>
+			// Lightweight native canvas confetti - no external library (~3KB vs 500KB)
+			(window as any).triggerConfetti = () => {
+				if (typeof document === 'undefined') return;
+				const canvas = document.createElement('canvas');
+				canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99999;';
+				document.body.appendChild(canvas);
+				const ctx = canvas.getContext('2d');
+				if (!ctx) return;
+				const dpr = window.devicePixelRatio || 1;
+				canvas.width = window.innerWidth * dpr;
+				canvas.height = window.innerHeight * dpr;
+				ctx.scale(dpr, dpr);
+
+				const colors = ['#10b981', '#16a34a', '#d97706', '#dc2626', '#0891b2'];
+				const count = 80;
+				const particles: any[] = [];
+				for (let i = 0; i < count; i++) {
+					particles.push({
+						x: window.innerWidth / 2 + (Math.random() - 0.5) * 200,
+						y: window.innerHeight * 0.7,
+						vx: (Math.random() - 0.5) * 14,
+						vy: -Math.random() * 14 - 6,
+						g: 0.35,
+						color: colors[Math.floor(Math.random() * colors.length)],
+						size: Math.random() * 6 + 4,
+						rot: Math.random() * Math.PI * 2,
+						vr: (Math.random() - 0.5) * 0.2,
+						life: 1,
+					});
+				}
+				const start = performance.now();
+				function frame(now: number) {
+					const t = now - start;
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					let alive = false;
+					for (const p of particles) {
+						p.vy += p.g;
+						p.x += p.vx;
+						p.y += p.vy;
+						p.rot += p.vr;
+						p.life = Math.max(0, 1 - t / 2200);
+						if (p.life > 0) {
+							alive = true;
+							ctx.save();
+							ctx.translate(p.x, p.y);
+							ctx.rotate(p.rot);
+							ctx.globalAlpha = p.life;
+							ctx.fillStyle = p.color;
+							ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+							ctx.restore();
+						}
+					}
+					if (alive && t < 2500) {
+						requestAnimationFrame(frame);
+					} else {
+						canvas.remove();
+					}
+				}
+				requestAnimationFrame(frame);
+			};
+		</script>
+
+		<!-- Global Toast Notification System -->
+		<div id="ff-toast-container" aria-live="polite" aria-atomic="false" role="status" style="position:fixed;top:20px;right:20px;z-index:100001;display:flex;flex-direction:column;gap:10px;pointer-events:none;"></div>
+
+		<!-- Cookie Consent Banner -->
+		<div id="cookie-consent" class="cookie-banner" role="dialog" aria-label="Cookie consent" style="display:none;">
+			<div class="cookie-inner">
+				<p class="cookie-text">We use analytics to improve our tools. No personal data is stored. <a href="/privacy" class="cookie-link">Privacy Policy</a></p>
+				<div class="cookie-btns">
+					<button id="cookie-accept" class="cookie-btn cookie-accept">Accept</button>
+					<button id="cookie-decline" class="cookie-btn cookie-decline">Decline</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Back to Top Button -->
+		<button id="back-to-top" class="btt-btn" aria-label="Back to top" style="display:none;">
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+		</button>
+
+		<script is:inline>
+		// Cookie Consent
+		(function() {
+			if (localStorage.getItem('fc-cookie-consent')) return;
+			var banner = document.getElementById('cookie-consent');
+			if (!banner) return;
+			banner.style.display = 'block';
+			document.getElementById('cookie-accept').onclick = function() {
+				localStorage.setItem('fc-cookie-consent', 'accepted');
+				banner.style.display = 'none';
+			};
+			document.getElementById('cookie-decline').onclick = function() {
+				localStorage.setItem('fc-cookie-consent', 'declined');
+				banner.style.display = 'none';
+			};
+		})();
+
+		// Global Toast Notification
+		window.ffNotice = function(message, type) {
+			type = type || 'info';
+			var container = document.getElementById('ff-toast-container');
+			if (!container) return;
+			var toast = document.createElement('div');
+			var colors = { success: '#16a34a', error: '#dc2626', info: '#10b981', warning: '#d97706' };
+			var icons = { success: '&#10003;', error: '&#10007;', info: 'i', warning: '!' };
+			var roles = { success: 'status', error: 'alert', info: 'status', warning: 'alert' };
+			toast.setAttribute('role', roles[type] || 'status');
+			toast.style.cssText = 'pointer-events:auto;display:flex;align-items:center;gap:10px;padding:14px 20px;border-radius:12px;color:#fff;font-weight:600;font-size:0.9rem;box-shadow:0 8px 24px rgba(0,0,0,0.2);transform:translateX(120%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);background:' + (colors[type] || colors.info) + ';max-width:380px;';
+			toast.innerHTML = '<span style="font-size:1.1rem;">' + (icons[type] || icons.info) + '</span><span>' + message + '</span>';
+			container.appendChild(toast);
+			requestAnimationFrame(function() { toast.style.transform = 'translateX(0)'; });
+			setTimeout(function() {
+				toast.style.transform = 'translateX(120%)';
+				setTimeout(function() { toast.remove(); }, 400);
+			}, 4000);
+		};
+
+		// Back to Top
+		(function() {
+			var btn = document.getElementById('back-to-top');
+			if (!btn) return;
+			window.addEventListener('scroll', function() {
+				btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
+			}, { passive: true });
+			btn.addEventListener('click', function() {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			});
+		})();
+
+		// Service Worker Registration
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', function() {
+				navigator.serviceWorker.register('/sw.js').catch(function() {});
+			});
+		}
+
+		// Global Error Monitoring
+		window.onerror = function(msg, url, line, col, err) {
+			if (typeof window.clarity === 'function') {
+				window.clarity('error', msg + ' at ' + url + ':' + line);
+			}
+		};
+		window.onunhandledrejection = function(e) {
+			if (typeof window.clarity === 'function') {
+				window.clarity('error', 'Unhandled: ' + (e.reason?.message || e.reason || 'unknown'));
+			}
+		};
+
+		// Keyboard Shortcuts
+		document.addEventListener('keydown', function(e) {
+			if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+			if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
+				e.preventDefault();
+				var searchInput = document.querySelector('input[type="search"], input[name="q"], .search-input');
+				if (searchInput) searchInput.focus();
+			}
+			if (e.key === 'Escape') {
+				var activeEl = document.activeElement;
+				if (activeEl && activeEl !== document.body) {
+					activeEl.blur();
+				}
+			}
+			if (e.key === '?' && !e.ctrlKey && !e.metaKey) {
+				var helpModal = document.getElementById('keyboard-help');
+				if (helpModal) helpModal.classList.toggle('hidden');
+			}
+		});
+		</script>
 
 		<style is:global>
-            /* 🌫️ Atmosphere Layers */
-            .noise-overlay {
-                position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.015;
-                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            }
-            .vignette-overlay {
-                position: fixed; inset: 0; z-index: 9998; pointer-events: none;
-                background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.08) 100%);
-            }
-            :global(.dark) .vignette-overlay { background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.3) 100%); }
+			.skip-link {
+				position: absolute;
+				top: -100px;
+				left: 16px;
+				padding: 12px 20px;
+				background: var(--accent-primary);
+				color: #fff;
+				font-weight:600;
+				border-radius: 8px;
+				z-index: 100000;
+				text-decoration: none;
+				transition: top 0.2s;
+			}
+			.skip-link:focus {
+				top: 16px;
+				color: #fff;
+			}
 
-            /* ✨ Emotional Motion System */
-            .page-entrance-impact {
-                animation: impactEntrance 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-            }
-            @keyframes impactEntrance {
-                from { opacity: 0; transform: translateY(15px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
+			/* Emotional Motion System */
+			.page-entrance-impact {
+				animation: impactEntrance 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+			}
+			@keyframes impactEntrance {
+				from { opacity: 0; transform: translateY(15px); }
+				to { opacity: 1; transform: translateY(0); }
+			}
 
-            /* 🔘 Press Feedback */
-            button:active, a:active {
-                transform: scale(0.96) !important;
-                transition: transform 0.1s !important;
-            }
+			/* 🔘 Press Feedback */
+			button:active, a:active {
+				transform: scale(0.96) !important;
+				transition: transform 0.1s !important;
+			}
 
-            /* 🔗 Staggered Animation Logic (Intersection Observer driven) */
-            .stagger-item { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-            .stagger-item.visible { opacity: 1; transform: translateY(0); }
+			/* 🔗 Staggered Animation Logic (Intersection Observer driven) */
+			.stagger-item { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+			.stagger-item.visible { opacity: 1; transform: translateY(0); }
 
-            .text-link {
-                position: relative; color: var(--accent-primary); font-weight: 600; text-decoration: none;
-            }
-            .text-link::after {
-                content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 2px;
-                bottom: -2px; left: 0; background: var(--accent-gradient);
-                transform-origin: bottom right; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            }
-            .text-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+			.text-link {
+				position: relative; color: var(--accent-primary); font-weight: 600; text-decoration: none;
+			}
+			.text-link::after {
+				content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 2px;
+				bottom: -2px; left: 0; background: var(--accent-primary);
+				transform-origin: bottom right; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+			.text-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+
+			/* Accessibility - better focus rings */
+			a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+				outline: 2px solid var(--accent-primary);
+				outline-offset: 2px;
+				border-radius: 4px;
+			}
+
+			/* Reduced motion preferences */
+			@media (prefers-reduced-motion: reduce) {
+				*, *::before, *::after {
+					animation-duration: 0.01ms !important;
+					animation-iteration-count: 1 !important;
+					transition-duration: 0.01ms !important;
+					scroll-behavior: auto !important;
+				}
+			}
 
 			body {
 				display: block; overflow-x: hidden; position: relative;
-                background-color: var(--surface-1); color: var(--text-primary);
-                min-height: 100vh;
+				background-color: var(--surface-1); color: var(--text-primary);
+				min-height: 100vh;
 			}
-			
+
 			main { height: auto; z-index: 1; }
+
+			img { max-width: 100%; height: auto; }
+
+			/* Screen reader only */
+			.sr-only {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				padding: 0;
+				margin: -1px;
+				overflow: hidden;
+				clip: rect(0, 0, 0, 0);
+				white-space: nowrap;
+				border: 0;
+			}
+		</style>
+
+		<style>
+			/* Cookie Consent Banner */
+			.cookie-banner {
+				position: fixed; bottom: 0; left: 0; right: 0; z-index: 99990;
+				background: var(--surface-2); border-top: 1px solid var(--border-subtle);
+				padding: 16px 20px; box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+			}
+			.cookie-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+			.cookie-text { margin: 0; font-size: 14px; color: var(--text-secondary); flex: 1; }
+			.cookie-link { color: var(--accent-primary); text-decoration: underline; font-weight: 500; }
+			.cookie-btns { display: flex; gap: 8px; }
+			.cookie-btn { padding: 8px 20px; border-radius: var(--radius-sm); font-weight: 500; font-size: 13px; cursor: pointer; border: none; }
+			.cookie-accept { background: var(--accent-primary); color: #fff; }
+			.cookie-accept:hover { background: var(--accent-hover); }
+			.cookie-decline { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-subtle); }
+			.cookie-decline:hover { background: var(--surface-1); }
+
+			/* Back to Top Button */
+			.btt-btn {
+				position: fixed; bottom: 80px; right: 24px; z-index: 99989;
+				width: 40px; height: 40px; border-radius: 50%;
+				background: var(--surface-3); color: var(--text-primary);
+				border: 1px solid var(--border-subtle); cursor: pointer; display: flex; align-items: center; justify-content: center;
+				box-shadow: var(--shadow-md);
+			}
+			.btt-btn:hover { border-color: var(--border-strong); }
+			:global(.dark) .cookie-banner { background: var(--surface-1); border-color: var(--border-subtle); }
+			:global(.dark) .cookie-decline:hover { background: var(--surface-2); }
 		</style>
 	</body>
 </html>

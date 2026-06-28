@@ -1,4 +1,4 @@
----
+﻿---
 import UploadBox from '../UploadBox.astro';
 const { initialTarget = 'auto' } = Astro.props;
 ---
@@ -40,6 +40,15 @@ const { initialTarget = 'auto' } = Astro.props;
                     <span id="btn-label">Optimize Image Now</span>
                     <div id="loader" class="fun-spinner-sm hidden"></div>
                 </button>
+                <div id="progress-bar-wrap" class="hidden" style="width:100%;margin-top:12px;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                        <span id="progress-text" style="font-size:0.8rem;font-weight:600;color:var(--text-muted);">Analyzing...</span>
+                        <span id="progress-pct" style="font-size:0.8rem;font-weight:600;color:var(--primary);">0%</span>
+                    </div>
+                    <div style="width:100%;height:6px;background:var(--surface-100);border-radius:100px;overflow:hidden;">
+                        <div id="progress-fill" style="height:100%;width:0%;background:var(--primary);border-radius:100px;transition:width 0.3s;"></div>
+                    </div>
+                </div>
                 <p class="privacy-tiny">🔒 Securely processed offline on your GPU</p>
             </div>
         </div>
@@ -71,13 +80,13 @@ const { initialTarget = 'auto' } = Astro.props;
                 <div class="compare-box">
                     <span class="badge">Original</span>
                     <div class="display-pane">
-                        <img id="orig-preview" src="" alt="Before" />
+                        <img id="orig-preview" src="" alt="Before" loading="lazy" decoding="async" />
                     </div>
                 </div>
                 <div class="compare-box active">
                     <span class="badge accent">Result</span>
                     <div class="display-pane">
-                        <img id="final-preview" src="" alt="After" />
+                        <img id="final-preview" src="" alt="After" loading="lazy" decoding="async" />
                     </div>
                 </div>
             </div>
@@ -122,8 +131,8 @@ const { initialTarget = 'auto' } = Astro.props;
             fileIn.addEventListener('change', (e) => {
                 const f = e.target.files[0]; if(!f) return;
                 fileObj = f; 
-                uBox.classList.add('hidden'); 
-                ctrl.classList.remove('hidden');
+                uBox?.classList.add('hidden'); 
+                ctrl?.classList.remove('hidden');
                 
                 const r = new FileReader(); 
                 r.onload = (ev) => {
@@ -151,48 +160,77 @@ const { initialTarget = 'auto' } = Astro.props;
         if (cBtn) {
             cBtn.onclick = async () => {
                 if(!fileObj) return;
-                btnTxt.textContent = 'Analyzing Layers...'; ldr.classList.remove('hidden'); cBtn.disabled = true;
+                btnTxt.textContent = 'Analyzing Layers...'; ldr?.classList.remove('hidden'); cBtn.disabled = true;
+                const progWrap = document.getElementById('progress-bar-wrap');
+                const progFill = document.getElementById('progress-fill');
+                const progText = document.getElementById('progress-text');
+                const progPct = document.getElementById('progress-pct');
+                progWrap?.classList.remove('hidden');
+                if(progFill) progFill.style.width = '0%';
+                if(progPct) progPct.textContent = '0%';
+                if(progText) progText.textContent = 'Initializing...';
+                try {
+                    const res = await runRBQS(fileObj, parseInt(targetKB), (pct, msg) => {
+                        if(progFill) progFill.style.width = pct + '%';
+                        if(progPct) progPct.textContent = pct + '%';
+                        if (msg && progText) progText.textContent = msg;
+                    });
+                    if(res) {
+                        const url = URL.createObjectURL(res.blob);
+                        const fp = document.getElementById('final-preview'); if(fp) fp.src = url;
+                        const fs = document.getElementById('final-stat'); if(fs) fs.textContent = (res.blob.size / 1024).toFixed(1) + ' KB';
+                        const acc = Math.min(100, (res.blob.size / (targetKB * 1024)) * 100);
+                        const as = document.getElementById('accuracy-stat'); if(as) as.textContent = acc.toFixed(1) + '%';
+                        
+                        const dl = document.getElementById('download-btn'); if(dl) { dl.href = url; dl.download = `formfix-${targetKB}kb.jpg`; }
+                        ctrl?.classList.add('hidden'); resBox?.classList.remove('hidden');
+                        
+                        const shareX = document.getElementById('share-x');
+                        const shareWA = document.getElementById('share-wa');
+                        const shareTxt = `I just compressed my photo to ${targetKB}KB exactly using FormFix! It's 100% private and runs in the browser. No uploads. Check it out: ` + window.__SITE_URL;
+                        
+                        if(shareX) shareX.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTxt)}`;
+                        if(shareWA) shareWA.href = `https://wa.me/?text=${encodeURIComponent(shareTxt)}`;
 
-                const res = await runRBQS(fileObj, parseInt(targetKB));
-                if(res) {
-                    const url = URL.createObjectURL(res.blob);
-                    document.getElementById('final-preview').src = url;
-                    document.getElementById('final-stat').textContent = (res.blob.size / 1024).toFixed(1) + ' KB';
-                    const acc = Math.min(100, (res.blob.size / (targetKB * 1024)) * 100);
-                    document.getElementById('accuracy-stat').textContent = acc.toFixed(1) + '%';
-                    
-                    const dl = document.getElementById('download-btn'); dl.href = url; dl.download = `formfix-${targetKB}kb.jpg`;
-                    ctrl.classList.add('hidden'); resBox.classList.remove('hidden');
-                    
-                    // Viral Share Logic
-                    const shareX = document.getElementById('share-x');
-                    const shareWA = document.getElementById('share-wa');
-                    const shareTxt = `I just compressed my photo to ${targetKB}KB exactly using FormFix! It's 100% private and runs in the browser. No uploads. Check it out: https://formfix.pages.dev`;
-                    
-                    if(shareX) shareX.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTxt)}`;
-                    if(shareWA) shareWA.href = `https://wa.me/?text=${encodeURIComponent(shareTxt)}`;
-
-                    if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
+                        if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
+                    }
+                } catch(e) {
+                    ldr?.classList.add('hidden');
+                    btnTxt.textContent = 'Compress';
+                    cBtn.disabled = false;
+                    progWrap?.classList.add('hidden');
+                    if (window.ffNotice) window.ffNotice('Compression failed. Try a different image.', 'error');
+                } finally {
+                    btnTxt.textContent = 'Optimize Image Now'; ldr?.classList.add('hidden'); cBtn.disabled = false;
+                    const pbw = document.getElementById('progress-bar-wrap'); if(pbw) pbw.classList.add('hidden');
                 }
-                btnTxt.textContent = 'Optimize Image Now'; ldr.classList.add('hidden'); cBtn.disabled = false;
             };
         }
 
-        async function runRBQS(file, target) {
+        async function runRBQS(file, target, onProgress) {
             const img = await createImageBitmap(file), targetBytes = target * 1024;
             let scale = target < 30 ? 0.6 : target < 80 ? 0.8 : 1.0;
             let w = Math.max(1, Math.floor(img.width * scale)), h = Math.max(1, Math.floor(img.height * scale));
             let best = null; const cvs = document.createElement('canvas'), ctx = cvs.getContext('2d', {alpha:false});
+            const totalSteps = 3 * 7;
+            let step = 0;
+            if (onProgress) onProgress(5, 'Preparing image...');
+            await new Promise(r => setTimeout(r, 50));
             for(let s=0; s<3; s++) {
                 cvs.width = w; cvs.height = h; ctx.fillStyle="#fff"; ctx.fillRect(0,0,w,h); ctx.drawImage(img,0,0,w,h);
+                if (onProgress) onProgress(Math.round(10 + (s / 3) * 20), 'Scale pass ' + (s+1) + '/3...');
                 let low=0.01, hi=0.98;
                 for(let i=0; i<7; i++) {
                     let q = (low+hi)/2; let b = await new Promise(r => cvs.toBlob(bl => r(bl), 'image/jpeg', q));
+                    step++;
+                    const pct = Math.round(10 + (step / totalSteps) * 80);
+                    if (onProgress) onProgress(pct, 'Testing quality ' + Math.round(q * 100) + '%...');
                     if(b.size <= targetBytes) { best = b; low = q; if(targetBytes-b.size < 512) break; } else hi = q;
                 }
                 if(best) break; w = Math.floor(w*0.75); h = Math.floor(h*0.75);
             }
             if(!best) best = await new Promise(r => cvs.toBlob(bl => r(bl), 'image/jpeg', 0.01));
+            if (onProgress) onProgress(100, 'Compression complete!');
             return { blob: best };
         }
 
@@ -206,23 +244,23 @@ const { initialTarget = 'auto' } = Astro.props;
 <style>
     .compress-workspace { width: 100%; max-width: 800px; margin: 0 auto; }
     
-    .settings-hub { padding: 40px; background: #fff; }
+    .settings-hub { padding: 40px; background: var(--surface-3); }
     .config-header { margin-bottom: 32px; }
-    .config-header h3 { font-size: 1.5rem; font-weight: 850; margin-bottom: 4px; }
+    .config-header h3 { font-size: 1.5rem; font-weight:600; margin-bottom: 4px; }
     .config-header p { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; }
 
     .section-group { margin-bottom: 32px; }
-    .group-label { display: block; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+    .group-label { display: block; font-size: 0.75rem; font-weight:600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
 
     .preset-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .preset-chip { height: 52px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; font-weight: 850; font-size: 0.9rem; cursor: pointer; transition: 0.2s; color: var(--text-main); }
-    .preset-chip:hover { border-color: var(--accent); color: var(--accent); }
-    .preset-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: var(--shadow-md); }
+    .preset-chip { height: 52px; background: var(--surface-3); border: 1.5px solid var(--border-subtle); border-radius: 12px; font-weight:600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; color: var(--text-primary); }
+    .preset-chip:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
+    .preset-chip.active { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); box-shadow: var(--shadow-md); }
 
     .custom-input-wrap { position: relative; display: flex; align-items: center; }
-    .premium-field { width: 100%; height: 56px; padding: 0 100px 0 20px; border-radius: 14px; border: 1.5px solid var(--border-subtle); background: var(--surface-50); font-weight: 850; font-size: 1rem; outline: none; transition: 0.2s; }
-    .premium-field:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08); }
-    .field-suffix { position: absolute; right: 20px; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; pointer-events: none; }
+    .premium-field { width: 100%; height: 56px; padding: 0 100px 0 20px; border-radius: 14px; border: 1.5px solid var(--border-subtle); background: var(--surface-3); font-weight:600; font-size: 1rem; outline: none; transition: 0.2s; }
+    .premium-field:focus { border-color: var(--accent-primary); background: var(--surface-3); box-shadow: 0 0 0 4px var(--accent-soft); }
+    .field-suffix { position: absolute; right: 20px; font-size: 0.75rem; font-weight:600; color: var(--text-muted); text-transform: uppercase; pointer-events: none; }
 
     .lg-btn { height: 64px; font-size: 1.1rem; border-radius: 18px; margin-top: 12px; }
     .fun-spinner-sm { width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 12px; }
@@ -231,34 +269,34 @@ const { initialTarget = 'auto' } = Astro.props;
 
     /* Result UI */
     .result-hub { animation: fadeSlideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
-    .success-indicator { display: flex; align-items: center; gap: 20px; background: #f0fdf4; border: 1.5px solid #dcfce7; padding: 24px; border-radius: 20px; margin-bottom: 32px; }
-    .icon-pulse { width: 44px; height: 44px; background: var(--success); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 900; }
-    .text-content h4 { font-size: 1.15rem; font-weight: 850; margin-bottom: 2px; color: #166534; }
-    .text-content p { color: #166534; opacity: 0.8; font-size: 0.9rem; font-weight: 600; }
+    .success-indicator { display: flex; align-items: center; gap: 20px; background: var(--surface-3); border: 1.5px solid var(--border-subtle); padding: 24px; border-radius: 20px; margin-bottom: 32px; }
+    .icon-pulse { width: 44px; height: 44px; background: var(--success); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight:600; }
+    .text-content h4 { font-size: 1.15rem; font-weight:600; margin-bottom: 2px; color: var(--success, var(--success)); }
+    .text-content p { color: var(--success, var(--success)); opacity: 0.8; font-size: 0.9rem; font-weight: 600; }
 
     .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .data-card { background: #fff; border: 1.5px solid var(--border-subtle); padding: 24px; border-radius: 20px; text-align: center; transition: 0.3s; }
-    .data-card.active { border-color: var(--accent); background: #f8faff; transform: translateY(-2px); }
-    .d-label { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 8px; }
-    .d-value { font-size: 1.75rem; font-weight: 950; color: var(--text-main); }
-    .data-card.active .d-value { color: var(--accent); }
+    .data-card { background: var(--surface-3); border: 1.5px solid var(--border-subtle); padding: 24px; border-radius: 20px; text-align: center; transition: 0.3s; }
+    .data-card.active { border-color: var(--accent-primary); background: var(--accent-soft); transform: translateY(-2px); }
+    .d-label { font-size: 0.7rem; font-weight:600; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 8px; }
+    .d-value { font-size: 1.75rem; font-weight:600; color: var(--text-primary); }
+    .data-card.active .d-value { color: var(--accent-primary); }
 
     .comparison-visuals { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     .compare-box { display: flex; flex-direction: column; gap: 12px; position: relative; }
-    .badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); padding: 6px 14px; border-radius: 100px; font-size: 0.7rem; font-weight: 900; color: #fff; text-transform: uppercase; z-index: 10; backdrop-filter: blur(8px); }
-    .badge.accent { background: var(--accent); }
-    .display-pane { background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 20px; height: 320px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.75); padding: 6px 14px; border-radius: 100px; font-size: 0.7rem; font-weight:600; color: #fff; text-transform: uppercase; z-index: 10; backdrop-filter: blur(8px); }
+    .badge.accent { background: var(--accent-primary); }
+    .display-pane { background: var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 20px; height: 320px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .display-pane img { max-width: 100%; max-height: 100%; object-fit: contain; }
-    .compare-box.active .display-pane { border: 2px solid var(--accent); background: #fff; }
+    .compare-box.active .display-pane { border: 2px solid var(--accent-primary); background: var(--surface-3); }
 
     .final-actions { display: flex; gap: 16px; }
-    .flex-1 { flex: 1; height: 60px; font-weight: 850; border-radius: 16px; }
-    .flex-2 { flex: 2; height: 60px; font-weight: 850; border-radius: 16px; display: flex; gap: 10px; align-items: center; justify-content: center; }
+    .flex-1 { flex: 1; height: 60px; font-weight:600; border-radius: 16px; }
+    .flex-2 { flex: 2; height: 60px; font-weight:600; border-radius: 16px; display: flex; gap: 10px; align-items: center; justify-content: center; }
 
     .viral-share-row { text-align: center; border-top: 1.5px dashed var(--border-subtle); padding-top: 24px; }
-    .share-hint { font-size: 0.85rem; font-weight: 800; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .share-hint { font-size: 0.85rem; font-weight:600; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
     .share-flex { display: flex; gap: 12px; justify-content: center; }
-    .mini-share-btn { padding: 10px 20px; border-radius: 99px; font-size: 0.85rem; font-weight: 800; text-decoration: none; color: #fff; transition: 0.2s; }
+    .mini-share-btn { padding: 10px 20px; border-radius: 99px; font-size: 0.85rem; font-weight:600; text-decoration: none; color: #fff; transition: 0.2s; }
     .mini-share-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
     .x-color { background: #000; }
     .wa-color { background: #25d366; }

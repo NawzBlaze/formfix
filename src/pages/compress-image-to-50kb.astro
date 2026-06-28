@@ -1,0 +1,174 @@
+﻿---
+import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import ToolWrapper from '../components/ToolWrapper.astro';
+
+const PAGE_TITLE = 'Compress Image to 50KB Online - Free 50KB Image Compressor | FormFix';
+const PAGE_DESC = 'Compress any JPG, PNG, or WebP image to exactly 50KB online. Ideal for SSC, UPSC, IBPS, and NEET exam forms. 100% private.';
+const PAGE_KEYWORDS = 'compress image to 50kb, image compressor 50kb, reduce image to 50kb, 50kb photo resizer, ssc photo size, upsc photo upload, government form photo 50kb';
+
+const faqs = [
+  {
+    q: 'How do I compress an image to 50KB?',
+    a: 'Upload your image to FormFix, click the "50 KB" preset button, then hit Optimize. Our binary-search algorithm automatically recalibrates quality and dimensions to hit exactly 50KB or below while preserving the highest possible image clarity.',
+  },
+  {
+    q: 'Will my photo quality suffer at 50KB?',
+    a: 'At 50KB you have considerably more room than at 20KB. For a typical passport-size photo (3.5cm x 4.5cm at 300 DPI), 50KB allows our smart algorithm to retain almost full visual fidelity. The result looks crisp on screen and prints clearly on standard form submissions.',
+  },
+  {
+    q: 'Is this compressor free?',
+    a: 'Yes — FormFix is 100% free forever. No watermarks, no sign-up, no premium tier, no hidden paywalls. Use it as many times as you like.',
+  },
+  {
+    q: 'Do you upload my image to a server?',
+    a: 'Never. Every operation runs locally inside your browser using JavaScript and Canvas APIs. Your image never leaves your device. We literally have no way to see or store your files.',
+  },
+  {
+    q: 'Which Indian exams require 50KB photos?',
+    a: 'Many Indian government and banking exams specify photo sizes between 20KB and 50KB. SSC (CGL, CHSL, MTS), UPSC, IBPS PO/Clerk, SBI, NEET, CUET, and most state public service commissions accept photos in the 20–50KB range. The 50KB target gives the best balance of size and quality for these submissions.',
+  },
+  {
+    q: 'Which file formats are supported?',
+    a: 'JPG, JPEG, PNG, and WebP are all supported. The output is delivered as an optimized JPG, which offers the smallest file size for photos. PNG is preserved if your input is PNG with transparency.',
+  },
+];
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "50KB Image Compressor - FormFix",
+      "operatingSystem": "All",
+      "applicationCategory": "MultimediaApplication",
+      "description": "Free online tool to compress any image to exactly 50KB or less for government forms and exam submissions.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(({ q, a }) => ({
+        "@type": "Question",
+        "name": q,
+        "acceptedAnswer": { "@type": "Answer", "text": a }
+      }))
+    }
+  ]
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/compress-image-to-50kb" faq={faqs}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Compress Image to 50KB Online", path: "/compress-image-to-50kb" }]} />
+
+    <ToolWrapper
+        title="50KB Precision Compressor"
+        subtitle="Hit the exact 50KB target for SSC, UPSC, IBPS, NEET and government exam forms. 100% private."
+        currentTool="compress-50kb"
+    >
+        <div slot="tool-ui">
+             <div class="global-workspace">
+                 <div class="global-alert">
+                     <strong>Standard Requirement:</strong> Most Indian exam portals (SSC, UPSC, IBPS, NEET) require photos between 20KB and 50KB for clean visual quality.
+                 </div>
+                 <div class="tool-actions-centered">
+                     <a href="/compress-image" class="primary-btn pulse-glow">Open 50KB Compressor →</a>
+                     <a href="/resize-image" class="secondary-btn">Resize Pixels</a>
+                 </div>
+             </div>
+        </div>
+
+        <div slot="tool-info">
+             <article class="prose">
+                 <h2>Why compress to 50KB instead of 20KB?</h2>
+                 <p>The <strong>50KB threshold</strong> is the sweet spot for official form submissions. It gives you enough room to preserve facial detail and color accuracy while still being small enough to upload quickly on slow connections. For most Indian government and banking exams, 50KB hits the upper limit comfortably and survives automated resizing checks without rejection.</p>
+
+                 <div class="feature-grid">
+                     <div class="feature-card">
+                         <h3>Best Quality-to-Size Ratio</h3>
+                         <p>50KB allows our compressor to retain color depth and sharpness that 20KB cannot. Photos remain readable for face-recognition validation systems used by exam portals.</p>
+                     </div>
+                     <div class="feature-card">
+                         <h3>One-Click Smart Compression</h3>
+                         <p>No sliders, no quality guesswork. Click the 50KB preset and our binary-search engine finds the highest possible quality that fits within the limit.</p>
+                     </div>
+                     <div class="feature-card">
+                         <h3>100% Browser Processing</h3>
+                         <p>Your photo is compressed in your browser's local memory. We never see, store, or transmit it. Perfect for ID photos and government documents.</p>
+                     </div>
+                     <div class="feature-card">
+                         <h3>Works on All Devices</h3>
+                         <p>Desktop, tablet, or phone — FormFix runs on Chrome, Safari, Firefox, Edge, and any modern browser. No app installation required.</p>
+                     </div>
+                 </div>
+
+                 <h2>How to compress your image to 50KB</h2>
+                 <ol>
+                     <li><strong>Open the compressor:</strong> Click the "Open 50KB Compressor" button to launch the editor.</li>
+                     <li><strong>Upload your image:</strong> Drag and drop or click to select a JPG, PNG, or WebP file from your device.</li>
+                     <li><strong>Pick the 50KB preset:</strong> The smart preset is pre-configured for the 50KB threshold.</li>
+                     <li><strong>Download the result:</strong> Get your optimized image instantly. No watermarks, no sign-up.</li>
+                 </ol>
+
+                 <h2>What is the 50KB limit used for?</h2>
+                 <p>Several exam and application portals use the 50KB threshold as the maximum photo upload size. The most common use cases include:</p>
+                 <ul>
+                     <li><strong>SSC exams:</strong> Staff Selection Commission photo and signature uploads typically allow 20–50KB.</li>
+                     <li><strong>UPSC applications:</strong> Civil services preliminary and main applications prefer 50KB for clearer facial identification.</li>
+                     <li><strong>IBPS / SBI banking:</strong> Bank recruitment form photos usually sit in the 20–50KB range.</li>
+                     <li><strong>University admissions:</strong> Many Indian university entrance applications cap at 50KB.</li>
+                     <li><strong>Visa applications:</strong> Some embassies accept digital photos under 50KB.</li>
+                 </ul>
+
+                 <h2>Tips for the best 50KB result</h2>
+                 <p>To get the sharpest image possible at 50KB, follow these guidelines before uploading:</p>
+                 <ul>
+                     <li><strong>Crop tightly:</strong> Remove unnecessary background space. A tighter crop gives the algorithm more bytes for the actual subject.</li>
+                     <li><strong>Start with a high-resolution source:</strong> Upload the original photo, not a previously compressed one. Repeated compression degrades quality.</li>
+                     <li><strong>Use JPG for photos:</strong> JPG produces smaller files than PNG for photographic content.</li>
+                     <li><strong>Use PNG only for graphics:</strong> If your image contains text, logos, or transparency, PNG is the right choice.</li>
+                 </ul>
+
+                 <div class="faq-section mt-48">
+                     <h3>Frequently Asked Questions</h3>
+                     {faqs.map(({ q, a }) => (
+                         <details class="minimal-faq">
+                             <summary>{q} <span class="indicator">+</span></summary>
+                             <div class="faq-body">
+                                 <p>{a}</p>
+                             </div>
+                         </details>
+                     ))}
+                 </div>
+             </article>
+        </div>
+    </ToolWrapper>
+</BaseLayout>
+
+<style>
+    .global-workspace { text-align: center; padding: 20px 0; }
+    .global-alert { background: var(--success-soft); border-left: 4px solid var(--success); padding: 16px; border-radius: 8px; margin-bottom: 32px; color: var(--success); font-size: 0.95rem; }
+    .tool-actions-centered { display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap; }
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
+    .feature-card { background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 24px; border-radius: 16px; }
+    .feature-card h3 { font-size: 1.1rem; margin-bottom: 12px; color: var(--text-primary); }
+    .feature-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+    .prose h2 { color: var(--text-primary); margin-top: 3rem; margin-bottom: 1rem; font-size: 1.85rem; font-weight:600; letter-spacing: -0.03em; }
+    .prose h3 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 0.75rem; font-size: 1.35rem; font-weight:600; }
+    .prose p, .prose li { color: var(--text-secondary); line-height: 1.75; font-size: 1.05rem; }
+    .prose ul, .prose ol { padding-left: 24px; margin-bottom: 1.5rem; }
+    .prose li { margin-bottom: 8px; }
+    .prose strong { color: var(--text-primary); }
+
+    .faq-section { margin-top: 3rem; }
+    .minimal-faq { background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+    .minimal-faq summary { padding: 16px 20px; cursor: pointer; font-weight:600; color: var(--text-primary); list-style: none; position: relative; }
+    .minimal-faq summary::-webkit-details-marker { display: none; }
+    .minimal-faq summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.4rem; color: var(--accent-primary); }
+    .minimal-faq[open] summary::after { content: '−'; }
+    .faq-body { padding: 0 20px 20px; color: var(--text-secondary); line-height: 1.7; }
+
+    @media (max-width: 600px) {
+        .feature-grid { grid-template-columns: 1fr; }
+    }
+</style>

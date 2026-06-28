@@ -1,24 +1,67 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Passport Photo Maker Online (US, UK, India, EU) | FormFix';
-const PAGE_DESC = 'Create official passport size photos for any country. Supports US 2x2", UK 35x45mm, India 3.5x4.5cm, and EU standards. 100% private and professional.';
-const PAGE_KEYWORDS = 'passport photo maker, 2x2 photo maker online, us passport photo size, uk passport photo maker, 35x45mm photo resize, official passport maker free';
+const PAGE_DESC = 'Create official passport size photos for any country. Supports US 2x2, UK 35x45mm, India 3.5x4.5cm, EU standards and more. 100% private, browser-based, free.';
+const PAGE_KEYWORDS = 'passport photo maker, 2x2 photo maker online, us passport photo size, uk passport photo maker, 35x45mm photo resize, official passport maker free, visa photo, schengen photo';
+
+const faqs = [
+  {
+    q: 'Which countries does FormFix support for passport photos?',
+    a: 'FormFix supports passport, visa, and ID photo standards for the United States (2x2 inch), United Kingdom (35x45mm), India (3.5x4.5cm), Schengen/EU (35x45mm), Canada, Australia, China, Japan, and most other countries. Each standard enforces a specific dimension and background color.',
+  },
+  {
+    q: 'Can I take a passport photo at home?',
+    a: 'Yes. Most countries now accept home-taken digital photos as long as they meet the technical specifications: correct dimensions, plain background, neutral expression, even lighting, and minimum resolution. FormFix handles the cropping and formatting automatically.',
+  },
+  {
+    q: 'What is the 80% face rule?',
+    a: 'Many countries (US, UK, Schengen, Canada) require your face to occupy roughly 70–80% of the photograph height. Our alignment guides show you exactly where your eyes, chin, and crown of head should be to meet this rule.',
+  },
+  {
+    q: 'Is the passport photo data private?',
+    a: 'Absolutely. FormFix runs entirely in your browser. Your photo is never uploaded to any server. We have no way to see, store, or share your identity document. This is critical for biometrics and passport photos.',
+  },
+  {
+    q: 'What background color should I use?',
+    a: 'White background: USA, India, Schengen, most Asian countries. Light grey or cream: UK passport. Off-white: Canada. Our tool lets you replace any background with the required plain color before export.',
+  },
+  {
+    q: 'What resolution do I need?',
+    a: 'For a 2x2 inch (51x51mm) photo at 300 DPI, you need at least 600x600 pixels. For 35x45mm at 300 DPI, 413x531 pixels. FormFix outputs high-resolution images that exceed these minimums.',
+  },
+];
 
 const customSchema = {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Global Passport Photo Maker",
-  "description": "Professional tool for creating standardized passport and ID photos for all countries.",
-  "applicationCategory": "MultimediaApplication",
-  "operatingSystem": "All"
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Global Passport Photo Maker - FormFix",
+      "operatingSystem": "All",
+      "applicationCategory": "MultimediaApplication",
+      "description": "Professional tool for creating standardized passport and ID photos for all countries.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(({ q, a }) => ({
+        "@type": "Question",
+        "name": q,
+        "acceptedAnswer": { "@type": "Answer", "text": a }
+      }))
+    }
+  ]
 };
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/official-passport-photo-maker">
-    <ToolWrapper 
-        title="Global Passport Studio" 
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/official-passport-photo-maker" faq={faqs}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Passport Photo Maker", path: "/official-passport-photo-maker" }]} />
+
+    <ToolWrapper
+        title="Global Passport Studio"
         subtitle="Format your ID photos to meet official standards for any country, 100% locally."
         currentTool="global-passport"
     >
@@ -37,53 +80,82 @@ const customSchema = {
         <div slot="tool-info">
              <article class="prose">
                  <h2>International Passport Photo Standards</h2>
-                 <p>Different countries have very strict and specific requirements for passport and visa photographs. FormFix provides the exact aspect ratios needed to ensure your application is accepted on the first try.</p>
-                 
+                 <p>Different countries enforce very strict, non-negotiable specifications for passport and visa photographs. A photo that doesn't meet the standard gets your application rejected and wastes weeks of processing time. FormFix provides the exact dimensions, background colors, and resolution needed to ensure your application is accepted on the first try.</p>
+
                  <div class="specs-grid">
                      <div class="spec-card">
-                         <h3>🇺🇸 USA (Passport/Visa)</h3>
+                         <h3>🇺🇸 USA Passport / Visa</h3>
                          <p><strong>Size:</strong> 2 x 2 inches (51 x 51 mm)</p>
-                         <p><strong>Background:</strong> Plain White</p>
+                         <p><strong>Background:</strong> Plain white</p>
+                         <p><strong>Resolution:</strong> 600 x 600 px minimum</p>
                      </div>
                      <div class="spec-card">
                          <h3>🇬🇧 United Kingdom</h3>
                          <p><strong>Size:</strong> 35 x 45 mm</p>
-                         <p><strong>Background:</strong> Cream or Light Grey</p>
+                         <p><strong>Background:</strong> Cream or light grey</p>
+                         <p><strong>Resolution:</strong> 413 x 531 px minimum</p>
                      </div>
                      <div class="spec-card">
-                         <h3>🇮🇳 India (Passport)</h3>
-                         <p><strong>Size:</strong> 3.5 x 4.5 cm</p>
+                         <h3>🇮🇳 India Passport</h3>
+                         <p><strong>Size:</strong> 3.5 x 4.5 cm (35 x 45 mm)</p>
                          <p><strong>Background:</strong> White</p>
+                         <p><strong>Resolution:</strong> 350 x 450 px minimum</p>
                      </div>
                      <div class="spec-card">
-                         <h3>🇪🇺 European Union</h3>
+                         <h3>🇪🇺 Schengen / EU</h3>
                          <p><strong>Size:</strong> 35 x 45 mm</p>
-                         <p><strong>Background:</strong> Light Background</p>
+                         <p><strong>Background:</strong> Light, plain</p>
+                         <p><strong>Resolution:</strong> 413 x 531 px minimum</p>
+                     </div>
+                     <div class="spec-card">
+                         <h3>🇨🇦 Canada</h3>
+                         <p><strong>Size:</strong> 50 x 70 mm</p>
+                         <p><strong>Background:</strong> White or off-white</p>
+                         <p><strong>Resolution:</strong> 590 x 826 px minimum</p>
+                     </div>
+                     <div class="spec-card">
+                         <h3>🇦🇺 Australia</h3>
+                         <p><strong>Size:</strong> 35 x 45 mm</p>
+                         <p><strong>Background:</strong> Light, plain</p>
+                         <p><strong>Resolution:</strong> 413 x 531 px minimum</p>
                      </div>
                  </div>
 
-                 <h2>How to Create Your Passport Photo</h2>
+                 <h2>How to create your passport photo</h2>
                  <ol>
-                     <li><strong>Choose Standard:</strong> Select your country from our list of presets in the editor.</li>
-                     <li><strong>Upload Image:</strong> Select a clear photo with even lighting on your face.</li>
-                     <li><strong>Align:</strong> Use the on-screen guides to position your eyes and chin correctly.</li>
-                     <li><strong>Export:</strong> Download as a high-resolution JPG or PNG.</li>
+                     <li><strong>Choose standard:</strong> Select your destination country from the preset list in the editor.</li>
+                     <li><strong>Upload image:</strong> Pick a clear, well-lit photo with your face straight and centered.</li>
+                     <li><strong>Align:</strong> Use the on-screen guides to position your eyes, crown, and chin correctly. Aim for 80% face coverage.</li>
+                     <li><strong>Background:</strong> Replace the existing background with the required plain color (white, cream, or light grey).</li>
+                     <li><strong>Export:</strong> Download the high-resolution JPG ready for upload to your visa or passport application.</li>
                  </ol>
+
+                 <h2>Why use FormFix instead of a photo booth?</h2>
+                 <ul>
+                     <li><strong>Privacy:</strong> Photo booths often print multiple copies on receipt paper; FormFix outputs a single digital file that never leaves your device.</li>
+                     <li><strong>Free:</strong> No $15 fee per set. Use it as many times as you need.</li>
+                     <li><strong>Convenience:</strong> Skip the trip to the drugstore — open FormFix on any device with a camera or take a selfie with your phone.</li>
+                     <li><strong>Standards compliance:</strong> Country-specific presets ensure your photo meets official requirements the first time.</li>
+                     <li><strong>High resolution:</strong> Outputs at 300 DPI or higher, exceeding minimum requirements for every country.</li>
+                 </ul>
+
+                 <h2>Common mistakes to avoid</h2>
+                 <ul>
+                     <li><strong>Wrong background:</strong> Most rejections are due to non-plain backgrounds (shadows, patterns, walls).</li>
+                     <li><strong>Glasses:</strong> The US banned glasses in passport photos since 2016. Most countries now require eyes to be fully visible.</li>
+                     <li><strong>Smiling:</strong> Neutral expression only — wide smiles are rejected.</li>
+                     <li><strong>Wrong crop:</strong> Head too small or too large in the frame violates the 70–80% rule.</li>
+                     <li><strong>Low resolution:</strong> Photos under 600x600 px often fail automated face-recognition checks.</li>
+                 </ul>
 
                  <div class="faq-section mt-48">
                      <h3>Frequently Asked Questions</h3>
-                     <details class="minimal-faq">
-                         <summary>Can I take a passport photo at home? <span class="indicator">+</span></summary>
-                         <div class="faq-body">
-                             <p>Yes, as long as you have a neutral background and good lighting. Our tool will help you crop it to the exact official dimensions required.</p>
-                         </div>
-                     </details>
-                     <details class="minimal-faq">
-                         <summary>What is the '80% Face' rule? <span class="indicator">+</span></summary>
-                         <div class="faq-body">
-                             <p>Many countries require your face to occupy roughly 70-80% of the photograph height. Our alignment guides help you achieve this perfectly.</p>
-                         </div>
-                     </details>
+                     {faqs.map(({ q, a }) => (
+                         <details class="minimal-faq">
+                             <summary>{q} <span class="indicator">+</span></summary>
+                             <div class="faq-body"><p>{a}</p></div>
+                         </details>
+                     ))}
                  </div>
              </article>
         </div>
@@ -92,14 +164,29 @@ const customSchema = {
 
 <style>
     .global-workspace { text-align: center; padding: 20px 0; }
-    .global-alert { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; margin-bottom: 32px; color: #1e40af; font-size: 0.95rem; }
-    .tool-actions-centered { display: flex; gap: 16px; justify-content: center; align-items: center; }
-    .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
+    .global-alert { background: var(--accent-soft); border-left: 4px solid var(--accent-primary); padding: 16px; border-radius: 8px; margin-bottom: 32px; color: #1e40af; font-size: 0.95rem; }
+    .tool-actions-centered { display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap; }
+    .specs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin: 32px 0; }
     .spec-card { background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 20px; border-radius: 16px; text-align: left; }
-    .spec-card h3 { font-size: 1rem; margin-bottom: 8px; color: var(--text-main); }
-    .spec-card p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
-    
-    @media (max-width: 600px) {
-        .specs-grid { grid-template-columns: 1fr; }
-    }
+    .spec-card h3 { font-size: 1.05rem; margin-bottom: 12px; color: var(--text-main); }
+    .spec-card p { font-size: 0.88rem; color: var(--text-muted); margin: 4px 0; }
+    .spec-card strong { color: var(--text-secondary); font-weight:600; }
+
+    .prose h2 { color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.85rem; font-weight:600; }
+    .prose h3 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 0.75rem; font-size: 1.35rem; font-weight:600; }
+    .prose p, .prose li { color: var(--text-secondary); line-height: 1.75; font-size: 1.05rem; }
+    .prose ul, .prose ol { padding-left: 24px; margin-bottom: 1.5rem; }
+    .prose li { margin-bottom: 8px; }
+    .prose strong { color: var(--text-primary); }
+
+    .faq-section { margin-top: 3rem; }
+    .minimal-faq { background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+    .minimal-faq summary { padding: 16px 20px; cursor: pointer; font-weight:600; color: var(--text-primary); list-style: none; position: relative; }
+    .minimal-faq summary::-webkit-details-marker { display: none; }
+    .minimal-faq summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.4rem; color: var(--accent-primary); }
+    .minimal-faq[open] summary::after { content: '−'; }
+    .faq-body { padding: 0 20px 20px; color: var(--text-secondary); line-height: 1.7; }
+
+    @media (max-width: 900px) { .specs-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .specs-grid { grid-template-columns: 1fr; } }
 </style>

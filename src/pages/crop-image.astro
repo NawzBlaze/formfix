@@ -1,5 +1,6 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Crop Image Online Free (Custom & Ratio Crop) | FormFix';
@@ -26,125 +27,7 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/crop-image">
-    <ToolWrapper title="Crop Image Online" subtitle="Custom aspect ratios and high-precision cutting for any document or photo." currentTool="crop-image">
-        
-        <div slot="tool-ui">
-             <div class="workspace-editor">
-                  <!-- 1. Selection Stage -->
-                  <div id="u-box-container" class="upload-container">
-                       <div class="upload-box shadow-sm" id="drop-zone" onclick="document.getElementById('crop-input').click()">
-                            <input type="file" id="crop-input" accept="image/png, image/jpeg, image/webp" class="hidden" />
-                            <div class="upload-content">
-                                 <div class="upload-icon">✂️</div>
-                                 <h3 class="font-850 m-0 mb-8">Select Image to Crop</h3>
-                                 <p class="text-muted m-0 mb-24 font-600">High-precision cropping. Works offline in your browser.</p>
-                                 <button class="primary-btn px-40">Browse Photo</button>
-                            </div>
-                       </div>
-                  </div>
-
-                  <!-- 2. Editor Stage -->
-                  <div id="controls" class="hidden">
-                       <div class="crop-grid">
-                            <div class="preview-panel shadow-sm p-0 overflow-hidden">
-                                 <div id="viewport" class="crop-viewport" style="touch-action: none;">
-                                      <div id="img-container" class="img-zoom-box" style="touch-action: none;">
-                                           <img id="source" draggable="false" style="touch-action: none;" alt="Master file" />
-                                      </div>
-                                      <div id="crop-box" class="crop-box-handle" style="touch-action: none;">
-                                           <div class="drag-handle tl" data-dir="tl"></div>
-                                           <div class="drag-handle tr" data-dir="tr"></div>
-                                           <div class="drag-handle bl" data-dir="bl"></div>
-                                           <div class="drag-handle br" data-dir="br"></div>
-                                           <div class="rule-grid"></div>
-                                      </div>
-                                 </div>
-                            </div>
-
-                            <div class="controls-sidebar">
-                                 <div class="settings-card shadow-sm mb-24">
-                                      <div class="section mb-24">
-                                           <label class="section-label m-0 mb-12">Aspect Ratio</label>
-                                           <div class="toggle-pill-group flex-wrap">
-                                                <button class="setting-pill active preset-btn" data-ratio="free">Custom</button>
-                                                <button class="setting-pill preset-btn" data-ratio="1">1:1</button>
-                                                <button class="setting-pill preset-btn" data-ratio="1.333">4:3</button>
-                                                <button class="setting-pill preset-btn" data-ratio="1.777">16:9</button>
-                                           </div>
-                                      </div>
-                                      
-                                      <div class="section">
-                                           <div class="d-flex justify-between align-center mb-8">
-                                                <label class="section-label m-0">🔍 Image Zoom</label>
-                                                <span id="zoom-val" class="status-pill">1.0x</span>
-                                           </div>
-                                           <input type="range" id="zoom-slider" class="unified-slider" min="1" max="5" step="0.1" value="1" />
-                                      </div>
-                                 </div>
-
-                                 <div class="action-stack">
-                                      <button id="apply-btn" class="primary-btn wide-btn pulse-glow mb-12">⬇️ Execute Crop & Save</button>
-                                      <button class="secondary-btn wide-btn" onclick="location.reload()">↺ Change Photo</button>
-                                 </div>
-                                 <p class="privacy-note text-center mt-16 mb-0 font-600 text-muted">🔒 Local Processing. No uploads.</p>
-                            </div>
-                       </div>
-                  </div>
-
-                  <!-- 3. Result Stage -->
-                  <div id="result-stage" class="result-stage hidden">
-                       <div class="result-card shadow-sm">
-                            <div class="success-banner mb-32">
-                                 <div class="check-icon">✔</div>
-                                 <div class="success-info">
-                                      <h4 class="font-850 m-0 mb-8">Image Cut Complete</h4>
-                                      <p class="text-muted m-0 small font-600">Perfectly cropped to your specifications.</p>
-                                 </div>
-                            </div>
-
-                            <div class="preview-panel checkerboard shadow-sm mb-32 d-flex justify-center">
-                                 <img id="image-preview" src="" alt="Cropped result" class="styled-canvas" />
-                            </div>
-
-                            <div class="stats-grid mb-32">
-                                 <div class="mini-stat active">
-                                      <label>Final Resolution</label>
-                                      <span id="final-res">1920 x 1080</span>
-                                 </div>
-                                 <div class="mini-stat">
-                                      <label>Protection</label>
-                                      <span>100% Secure</span>
-                                 </div>
-                            </div>
-
-                            <div class="d-flex gap-16">
-                                 <a id="download-btn" href="#" class="primary-btn flex-2 wide-btn" style="text-decoration:none;">⬇️ Download Cropped Image</a>
-                                 <button class="secondary-btn flex-1 wide-btn" onclick="location.reload()">↺ New Crop</button>
-                            </div>
-                       </div>
-                  </div>
-             </div>
-        </div>
-
-        <div slot="tool-info">
-             <h2>The Professional Online Image Cropper</h2>
-             <p>FormFix offers a industrial-grade <strong>online image cropper</strong> that works entirely in your browser. Whether you need to <strong>crop image to 1:1</strong> for Instagram or use a <strong>custom aspect ratio</strong> for a web banner, our tool ensures pixel-perfect results.</p>
-             
-             <div class="faq-grid mt-32">
-                  <details class="faq-item">
-                       <summary>Does it change image resolution?</summary>
-                       <p>Cropping naturally removes pixels, so the final file will have a smaller width/height than the original. However, the <strong>DPI and sharpness</strong> of the remaining area stay 100% untouched.</p>
-                  </details>
-                  <details class="faq-item">
-                       <summary>Is my photo privacy protected?</summary>
-                       <p>Absolutely. 100% of the cropping process is handled by your browser's local engine. We do not use servers to store or process your personal photos. Your privacy is mathematically guaranteed.</p>
-                  </details>
-             </div>
-        </div>
-    </ToolWrapper>
-</BaseLayout>
-
-<script is:inline>
+    <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
         const uploadBox = document.getElementById('u-box-container');
         const controls = document.getElementById('controls');
@@ -187,6 +70,10 @@ const customSchema = {
         });
 
         function handleFile(file) {
+            if (!file || !['image/png','image/jpeg','image/webp'].includes(file.type)) {
+                if (typeof window.ffNotice === 'function') window.ffNotice('Please select a PNG, JPG, or WebP image.', 'error');
+                return;
+            }
             const reader = new FileReader();
             reader.onload = (e) => {
                 source.src = e.target.result;
@@ -348,6 +235,15 @@ const customSchema = {
                  resultStage.scrollIntoView({ behavior: 'smooth' });
                  
                  if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
+                 var shareTxt = encodeURIComponent("I just cropped my image using FormFix! 100% private. Try it: " + window.__SITE_URL + "/crop-image");
+                 var existing = document.getElementById('post-crop-share');
+                 if (!existing) {
+                     var div = document.createElement('div');
+                     div.id = 'post-crop-share';
+                     div.style.cssText = 'margin-top:20px;text-align:center;';
+                     div.innerHTML = '<p style="font-weight:600;margin-bottom:10px;color:var(--success);">Love FormFix? Share it!</p><div style="display:flex;gap:8px;justify-content:center;"><a href="https://twitter.com/intent/tweet?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#000;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">Share on X</a><a href="https://wa.me/?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">WhatsApp</a></div>';
+                     resultStage.appendChild(div);
+                 }
                  
                  applyBtn.textContent = '⬇️ Execute Crop & Save'; applyBtn.disabled = false;
             }, 'image/jpeg', 0.95);
@@ -355,12 +251,130 @@ const customSchema = {
     });
 </script>
 
-<style>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Crop Image Online Free (Custom & Ratio Crop)", path: "/crop-image" }]} />
+
+    <ToolWrapper title="Crop Image Online" subtitle="Custom aspect ratios and high-precision cutting for any document or photo." currentTool="crop-image">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <!-- 1. Selection Stage -->
+                  <div id="u-box-container" class="upload-container">
+                       <div class="upload-box shadow-sm" id="drop-zone" onclick="document.getElementById('crop-input').click()">
+                            <input type="file" id="crop-input" accept="image/png, image/jpeg, image/webp" class="hidden" />
+                            <div class="upload-content">
+                                 <div class="upload-icon">✂️</div>
+                                 <h3 class="font-850 m-0 mb-8">Select Image to Crop</h3>
+                                 <p class="text-muted m-0 mb-24 font-600">High-precision cropping. Works offline in your browser.</p>
+                                 <button class="primary-btn px-40">Browse Photo</button>
+                            </div>
+                       </div>
+                  </div>
+
+                  <!-- 2. Editor Stage -->
+                  <div id="controls" class="hidden">
+                       <div class="crop-grid">
+                            <div class="preview-panel shadow-sm p-0 overflow-hidden">
+                                 <div id="viewport" class="crop-viewport" style="touch-action: none;">
+                                      <div id="img-container" class="img-zoom-box" style="touch-action: none;">
+                                           <img id="source" draggable="false" style="touch-action: none;" alt="Master file" loading="lazy" decoding="async" />
+                                      </div>
+                                      <div id="crop-box" class="crop-box-handle" style="touch-action: none;">
+                                           <div class="drag-handle tl" data-dir="tl"></div>
+                                           <div class="drag-handle tr" data-dir="tr"></div>
+                                           <div class="drag-handle bl" data-dir="bl"></div>
+                                           <div class="drag-handle br" data-dir="br"></div>
+                                           <div class="rule-grid"></div>
+                                      </div>
+                                 </div>
+                            </div>
+
+                            <div class="controls-sidebar">
+                                 <div class="settings-card shadow-sm mb-24">
+                                      <div class="section mb-24">
+                                           <label class="section-label m-0 mb-12">Aspect Ratio</label>
+                                           <div class="toggle-pill-group flex-wrap">
+                                                <button class="setting-pill active preset-btn" data-ratio="free">Custom</button>
+                                                <button class="setting-pill preset-btn" data-ratio="1">1:1</button>
+                                                <button class="setting-pill preset-btn" data-ratio="1.333">4:3</button>
+                                                <button class="setting-pill preset-btn" data-ratio="1.777">16:9</button>
+                                           </div>
+                                      </div>
+                                      
+                                      <div class="section">
+                                           <div class="d-flex justify-between align-center mb-8">
+                                                <label class="section-label m-0">🔍 Image Zoom</label>
+                                                <span id="zoom-val" class="status-pill">1.0x</span>
+                                           </div>
+                                           <input type="range" id="zoom-slider" class="unified-slider" min="1" max="5" step="0.1" value="1" />
+                                      </div>
+                                 </div>
+
+                                 <div class="action-stack">
+                                      <button id="apply-btn" class="primary-btn wide-btn pulse-glow mb-12">⬇️ Execute Crop & Save</button>
+                                      <button class="secondary-btn wide-btn" onclick="location.reload()">↺ Change Photo</button>
+                                 </div>
+                                 <p class="privacy-note text-center mt-16 mb-0 font-600 text-muted">🔒 Local Processing. No uploads.</p>
+                            </div>
+                       </div>
+                  </div>
+
+                  <!-- 3. Result Stage -->
+                  <div id="result-stage" class="result-stage hidden">
+                       <div class="result-card shadow-sm">
+                            <div class="success-banner mb-32">
+                                 <div class="check-icon">✔</div>
+                                 <div class="success-info">
+                                      <h4 class="font-850 m-0 mb-8">Image Cut Complete</h4>
+                                      <p class="text-muted m-0 small font-600">Perfectly cropped to your specifications.</p>
+                                 </div>
+                            </div>
+
+                            <div class="preview-panel checkerboard shadow-sm mb-32 d-flex justify-center">
+                                 <img id="image-preview" src="" alt="Cropped result" class="styled-canvas" loading="lazy" decoding="async" />
+                            </div>
+
+                            <div class="stats-grid mb-32">
+                                 <div class="mini-stat active">
+                                      <label>Final Resolution</label>
+                                      <span id="final-res">1920 x 1080</span>
+                                 </div>
+                                 <div class="mini-stat">
+                                      <label>Protection</label>
+                                      <span>100% Secure</span>
+                                 </div>
+                            </div>
+
+                            <div class="d-flex gap-16">
+                                 <a id="download-btn" href="#" class="primary-btn flex-2 wide-btn" style="text-decoration:none;">⬇️ Download Cropped Image</a>
+                                 <button class="secondary-btn flex-1 wide-btn" onclick="location.reload()">↺ New Crop</button>
+                            </div>
+                       </div>
+                  </div>
+             </div>
+        </div>
+
+        <div slot="tool-info">
+             <h2>The Professional Online Image Cropper</h2>
+             <p>FormFix offers a industrial-grade <strong>online image cropper</strong> that works entirely in your browser. Whether you need to <strong>crop image to 1:1</strong> for Instagram or use a <strong>custom aspect ratio</strong> for a web banner, our tool ensures pixel-perfect results.</p>
+             
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>Does it change image resolution?</summary>
+                       <p>Cropping naturally removes pixels, so the final file will have a smaller width/height than the original. However, the <strong>DPI and sharpness</strong> of the remaining area stay 100% untouched.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>Is my photo privacy protected?</summary>
+                       <p>Absolutely. 100% of the cropping process is handled by your browser's local engine. We do not use servers to store or process your personal photos. Your privacy is mathematically guaranteed.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
+</BaseLayout><style>
     .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; }
     
     .upload-container { display: flex; justify-content: center; }
     .upload-box { background: var(--surface-50); border: 2.5px dashed var(--border-subtle); border-radius: 32px; padding: 60px 40px; text-align: center; width: 100%; cursor: pointer; transition: 0.2s; }
-    .upload-box:hover, .upload-box.drag-active { border-color: var(--accent); background: var(--surface-100); }
+    .upload-box:hover, .upload-box.drag-active { border-color: var(--accent-primary); background: var(--surface-100); }
     .upload-icon { font-size: 3.5rem; margin-bottom: 24px; line-height: 1; }
 
     .crop-grid { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
@@ -373,46 +387,46 @@ const customSchema = {
     
     #source { max-width: 90%; max-height: 90%; display: block; filter: brightness(0.7); }
     
-    .crop-box-handle { position: absolute; border: 2px solid #fff; box-shadow: 0 0 0 9999px rgba(0,0,0,0.6); z-index: 10; cursor: move; box-sizing: border-box; }
+    .crop-box-handle { position: absolute; border:2px solid var(--border-subtle); box-shadow: 0 0 0 9999px rgba(0,0,0,0.6); z-index: 10; cursor: move; box-sizing: border-box; }
     .rule-grid { position: absolute; inset: 0; pointer-events: none; border: 1px solid rgba(255,255,255,0.2); }
     .rule-grid::before, .rule-grid::after { content: ''; position: absolute; background: rgba(255,255,255,0.2); }
     .rule-grid::before { left: 33.33%; right: 33.33%; top: 0; bottom: 0; width: 33.33%; border-inline: 1px solid rgba(255,255,255,0.2); }
     .rule-grid::after { top: 33.33%; bottom: 33.33%; left: 0; right: 0; height: 33.33%; border-block: 1px solid rgba(255,255,255,0.2); }
 
-    .drag-handle { position: absolute; width: 24px; height: 24px; background: #fff; border: 3px solid var(--accent); border-radius: 50%; box-shadow: var(--shadow-md); z-index: 20; }
-    .drag-handle.tl { top: -12px; left: -12px; cursor: nwse-resize; }
-    .drag-handle.tr { top: -12px; right: -12px; cursor: nesw-resize; }
-    .drag-handle.bl { bottom: -12px; left: -12px; cursor: nesw-resize; }
-    .drag-handle.br { bottom: -12px; right: -12px; cursor: nwse-resize; }
+    .drag-handle { position: absolute; width: 44px; height: 44px; background:var(--surface-3); border: 3px solid var(--accent-primary); border-radius: 50%; box-shadow: var(--shadow-md); z-index: 20; }
+    .drag-handle.tl { top: -22px; left: -22px; cursor: nwse-resize; }
+    .drag-handle.tr { top: -22px; right: -22px; cursor: nesw-resize; }
+    .drag-handle.bl { bottom: -22px; left: -22px; cursor: nesw-resize; }
+    .drag-handle.br { bottom: -22px; right: -22px; cursor: nwse-resize; }
 
     .controls-sidebar { display: flex; flex-direction: column; }
     .settings-card { background: var(--surface-50); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); }
     
-    .section-label { font-size: 0.72rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    .section-label { font-size: 0.72rem; font-weight:600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
     
     .toggle-pill-group { display: flex; background: var(--surface-200); padding: 6px; border-radius: 12px; gap: 4px; }
-    .setting-pill { flex: 1; padding: 10px 16px; border-radius: 10px; font-weight: 800; font-size: 0.85rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
+    .setting-pill { flex: 1; padding: 10px 16px; border-radius: 10px; font-weight:600; font-size: 0.85rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
     .setting-pill:hover { color: var(--text-main); }
-    .setting-pill.active { background: #fff; color: var(--text-main); box-shadow: var(--shadow-sm); }
+    .setting-pill.active { background:var(--surface-3); color: var(--text-main); box-shadow: var(--shadow-sm); }
 
-    .status-pill { font-size: 0.72rem; font-weight: 950; color: var(--accent); background: #fff; padding: 2px 10px; border-radius: 20px; border: 1px solid var(--accent); display: inline-block; }
+    .status-pill { font-size: 0.72rem; font-weight:600; color: var(--accent-primary); background:var(--surface-3); padding: 2px 10px; border-radius: 20px; border: 1px solid var(--accent-primary); display: inline-block; }
     
     .unified-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--surface-200); appearance: none; outline: none; }
-    .unified-slider::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; background: var(--accent); border-radius: 50%; border: 3px solid #fff; box-shadow: var(--shadow-sm); cursor: pointer; }
+    .unified-slider::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; background: var(--accent-primary); border-radius: 50%; border:3px solid var(--border-subtle); box-shadow: var(--shadow-sm); cursor: pointer; }
 
     .action-stack { display: flex; flex-direction: column; }
-    .wide-btn { height: 60px; font-weight: 850; font-size: 1rem; border-radius: 16px; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
+    .wide-btn { height: 60px; font-weight:600; font-size: 1rem; border-radius: 16px; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
     .privacy-note { font-size: 0.8rem; color: var(--text-muted); }
 
     /* Result Stage */
-    .result-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: 32px; padding: 40px; }
+    .result-card { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 32px; padding: 40px; }
     .success-banner { display: flex; align-items: center; gap: 16px; background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 20px; border-radius: 20px; }
-    .check-icon { width: 40px; height: 40px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: bold; flex-shrink: 0; }
+    .check-icon { width: 40px; height: 40px; background: var(--accent-primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight:600; flex-shrink: 0; }
     
     .checkerboard { 
-        background: #fff;
-        background-image: linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9), 
-                          linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9);
+        background:var(--surface-3);
+        background-image: linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2)), 
+                          linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2));
         background-size: 20px 20px; background-position: 0 0, 10px 10px;
         padding: 32px; border-radius: 24px; border: 1px solid var(--border-subtle); min-height: 250px;
     }
@@ -420,15 +434,15 @@ const customSchema = {
 
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .mini-stat { background: var(--surface-50); padding: 24px; border-radius: 20px; border: 1px solid var(--border-subtle); text-align: center; }
-    .mini-stat.active { border-color: var(--accent); background: #fff; box-shadow: var(--shadow-sm); }
-    .mini-stat label { font-size: 0.72rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
-    .mini-stat span { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
+    .mini-stat.active { border-color: var(--accent-primary); background:var(--surface-3); box-shadow: var(--shadow-sm); }
+    .mini-stat label { font-size: 0.72rem; font-weight:600; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
+    .mini-stat span { font-size: 1.2rem; font-weight:600; color: var(--text-main); }
 
     /* FAQ */
     .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
@@ -440,8 +454,8 @@ const customSchema = {
     .mt-16 { margin-top: 16px; }
     .mt-32 { margin-top: 32px; }
     .gap-16 { gap: 16px; }
-    .font-800 { font-weight: 800; }
-    .font-850 { font-weight: 850; }
+    .font-800 { font-weight:600; }
+    .font-850 { font-weight:600; }
     .font-600 { font-weight: 600; }
     .small { font-size: 0.85rem; }
     .px-40 { padding-left: 40px; padding-right: 40px; }
@@ -460,8 +474,9 @@ const customSchema = {
 
     @media (max-width: 900px) {
         .crop-grid { grid-template-columns: 1fr; }
-        .preview-panel { height: 400px; }
+        .preview-panel { height: 300px; }
         .stats-grid { grid-template-columns: 1fr; }
         .d-flex.gap-16 { flex-direction: column; }
+        .upload-box { padding: 40px 20px; }
     }
 </style>

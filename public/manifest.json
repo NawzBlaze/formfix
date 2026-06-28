@@ -1,40 +1,106 @@
 {
-  "name": "FormFix – Free Image & PDF Tools",
+  "name": "FormFix - Free Image & PDF Tools",
   "short_name": "FormFix",
-  "description": "Free browser-based toolkit: compress images to exact KB, create passport photos, merge PDFs, generate QR codes and 30+ more tools. 100% private.",
-  "start_url": "/",
+  "description": "Free, 100% private browser-based toolkit: compress images to exact KB, create passport photos, merge PDFs, generate QR codes and 30+ more tools. No uploads, no tracking.",
+  "id": "/?source=pwa",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
   "orientation": "portrait-primary",
   "background_color": "#ffffff",
-  "theme_color": "#4f46e5",
-  "lang": "en-IN",
-  "scope": "/",
-  "categories": ["utilities", "productivity", "photo"],
-  "screenshots": [],
+  "theme_color": "#10b981",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["utilities", "productivity", "photo", "business"],
+  "prefer_related_applications": false,
+  "edge_side_panel": { "preferred_width": 480 },
+  "launch_handler": { "client_mode": "auto" },
+  "handle_links": "preferred",
+  "protocol_handlers": [
+    { "protocol": "web+formfix", "url": "/?tool=%s" }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-banner.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "FormFix - Privacy-first image & PDF tools"
+    },
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "FormFix mobile app view"
+    }
+  ],
   "shortcuts": [
     {
       "name": "Compress Image",
       "short_name": "Compress",
-      "description": "Compress image to exact KB",
+      "description": "Compress image to exact 20KB, 50KB, 100KB",
       "url": "/compress-image",
-      "icons": [{ "src": "/favicon-96.png?v=3", "type": "image/png", "sizes": "96x96" }]
+      "icons": [{ "src": "/favicon-96.png?v=3", "type": "image/png", "sizes": "96x96", "purpose": "any" }]
     },
     {
       "name": "Passport Photo",
       "short_name": "Passport",
-      "description": "Create passport size photo",
+      "description": "Create passport & visa size photos",
       "url": "/passport-size-photo",
-      "icons": [{ "src": "/favicon-96.png?v=3", "type": "image/png", "sizes": "96x96" }]
+      "icons": [{ "src": "/favicon-96.png?v=3", "type": "image/png", "sizes": "96x96", "purpose": "any" }]
     },
     {
       "name": "Merge PDF",
       "short_name": "Merge PDF",
-      "description": "Merge multiple PDF files",
+      "description": "Combine multiple PDF files securely",
       "url": "/merge-pdf",
-      "icons": [{ "src": "/favicon-96.png?v=3", "type": "image/png", "sizes": "96x96" }]
+      "icons": [{ "src": "/favicon-96.png?v=3", "type": "image/png", "sizes": "96x96", "purpose": "any" }]
+    },
+    {
+      "name": "Signature Maker",
+      "short_name": "Signature",
+      "description": "Create digital signatures",
+      "url": "/signature-maker",
+      "icons": [{ "src": "/favicon-96.png?v=3", "type": "image/png", "sizes": "96x96", "purpose": "any" }]
+    },
+    {
+      "name": "All Tools",
+      "short_name": "Tools",
+      "description": "Browse all 30+ free tools",
+      "url": "/tools",
+      "icons": [{ "src": "/favicon-96.png?v=3", "type": "image/png", "sizes": "96x96", "purpose": "any" }]
     }
   ],
+  "share_target": {
+    "action": "/tools?share=1",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "sharedFile",
+      "files": [{ "name": "sharedFile", "accept": ["image/*", "application/pdf"] }]
+    }
+  },
   "icons": [
+    {
+      "src": "/favicon-16.png?v=3",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-32.png?v=3",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-48.png?v=3",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "/favicon-96.png?v=3",
       "sizes": "96x96",
@@ -44,6 +110,12 @@
     {
       "src": "/favicon-192.png?v=3",
       "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-512.png?v=3",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },

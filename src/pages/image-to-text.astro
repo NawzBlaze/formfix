@@ -1,5 +1,6 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Online OCR Tool - Extract Text from Images & Documents Free';
@@ -26,6 +27,118 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/image-to-text">
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" is:inline></script>
+<script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileInput = document.getElementById('image-upload');
+        const uploadStage = document.getElementById('upload-stage');
+        const editorStage = document.getElementById('editor-stage');
+        const sourcePreview = document.getElementById('source-preview');
+        const resultText = document.getElementById('result-text');
+        const extractBtn = document.getElementById('extract-btn');
+        const resultArea = document.getElementById('result-stage');
+        const copyBtn = document.getElementById('copy-btn');
+        
+        const overlay = document.getElementById('processing-overlay');
+        const progressText = document.getElementById('progress-text');
+        const overlayStatus = document.getElementById('overlay-status');
+
+        const procCanvas = document.createElement('canvas');
+        const procCtx = procCanvas.getContext('2d', { willReadFrequently: true });
+        let originalImg = new Image();
+
+        fileInput?.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            if (!['image/png','image/jpeg','image/webp'].includes(file.type)) {
+                if (typeof window.ffNotice === 'function') window.ffNotice('Please select a PNG, JPG, or WebP image.', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                sourcePreview.src = event.target.result;
+                originalImg.src = event.target.result;
+                uploadStage?.classList.add('hidden');
+                editorStage?.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        async function preProcessImage() {
+            procCanvas.width = originalImg.width;
+            procCanvas.height = originalImg.height;
+            procCtx.drawImage(originalImg, 0, 0);
+
+            const imgData = procCtx.getImageData(0, 0, procCanvas.width, procCanvas.height);
+            const data = imgData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                const avg = (data[i] * 0.299 + data[i+1] * 0.587 + data[i+2] * 0.114);
+                let finalV = avg;
+                if (avg > 200) finalV = 255;
+                if (avg < 50) finalV = 0;
+
+                data[i] = finalV; data[i+1] = finalV; data[i+2] = finalV;
+            }
+            procCtx.putImageData(imgData, 0, 0);
+            return procCanvas.toDataURL('image/png');
+        }
+
+        extractBtn?.addEventListener('click', async () => {
+             overlay?.classList.remove('hidden');
+             extractBtn.disabled = true;
+             overlayStatus.textContent = 'Enhancing Document Clarity...';
+             
+             try {
+                const processedImgBase64 = await preProcessImage();
+                resultText.value = "";
+                overlayStatus.textContent = 'Initializing OCR Engine...';
+                
+                const worker = await Tesseract.createWorker('eng', 1, {
+                    logger: m => {
+                        if (m.status === 'recognizing text') {
+                            const prog = Math.round(m.progress * 100);
+                            progressText.textContent = prog + '%';
+                            overlayStatus.textContent = 'Extracting Characters...';
+                        }
+                    }
+                });
+
+                const ret = await worker.recognize(processedImgBase64);
+                
+                let cleanText = ret.data.text
+                    .replace(/\n\s*\n/g, '\n\n')
+                    .replace(/[ \t]+/g, ' ')
+                    .trim();
+
+                resultText.value = cleanText || "Could not detect any text. Is the image clear?";
+                await worker.terminate();
+                
+                overlay?.classList.add('hidden');
+                resultArea?.classList.remove('hidden');
+                extractBtn.style.display = 'none';
+             } catch (err) {
+                 console.error(err);
+                 overlay?.classList.add('hidden');
+                 if (typeof window.ffNotice === 'function') window.ffNotice('Extraction failed. Ensure the document is clear.', 'error');
+                 else console.error('OCR failed');
+             } finally {
+                 extractBtn.disabled = false;
+             }
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            resultText?.select();
+            document.execCommand('copy');
+            copyBtn.textContent = '✅ Copied!';
+            setTimeout(() => copyBtn.textContent = '📋 Copy all text', 2000);
+        });
+    });
+</script>
+
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Online OCR Tool - Extract Text from Images & Documents Free", path: "/image-to-text" }]} />
+
     <ToolWrapper title="OCR Image to Text" subtitle="Extract editable text from document photos privately using local browser OCR." currentTool="image-to-text">
         
         <div slot="tool-ui">
@@ -48,7 +161,7 @@ const customSchema = {
                        <div class="editor-grid">
                             <div class="preview-panel shadow-sm">
                                  <div class="doc-frame checkerboard">
-                                      <img id="source-preview" alt="OCR Source Document Preview" />
+                                      <img id="source-preview" alt="OCR Source Document Preview" loading="lazy" decoding="async" />
                                       <div id="processing-overlay" class="loader-overlay hidden">
                                            <div class="loader-content">
                                                 <div class="pulse-loader"></div>
@@ -105,128 +218,21 @@ const customSchema = {
              </div>
         </div>
     </ToolWrapper>
-</BaseLayout>
-
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" is:inline></script>
-<script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
-        const fileInput = document.getElementById('image-upload');
-        const uploadStage = document.getElementById('upload-stage');
-        const editorStage = document.getElementById('editor-stage');
-        const sourcePreview = document.getElementById('source-preview');
-        const resultText = document.getElementById('result-text');
-        const extractBtn = document.getElementById('extract-btn');
-        const resultArea = document.getElementById('result-stage');
-        const copyBtn = document.getElementById('copy-btn');
-        
-        const overlay = document.getElementById('processing-overlay');
-        const progressText = document.getElementById('progress-text');
-        const overlayStatus = document.getElementById('overlay-status');
-
-        const procCanvas = document.createElement('canvas');
-        const procCtx = procCanvas.getContext('2d', { willReadFrequently: true });
-        let originalImg = new Image();
-
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if(!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                sourcePreview.src = event.target.result;
-                originalImg.src = event.target.result;
-                uploadStage.classList.add('hidden');
-                editorStage.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        });
-
-        async function preProcessImage() {
-            procCanvas.width = originalImg.width;
-            procCanvas.height = originalImg.height;
-            procCtx.drawImage(originalImg, 0, 0);
-
-            const imgData = procCtx.getImageData(0, 0, procCanvas.width, procCanvas.height);
-            const data = imgData.data;
-
-            for (let i = 0; i < data.length; i += 4) {
-                const avg = (data[i] * 0.299 + data[i+1] * 0.587 + data[i+2] * 0.114);
-                let finalV = avg;
-                if (avg > 200) finalV = 255;
-                if (avg < 50) finalV = 0;
-
-                data[i] = finalV; data[i+1] = finalV; data[i+2] = finalV;
-            }
-            procCtx.putImageData(imgData, 0, 0);
-            return procCanvas.toDataURL('image/png');
-        }
-
-        extractBtn.addEventListener('click', async () => {
-             overlay.classList.remove('hidden');
-             extractBtn.disabled = true;
-             overlayStatus.textContent = 'Enhancing Document Clarity...';
-             
-             try {
-                const processedImgBase64 = await preProcessImage();
-                resultText.value = "";
-                overlayStatus.textContent = 'Initializing OCR Engine...';
-                
-                const worker = await Tesseract.createWorker('eng', 1, {
-                    logger: m => {
-                        if (m.status === 'recognizing text') {
-                            const prog = Math.round(m.progress * 100);
-                            progressText.textContent = prog + '%';
-                            overlayStatus.textContent = 'Extracting Characters...';
-                        }
-                    }
-                });
-
-                const ret = await worker.recognize(processedImgBase64);
-                
-                let cleanText = ret.data.text
-                    .replace(/\n\s*\n/g, '\n\n')
-                    .replace(/[ \t]+/g, ' ')
-                    .trim();
-
-                resultText.value = cleanText || "Could not detect any text. Is the image clear?";
-                await worker.terminate();
-                
-                overlay.classList.add('hidden');
-                resultArea.classList.remove('hidden');
-                extractBtn.style.display = 'none';
-             } catch (err) {
-                 console.error(err);
-                 overlay.classList.add('hidden');
-                 alert("Extraction failed. Ensure the document is clear.");
-             } finally {
-                 extractBtn.disabled = false;
-             }
-        });
-
-        copyBtn.addEventListener('click', () => {
-            resultText.select();
-            document.execCommand('copy');
-            copyBtn.textContent = '✅ Copied!';
-            setTimeout(() => copyBtn.textContent = '📋 Copy all text', 2000);
-        });
-    });
-</script>
-
-<style>
+</BaseLayout><style>
     .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; }
     
     .upload-container { display: flex; justify-content: center; }
     .upload-box { background: var(--surface-50); border: 2.5px dashed var(--border-subtle); border-radius: 32px; padding: 60px 40px; text-align: center; width: 100%; cursor: pointer; transition: 0.2s; }
-    .upload-box:hover { border-color: var(--accent); background: var(--surface-100); }
+    .upload-box:hover { border-color: var(--accent-primary); background: var(--surface-100); }
     .upload-icon { font-size: 3.5rem; margin-bottom: 24px; line-height: 1; }
 
     .editor-grid { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
-    .preview-panel { background: #fff; border: 1px solid var(--border-subtle); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 480px; }
+    .preview-panel { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 480px; }
     
     .checkerboard { 
-        background-color: #fff;
-        background-image: linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9), 
-                          linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9);
+        background-color:var(--surface-3);
+        background-image: linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2)), 
+                          linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2));
         background-size: 20px 20px; background-position: 0 0, 10px 10px;
     }
     
@@ -237,33 +243,33 @@ const customSchema = {
 
     .loader-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; text-align: center; border-radius: 12px; }
     .loader-content { position: relative; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-    .pulse-loader { width: 100%; height: 100%; border: 4px solid var(--surface-200); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
-    .progress-pct { position: absolute; font-size: 1rem; font-weight: 900; color: var(--text-main); }
-    .loader-status { font-weight: 800; color: var(--text-main); font-size: 0.95rem; }
+    .pulse-loader { width: 100%; height: 100%; border: 4px solid var(--surface-200); border-top-color: var(--accent-primary); border-radius: 50%; animation: spin 1s linear infinite; }
+    .progress-pct { position: absolute; font-size: 1rem; font-weight:600; color: var(--text-main); }
+    .loader-status { font-weight:600; color: var(--text-main); font-size: 0.95rem; }
 
     .controls-sidebar { display: flex; flex-direction: column; gap: 24px; }
     .settings-card { background: var(--surface-50); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); }
-    .info-alert { font-size: 0.85rem; color: var(--text-main); background: #fff; padding: 16px; border-radius: 12px; border: 1px solid var(--border-subtle); line-height: 1.5; }
+    .info-alert { font-size: 0.85rem; color: var(--text-main); background:var(--surface-3); padding: 16px; border-radius: 12px; border: 1px solid var(--border-subtle); line-height: 1.5; }
 
     .action-stack { display: flex; flex-direction: column; }
-    .wide-btn { width: 100%; height: 60px; font-weight: 850; font-size: 1rem; border-radius: 16px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
+    .wide-btn { width: 100%; height: 60px; font-weight:600; font-size: 1rem; border-radius: 16px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
 
     /* Result Area */
-    .result-area { background: #fff; border: 1px solid var(--border-subtle); border-radius: 24px; padding: 32px; box-shadow: var(--shadow-sm); animation: slideUp 0.4s ease-out; }
+    .result-area { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 32px; box-shadow: var(--shadow-sm); animation: slideUp 0.4s ease-out; }
     .textarea-header { display: flex; justify-content: space-between; align-items: center; }
-    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    .section-label { font-size: 0.75rem; font-weight:600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
     
-    .copy-action-btn { font-size: 0.85rem; font-weight: 800; color: var(--accent); background: var(--surface-100); padding: 8px 20px; border-radius: 100px; border: none; cursor: pointer; transition: 0.2s; }
-    .copy-action-btn:hover { background: var(--accent); color: #fff; box-shadow: var(--shadow-sm); }
+    .copy-action-btn { font-size: 0.85rem; font-weight:600; color: var(--accent-primary); background: var(--surface-100); padding: 8px 20px; border-radius: 100px; border: none; cursor: pointer; transition: 0.2s; }
+    .copy-action-btn:hover { background: var(--accent-primary); color: #fff; box-shadow: var(--shadow-sm); }
     
     .ocr-result-box { width: 100%; height: 350px; background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; font-size: 1rem; line-height: 1.7; color: var(--text-main); outline: none; transition: 0.2s; resize: vertical; font-family: inherit; box-sizing: border-box; }
-    .ocr-result-box:focus { border-color: var(--accent); background: #fff; box-shadow: var(--shadow-sm); }
+    .ocr-result-box:focus { border-color: var(--accent-primary); background:var(--surface-3); box-shadow: var(--shadow-sm); }
 
     /* FAQ */
     .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
@@ -284,7 +290,7 @@ const customSchema = {
     .mt-32 { margin-top: 32px; }
     .m-0 { margin: 0; }
     .font-600 { font-weight: 600; }
-    .font-850 { font-weight: 850; }
+    .font-850 { font-weight:600; }
     .text-muted { color: var(--text-muted); }
     .hidden { display: none !important; }
 

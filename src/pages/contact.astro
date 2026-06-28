@@ -1,12 +1,14 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { SITE_URL } from '../seo';
 
 const customSchema = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
   "name": "Contact FormFix Support",
   "description": "Get in touch with the FormFix team for support, feature requests, or inquiries.",
-  "url": "https://formfix.pages.dev/contact",
+  "url": `${SITE_URL}/contact`,
   "mainEntity": {
     "@type": "Organization",
     "name": "FormFix",
@@ -22,69 +24,148 @@ const customSchema = {
 
 <BaseLayout 
     title="Contact Us | FormFix Support"
-    description="Have a question or need support with FormFix? Contact us today. We're here to help you with our free, private image and PDF tools."
+    description="Have a question or need support with FormFix? Contact us today for help with our free, private image and PDF tools."
     canonicalPath="/contact"
     customSchema={customSchema}
 >
-    <div class="legal-page py-20 pb-40">
-        <div class="container" style="max-width: 800px; margin: 0 auto;">
-            
-            <a href="/" class="back-link mb-8 inline-flex items-center text-primary font-medium hover:text-primary/80 transition-colors duration-200">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m15 18-6-6 6-6"/></svg>
-                Back to Home
-            </a>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Contact", path: "/contact" }]} />
 
-            <div class="legal-header mb-12">
-                <div class="badge inline-block bg-primary/20 text-primary px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6">Transparency & Privacy</div>
-                <h1 class="text-3xl md:text-6xl font-black mb-6 leading-[1.2] tracking-tight" style="color: #0f172a;">Focusing on User <br/><span class="text-primary italic">Privacy Standards</span></h1>
-                <p class="text-xl font-medium" style="color: #475569;">Secure, browser-based tools for your daily digital needs.</p>
-            </div>
+    <div class="page">
+        <div class="container page-inner">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-                <!-- Email Contact Card -->
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col items-center text-center hover:bg-slate-100 transition-colors">
-                    <div class="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center mb-6 text-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <header class="page-header">
+                <h1>Contact Us</h1>
+                <p>Have a question or need support? We're here to help.</p>
+            </header>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Email Us</h3>
-                    <p class="text-slate-600 mb-6 flex-1 text-sm">For support, bug reports, and general inquiries.</p>
-                    <a href="mailto:formfix.support@gmail.com" class="text-primary font-bold hover:underline">formfix.support@gmail.com</a>
+                    <h3>Email Us</h3>
+                    <p>For support, bug reports, and general inquiries.</p>
+                    <a href="mailto:formfix.support@gmail.com">formfix.support@gmail.com</a>
                 </div>
 
-                <!-- GitHub Card -->
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col items-center text-center hover:bg-slate-100 transition-colors">
-                    <div class="w-14 h-14 bg-slate-200 rounded-full flex items-center justify-center mb-6 text-slate-900">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">GitHub Issues</h3>
-                    <p class="text-slate-600 mb-6 flex-1 text-sm">For feature requests, open-source contributions, or technical details.</p>
-                    <a href="https://github.com/NawzBlaze/formfix/issues" target="_blank" rel="noopener noreferrer" class="text-slate-900 font-bold hover:underline">Open an Issue</a>
+                    <h3>GitHub Issues</h3>
+                    <p>For feature requests, contributions, or technical details.</p>
+                    <a href="https://github.com/NawzBlaze/formfix/issues" target="_blank" rel="noopener noreferrer">Open an Issue</a>
                 </div>
             </div>
 
-            <div class="legal-content prose max-w-none prose-lg text-slate-600 bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-200">
-                <h2 class="mt-0 text-slate-900">Frequently Asked Questions</h2>
-                
-                <h3 class="font-bold text-slate-900">How long does it take to get a response?</h3>
-                <p class="mb-6">We generally reply to all inquiries within 24-48 business hours. Please provide as much context as possible so we can help you efficiently.</p>
-                
-                <h3 class="font-bold text-slate-900">Can you recover my deleted/compressed files?</h3>
-                <p class="mb-6"><strong>No.</strong> Because FormFix processes everything strictly on your local device (in-browser), we never see, upload, or store your files. If you lose a file locally, we have zero access to retrieve it.</p>
-                
-                <h3 class="font-bold text-slate-900">Do you offer API access?</h3>
-                <p class="mb-0">Currently, our tools are built for end-user browser interaction. For business integrations, feel free to drop us an email with your use case, and we might explore adding an API layer in the future.</p>
+            <div class="faq-section">
+                <h2>Frequently Asked Questions</h2>
+
+                <div class="faq-item">
+                    <h3>How long does it take to get a response?</h3>
+                    <p>We generally reply within 24-48 business hours. Please provide as much context as possible.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>Can you recover my deleted files?</h3>
+                    <p>No. FormFix processes everything on your local device. We never see, upload, or store your files. If you lose a file locally, we have no way to retrieve it.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>Do you offer API access?</h3>
+                    <p>Currently, our tools are built for browser use only. For business integrations, feel free to email us with your use case.</p>
+                </div>
             </div>
-            
+
         </div>
     </div>
 </BaseLayout>
 
 <style>
-    .legal-content h2 {
-        color: #0f172a;
-        margin-bottom: 1.5rem;
-        font-size: 1.8rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-    }
+.page { padding: 32px 0 80px; }
+.page-inner { max-width: 760px; }
+
+.page-header {
+    margin-bottom: 40px;
+}
+.page-header h1 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.page-header p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+}
+.contact-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 28px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.contact-card:hover {
+    border-color: var(--border-strong);
+}
+.contact-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--accent-soft);
+    color: var(--accent-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+.contact-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.contact-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    flex: 1;
+}
+.contact-card a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--accent-primary);
+}
+
+.faq-section h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.faq-item {
+    margin-bottom: 20px;
+}
+.faq-item h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.faq-item p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    .contact-grid { grid-template-columns: 1fr; }
+}
 </style>

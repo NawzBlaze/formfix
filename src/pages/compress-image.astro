@@ -1,13 +1,39 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
-import UploadBox from '../components/UploadBox.astro';
-import RelatedTools from '../components/RelatedTools.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import CompressTool from '../components/tools/CompressTool.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
-const PAGE_TITLE = 'Compress Image to 20KB, 50KB & 100KB Online | FormFix';
-const PAGE_DESC = 'The best free online image compressor. Compress photos to exactly 20KB, 50KB, or 100KB for government forms (SSC, UPSC). 100% private, zero uploads.';
-const PAGE_KEYWORDS = 'image compressor online, compress image to 20kb, compress photo to 50kb online, image size reducer, ssc photo compressor, upsc photo reducer, online photo editor';
+const PAGE_TITLE = 'Compress Image to 20KB, 50KB & 100KB Online | Free Image Compressor | FormFix';
+const PAGE_DESC = 'Free online image compressor. Compress JPG, PNG, and WebP to 20KB, 50KB, or 100KB for SSC, UPSC, and IBPS forms. 100% private.';
+const PAGE_KEYWORDS = 'image compressor online, compress image to 20kb, compress photo to 50kb online, compress photo to 100kb, image size reducer, ssc photo compressor, upsc photo reducer, online photo editor, jpg compressor, png compressor';
+
+const faqs = [
+  {
+    q: 'How do I compress an image to 20KB?',
+    a: 'Upload your image, click the "20 KB" preset, and hit Optimize. Our smart binary-search algorithm automatically adjusts quality and dimensions until the output is exactly 20KB or less.',
+  },
+  {
+    q: 'Does compressing reduce image quality?',
+    a: 'Our smart engine (RBQS) strips invisible metadata and intelligently reduces color depth. The visual quality remains nearly identical to the original at the chosen target size.',
+  },
+  {
+    q: 'Is my image uploaded to a server?',
+    a: 'No. FormFix runs entirely in your browser. Your image never leaves your device — 100% private, zero uploads.',
+  },
+  {
+    q: 'Can I compress to 50KB or 100KB?',
+    a: 'Yes. Click the "50 KB" or "100 KB" preset buttons. The engine instantly recalibrates to fit your chosen limit while keeping the highest possible quality.',
+  },
+  {
+    q: 'Which image formats are supported?',
+    a: 'JPG, JPEG, PNG, and WebP are all supported for compression. The output is delivered as an optimized JPG for the smallest possible file size.',
+  },
+  {
+    q: 'Is this compressor really free?',
+    a: 'Yes. FormFix is 100% free forever. No sign-up, no watermark, no premium tier, no hidden fees.',
+  },
+];
 
 const customSchema = {
   "@context": "https://schema.org",
@@ -26,48 +52,21 @@ const customSchema = {
     },
     {
       "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How to compress image to 20kb?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Simply upload your image, click on the '20 KB' preset target button, and hit optimize. Our advanced algorithm will automatically adjust quality until the final generated file size is exactly 20KB or less."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Does it reduce quality?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Our compressor uses a smart mathematical engine (RBQS) which drops file size drastically by stripping invisible metadata and intelligently reducing color depth, aiming to keep the visual quality almost identical to the original."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is it safe?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, it's 100% safe. We utilize local browser processing, meaning your images stay in your computer's memory. No uploads are sent to our servers."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How to compress image to 50kb or 100kb?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Simply click the '50 KB' or '100 KB' preset targets in our interface. The smart image compressor will instantly recalibrate to ensure the final output is below your chosen limit."
-          }
-        }
-      ]
+      "mainEntity": faqs.map(({q, a}) => ({
+        "@type": "Question",
+        "name": q,
+        "acceptedAnswer": { "@type": "Answer", "text": a }
+      }))
     }
   ]
 };
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="compress" canonicalPath="/compress-image">
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="compress" canonicalPath="/compress-image" faq={faqs}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: 'Image Compressor', path: '/compress-image' }]} />
+
     <ToolWrapper title="Online Image Compressor" subtitle="Compress photos to exactly 20KB, 50KB, or 100KB for government forms. 100% private." currentTool="compress">
-        
+
         <div slot="tool-ui">
              <CompressTool />
         </div>
@@ -93,9 +92,9 @@ const customSchema = {
 <style>
     /* FAQ */
     .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; }
-    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; }
+    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 

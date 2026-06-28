@@ -1,126 +1,147 @@
-/* 💎 FORMFIX CINEMATIC & ELEGANT DESIGN SYSTEM */
+/* FormFix Design System */
 
 :root {
-    /* --- ELEGANT LIGHT THEME --- */
-    --surface-1: #f8fafc; /* Base Background */
-    --surface-2: #f1f5f9; /* Section Backgrounds */
-    --surface-3: #ffffff; /* Card Backgrounds */
-    --surface-gradient: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-    
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #94a3b8;
-    
-    --accent-primary: #4f46e5;
-    --accent-hover: #4338ca;
-    --accent-soft: rgba(79, 70, 229, 0.08);
-    --accent-glow: rgba(79, 70, 229, 0.15);
-    --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-    
-    --border-subtle: rgba(15, 23, 42, 0.06);
-    --border-strong: rgba(15, 23, 42, 0.12);
-    --card-border: rgba(15, 23, 42, 0.05);
-    
-    --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.02);
-    --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.05);
-    --shadow-lift: 0 20px 40px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(79, 70, 229, 0.1);
-    
-    --glass-bg: rgba(248, 250, 252, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.8);
-    
-    --radius-sm: 8px;
-    --radius-md: 16px;
-    --radius-lg: 24px;
+    /* --- Light Theme --- */
+    --surface-1: #f8f8f8;
+    --surface-2: #f0f0f0;
+    --surface-3: #ffffff;
+    --surface-gradient: linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
+
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b6b6b;
+    --text-muted: #9a9a9a;
+
+    --accent-primary: #10b981;
+    --accent-hover: #059669;
+    --accent-soft: rgba(16, 185, 129, 0.08);
+    --accent-glow: rgba(16, 185, 129, 0.06);
+    --accent-rgb: 16, 185, 129;
+
+    --success: #16a34a;
+    --success-soft: rgba(22, 163, 74, 0.08);
+    --error: #dc2626;
+    --error-soft: rgba(220, 38, 38, 0.08);
+    --warning: #d97706;
+
+    --border-subtle: rgba(0, 0, 0, 0.08);
+    --border-strong: rgba(0, 0, 0, 0.15);
+    --card-border: rgba(0, 0, 0, 0.08);
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --shadow-lift: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
     --radius-full: 9999px;
-    
-    --vignette: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.02) 100%);
+
+    /* Legacy aliases (used by many tool pages) */
+    --surface-50: #ffffff;
+    --surface-100: #f0f0f0;
+    --surface-200: #e0e0e0;
+    --surface-300: #9a9a9a;
+    --surface-500: #9a9a9a;
+    --text-main: #1a1a1a;
+    --primary: #10b981;
+    --primary-light: rgba(16, 185, 129, 0.08);
+    --primary-mid: rgba(16, 185, 129, 0.2);
+    --gray: #6b6b6b;
+    --dark: #1a1a1a;
+    --light-gray: #9a9a9a;
+    --bg-subtle: #f0f0f0;
+    --border: rgba(0, 0, 0, 0.08);
 }
 
 .dark {
-    /* --- CINEMATIC DARK THEME --- */
-    --surface-1: #020617; /* Deepest Base */
-    --surface-2: #0f172a; /* Secondary Depth */
-    --surface-3: #111827; /* Main Card Surface */
-    --surface-elevated: #1f2937; /* Elevated Card/Hover */
-    --surface-gradient: linear-gradient(180deg, #1f2937 0%, #111827 100%);
-    
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    
-    --accent-primary: #818cf8;
-    --accent-hover: #6366f1;
-    --accent-soft: rgba(129, 140, 248, 0.15);
-    --accent-glow: rgba(129, 140, 248, 0.35);
-    --accent-gradient: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
-    
-    --border-subtle: rgba(255, 255, 255, 0.03);
-    --border-strong: rgba(255, 255, 255, 0.08);
-    --card-border: #374151;
-    
-    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.5);
-    --shadow-medium: 0 10px 40px rgba(0, 0, 0, 0.6);
-    --shadow-lift: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(129, 140, 248, 0.2);
-    
-    --glass-bg: rgba(2, 6, 23, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.05);
-    
-    --vignette: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+    /* --- Dark Theme --- */
+    --surface-1: #111111;
+    --surface-2: #1a1a1a;
+    --surface-3: #222222;
+    --surface-gradient: linear-gradient(180deg, #222222 0%, #111111 100%);
+
+    --text-primary: #e5e5e5;
+    --text-secondary: #a0a0a0;
+    --text-muted: #5c5c5c;
+
+    --accent-primary: #34d399;
+    --accent-hover: #6ee7b7;
+    --accent-soft: rgba(52, 211, 153, 0.1);
+    --accent-glow: rgba(52, 211, 153, 0.06);
+    --accent-rgb: 52, 211, 153;
+
+    --success: #4ade80;
+    --success-soft: rgba(74, 222, 128, 0.1);
+    --error: #f87171;
+    --error-soft: rgba(248, 113, 113, 0.1);
+    --warning: #fbbf24;
+
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-strong: rgba(255, 255, 255, 0.12);
+    --card-border: rgba(255, 255, 255, 0.06);
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.2);
+    --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.3);
+    --shadow-lift: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+    /* Legacy aliases (used by many tool pages) */
+    --surface-50: #222222;
+    --surface-100: #1a1a1a;
+    --surface-200: #333333;
+    --surface-300: #5c5c5c;
+    --surface-500: #5c5c5c;
+    --text-main: #e5e5e5;
+    --primary: #34d399;
+    --primary-light: rgba(52, 211, 153, 0.1);
+    --primary-mid: rgba(52, 211, 153, 0.2);
+    --gray: #a0a0a0;
+    --dark: #e5e5e5;
+    --light-gray: #5c5c5c;
+    --bg-subtle: #1a1a1a;
+    --border: rgba(255, 255, 255, 0.06);
 }
 
-/* 🔄 Global Design Reset & Motion Foundations */
-* {
+/* Global Reset */
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    transition: background-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                color 0.3s ease, 
-                border-color 0.4s ease, 
-                box-shadow 0.4s ease,
-                transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+a, button, input, select, textarea {
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 body {
     background-color: var(--surface-1);
     color: var(--text-primary);
-    font-family: 'Outfit', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary);
-    letter-spacing: -0.04em;
-    line-height: 1.1;
-    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    font-weight: 600;
 }
 
-p {
-    color: var(--text-secondary);
-}
+p { color: var(--text-secondary); line-height: 1.6; }
 
-a {
-    color: var(--accent-primary);
-    text-decoration: none;
-    transition: color 0.3s;
-}
+a { color: var(--accent-primary); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
 
-a:hover {
-    color: var(--accent-hover);
-}
+img { max-width: 100%; height: auto; }
 
-/* Global Atmosphere Layer */
-body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background: var(--vignette);
-    z-index: 9998;
-}
-
-.dark body {
-    background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
-    background-attachment: fixed;
-}
+::selection { background: var(--accent-soft); color: var(--accent-primary); }

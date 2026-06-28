@@ -1,25 +1,226 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Professional QR Code Generator with Logo | Custom QR Maker | FormFix';
 const PAGE_DESC = 'Create custom QR codes with your logo online. Professional QR generator with high-res export (PNG/SVG). 100% private, free, and secure design studio.';
 const PAGE_KEYWORDS = 'professional qr code generator, custom qr maker with logo, free qr code generator, high res qr code, secure qr maker online';
 
+const faqs = [
+  {
+    q: 'Can I add my own logo to a QR code?',
+    a: 'Yes. Upload any PNG or JPG image and FormFix will center it inside the QR code, automatically cropping it into a clean circle. The logo size and halo (background dots hidden behind the logo) are fully adjustable.',
+  },
+  {
+    q: 'Are these QR codes permanent?',
+    a: 'Yes. FormFix creates static QR codes that encode your data directly. There are no subscriptions, no scan limits, no expiration. The QR code will work forever.',
+  },
+  {
+    q: 'What data types can I encode?',
+    a: 'Any text. URLs, WiFi credentials (e.g., WIFI:T:WPA;S:mynetwork;P:password;;), vCards for contact info, email addresses (mailto:), phone numbers (tel:), SMS, geo coordinates, and plain text are all supported.',
+  },
+  {
+    q: 'Will my QR code scan reliably with a logo?',
+    a: 'Yes. We use the official error-correction level H (30% recovery) which means the QR code remains scannable even when up to 30% of the area is covered by your logo.',
+  },
+  {
+    q: 'What format is the download?',
+    a: 'QR codes are exported as high-resolution PNG (1000x1000 px or higher) by default, suitable for both digital and print use. SVG export is available for vector-perfect scaling.',
+  },
+  {
+    q: 'Is my data private?',
+    a: 'Absolutely. FormFix runs entirely in your browser. The QR code is generated on your device using JavaScript. Your URLs, WiFi passwords, and contact data never touch our servers.',
+  },
+];
+
 const customSchema = {
   "@context": "https://schema.org",
   "@graph": [
-    { 
-        "@type": "SoftwareApplication", 
-        "name": "FormFix Pro QR Designer", 
-        "operatingSystem": "All Platforms",
-        "description": "Luxury designer QR suite with couture aesthetic presets and precision circular branding." 
+    {
+      "@type": "SoftwareApplication",
+      "name": "FormFix Pro QR Designer",
+      "operatingSystem": "All Platforms",
+      "applicationCategory": "UtilitiesApplication",
+      "description": "Luxury designer QR suite with couture aesthetic presets and precision circular branding.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
   ]
 };
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/qr-code-generator">
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/qr-code-generator" faq={faqs}>
+    <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        const qrIn = document.getElementById('qr-input');
+        const qCol = document.getElementById('qr-color');
+        const bCol = document.getElementById('bg-color');
+        const doGrad = document.getElementById('do-grad');
+        const gs = document.getElementById('g-s');
+        const ge = document.getElementById('g-e');
+        
+        const logoFile = document.getElementById('logo-input');
+        const logoDrop = document.getElementById('logo-zone');
+        const logoSize = document.getElementById('logo-size');
+        const logoVal = document.getElementById('logo-val');
+        const logoHalo = document.getElementById('logo-halo');
+        const logoPre = document.getElementById('logo-pre');
+        const logoOpts = document.getElementById('logo-opts');
+        const logoBox = document.getElementById('logo-preview-box');
+        const rmLogoBtn = document.getElementById('remove-logo');
+        const styleGrid = document.getElementById('presets-container');
+        const box = document.getElementById('qr-result');
+        const dlBtn = document.getElementById('download-btn');
+
+        let currentLogo = '';
+        let curDot = 'square';
+        let curFrame = 'square';
+
+        if(typeof QRCodeStyling === 'undefined') {
+            console.error("QR Library failed to load");
+            return;
+        }
+
+        const qr = new QRCodeStyling({
+            width: 320,
+            height: 320,
+            type: 'svg',
+            data: window.__SITE_URL,
+            dotsOptions: { color: "#1e1b4b", type: "square" },
+            backgroundOptions: { color: "#ffffff" },
+            cornersSquareOptions: { color: "#1e1b4b", type: "square" },
+            imageOptions: { margin: 15, crossOrigin: 'anonymous', imageSize: 0.45, hideBackgroundDots: true }
+        });
+
+        qr.append(box);
+
+        const PRESETS = [
+            { name: 'Midnight', col: '#1e1b4b', bg: '#ffffff', dt: 'square', ft: 'square', g: false },
+            { name: 'Royal', col: '#854d0e', bg: '#fffbeb', dt: 'square', ft: 'rounded', g: true, s: '#854d0e', e: '#fde047' },
+            { name: 'Neon', col: '#c026d3', bg: '#020617', dt: 'dots', ft: 'square', g: true, s: '#22d3ee', e: '#c026d3' },
+            { name: 'Candy', col: '#db2777', bg: '#fdf2f8', dt: 'rounded', ft: 'rounded', g: false }
+        ];
+
+        PRESETS.forEach(p => {
+            const chip = document.createElement('button');
+            chip.className = 'preset-chip';
+            chip.innerHTML = `<span class="c-dot" style="background:${p.col}"></span> ${p.name}`;
+            chip.onclick = () => {
+                 qCol.value = p.col; bCol.value = p.bg; curDot = p.dt; curFrame = p.ft;
+                 doGrad.checked = p.g; if(p.g) { gs.value = p.s; ge.value = p.e; }
+                 
+                 document.querySelectorAll('#pattern-toggles .setting-pill').forEach(btn => 
+                    btn.classList.toggle('active', btn.dataset.val === curDot)
+                 );
+                 update();
+            };
+            styleGrid.appendChild(chip);
+        });
+
+        document.querySelectorAll('#pattern-toggles .setting-pill').forEach(btn => btn.addEventListener('click', () => {
+             document.querySelectorAll('#pattern-toggles .setting-pill').forEach(b => b.classList.remove('active'));
+             btn.classList.add('active');
+             curDot = btn.dataset.val;
+             update();
+        }));
+
+        logoDrop.onclick = (e) => {
+            if(e.target === rmLogoBtn) return;
+            logoFile?.click();
+        };
+
+        rmLogoBtn.onclick = (e) => {
+            e.stopPropagation();
+            currentLogo = '';
+            if (logoPre) logoPre.src = '';
+            logoBox?.classList.add('hidden');
+            document.getElementById('logo-prompt')?.classList.remove('hidden');
+            logoOpts?.classList.add('hidden');
+            if (logoFile) logoFile.value = '';
+            update();
+        };
+
+        logoFile.onchange = (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                 const img = new Image();
+                 img.onload = () => {
+                      const cvs = document.createElement('canvas');
+                      const ctx = cvs.getContext('2d');
+                      const s = 1000; cvs.width = s; cvs.height = s;
+                      ctx.beginPath(); ctx.arc(s/2, s/2, s/2, 0, Math.PI*2); ctx.closePath(); ctx.clip();
+                      ctx.drawImage(img, 0, 0, s, s);
+                      currentLogo = cvs.toDataURL('image/png');
+                       if (logoPre) logoPre.src = currentLogo;
+                       logoBox?.classList.remove('hidden');
+                       document.getElementById('logo-prompt')?.classList.add('hidden');
+                       logoOpts?.classList.remove('hidden');
+                      update();
+                 };
+                 img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        function update() {
+            if(logoVal) logoVal.textContent = `${logoSize.value}%`;
+            qr.update({
+                data: qrIn.value || window.__SITE_URL,
+                image: currentLogo || undefined,
+                dotsOptions: {
+                    type: curDot,
+                    color: doGrad.checked ? undefined : qCol.value,
+                    gradient: doGrad.checked ? {
+                        type: 'linear',
+                        colorStops: [{ offset: 0, color: gs.value }, { offset: 1, color: ge.value }]
+                    } : undefined
+                },
+                backgroundOptions: { color: bCol.value },
+                cornersSquareOptions: { type: curFrame, color: qCol.value },
+                cornersDotOptions: { type: curFrame, color: qCol.value },
+                imageOptions: { 
+                    imageSize: parseFloat(logoSize.value) / 100, 
+                    margin: 15, 
+                    hideBackgroundDots: logoHalo.checked,
+                    crossOrigin: 'anonymous'
+                }
+            });
+        }
+
+        [qrIn, qCol, bCol, doGrad, gs, ge, logoSize, logoHalo].forEach(el => el?.addEventListener('input', update));
+        dlBtn.onclick = () => {
+            qr.download({ name: 'formfix-qr', extension: 'png' });
+            var shareTxt = encodeURIComponent("I just created a custom QR code using FormFix! Free, private, no sign-up. Try it: " + window.__SITE_URL + "/qr-code-generator");
+            var existing = document.getElementById('post-qr-share');
+            if (!existing) {
+                var div = document.createElement('div');
+                div.id = 'post-qr-share';
+                div.style.cssText = 'margin-top:20px;text-align:center;';
+                div.innerHTML = '<p style="font-weight:600;margin-bottom:10px;color:var(--success);">Love FormFix? Share it!</p><div style="display:flex;gap:8px;justify-content:center;"><a href="https://twitter.com/intent/tweet?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#000;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">Share on X</a><a href="https://wa.me/?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">WhatsApp</a></div>';
+                if (dlBtn) dlBtn.parentElement.appendChild(div);
+            }
+        };
+        
+        update();
+    });
+</script>
+
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Professional QR Code Generator with Logo | Custom QR Maker", path: "/qr-code-generator" }]} />
+
+    <!-- Load QR library lazily via DOM injection to keep HTML valid -->
+    <script is:inline>
+        (function() {
+            if (document.querySelector('script[data-qr-loader]')) return;
+            const s = document.createElement('script');
+            s.src = 'https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js';
+            s.defer = true;
+            s.dataset.qrLoader = '1';
+            document.head.appendChild(s);
+        })();
+    </script>
+
     <ToolWrapper title="Professional QR Designer" subtitle="Create high-resolution, custom-branded QR codes instantly. 100% private." currentTool="qr-code-generator">
         
         <div slot="tool-ui">
@@ -57,7 +258,7 @@ const customSchema = {
                                            <div class="l-txt">Upload Logo</div>
                                       </div>
                                       <div id="logo-preview-box" class="hidden" style="position:relative;">
-                                           <img id="logo-pre" src="" alt="User uploaded QR code logo preview" />
+                                           <img id="logo-pre" src="" alt="User uploaded QR code logo preview" loading="lazy" decoding="async" />
                                            <button id="remove-logo" class="remove-btn">×</button>
                                       </div>
                                  </div>
@@ -101,224 +302,92 @@ const customSchema = {
         </div>
 
         <div slot="tool-info">
-             <h2>Professional QR Design Suite</h2>
-             <p>Our <strong>Professional QR Designer</strong> helps you create luxury, branded QR codes instantly. Choose from custom patterns, gradients, and integrated circular branding to match your brand's aesthetic. Generation happens entirely locally within your browser, ensuring your links and branding data remain 100% private.</p>
-             
-             <div class="faq-grid mt-32">
-                  <details class="faq-item">
-                       <summary>Can I use my own logo?</summary>
-                       <p>Yes, you can upload any image (PNG/JPG) to center within your QR code. We automatically crop it into a clean circle for a professional designer look that doesn't break the code scanability.</p>
-                  </details>
-                  <details class="faq-item">
-                       <summary>Are these codes permanent?</summary>
-                       <p>Yes. These are static QR codes that encode your data directly. They never expire, have no scan limits, and will work forever without any subscription.</p>
-                  </details>
+             <article class="prose">
+                 <h2>Professional QR Design Suite</h2>
+                 <p>Our <strong>Professional QR Designer</strong> helps you create luxury, branded QR codes instantly. Choose from custom patterns, gradients, and integrated circular branding to match your brand's aesthetic. Generation happens entirely locally within your browser, ensuring your links and branding data remain 100% private.</p>
+
+                 <h3>Where to use your QR code</h3>
+                 <ul>
+                     <li><strong>Business cards:</strong> Add a branded QR to your card so contacts can save your details with one tap.</li>
+                     <li><strong>Product packaging:</strong> Link to instructions, ingredients, or warranty registration.</li>
+                     <li><strong>Restaurant menus:</strong> Replace paper menus with a QR that links to your digital menu.</li>
+                     <li><strong>Event tickets:</strong> Embed ticket validation URLs in a custom QR.</li>
+                     <li><strong>WiFi sharing:</strong> Encode your network name and password so guests can connect instantly.</li>
+                 </ul>
+
+                 <h3>Advanced customization</h3>
+                 <ul>
+                     <li><strong>Pattern styles:</strong> Square, dots, rounded, or extra-rounded for any aesthetic.</li>
+                     <li><strong>Frame styles:</strong> Square or extra-rounded corner anchors.</li>
+                     <li><strong>Gradients:</strong> Linear gradients with two custom colors for premium brand matching.</li>
+                     <li><strong>Logo integration:</strong> Up to 30% of QR area covered by your logo while staying scannable.</li>
+                 </ul>
+             </article>
+
+             <div class="faq-section mt-32">
+                 <h3>Frequently Asked Questions</h3>
+                 {faqs.map(({ q, a }) => (
+                     <details class="faq-item">
+                         <summary>{q}</summary>
+                         <p>{a}</p>
+                     </details>
+                 ))}
              </div>
         </div>
     </ToolWrapper>
-</BaseLayout>
-
-<script is:inline src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
-
-<script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
-        const qrIn = document.getElementById('qr-input');
-        const qCol = document.getElementById('qr-color');
-        const bCol = document.getElementById('bg-color');
-        const doGrad = document.getElementById('do-grad');
-        const gs = document.getElementById('g-s');
-        const ge = document.getElementById('g-e');
-        
-        const logoFile = document.getElementById('logo-input');
-        const logoDrop = document.getElementById('logo-zone');
-        const logoSize = document.getElementById('logo-size');
-        const logoVal = document.getElementById('logo-val');
-        const logoHalo = document.getElementById('logo-halo');
-        const logoPre = document.getElementById('logo-pre');
-        const logoOpts = document.getElementById('logo-opts');
-        const logoBox = document.getElementById('logo-preview-box');
-        const rmLogoBtn = document.getElementById('remove-logo');
-        const styleGrid = document.getElementById('presets-container');
-        const box = document.getElementById('qr-result');
-        const dlBtn = document.getElementById('download-btn');
-
-        let currentLogo = '';
-        let curDot = 'square';
-        let curFrame = 'square';
-
-        if(typeof QRCodeStyling === 'undefined') {
-            console.error("QR Library failed to load");
-            return;
-        }
-
-        const qr = new QRCodeStyling({
-            width: 320,
-            height: 320,
-            type: 'svg',
-            data: 'https://formfix.pages.dev',
-            dotsOptions: { color: "#1e1b4b", type: "square" },
-            backgroundOptions: { color: "#ffffff" },
-            cornersSquareOptions: { color: "#1e1b4b", type: "square" },
-            imageOptions: { margin: 15, crossOrigin: 'anonymous', imageSize: 0.45, hideBackgroundDots: true }
-        });
-
-        qr.append(box);
-
-        const PRESETS = [
-            { name: 'Midnight', col: '#1e1b4b', bg: '#ffffff', dt: 'square', ft: 'square', g: false },
-            { name: 'Royal', col: '#854d0e', bg: '#fffbeb', dt: 'square', ft: 'rounded', g: true, s: '#854d0e', e: '#fde047' },
-            { name: 'Neon', col: '#c026d3', bg: '#020617', dt: 'dots', ft: 'square', g: true, s: '#22d3ee', e: '#c026d3' },
-            { name: 'Candy', col: '#db2777', bg: '#fdf2f8', dt: 'rounded', ft: 'rounded', g: false }
-        ];
-
-        PRESETS.forEach(p => {
-            const chip = document.createElement('button');
-            chip.className = 'preset-chip';
-            chip.innerHTML = `<span class="c-dot" style="background:${p.col}"></span> ${p.name}`;
-            chip.onclick = () => {
-                 qCol.value = p.col; bCol.value = p.bg; curDot = p.dt; curFrame = p.ft;
-                 doGrad.checked = p.g; if(p.g) { gs.value = p.s; ge.value = p.e; }
-                 
-                 document.querySelectorAll('#pattern-toggles .setting-pill').forEach(btn => 
-                    btn.classList.toggle('active', btn.dataset.val === curDot)
-                 );
-                 update();
-            };
-            styleGrid.appendChild(chip);
-        });
-
-        document.querySelectorAll('#pattern-toggles .setting-pill').forEach(btn => btn.addEventListener('click', () => {
-             document.querySelectorAll('#pattern-toggles .setting-pill').forEach(b => b.classList.remove('active'));
-             btn.classList.add('active');
-             curDot = btn.dataset.val;
-             update();
-        }));
-
-        logoDrop.onclick = (e) => {
-            if(e.target === rmLogoBtn) return;
-            logoFile.click();
-        };
-
-        rmLogoBtn.onclick = (e) => {
-            e.stopPropagation();
-            currentLogo = '';
-            logoPre.src = '';
-            logoBox.classList.add('hidden');
-            document.getElementById('logo-prompt').classList.remove('hidden');
-            logoOpts.classList.add('hidden');
-            logoFile.value = '';
-            update();
-        };
-
-        logoFile.onchange = (e) => {
-            const file = e.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                 const img = new Image();
-                 img.onload = () => {
-                      const cvs = document.createElement('canvas');
-                      const ctx = cvs.getContext('2d');
-                      const s = 1000; cvs.width = s; cvs.height = s;
-                      ctx.beginPath(); ctx.arc(s/2, s/2, s/2, 0, Math.PI*2); ctx.closePath(); ctx.clip();
-                      ctx.drawImage(img, 0, 0, s, s);
-                      currentLogo = cvs.toDataURL('image/png');
-                      logoPre.src = currentLogo;
-                      logoBox.classList.remove('hidden');
-                      document.getElementById('logo-prompt').classList.add('hidden');
-                      logoOpts.classList.remove('hidden');
-                      update();
-                 };
-                 img.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        };
-
-        function update() {
-            if(logoVal) logoVal.textContent = `${logoSize.value}%`;
-            qr.update({
-                data: qrIn.value || 'https://formfix.pages.dev',
-                image: currentLogo || undefined,
-                dotsOptions: {
-                    type: curDot,
-                    color: doGrad.checked ? undefined : qCol.value,
-                    gradient: doGrad.checked ? {
-                        type: 'linear',
-                        colorStops: [{ offset: 0, color: gs.value }, { offset: 1, color: ge.value }]
-                    } : undefined
-                },
-                backgroundOptions: { color: bCol.value },
-                cornersSquareOptions: { type: curFrame, color: qCol.value },
-                cornersDotOptions: { type: curFrame, color: qCol.value },
-                imageOptions: { 
-                    imageSize: parseFloat(logoSize.value) / 100, 
-                    margin: 15, 
-                    hideBackgroundDots: logoHalo.checked,
-                    crossOrigin: 'anonymous'
-                }
-            });
-        }
-
-        [qrIn, qCol, bCol, doGrad, gs, ge, logoSize, logoHalo].forEach(el => el.addEventListener('input', update));
-        dlBtn.onclick = () => qr.download({ name: 'formfix-qr', extension: 'png' });
-        
-        update();
-    });
-</script>
-
-<style>
+</BaseLayout><style>
     .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; }
     .designer-grid { display: grid; grid-template-columns: 320px 1fr; gap: 32px; }
     
     .settings-sidebar { display: flex; flex-direction: column; background: var(--surface-50); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); height: fit-content; }
-    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    .section-label { font-size: 0.75rem; font-weight:600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
     
-    .modern-input { width: 100%; padding: 12px 16px; border: 1px solid var(--border-subtle); border-radius: 12px; font-size: 0.95rem; font-weight: 700; color: var(--text-main); outline: none; transition: 0.2s; box-sizing: border-box; }
-    .modern-input:focus { border-color: var(--accent); background: #fff; box-shadow: var(--shadow-sm); }
+    .modern-input { width: 100%; padding: 12px 16px; border: 1px solid var(--border-subtle); border-radius: 12px; font-size: 0.95rem; font-weight:600; color: var(--text-main); outline: none; transition: 0.2s; box-sizing: border-box; }
+    .modern-input:focus { border-color: var(--accent-primary); background:var(--surface-3); box-shadow: var(--shadow-sm); }
     
     .presets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .preset-chip { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; font-size: 0.8rem; font-weight: 800; cursor: pointer; transition: 0.2s; color: var(--text-main); }
-    .preset-chip:hover { border-color: var(--accent); background: var(--surface-100); }
+    .preset-chip { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 12px; font-size: 0.8rem; font-weight:600; cursor: pointer; transition: 0.2s; color: var(--text-main); }
+    .preset-chip:hover { border-color: var(--accent-primary); background: var(--surface-100); }
     .c-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 
     .toggle-pill-group { display: flex; background: var(--border-subtle); padding: 6px; border-radius: 100px; gap: 4px; }
-    .setting-pill { flex: 1; padding: 10px; border-radius: 100px; font-weight: 800; font-size: 0.85rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
+    .setting-pill { flex: 1; padding: 10px; border-radius: 100px; font-weight:600; font-size: 0.85rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
     .setting-pill:hover { color: var(--text-main); }
-    .setting-pill.active { background: #fff; color: var(--text-main); box-shadow: var(--shadow-sm); }
+    .setting-pill.active { background:var(--surface-3); color: var(--text-main); box-shadow: var(--shadow-sm); }
 
-    .upload-zone { background: #fff; border: 2.5px dashed var(--border-subtle); border-radius: 16px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .upload-zone:hover { border-color: var(--accent); background: var(--surface-50); }
+    .upload-zone { background:var(--surface-3); border: 2.5px dashed var(--border-subtle); border-radius: 16px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .upload-zone:hover { border-color: var(--accent-primary); background: var(--surface-50); }
     .l-ico { font-size: 1.5rem; line-height: 1; }
-    .l-txt { font-size: 0.8rem; font-weight: 850; color: var(--text-muted); text-transform: uppercase; }
-    #logo-pre { width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: #fff; }
+    .l-txt { font-size: 0.8rem; font-weight:600; color: var(--text-muted); text-transform: uppercase; }
+    #logo-pre { width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--accent-primary); object-fit: cover; background:var(--surface-3); }
     
-    .remove-btn { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; border-radius: 50%; background: var(--text-main); color: #fff; border: none; font-size: 1rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-    .remove-btn:hover { background: #ef4444; }
+    .remove-btn { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; border-radius: 50%; background: var(--text-main); color: #fff; border: none; font-size: 1rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight:600; }
+    .remove-btn:hover { background: var(--error); }
 
     .preview-stage { display: flex; flex-direction: column; }
-    .preview-frame { background: #fff; border: 1px solid var(--border-subtle); border-radius: 24px; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); min-height: 400px; width: 100%; box-sizing: border-box; }
+    .preview-frame { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); min-height: 400px; width: 100%; box-sizing: border-box; }
     
-    .preview-badge { display: inline-block; background: var(--text-main); color: #fff; padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+    .preview-badge { display: inline-block; background: var(--text-main); color: var(--surface-3); padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight:600; text-transform: uppercase; }
     
-    .status-pill { font-size: 0.75rem; font-weight: 800; color: var(--accent); background: #fff; padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; }
-    .status-pill.highlight { border-color: var(--accent); }
+    .status-pill { font-size: 0.75rem; font-weight:600; color: var(--accent-primary); background:var(--surface-3); padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; }
+    .status-pill.highlight { border-color: var(--accent-primary); }
 
     .unified-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--border-subtle); appearance: none; outline: none; margin: 0; }
-    .unified-slider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--accent); border-radius: 50%; border: 3px solid #fff; box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
+    .unified-slider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--accent-primary); border-radius: 50%; border:3px solid var(--border-subtle); box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
     .unified-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
 
-    .config-toggle-pill { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); cursor: pointer; }
-    .config-toggle-pill input { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
+    .config-toggle-pill { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight:600; color: var(--text-muted); cursor: pointer; }
+    .config-toggle-pill input { accent-color: var(--accent-primary); width: 16px; height: 16px; cursor: pointer; }
     .config-toggle-pill:hover { color: var(--text-main); }
 
-    .wide-btn { width: 100%; height: 60px; font-size: 1rem; font-weight: 850; border-radius: 16px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+    .wide-btn { width: 100%; height: 60px; font-size: 1rem; font-weight:600; border-radius: 16px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; cursor: pointer; }
     .privacy-note { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
 
     /* FAQ */
     .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
@@ -339,8 +408,8 @@ const customSchema = {
     .mb-0 { margin-bottom: 0; }
     .w-100 { width: 100%; }
     .cursor-pointer { cursor: pointer; }
-    .font-800 { font-weight: 800; }
-    .font-850 { font-weight: 850; }
+    .font-800 { font-weight:600; }
+    .font-850 { font-weight:600; }
     .font-600 { font-weight: 600; }
     .text-muted { color: var(--text-muted); }
     .hidden { display: none !important; }

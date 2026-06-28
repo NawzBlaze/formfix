@@ -1,5 +1,6 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Circle Crop Online - Free Profile Picture Generator | FormFix';
@@ -26,114 +27,7 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/circle-crop">
-    <ToolWrapper title="Circle Profile Cut" subtitle="Perfectly round avatars for LinkedIn, Gmail, and Social Media IDs." currentTool="circle-crop">
-        
-        <div slot="tool-ui">
-             <div class="workspace-editor">
-                  <!-- 1. Selection Stage -->
-                  <div id="u-box-container" class="upload-container">
-                       <div class="upload-box shadow-sm" id="drop-zone" onclick="document.getElementById('crop-input').click()">
-                            <input type="file" id="crop-input" class="hidden" accept="image/*" />
-                            <div class="upload-content">
-                                 <div class="upload-icon">✂️</div>
-                                 <h3 class="font-850 m-0 mb-8">Select Image to Crop</h3>
-                                 <p class="text-muted m-0 mb-24 font-600">Upload a photo to create a perfectly round profile picture.</p>
-                                 <button class="primary-btn px-40">Browse Photo</button>
-                            </div>
-                       </div>
-                  </div>
-
-                  <!-- 2. Editor Stage -->
-                  <div id="controls" class="hidden">
-                       <div class="crop-grid">
-                            <div class="preview-panel shadow-sm p-0 m-0 overflow-hidden">
-                                 <div id="viewport" class="crop-viewport" style="touch-action: none;">
-                                      <div id="img-container" class="img-zoom-box" style="touch-action: none;">
-                                           <img id="source" draggable="false" alt="Image for circular cropping" />
-                                      </div>
-                                      <div id="mask" class="outer-mask"></div>
-                                      <div id="circle" class="crop-circle" style="touch-action: none;">
-                                           <div class="drag-handle br" data-dir="br"></div>
-                                      </div>
-                                 </div>
-                            </div>
-
-                            <div class="controls-sidebar">
-                                 <div class="settings-card shadow-sm mb-24">
-                                      <div class="section">
-                                           <div class="d-flex justify-between align-center mb-16">
-                                                <label class="section-label m-0">🔍 Image Zoom</label>
-                                                <span id="zoom-val" class="status-pill highlight m-0" style="padding: 4px 12px;">1.0x</span>
-                                           </div>
-                                           <input type="range" id="zoom-slider" class="unified-slider w-100" min="1" max="4" step="0.05" value="1" />
-                                      </div>
-                                 </div>
-
-                                 <div class="action-stack">
-                                      <button id="apply-btn" class="primary-btn wide-btn pulse-glow mb-12">⬇️ Generate Circle Profile</button>
-                                      <button class="secondary-btn wide-btn" onclick="location.reload()">↺ Change Photo</button>
-                                 </div>
-                                 <p class="privacy-note text-center mt-16 mb-0 font-600 text-muted">🔒 Processed entirely in browser RAM.</p>
-                            </div>
-                       </div>
-                  </div>
-
-                  <!-- 3. Result Stage -->
-                  <div id="result-stage" class="result-stage hidden">
-                       <div class="result-card shadow-sm">
-                            <div class="success-banner mb-32">
-                                 <div class="check-icon">✔</div>
-                                 <div class="success-info">
-                                      <h4 class="font-850 m-0 mb-8">Profile Photo Ready</h4>
-                                      <p class="text-muted m-0 small font-600">Perfect circle cut with transparent background</p>
-                                 </div>
-                            </div>
-
-                            <div class="d-flex justify-center mb-32">
-                                 <div class="circle-preview-box shadow-md checkerboard">
-                                      <img id="image-preview" src="" alt="Circularly cropped result" />
-                                 </div>
-                            </div>
-
-                            <div class="stats-grid mb-32">
-                                 <div class="mini-stat active">
-                                      <label>Format</label>
-                                      <span>PNG</span>
-                                 </div>
-                                 <div class="mini-stat">
-                                      <label>Optimized For</label>
-                                      <span>Social Media</span>
-                                 </div>
-                            </div>
-
-                            <div class="d-flex gap-16">
-                                 <a id="download-btn" href="#" class="primary-btn flex-2 wide-btn" style="text-decoration:none;">⬇️ Download Profile Photo</a>
-                                 <button class="secondary-btn flex-1 wide-btn" onclick="location.reload()">↺ Start New</button>
-                            </div>
-                       </div>
-                  </div>
-             </div>
-        </div>
-
-        <div slot="tool-info">
-             <h2>The Perfect Round Avatar</h2>
-             <p>Our <strong>Universal Circle Cropper</strong> helps you create the ideal "Headshot" for professional platforms. Most digital hubs like <strong>LinkedIn</strong>, <strong>Gmail</strong>, and <strong>Discord</strong> use circular masks. By pre-cropping your image into a perfect circle, you ensure your face is never accidentally cut off by automated site filters.</p>
-             
-             <div class="faq-grid mt-32">
-                  <details class="faq-item">
-                       <summary>Will the background be transparent?</summary>
-                       <p>Yes. Our tool exports in <strong>PNG format</strong> with full alpha transparency. This means everything outside the circle will be invisible when you upload it to your profile.</p>
-                  </details>
-                  <details class="faq-item">
-                       <summary>Does this work for Square logos too?</summary>
-                       <p>If you need a square crop, check out our <strong>Standard Photo Cropper</strong>. This specific tool is optimized for 1:1 circular aspect ratios favored by modern app UIs.</p>
-                  </details>
-             </div>
-        </div>
-    </ToolWrapper>
-</BaseLayout>
-
-<script is:inline>
+    <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
         const uploadBox = document.getElementById('u-box-container');
         const controls = document.getElementById('controls');
@@ -299,68 +193,175 @@ const customSchema = {
     });
 </script>
 
-<style>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Circle Crop Online - Free Profile Picture Generator", path: "/circle-crop" }]} />
+
+    <ToolWrapper title="Circle Profile Cut" subtitle="Perfectly round avatars for LinkedIn, Gmail, and Social Media IDs." currentTool="circle-crop">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <!-- 1. Selection Stage -->
+                  <div id="u-box-container" class="upload-container">
+                       <div class="upload-box shadow-sm" id="drop-zone" onclick="document.getElementById('crop-input').click()">
+                            <input type="file" id="crop-input" class="hidden" accept="image/*" />
+                            <div class="upload-content">
+                                 <div class="upload-icon">✂️</div>
+                                 <h3 class="font-850 m-0 mb-8">Select Image to Crop</h3>
+                                 <p class="text-muted m-0 mb-24 font-600">Upload a photo to create a perfectly round profile picture.</p>
+                                 <button class="primary-btn px-40">Browse Photo</button>
+                            </div>
+                       </div>
+                  </div>
+
+                  <!-- 2. Editor Stage -->
+                  <div id="controls" class="hidden">
+                       <div class="crop-grid">
+                            <div class="preview-panel shadow-sm p-0 m-0 overflow-hidden">
+                                 <div id="viewport" class="crop-viewport" style="touch-action: none;">
+                                      <div id="img-container" class="img-zoom-box" style="touch-action: none;">
+                                           <img id="source" draggable="false" alt="Image for circular cropping" loading="lazy" decoding="async" />
+                                      </div>
+                                      <div id="mask" class="outer-mask"></div>
+                                      <div id="circle" class="crop-circle" style="touch-action: none;">
+                                           <div class="drag-handle br" data-dir="br"></div>
+                                      </div>
+                                 </div>
+                            </div>
+
+                            <div class="controls-sidebar">
+                                 <div class="settings-card shadow-sm mb-24">
+                                      <div class="section">
+                                           <div class="d-flex justify-between align-center mb-16">
+                                                <label class="section-label m-0">🔍 Image Zoom</label>
+                                                <span id="zoom-val" class="status-pill highlight m-0" style="padding: 4px 12px;">1.0x</span>
+                                           </div>
+                                           <input type="range" id="zoom-slider" class="unified-slider w-100" min="1" max="4" step="0.05" value="1" />
+                                      </div>
+                                 </div>
+
+                                 <div class="action-stack">
+                                      <button id="apply-btn" class="primary-btn wide-btn pulse-glow mb-12">⬇️ Generate Circle Profile</button>
+                                      <button class="secondary-btn wide-btn" onclick="location.reload()">↺ Change Photo</button>
+                                 </div>
+                                 <p class="privacy-note text-center mt-16 mb-0 font-600 text-muted">🔒 Processed entirely in browser RAM.</p>
+                            </div>
+                       </div>
+                  </div>
+
+                  <!-- 3. Result Stage -->
+                  <div id="result-stage" class="result-stage hidden">
+                       <div class="result-card shadow-sm">
+                            <div class="success-banner mb-32">
+                                 <div class="check-icon">✔</div>
+                                 <div class="success-info">
+                                      <h4 class="font-850 m-0 mb-8">Profile Photo Ready</h4>
+                                      <p class="text-muted m-0 small font-600">Perfect circle cut with transparent background</p>
+                                 </div>
+                            </div>
+
+                            <div class="d-flex justify-center mb-32">
+                                 <div class="circle-preview-box shadow-md checkerboard">
+                                      <img id="image-preview" src="" alt="Circularly cropped result" loading="lazy" decoding="async" />
+                                 </div>
+                            </div>
+
+                            <div class="stats-grid mb-32">
+                                 <div class="mini-stat active">
+                                      <label>Format</label>
+                                      <span>PNG</span>
+                                 </div>
+                                 <div class="mini-stat">
+                                      <label>Optimized For</label>
+                                      <span>Social Media</span>
+                                 </div>
+                            </div>
+
+                            <div class="d-flex gap-16">
+                                 <a id="download-btn" href="#" class="primary-btn flex-2 wide-btn" style="text-decoration:none;">⬇️ Download Profile Photo</a>
+                                 <button class="secondary-btn flex-1 wide-btn" onclick="location.reload()">↺ Start New</button>
+                            </div>
+                       </div>
+                  </div>
+             </div>
+        </div>
+
+        <div slot="tool-info">
+             <h2>The Perfect Round Avatar</h2>
+             <p>Our <strong>Universal Circle Cropper</strong> helps you create the ideal "Headshot" for professional platforms. Most digital hubs like <strong>LinkedIn</strong>, <strong>Gmail</strong>, and <strong>Discord</strong> use circular masks. By pre-cropping your image into a perfect circle, you ensure your face is never accidentally cut off by automated site filters.</p>
+             
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>Will the background be transparent?</summary>
+                       <p>Yes. Our tool exports in <strong>PNG format</strong> with full alpha transparency. This means everything outside the circle will be invisible when you upload it to your profile.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>Does this work for Square logos too?</summary>
+                       <p>If you need a square crop, check out our <strong>Standard Photo Cropper</strong>. This specific tool is optimized for 1:1 circular aspect ratios favored by modern app UIs.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
+</BaseLayout><style>
     .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; }
     
     .upload-container { display: flex; justify-content: center; }
     .upload-box { background: var(--surface-50); border: 2.5px dashed var(--border-subtle); border-radius: 32px; padding: 60px 40px; text-align: center; width: 100%; cursor: pointer; transition: 0.2s; }
-    .upload-box:hover, .upload-box.drag-active { border-color: var(--accent); background: var(--surface-100); }
+    .upload-box:hover, .upload-box.drag-active { border-color: var(--accent-primary); background: var(--surface-100); }
     .upload-icon { font-size: 3.5rem; margin-bottom: 24px; }
 
     .crop-grid { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
     
-    .preview-panel { background: #fff; border: 1px solid var(--border-subtle); border-radius: 24px; position: relative; height: 500px; display: flex; align-items: center; justify-content: center; }
+    .preview-panel { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 24px; position: relative; height: 500px; display: flex; align-items: center; justify-content: center; }
     .crop-viewport { position: relative; width: 100%; height: 100%; background: #111; overflow: hidden; border-radius: 23px; }
     
     .img-zoom-box { position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transform-origin: center; transition: transform 0.1s ease-out; }
     #source { max-width: 90%; max-height: 90%; display: block; filter: brightness(0.7); }
 
     .outer-mask { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-    .crop-circle { position: absolute; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5); z-index: 20; cursor: move; }
+    .crop-circle { position: absolute; border:2px solid var(--border-subtle); border-radius: 50%; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5); z-index: 20; cursor: move; }
     
-    .drag-handle { position: absolute; width: 24px; height: 24px; background: #fff; border: 3px solid var(--accent); border-radius: 50%; box-shadow: var(--shadow-md); z-index: 30; }
-    .drag-handle.br { bottom: -12px; right: -12px; cursor: nwse-resize; }
+    .drag-handle { position: absolute; width: 44px; height: 44px; background:var(--surface-3); border: 3px solid var(--accent-primary); border-radius: 50%; box-shadow: var(--shadow-md); z-index: 30; }
+    .drag-handle.br { bottom: -22px; right: -22px; cursor: nwse-resize; }
 
     .controls-sidebar { display: flex; flex-direction: column; }
     .settings-card { background: var(--surface-50); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); }
     
-    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
-    .status-pill { font-size: 0.75rem; font-weight: 800; color: var(--accent); background: #fff; padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; }
-    .status-pill.highlight { border-color: var(--accent); }
+    .section-label { font-size: 0.75rem; font-weight:600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    .status-pill { font-size: 0.75rem; font-weight:600; color: var(--accent-primary); background:var(--surface-3); padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; }
+    .status-pill.highlight { border-color: var(--accent-primary); }
 
     .unified-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--border-subtle); appearance: none; outline: none; margin: 0; }
-    .unified-slider::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; background: var(--accent); border-radius: 50%; border: 4px solid #fff; box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
+    .unified-slider::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; background: var(--accent-primary); border-radius: 50%; border:4px solid var(--border-subtle); box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
     .unified-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
 
     .action-stack { display: flex; flex-direction: column; }
-    .wide-btn { height: 60px; font-weight: 850; font-size: 1rem; border-radius: 16px; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
+    .wide-btn { height: 60px; font-weight:600; font-size: 1rem; border-radius: 16px; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
     .privacy-note { font-size: 0.8rem; color: var(--text-muted); }
 
     /* Result Stage */
-    .result-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: 32px; padding: 40px; }
+    .result-card { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 32px; padding: 40px; }
     .success-banner { display: flex; align-items: center; gap: 16px; background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 20px; border-radius: 20px; }
-    .check-icon { width: 40px; height: 40px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: bold; flex-shrink: 0; }
+    .check-icon { width: 40px; height: 40px; background: var(--accent-primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight:600; flex-shrink: 0; }
     
-    .circle-preview-box { width: 220px; height: 220px; border-radius: 50%; border: 1px solid var(--border-subtle); overflow: hidden; background: #fff; }
+    .circle-preview-box { width: 220px; height: 220px; border-radius: 50%; border: 1px solid var(--border-subtle); overflow: hidden; background:var(--surface-3); }
     .circle-preview-box img { width: 100%; height: 100%; object-fit: contain; }
     .checkerboard { 
-        background: #fff;
-        background-image: linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9), 
-                          linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9);
+        background:var(--surface-3);
+        background-image: linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2)), 
+                          linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2));
         background-size: 20px 20px; background-position: 0 0, 10px 10px;
     }
 
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .mini-stat { background: var(--surface-50); padding: 24px; border-radius: 20px; border: 1px solid var(--border-subtle); text-align: center; }
-    .mini-stat.active { border-color: var(--accent); background: #fff; box-shadow: var(--shadow-sm); }
-    .mini-stat label { font-size: 0.72rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
-    .mini-stat span { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
+    .mini-stat.active { border-color: var(--accent-primary); background:var(--surface-3); box-shadow: var(--shadow-sm); }
+    .mini-stat label { font-size: 0.72rem; font-weight:600; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
+    .mini-stat span { font-size: 1.2rem; font-weight:600; color: var(--text-main); }
 
     /* FAQ */
     .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
@@ -373,8 +374,8 @@ const customSchema = {
     .mt-16 { margin-top: 16px; }
     .mt-32 { margin-top: 32px; }
     .gap-16 { gap: 16px; }
-    .font-800 { font-weight: 800; }
-    .font-850 { font-weight: 850; }
+    .font-800 { font-weight:600; }
+    .font-850 { font-weight:600; }
     .font-600 { font-weight: 600; }
     .small { font-size: 0.85rem; }
     .px-40 { padding-left: 40px; padding-right: 40px; }
@@ -394,8 +395,9 @@ const customSchema = {
 
     @media (max-width: 900px) {
         .crop-grid { grid-template-columns: 1fr; }
-        .preview-panel { height: 400px; }
+        .preview-panel { height: 300px; }
         .stats-grid { grid-template-columns: 1fr; }
         .d-flex.gap-16 { flex-direction: column; }
+        .upload-box { padding: 40px 20px; }
     }
 </style>

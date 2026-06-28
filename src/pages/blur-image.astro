@@ -1,5 +1,6 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Blur Image Online - Pixelate & Censor Faces for Free | FormFix';
@@ -26,99 +27,7 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/blur-image">
-    <ToolWrapper title="Blur & Censor" subtitle="Redact sensitive data, faces, and documents with brush-based blurring." currentTool="blur-image">
-        
-        <div slot="tool-ui">
-             <div class="workspace-editor">
-                  <!-- 1. Selection Stage -->
-                  <div id="u-box-container" class="upload-container">
-                       <div class="upload-box shadow-sm" id="drop-zone" onclick="document.getElementById('blur-input').click()">
-                            <input type="file" id="blur-input" class="hidden" accept="image/*" />
-                            <div class="upload-content">
-                                 <div class="upload-icon">🕵️‍♂️</div>
-                                 <h3 class="font-850 m-0 mb-8">Select Image to Censor</h3>
-                                 <p class="text-muted m-0 mb-24 font-600">Redact sensitive faces or information securely.</p>
-                                 <button class="primary-btn px-40">Browse Photo</button>
-                            </div>
-                       </div>
-                  </div>
-
-                  <!-- 2. Editor Stage -->
-                  <div id="controls" class="hidden">
-                       <div class="blur-grid">
-                            <div class="preview-panel shadow-sm">
-                                 <div class="preview-header mb-16 d-flex justify-between align-center">
-                                      <span class="preview-badge">Live Redaction Canvas</span>
-                                      <span class="text-muted font-600 select-none">🎨 Draw to censor</span>
-                                 </div>
-                                 <div class="canvas-viewport checkerboard scroll-container">
-                                      <canvas id="base-canvas"></canvas>
-                                      <canvas id="fx-canvas"></canvas>
-                                      <canvas id="draw-canvas"></canvas>
-                                 </div>
-                            </div>
-
-                            <div class="controls-sidebar">
-                                 <div class="settings-card shadow-sm mb-24">
-                                      <div class="section mb-24">
-                                           <label class="section-label m-0 mb-12">Effect Style</label>
-                                           <div class="toggle-pill-group">
-                                                <button class="setting-pill active" data-fx="blur">Soft Blur</button>
-                                                <button class="setting-pill" data-fx="pixel">Pixelate</button>
-                                                <button class="setting-pill" data-fx="erase">Erase 🧽</button>
-                                           </div>
-                                      </div>
-                                      
-                                      <div class="section mb-24">
-                                           <div class="d-flex justify-between align-center mb-16">
-                                                <label class="section-label m-0">Brush Size</label>
-                                                <span id="brush-val" class="status-pill highlight m-0" style="padding: 4px 12px;">40</span>
-                                           </div>
-                                           <input type="range" id="brush-size" min="10" max="150" value="40" class="unified-slider w-100" />
-                                      </div>
-
-                                      <div class="section">
-                                           <div class="d-flex justify-between align-center mb-16">
-                                                <label class="section-label m-0">Strength</label>
-                                                <span id="str-val" class="status-pill highlight m-0" style="padding: 4px 12px;">10</span>
-                                           </div>
-                                           <input type="range" id="strength" min="2" max="50" value="10" class="unified-slider w-100" />
-                                      </div>
-                                 </div>
-
-                                 <div class="action-stack">
-                                      <button id="download-btn" class="primary-btn wide-btn pulse-glow mb-12">⬇️ Download Redacted</button>
-                                      <div class="d-flex gap-12">
-                                           <button id="clear-btn" class="secondary-btn wide-btn flex-1">🗑️ Clear</button>
-                                           <button class="secondary-btn wide-btn flex-1" onclick="location.reload()">↺ New</button>
-                                      </div>
-                                 </div>
-                                 <p class="privacy-note text-center mt-16 mb-0 font-600 text-muted">🔒 Processed entirely in browser RAM.</p>
-                            </div>
-                       </div>
-                  </div>
-             </div>
-        </div>
-
-        <div slot="tool-info">
-             <h2>Secure Document Redaction</h2>
-             <p>Our <strong>Online Redaction Tool</strong> ensures your classified information never leaves your device. By processing everything strictly inside your local browser memory, we offer the most private way to censor faces, license plates, and sensitive documents.</p>
-             
-             <div class="faq-grid mt-32">
-                  <details class="faq-item">
-                       <summary>Does this actually delete the pixels?</summary>
-                       <p>Yes. Unlike "black bar" overlays which can sometimes be removed, our tool performs a destructive pixelation or gaussian blur on the actual image data before you download the final file.</p>
-                  </details>
-                  <details class="faq-item">
-                       <summary>Is my original photo stored?</summary>
-                       <p>Never. FormFix uses a "Zero-Vault" architecture. All processing is transient and happens in your browser's RAM. Once you close the tab, everything is gone.</p>
-                  </details>
-             </div>
-        </div>
-    </ToolWrapper>
-</BaseLayout>
-
-<script is:inline>
+    <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
         const uploadBox = document.getElementById('u-box-container');
         const controls = document.getElementById('controls');
@@ -348,21 +257,113 @@ const customSchema = {
     });
 </script>
 
-<style>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Blur Image Online - Pixelate & Censor Faces for Free", path: "/blur-image" }]} />
+
+    <ToolWrapper title="Blur & Censor" subtitle="Redact sensitive data, faces, and documents with brush-based blurring." currentTool="blur-image">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <!-- 1. Selection Stage -->
+                  <div id="u-box-container" class="upload-container">
+                       <div class="upload-box shadow-sm" id="drop-zone" onclick="document.getElementById('blur-input').click()">
+                            <input type="file" id="blur-input" class="hidden" accept="image/*" />
+                            <div class="upload-content">
+                                 <div class="upload-icon">🕵️‍♂️</div>
+                                 <h3 class="font-850 m-0 mb-8">Select Image to Censor</h3>
+                                 <p class="text-muted m-0 mb-24 font-600">Redact sensitive faces or information securely.</p>
+                                 <button class="primary-btn px-40">Browse Photo</button>
+                            </div>
+                       </div>
+                  </div>
+
+                  <!-- 2. Editor Stage -->
+                  <div id="controls" class="hidden">
+                       <div class="blur-grid">
+                            <div class="preview-panel shadow-sm">
+                                 <div class="preview-header mb-16 d-flex justify-between align-center">
+                                      <span class="preview-badge">Live Redaction Canvas</span>
+                                      <span class="text-muted font-600 select-none">🎨 Draw to censor</span>
+                                 </div>
+                                 <div class="canvas-viewport checkerboard scroll-container">
+                                      <canvas id="base-canvas"></canvas>
+                                      <canvas id="fx-canvas"></canvas>
+                                      <canvas id="draw-canvas"></canvas>
+                                 </div>
+                            </div>
+
+                            <div class="controls-sidebar">
+                                 <div class="settings-card shadow-sm mb-24">
+                                      <div class="section mb-24">
+                                           <label class="section-label m-0 mb-12">Effect Style</label>
+                                           <div class="toggle-pill-group">
+                                                <button class="setting-pill active" data-fx="blur">Soft Blur</button>
+                                                <button class="setting-pill" data-fx="pixel">Pixelate</button>
+                                                <button class="setting-pill" data-fx="erase">Erase 🧽</button>
+                                           </div>
+                                      </div>
+                                      
+                                      <div class="section mb-24">
+                                           <div class="d-flex justify-between align-center mb-16">
+                                                <label class="section-label m-0">Brush Size</label>
+                                                <span id="brush-val" class="status-pill highlight m-0" style="padding: 4px 12px;">40</span>
+                                           </div>
+                                           <input type="range" id="brush-size" min="10" max="150" value="40" class="unified-slider w-100" />
+                                      </div>
+
+                                      <div class="section">
+                                           <div class="d-flex justify-between align-center mb-16">
+                                                <label class="section-label m-0">Strength</label>
+                                                <span id="str-val" class="status-pill highlight m-0" style="padding: 4px 12px;">10</span>
+                                           </div>
+                                           <input type="range" id="strength" min="2" max="50" value="10" class="unified-slider w-100" />
+                                      </div>
+                                 </div>
+
+                                 <div class="action-stack">
+                                      <button id="download-btn" class="primary-btn wide-btn pulse-glow mb-12">⬇️ Download Redacted</button>
+                                      <div class="d-flex gap-12">
+                                           <button id="clear-btn" class="secondary-btn wide-btn flex-1">🗑️ Clear</button>
+                                           <button class="secondary-btn wide-btn flex-1" onclick="location.reload()">↺ New</button>
+                                      </div>
+                                 </div>
+                                 <p class="privacy-note text-center mt-16 mb-0 font-600 text-muted">🔒 Processed entirely in browser RAM.</p>
+                            </div>
+                       </div>
+                  </div>
+             </div>
+        </div>
+
+        <div slot="tool-info">
+             <h2>Secure Document Redaction</h2>
+             <p>Our <strong>Online Redaction Tool</strong> ensures your classified information never leaves your device. By processing everything strictly inside your local browser memory, we offer the most private way to censor faces, license plates, and sensitive documents.</p>
+             
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>Does this actually delete the pixels?</summary>
+                       <p>Yes. Unlike "black bar" overlays which can sometimes be removed, our tool performs a destructive pixelation or gaussian blur on the actual image data before you download the final file.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>Is my original photo stored?</summary>
+                       <p>Never. FormFix uses a "Zero-Vault" architecture. All processing is transient and happens in your browser's RAM. Once you close the tab, everything is gone.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
+</BaseLayout><style>
     .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; }
     
     .upload-container { display: flex; justify-content: center; }
     .upload-box { background: var(--surface-50); border: 2.5px dashed var(--border-subtle); border-radius: 32px; padding: 60px 40px; text-align: center; width: 100%; cursor: pointer; transition: 0.2s; }
-    .upload-box:hover, .upload-box.drag-active { border-color: var(--accent); background: var(--surface-100); }
+    .upload-box:hover, .upload-box.drag-active { border-color: var(--accent-primary); background: var(--surface-100); }
     .upload-icon { font-size: 3.5rem; margin-bottom: 24px; }
 
     .blur-grid { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
-    .preview-panel { background: #fff; border: 1px solid var(--border-subtle); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px; }
+    .preview-panel { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px; }
     
     .checkerboard { 
-        background: #fff;
-        background-image: linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9), 
-                          linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9);
+        background:var(--surface-3);
+        background-image: linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2)), 
+                          linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2));
         background-size: 20px 20px; background-position: 0 0, 10px 10px;
         border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-sm);
         position: relative;
@@ -374,34 +375,34 @@ const customSchema = {
     /* draw-canvas must exactly overlay base-canvas */
     #draw-canvas { position: absolute; z-index: 10; opacity: 0; cursor: crosshair; touch-action: none; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
-    .preview-badge { display: inline-block; background: var(--text-main); color: #fff; padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+    .preview-badge { display: inline-block; background: var(--text-main); color: var(--surface-3); padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight:600; text-transform: uppercase; }
 
     .controls-sidebar { display: flex; flex-direction: column; }
     .settings-card { background: var(--surface-50); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); }
     
-    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    .section-label { font-size: 0.75rem; font-weight:600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
     
-    .status-pill { font-size: 0.75rem; font-weight: 800; color: var(--accent); background: #fff; padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; }
-    .status-pill.highlight { border-color: var(--accent); }
+    .status-pill { font-size: 0.75rem; font-weight:600; color: var(--accent-primary); background:var(--surface-3); padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; }
+    .status-pill.highlight { border-color: var(--accent-primary); }
     
     .toggle-pill-group { display: flex; background: var(--border-subtle); padding: 6px; border-radius: 100px; }
-    .setting-pill { flex: 1; padding: 10px 16px; border-radius: 100px; font-weight: 800; font-size: 0.85rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
+    .setting-pill { flex: 1; padding: 10px 16px; border-radius: 100px; font-weight:600; font-size: 0.85rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
     .setting-pill:hover { color: var(--text-main); }
-    .setting-pill.active { background: #fff; color: var(--text-main); box-shadow: var(--shadow-sm); }
+    .setting-pill.active { background:var(--surface-3); color: var(--text-main); box-shadow: var(--shadow-sm); }
     
     .unified-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--border-subtle); appearance: none; outline: none; margin: 0; }
-    .unified-slider::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; background: var(--accent); border-radius: 50%; border: 4px solid #fff; box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
+    .unified-slider::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; background: var(--accent-primary); border-radius: 50%; border:4px solid var(--border-subtle); box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
     .unified-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
 
     .action-stack { display: flex; flex-direction: column; }
-    .wide-btn { height: 60px; font-weight: 850; font-size: 1rem; border-radius: 16px; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
+    .wide-btn { height: 60px; font-weight:600; font-size: 1rem; border-radius: 16px; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
     .privacy-note { font-size: 0.8rem; color: var(--text-muted); }
 
     /* FAQ */
     .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
@@ -417,8 +418,8 @@ const customSchema = {
     .mt-16 { margin-top: 16px; }
     .mt-32 { margin-top: 32px; }
     .gap-12 { gap: 12px; }
-    .font-800 { font-weight: 800; }
-    .font-850 { font-weight: 850; }
+    .font-800 { font-weight:600; }
+    .font-850 { font-weight:600; }
     .font-600 { font-weight: 600; }
     .text-muted { color: var(--text-muted); }
     .select-none { user-select: none; }

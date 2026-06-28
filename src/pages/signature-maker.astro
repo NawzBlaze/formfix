@@ -1,9 +1,10 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Digital Signature Maker Online | Create Free Signatures | FormFix';
-const PAGE_DESC = 'Create your perfect digital signature online. Draw smoothly or type your name with 65+ premium professional fonts. Download as a transparent PNG instantly for free.';
+const PAGE_DESC = 'Create your perfect digital signature online. Draw or type your name with 65+ professional fonts. Download as a transparent PNG.';
 const PAGE_KEYWORDS = 'digital signature maker, online signature generator, draw signature online, create digital signature, signature fonts online, electronic signature free';
 
 const customSchema = {
@@ -41,6 +42,8 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/signature-maker">
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Digital Signature Maker Online | Create Free Signatures", path: "/signature-maker" }]} />
+
     <link href={googleFontsUrl} rel="stylesheet" />
 
     <ToolWrapper title="Signature Maker" subtitle="Draw smoothly or type your name with 65+ premium professional fonts." currentTool="signature-maker">
@@ -72,13 +75,17 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
                        </div>
                   </div>
 
-                  <div class="studio-workspace shadow-sm">
-                       <!-- DRAW VIEW -->
-                       <div id="view-draw" class="view-panel">
+                   <div class="studio-workspace shadow-sm">
+                        <!-- DRAW VIEW -->
+                        <div id="view-draw" class="view-panel">
                             <div class="draw-pad">
                                 <canvas id="sign-canvas"></canvas>
+                                <div id="draw-hint" class="draw-hint">
+                                    <span style="font-size:2rem;">✍️</span>
+                                    <p style="margin:8px 0 0;font-size:0.85rem;font-weight:600;color:var(--text-muted);">Draw your signature here with mouse or finger</p>
+                                </div>
                             </div>
-                       </div>
+                        </div>
 
                        <!-- TYPE VIEW -->
                        <div id="view-type" class="view-panel hidden">
@@ -129,48 +136,69 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
     .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 800px; margin: 0 auto; }
     
     .tabs-group { display: flex; background: var(--surface-100); padding: 4px; border-radius: 12px; }
-    .tab-pill { flex: 1; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
-    .tab-pill.active { background: #fff; color: var(--text-main); box-shadow: var(--shadow-sm); }
+    .tab-pill { flex: 1; padding: 12px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
+    .tab-pill.active { background: var(--surface-3); color: var(--text-main); box-shadow: var(--shadow-sm); }
 
-    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 16px; background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
-    .section-label { font-size: 0.72rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 12px; }
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .config-card { padding: 16px; background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+    .section-label { font-size: 0.72rem; font-weight: 600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 12px; }
     
     .ink-selector { display: flex; gap: 12px; }
-    .ink-dot { width: 32px; height: 32px; border-radius: 50%; border: 3px solid #fff; cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm); }
-    .ink-dot.active { transform: scale(1.15); box-shadow: 0 0 0 2px var(--accent); }
+    .ink-dot { width: 32px; height: 32px; border-radius: 50%; border: 3px solid var(--border-subtle); cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm); }
+    .ink-dot.active { transform: scale(1.15); box-shadow: 0 0 0 2px var(--accent-primary); }
 
-    .status-badge { background: #d1fae5; color: #065f46; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; }
+    .status-pill { background: var(--success-soft); color: var(--success); padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
+    .status-pill.inverse { background: var(--accent-soft); color: var(--accent-primary); }
     .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
 
-    .canvas-workspace { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); overflow: hidden; }
-    .draw-pad { background: #fafafa; height: 320px; display: flex; align-items: center; justify-content: center; touch-action: none; position: relative; }
+    .studio-workspace { background: var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); overflow: hidden; }
+    .view-panel { }
+    .draw-pad { background: #ffffff; height: 320px; display: flex; align-items: center; justify-content: center; touch-action: none; position: relative; }
+    .draw-hint { position: absolute; text-align: center; pointer-events: none; transition: opacity 0.3s; }
+    .draw-hint.hidden { opacity: 0; }
     #sign-canvas { max-width: 100%; max-height: 100%; cursor: crosshair; }
 
-    .modern-input { width: 100%; padding: 24px; font-size: 2.5rem; text-align: center; border-radius: 0; border: none; border-bottom: 2px solid var(--border-subtle); background: #fff; outline: none; transition: 0.2s; }
-    .modern-input:focus { border-color: var(--accent); }
+    .signature-field { width: 100%; padding: 24px; font-size: 2.5rem; text-align: center; border-radius: 0; border: none; border-bottom: 2px solid var(--border-subtle); background: var(--surface-3); outline: none; transition: 0.2s; }
+    .signature-field:focus { border-color: var(--accent-primary); }
 
-    .font-library { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; max-height: 350px; overflow-y: auto; padding: 20px; background: var(--surface-50); }
-    .font-card { padding: 12px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 10px; font-size: 1.4rem; cursor: pointer; transition: 0.2s; text-align: center; color: var(--text-main); height: 60px; display: flex; align-items: center; justify-content: center; }
-    .font-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-    .font-card.active { border-color: var(--accent); color: #fff; background: var(--accent); }
+    .font-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; max-height: 350px; overflow-y: auto; padding: 20px; background: var(--surface-50); }
+    .font-gallery::-webkit-scrollbar { width: 6px; }
+    .font-gallery::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 10px; }
+    .font-card { padding: 12px; background: var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 10px; font-size: 1.25rem; cursor: pointer; transition: 0.2s; text-align: center; color: var(--text-main); height: 60px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .font-card:hover { border-color: var(--accent-primary); transform: translateY(-2px); }
+    .font-card.active { border-color: var(--accent-primary); color: #fff; background: var(--accent-primary); }
 
     .action-footer { display: flex; gap: 16px; }
-    .flex-1 { flex: 1; }
-    .flex-2 { flex: 2; }
-    .hidden { display: none !important; }
+    .privacy-note { font-size: 0.8rem; color: var(--text-muted); }
 
-    /* FAQ */
     .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item { background: var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight: 600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+
+    .d-flex { display: flex; }
+    .align-center { align-items: center; }
+    .gap-12 { gap: 12px; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+    .mt-32 { margin-top: 32px; }
+    .py-16 { padding-top: 16px; padding-bottom: 16px; }
+    .flex-1 { flex: 1; }
+    .flex-2 { flex: 2; }
+    .text-center { text-align: center; }
+    .font-600 { font-weight: 600; }
+    .hidden { display: none !important; }
 
     @media (max-width: 640px) {
         .action-footer { flex-direction: column; }
         .settings-grid { grid-template-columns: 1fr; }
-        .modern-input { font-size: 1.8rem; }
+        .signature-field { font-size: 1.8rem; }
     }
 </style>
 
@@ -183,7 +211,7 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
         const typeInput = document.getElementById('type-input');
         
         const canvas = document.getElementById('sign-canvas');
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas?.getContext('2d');
         
         let isDrawing = false;
         let isTypeMode = false;
@@ -191,7 +219,7 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
         let currentFont = "'Alex Brush', cursive";
 
         const enhanceBtn = document.getElementById('enhance-btn');
-        const enhanceStatus = document.getElementById('enhance-status');
+        const enhanceStatus = document.getElementById('enhance-pill');
         const drawActions = document.getElementById('draw-actions');
 
         let rawStrokes = [];
@@ -199,7 +227,8 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
         let isEnhanced = false;
 
         function setupCanvas() {
-            const rect = canvas.parentElement!.getBoundingClientRect();
+            const rect = canvas?.parentElement?.getBoundingClientRect();
+            if (!rect || !canvas || !ctx) return;
             canvas.width = rect.width;
             canvas.height = rect.width > 400 ? 250 : 200;
             
@@ -210,66 +239,66 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
 
             rawStrokes = [];
             isEnhanced = false;
-            enhanceStatus.classList.add('hidden');
+            enhanceStatus?.classList.add('hidden');
         }
 
         setupCanvas();
         window.addEventListener('resize', () => {
             if(!isTypeMode) {
-               const oldW = canvas.width;
-               const rect = canvas.parentElement!.getBoundingClientRect();
-               if(Math.abs(oldW - rect.width) > 50) setupCanvas();
+               const oldW = canvas?.width || 0;
+               const rect = canvas?.parentElement?.getBoundingClientRect();
+               if(rect && Math.abs(oldW - rect.width) > 50) setupCanvas();
             }
         });
 
         // Tabs
-        tabDraw.addEventListener('click', () => {
+        tabDraw?.addEventListener('click', () => {
             isTypeMode = false;
-            tabDraw.classList.add('active');
-            tabType.classList.remove('active');
-            viewDraw.classList.remove('hidden');
-            viewType.classList.add('hidden');
-            drawActions.classList.remove('hidden');
+            tabDraw?.classList.add('active');
+            tabType?.classList.remove('active');
+            viewDraw?.classList.remove('hidden');
+            viewType?.classList.add('hidden');
+            drawActions?.classList.remove('hidden');
             setupCanvas();
         });
-        tabType.addEventListener('click', () => {
+        tabType?.addEventListener('click', () => {
             isTypeMode = true;
-            tabType.classList.add('active');
-            tabDraw.classList.remove('active');
-            viewType.classList.remove('hidden');
-            viewDraw.classList.add('hidden');
-            drawActions.classList.add('hidden');
-            typeInput.focus();
+            tabType?.classList.add('active');
+            tabDraw?.classList.remove('active');
+            viewType?.classList.remove('hidden');
+            viewDraw?.classList.add('hidden');
+            drawActions?.classList.add('hidden');
+            typeInput?.focus();
         });
 
         // Colors
-        const colBtns = document.getElementById('color-picker').querySelectorAll('.col-btn');
+        const colBtns = document.getElementById('color-picker')?.querySelectorAll('.ink-dot') || [];
         colBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 colBtns.forEach(b => b.classList.remove('active'));
                 const target = e.currentTarget;
                 target.classList.add('active');
                 strokeColor = target.dataset.col;
-                ctx.strokeStyle = strokeColor;
-                if(isTypeMode) typeInput.style.color = strokeColor;
+                if (ctx) ctx.strokeStyle = strokeColor;
+                if(isTypeMode && typeInput) typeInput.style.color = strokeColor;
             });
         });
 
         // Fonts
-        const fontBtns = document.getElementById('font-selector').querySelectorAll('.font-btn');
+        const fontBtns = document.getElementById('font-selector')?.querySelectorAll('.font-card') || [];
         fontBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 fontBtns.forEach(b => b.classList.remove('active'));
                 const target = e.currentTarget;
                 target.classList.add('active');
                 currentFont = target.dataset.font;
-                typeInput.style.fontFamily = currentFont;
+                if (typeInput) typeInput.style.fontFamily = currentFont;
             });
         });
 
         // Draw Flow
         function getPos(e) {
-            const rect = canvas.getBoundingClientRect();
+            const rect = canvas?.getBoundingClientRect() || { left: 0, top: 0 };
             const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
             const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
             return { x: clientX - rect.left, y: clientY - rect.top };
@@ -279,16 +308,18 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
             e.preventDefault(); 
             if (isTypeMode) return; 
             isDrawing = true;
+            const hint = document.getElementById('draw-hint');
+            if (hint) hint.classList.add('hidden');
             
             if (isEnhanced) {
                 isEnhanced = false;
-                enhanceStatus.classList.add('hidden');
+                enhanceStatus?.classList.add('hidden');
             }
 
             const pos = getPos(e);
             currentStroke = [pos];
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
+            ctx?.beginPath();
+            ctx?.moveTo(pos.x, pos.y);
             draw(e);
         }
 
@@ -297,10 +328,10 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
             if (!isDrawing || isTypeMode) return;
             const pos = getPos(e);
             currentStroke.push(pos);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
+            ctx?.lineTo(pos.x, pos.y);
+            ctx?.stroke();
+            ctx?.beginPath();
+            ctx?.moveTo(pos.x, pos.y);
         }
 
         function endPosition() {
@@ -308,23 +339,24 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
             isDrawing = false;
             rawStrokes.push(currentStroke);
             currentStroke = [];
-            ctx.beginPath();
+            ctx?.beginPath();
         }
 
-        canvas.addEventListener('mousedown', startPosition);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', endPosition);
-        canvas.addEventListener('mouseout', endPosition);
-        canvas.addEventListener('touchstart', startPosition, { passive: false });
-        canvas.addEventListener('touchmove', draw, { passive: false });
-        canvas.addEventListener('touchend', endPosition);
+        canvas?.addEventListener('mousedown', startPosition);
+        canvas?.addEventListener('mousemove', draw);
+        canvas?.addEventListener('mouseup', endPosition);
+        canvas?.addEventListener('mouseout', endPosition);
+        canvas?.addEventListener('touchstart', startPosition, { passive: false });
+        canvas?.addEventListener('touchmove', draw, { passive: false });
+        canvas?.addEventListener('touchend', endPosition);
 
         // Auto Smoother
-        enhanceBtn.addEventListener('click', () => {
+        enhanceBtn?.addEventListener('click', () => {
              if (rawStrokes.length === 0 || isEnhanced) return;
              isEnhanced = true;
-             enhanceStatus.classList.remove('hidden');
+             enhanceStatus?.classList.remove('hidden');
              
+             if (!canvas || !ctx) return;
              ctx.clearRect(0, 0, canvas.width, canvas.height);
              
              // Advanced downsampling filter
@@ -374,9 +406,13 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
              ctx.lineWidth = 4;
         });
 
-        document.getElementById('clear-btn').addEventListener('click', () => {
+        document.getElementById('clear-btn')?.addEventListener('click', () => {
             if (isTypeMode) { typeInput.value = ''; } 
-            else { setupCanvas(); }
+            else {
+                setupCanvas();
+                const hint = document.getElementById('draw-hint');
+                if (hint) hint.classList.remove('hidden');
+            }
         });
 
         // Trim Transparent Canvas bounds completely
@@ -419,7 +455,7 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
             return trmCanvas;
         }
 
-        document.getElementById('download-btn').addEventListener('click', () => {
+        document.getElementById('download-btn')?.addEventListener('click', () => {
             let exportCanvas = canvas;
             if (isTypeMode) {
                 const text = typeInput.value.trim();
@@ -441,52 +477,18 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
             link.download = 'formfix-signature.png';
             link.href = dataURL;
             link.click();
+            if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
+            var shareTxt = encodeURIComponent("I just created my digital signature using FormFix! 100% private, browser-based. Try it: " + window.__SITE_URL + "/signature-maker");
+            const existing = document.getElementById('post-sig-share');
+            if (!existing) {
+                var div = document.createElement('div');
+                div.id = 'post-sig-share';
+                div.style.cssText = 'margin-top:20px;text-align:center;';
+                div.innerHTML = '<p style="font-weight:600;margin-bottom:10px;color:var(--success);">Love FormFix? Share it!</p><div style="display:flex;gap:8px;justify-content:center;"><a href="https://twitter.com/intent/tweet?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#000;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">Share on X</a><a href="https://wa.me/?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">WhatsApp</a></div>';
+                if (link) link.parentElement.appendChild(div);
+            }
         });
     });
 </script>
 
-<style>
-    .tabs-group { display: flex; background: var(--surface-100); padding: 4px; border-radius: 12px; }
-    .tab-pill { flex: 1; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
-    .tab-pill.active { background: #fff; color: var(--text-main); box-shadow: var(--shadow-sm); }
 
-    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 16px; background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
-    .section-label { font-size: 0.72rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: block; }
-    
-    .color-chip-group { display: flex; gap: 12px; }
-    .color-chip { width: 32px; height: 32px; border-radius: 50%; border: 3px solid #fff; cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm); }
-    .color-chip.active { transform: scale(1.15); box-shadow: 0 0 0 2px var(--accent); }
-
-    .status-pill { background: #d1fae5; color: #065f46; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; }
-    .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
-
-    .workspace-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 24px; overflow: hidden; }
-    .canvas-box { background: var(--surface-50); border-radius: var(--radius-sm); border: 2px dashed var(--border-subtle); height: 300px; display: flex; align-items: center; justify-content: center; touch-action: none; position: relative; }
-    #sign-canvas { max-width: 100%; max-height: 100%; cursor: crosshair; }
-
-    .modern-input { width: 100%; padding: 20px; font-size: 2rem; text-align: center; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); background: var(--surface-50); outline: none; transition: 0.2s; }
-    .modern-input:focus { border-color: var(--accent); background: #fff; }
-
-    .font-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; max-height: 300px; overflow-y: auto; padding: 12px; background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); }
-    .font-grid::-webkit-scrollbar { width: 6px; }
-    .font-grid::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 10px; }
-
-    .font-btn { padding: 12px 8px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 8px; font-size: 1.25rem; cursor: pointer; transition: 0.2s; white-space: nowrap; text-align: center; color: var(--text-main); overflow: hidden; text-overflow: ellipsis; }
-    .font-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
-    .font-btn.active { border-color: var(--accent); color: #fff; background: var(--accent); font-weight: bold; }
-
-    .d-flex { display: flex; }
-    .align-center { align-items: center; }
-    .mb-16 { margin-bottom: 16px; }
-    .mb-24 { margin-bottom: 24px; }
-    .gap-12 { gap: 12px; }
-    .gap-16 { gap: 16px; }
-    .flex-1 { flex: 1; }
-    .flex-2 { flex: 2; }
-    .hidden { display: none !important; }
-
-    @media (max-width: 640px) {
-        .wrap-mobile { flex-direction: column; }
-        .settings-grid { grid-template-columns: 1fr; }
-    }
-</style>

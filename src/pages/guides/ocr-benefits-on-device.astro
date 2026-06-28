@@ -1,11 +1,15 @@
 ---
 import BaseLayout from '../../components/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
 const title = "Benefits of On-Device AI: OCR & Image to Text Explained";
 const description = "Discover why processing OCR (Image to Text) locally in your browser is faster and safer than cloud-based alternatives.";
 ---
 
 <BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/ocr-benefits-on-device">
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Benefits of On-Device AI: OCR & Image to Text Explained", path: "/guides/ocr-benefits-on-device" }]} />
+
     <section class="page-header">
         <div class="container">
             <h1>The Power of On-Device OCR</h1>
@@ -48,12 +52,14 @@ const description = "Discover why processing OCR (Image to Text) locally in your
             </article>
         </div>
     </section>
+
+    <ShareBar title={title} />
 </BaseLayout>
 
 <style>
     .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
     .content-section { padding: 60px 0; }
-    .prose { line-height: 1.8; color: var(--slate); }
+    .prose { line-height: 1.8; color: var(--text-secondary); }
     .container-narrow { max-width: 800px; }
     .cta-box { background: var(--primary-light); padding: 32px; border-radius: 16px; text-align: center; }
 </style>

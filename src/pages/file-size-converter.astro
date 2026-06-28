@@ -1,5 +1,6 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'File Size Converter – Exact KB to MB to GB instantly | FormFix';
@@ -26,80 +27,7 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/file-size-converter">
-    <ToolWrapper title="File Size Converter" subtitle="Instant accurate conversion between Bytes, KB, MB, and GB." currentTool="file-size-converter">
-        
-        <div slot="tool-ui">
-             <div class="workspace-editor">
-                  <div class="converter-box mb-24 d-flex align-center justify-between gap-24">
-                       <div class="input-card shadow-sm flex-1 p-24 bg-surface-50 border-subtle radius-md m-0">
-                            <label class="section-label mb-16">Source Amount</label>
-                            <input type="number" id="calc-input" value="1024" placeholder="Value" class="large-input mb-16" />
-                            <select id="from-unit" class="modern-select">
-                                <option value="B">Bytes (B)</option>
-                                <option value="KB" selected>Kilobytes (KB)</option>
-                                <option value="MB">Megabytes (MB)</option>
-                                <option value="GB">Gigabytes (GB)</option>
-                            </select>
-                       </div>
-
-                       <div class="exchange-indicator text-surface-300 font-900 icon-large">⇄</div>
-
-                       <div class="input-card result-focus shadow-sm flex-1 p-24 bg-white border-subtle radius-md m-0">
-                            <label class="section-label mb-16">Converted Result</label>
-                            <div class="large-result mb-16" id="calc-output">1.00</div>
-                            <select id="to-unit" class="modern-select">
-                                <option value="B">Bytes (B)</option>
-                                <option value="KB">Kilobytes (KB)</option>
-                                <option value="MB" selected>Megabytes (MB)</option>
-                                <option value="GB">Gigabytes (GB)</option>
-                            </select>
-                       </div>
-                  </div>
-
-                  <div class="breakdown-section bg-white border-subtle radius-md p-24 mb-24 shadow-sm m-0">
-                       <h4 class="section-label mb-16 m-0">Binary (1024) Base Breakdown</h4>
-                       <div class="breakdown-grid mt-16 d-grid gap-8">
-                            <div class="bd-item d-flex justify-between align-center p-12-16 bg-surface-50 radius-sm">
-                                 <span class="text-muted font-600">Bytes</span> 
-                                 <b id="bd-b" class="text-main font-800">1,048,576</b>
-                            </div>
-                            <div class="bd-item d-flex justify-between align-center p-12-16 bg-surface-50 radius-sm">
-                                 <span class="text-muted font-600">Kilobytes</span> 
-                                 <b id="bd-kb" class="text-main font-800">1,024</b>
-                            </div>
-                            <div class="bd-item active d-flex justify-between align-center p-12-16 bg-white border-accent radius-sm shadow-sm">
-                                 <span class="text-accent font-700">Megabytes</span> 
-                                 <b id="bd-mb" class="text-accent font-850">1</b>
-                            </div>
-                            <div class="bd-item d-flex justify-between align-center p-12-16 bg-surface-50 radius-sm">
-                                 <span class="text-muted font-600">Gigabytes</span> 
-                                 <b id="bd-gb" class="text-main font-800">0.00097</b>
-                            </div>
-                       </div>
-                       <p class="calc-tip mt-16 m-0 text-muted small font-500">💡 Calculation uses the standard binary computing scale (1 KB = 1024 Bytes).</p>
-                  </div>
-             </div>
-        </div>
-
-        <div slot="tool-info">
-             <h2>Accurate File Size Conversion</h2>
-             <p>Our precise <strong>file size converter</strong> calculates binary-scale sizes directly in your browser. Whether you're checking payload limits for government portals or verifying upload requirements for social media, we ensure 100% precision using the 1024-standard.</p>
-             
-             <div class="faq-grid mt-32">
-                  <details class="faq-item">
-                       <summary>How many KB are in 1 MB?</summary>
-                       <p>In most computing contexts, there are exactly <strong>1024 Kilobytes (KB)</strong> in 1 Megabyte (MB). Some retail hard drive manufacturers use 1000 base, but tools and operating systems use 1024.</p>
-                  </details>
-                  <details class="faq-item">
-                       <summary>How to convert MB to GB?</summary>
-                       <p>To convert Megabytes to Gigabytes, divide the number of MB by 1024. For example, 2048 MB is exactly 2 GB.</p>
-                  </details>
-             </div>
-        </div>
-    </ToolWrapper>
-</BaseLayout>
-
-<script is:inline>
+    <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
 
         const input = document.getElementById('calc-input');
@@ -175,33 +103,106 @@ const customSchema = {
     });
 </script>
 
-<style>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "File Size Converter – Exact KB to MB to GB instantly", path: "/file-size-converter" }]} />
+
+    <ToolWrapper title="File Size Converter" subtitle="Instant accurate conversion between Bytes, KB, MB, and GB." currentTool="file-size-converter">
+        
+        <div slot="tool-ui">
+             <div class="workspace-editor">
+                  <div class="converter-box mb-24 d-flex align-center justify-between gap-24">
+                       <div class="input-card shadow-sm flex-1 p-24 bg-surface-50 border-subtle radius-md m-0">
+                            <label class="section-label mb-16">Source Amount</label>
+                            <input type="number" id="calc-input" value="1024" placeholder="Value" class="large-input mb-16" />
+                            <select id="from-unit" class="modern-select">
+                                <option value="B">Bytes (B)</option>
+                                <option value="KB" selected>Kilobytes (KB)</option>
+                                <option value="MB">Megabytes (MB)</option>
+                                <option value="GB">Gigabytes (GB)</option>
+                            </select>
+                       </div>
+
+                       <div class="exchange-indicator text-surface-300 font-900 icon-large">⇄</div>
+
+                       <div class="input-card result-focus shadow-sm flex-1 p-24 bg-white border-subtle radius-md m-0">
+                            <label class="section-label mb-16">Converted Result</label>
+                            <div class="large-result mb-16" id="calc-output">1.00</div>
+                            <select id="to-unit" class="modern-select">
+                                <option value="B">Bytes (B)</option>
+                                <option value="KB">Kilobytes (KB)</option>
+                                <option value="MB" selected>Megabytes (MB)</option>
+                                <option value="GB">Gigabytes (GB)</option>
+                            </select>
+                       </div>
+                  </div>
+
+                  <div class="breakdown-section bg-white border-subtle radius-md p-24 mb-24 shadow-sm m-0">
+                       <h4 class="section-label mb-16 m-0">Binary (1024) Base Breakdown</h4>
+                       <div class="breakdown-grid mt-16 d-grid gap-8">
+                            <div class="bd-item d-flex justify-between align-center p-12-16 bg-surface-50 radius-sm">
+                                 <span class="text-muted font-600">Bytes</span> 
+                                 <b id="bd-b" class="text-main font-800">1,048,576</b>
+                            </div>
+                            <div class="bd-item d-flex justify-between align-center p-12-16 bg-surface-50 radius-sm">
+                                 <span class="text-muted font-600">Kilobytes</span> 
+                                 <b id="bd-kb" class="text-main font-800">1,024</b>
+                            </div>
+                            <div class="bd-item active d-flex justify-between align-center p-12-16 bg-white border-accent radius-sm shadow-sm">
+                                 <span class="text-accent font-700">Megabytes</span> 
+                                 <b id="bd-mb" class="text-accent font-850">1</b>
+                            </div>
+                            <div class="bd-item d-flex justify-between align-center p-12-16 bg-surface-50 radius-sm">
+                                 <span class="text-muted font-600">Gigabytes</span> 
+                                 <b id="bd-gb" class="text-main font-800">0.00097</b>
+                            </div>
+                       </div>
+                       <p class="calc-tip mt-16 m-0 text-muted small font-500">💡 Calculation uses the standard binary computing scale (1 KB = 1024 Bytes).</p>
+                  </div>
+             </div>
+        </div>
+
+        <div slot="tool-info">
+             <h2>Accurate File Size Conversion</h2>
+             <p>Our precise <strong>file size converter</strong> calculates binary-scale sizes directly in your browser. Whether you're checking payload limits for government portals or verifying upload requirements for social media, we ensure 100% precision using the 1024-standard.</p>
+             
+             <div class="faq-grid mt-32">
+                  <details class="faq-item">
+                       <summary>How many KB are in 1 MB?</summary>
+                       <p>In most computing contexts, there are exactly <strong>1024 Kilobytes (KB)</strong> in 1 Megabyte (MB). Some retail hard drive manufacturers use 1000 base, but tools and operating systems use 1024.</p>
+                  </details>
+                  <details class="faq-item">
+                       <summary>How to convert MB to GB?</summary>
+                       <p>To convert Megabytes to Gigabytes, divide the number of MB by 1024. For example, 2048 MB is exactly 2 GB.</p>
+                  </details>
+             </div>
+        </div>
+    </ToolWrapper>
+</BaseLayout><style>
     .workspace-editor { display: flex; flex-direction: column; width: 100%; }
     
-    .section-label { font-size: 0.72rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    .section-label { font-size: 0.72rem; font-weight:600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
     
-    .large-input { font-size: 2rem; font-weight: 900; background: transparent; border: none; border-bottom: 2px solid var(--border-subtle); color: var(--text-main); outline: none; width: 100%; transition: 0.2s; box-sizing: border-box; }
-    .large-input:focus { border-bottom-color: var(--accent); }
+    .large-input { font-size: 2rem; font-weight:600; background: transparent; border: none; border-bottom: 2px solid var(--border-subtle); color: var(--text-main); outline: none; width: 100%; transition: 0.2s; box-sizing: border-box; }
+    .large-input:focus { border-bottom-color: var(--accent-primary); }
     
-    .large-result { font-size: 2rem; font-weight: 900; color: var(--accent); word-break: break-all; min-height: 2.5rem; }
+    .large-result { font-size: 2rem; font-weight:600; color: var(--accent-primary); word-break: break-all; min-height: 2.5rem; }
     
-    .modern-select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-subtle); background: #fff; font-size: 1rem; font-weight: 700; color: var(--text-main); cursor: pointer; outline: none; transition: 0.2s; box-sizing: border-box; }
-    .modern-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1); }
+    .modern-select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-subtle); background:var(--surface-3); font-size: 1rem; font-weight:600; color: var(--text-main); cursor: pointer; outline: none; transition: 0.2s; box-sizing: border-box; }
+    .modern-select:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1); }
 
     .bd-item { border: 1px solid transparent; transition: 0.2s; }
-    .border-accent { border-color: var(--accent); }
+    .border-accent { border-color: var(--accent-primary); }
 
     /* FAQ */
     .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
     /* Utilities */
     .bg-surface-50 { background: var(--surface-50); }
-    .bg-white { background: #fff; }
+    .bg-white { background:var(--surface-3); }
     .border-subtle { border: 1px solid var(--border-subtle); }
     .radius-md { border-radius: 24px; }
     .radius-sm { border-radius: 12px; }
@@ -210,14 +211,14 @@ const customSchema = {
     .text-surface-300 { color: var(--surface-300); }
     .text-main { color: var(--text-main); }
     .text-muted { color: var(--text-muted); }
-    .text-accent { color: var(--accent); }
+    .text-accent { color: var(--accent-primary); }
     
     .font-500 { font-weight: 500; }
     .font-600 { font-weight: 600; }
-    .font-700 { font-weight: 700; }
-    .font-800 { font-weight: 800; }
-    .font-850 { font-weight: 850; }
-    .font-900 { font-weight: 900; }
+    .font-700 { font-weight:600; }
+    .font-800 { font-weight:600; }
+    .font-850 { font-weight:600; }
+    .font-900 { font-weight:600; }
     
     .icon-large { font-size: 1.5rem; }
     .small { font-size: 0.85rem; }

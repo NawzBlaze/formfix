@@ -1,5 +1,6 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Percentage Calculator Online Free – Instant Result';
@@ -8,6 +9,41 @@ const PAGE_KEYWORDS = 'percentage calculator, calculate percentage online, math 
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} active="tools" canonicalPath="/percentage-calculator">
+    <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        const calculate = () => {
+             // Calc 1: X% of Y
+             const c1a = parseFloat(document.getElementById('c1-a').value);
+             const c1b = parseFloat(document.getElementById('c1-b').value);
+             const c1res = document.getElementById('c1-res');
+             if (!isNaN(c1a) && !isNaN(c1b)) c1res.textContent = ((c1a / 100) * c1b).toFixed(2).replace(/\.00$/, '');
+             else c1res.textContent = '-';
+
+             // Calc 2: X is what % of Y
+             const c2a = parseFloat(document.getElementById('c2-a').value);
+             const c2b = parseFloat(document.getElementById('c2-b').value);
+             const c2res = document.getElementById('c2-res');
+             if (!isNaN(c2a) && !isNaN(c2b) && c2b !== 0) c2res.textContent = ((c2a / c2b) * 100).toFixed(2).replace(/\.00$/, '');
+             else c2res.textContent = '-';
+
+             // Calc 3: Increase/Decrease %
+             const c3a = parseFloat(document.getElementById('c3-a').value);
+             const c3b = parseFloat(document.getElementById('c3-b').value);
+             const c3res = document.getElementById('c3-res');
+             if (!isNaN(c3a) && !isNaN(c3b) && c3a !== 0) {
+                  const diff = c3b - c3a;
+                  const pct = (diff / c3a) * 100;
+                  c3res.textContent = pct.toFixed(2).replace(/\.00$/, '');
+             } else c3res.textContent = '-';
+        };
+
+        const inputs = document.querySelectorAll('input[type="number"]');
+        inputs.forEach(el => el.addEventListener('input', calculate));
+    });
+</script>
+
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Percentage Calculator Online Free – Instant Result", path: "/percentage-calculator" }]} />
+
     <ToolWrapper title="Percentage Calculator" subtitle="Instant percentage calculations directly in your browser." currentTool="percentage-calculator">
         
         <div slot="tool-ui">
@@ -102,66 +138,31 @@ const PAGE_KEYWORDS = 'percentage calculator, calculate percentage online, math 
              </div>
         </div>
     </ToolWrapper>
-</BaseLayout>
-
-<script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
-        const calculate = () => {
-             // Calc 1: X% of Y
-             const c1a = parseFloat(document.getElementById('c1-a').value);
-             const c1b = parseFloat(document.getElementById('c1-b').value);
-             const c1res = document.getElementById('c1-res');
-             if (!isNaN(c1a) && !isNaN(c1b)) c1res.textContent = ((c1a / 100) * c1b).toFixed(2).replace(/\.00$/, '');
-             else c1res.textContent = '-';
-
-             // Calc 2: X is what % of Y
-             const c2a = parseFloat(document.getElementById('c2-a').value);
-             const c2b = parseFloat(document.getElementById('c2-b').value);
-             const c2res = document.getElementById('c2-res');
-             if (!isNaN(c2a) && !isNaN(c2b) && c2b !== 0) c2res.textContent = ((c2a / c2b) * 100).toFixed(2).replace(/\.00$/, '');
-             else c2res.textContent = '-';
-
-             // Calc 3: Increase/Decrease %
-             const c3a = parseFloat(document.getElementById('c3-a').value);
-             const c3b = parseFloat(document.getElementById('c3-b').value);
-             const c3res = document.getElementById('c3-res');
-             if (!isNaN(c3a) && !isNaN(c3b) && c3a !== 0) {
-                  const diff = c3b - c3a;
-                  const pct = (diff / c3a) * 100;
-                  c3res.textContent = pct.toFixed(2).replace(/\.00$/, '');
-             } else c3res.textContent = '-';
-        };
-
-        const inputs = document.querySelectorAll('input[type="number"]');
-        inputs.forEach(el => el.addEventListener('input', calculate));
-    });
-</script>
-
-<style>
+</BaseLayout><style>
     .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 800px; margin: 0 auto; background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 32px; }
 
     .calculator-stack { display: flex; flex-direction: column; gap: 32px; }
-    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    .section-label { font-size: 0.75rem; font-weight:600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
     
-    .calc-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-sm); }
+    .calc-card { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-sm); }
     .calc-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
     
     .c-field { display: flex; flex-direction: column; }
-    .l-text { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: block; }
+    .l-text { font-size: 0.85rem; font-weight:600; color: var(--text-muted); display: block; }
     
-    .input-container { display: flex; align-items: center; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden; transition: 0.2s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box; }
-    .input-container:focus-within { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1); }
-    .mini-input { width: 100%; padding: 16px; border: none; outline: none; font-size: 1.2rem; font-weight: 800; color: var(--text-main); background: transparent; }
-    .i-suffix { padding-right: 16px; font-weight: 800; color: var(--text-muted); font-size: 1.1rem; }
+    .input-container { display: flex; align-items: center; background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden; transition: 0.2s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box; }
+    .input-container:focus-within { border-color: var(--accent-primary); background:var(--surface-3); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1); }
+    .mini-input { width: 100%; padding: 16px; border: none; outline: none; font-size: 1.2rem; font-weight:600; color: var(--text-main); background: transparent; }
+    .i-suffix { padding-right: 16px; font-weight:600; color: var(--text-muted); font-size: 1.1rem; }
 
-    .c-arrow { font-size: 1.5rem; font-weight: 900; color: var(--surface-300); text-align: center; }
-    .c-result { font-size: 2rem; font-weight: 1000; color: var(--accent); text-align: right; word-break: break-all; line-height: 1; }
+    .c-arrow { font-size: 1.5rem; font-weight:600; color: var(--surface-300); text-align: center; }
+    .c-result { font-size: 2rem; font-weight:600; color: var(--accent-primary); text-align: right; word-break: break-all; line-height: 1; }
 
     /* FAQ */
     .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 

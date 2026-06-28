@@ -1,1 +1,13 @@
+# FormFix robots.txt
+# https://formfix.pages.dev
+# Clean, minimal, Bing-friendly crawler directives.
 
+User-agent: *
+Allow: /
+Disallow: /404
+
+# Sitemap location
+Sitemap: https://formfix.pages.dev/sitemap-index.xml
+
+# Host directive (Bing honors this)
+Host: https://formfix.pages.dev

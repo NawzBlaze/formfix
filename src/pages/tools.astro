@@ -1,28 +1,29 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
 import CompressTool from '../components/tools/CompressTool.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { SITE_URL } from '../seo';
 
-const PAGE_TITLE = 'Tool Dashboard | FormFix';
-const PAGE_DESC = 'Access your complete suite of 30+ free tools for images, PDFs, and more.';
-const PAGE_KEYWORDS = 'formfix dashboard, free online tools, image compressor, pdf tools';
+const PAGE_TITLE = 'All Free Online Tools — Image Compressor, PDF Merger, Passport Photo & More | FormFix';
+const PAGE_DESC = 'Browse 30+ free browser-based tools: image compressor, PDF merger, passport photo maker, signature maker, QR code generator, and more. No sign-up, no uploads.';
+const PAGE_KEYWORDS = 'free online tools, image compressor online, pdf merger free, passport photo maker, signature maker online, qr code generator free, browser tools, no upload tools';
 
-// All Categories
 const categories = [
     {
         id: 'image',
         title: 'Image Tools',
-        desc: 'Professional-grade image processing, resizing, and manipulation.',
-        icon: '🖼️',
+        desc: 'Professional image processing, resizing, and manipulation.',
         tools: [
-            { id: 'compress-image', title: 'Image Compressor Studio', href: '/compress-image', desc: 'Hit exact file size targets like 20KB, 50KB or any custom limit.' },
-            { id: 'ssc-photo-compressor', title: 'SSC Photo Optimizer', href: '/ssc-photo-compressor', desc: 'Guaranteed 20-50KB resize for SSC exams.' },
-            { id: 'upsc-photo-resizer', title: 'UPSC Photo Resizer', href: '/upsc-photo-resizer', desc: 'Exact 350x350px scaling for UPSC forms.' },
-            { id: 'neet-photo-compressor', title: 'NEET Form Optimizer', href: '/neet-photo-compressor', desc: 'Passport & Postcard (4x6) size maker.' },
-            { id: 'cuet-photo-resizer', title: 'CUET Photo Resizer', href: '/cuet-photo-resizer', desc: 'NTA-compliant photo and signature resizer.' },
-            { id: 'passport-size-photo', title: 'Passport Photo Maker', href: '/passport-size-photo', desc: 'Official 3.5×4.5cm passport photos.' },
-            { id: 'crop-image', title: 'Crop Image Online', href: '/crop-image', desc: 'Precise cropping with ratio presets.' },
+            { id: 'compress-image', title: 'Image Compressor', href: '/compress-image', desc: 'Hit exact file size targets like 20KB, 50KB or any custom limit.' },
+            { id: 'compress-image-to-20kb', title: 'Compress to 20KB', href: '/compress-image-to-20kb', desc: 'Precisely hit the 20KB file size limit for government forms.' },
+            { id: 'compress-image-to-50kb', title: 'Compress to 50KB', href: '/compress-image-to-50kb', desc: 'Optimize images for SSC, UPSC, and banking form uploads.' },
+            { id: 'passport-photo-compressor', title: 'Passport Photo Compressor', href: '/passport-photo-compressor', desc: 'Compress passport photos to required size limits.' },
+            { id: 'passport-size-photo', title: 'Passport Photo Maker', href: '/passport-size-photo', desc: 'Official 3.5x4.5cm passport photos.' },
+            { id: 'official-passport-photo-maker', title: 'Global Passport Photo', href: '/official-passport-photo-maker', desc: 'Generate photos for any country with correct dimensions.' },
+            { id: 'crop-image', title: 'Crop Image', href: '/crop-image', desc: 'Precise cropping with ratio presets.' },
             { id: 'circle-crop', title: 'Circle Profile Maker', href: '/circle-crop', desc: 'Perfect circular avatars for profiles.' },
-            { id: 'resize-image', title: 'Resize Image Pixels', href: '/resize-image', desc: 'Change width/height proportionally.' },
+            { id: 'resize-image', title: 'Resize Image', href: '/resize-image', desc: 'Change width/height proportionally.' },
+            { id: 'resize-image-for-platform', title: 'Resize for Social', href: '/resize-image-for-instagram', desc: 'One-click resize for Instagram, Twitter, LinkedIn.' },
             { id: 'background-remover', title: 'Background Remover', href: '/background-remover', desc: 'Remove white or solid backgrounds.' },
             { id: 'black-and-white', title: 'Black & White Filter', href: '/black-and-white', desc: 'Convert photos to elegant grayscale.' },
             { id: 'photo-to-sketch', title: 'Pencil Sketch Maker', href: '/photo-to-sketch', desc: 'Turn any photo into a pencil drawing.' },
@@ -33,123 +34,123 @@ const categories = [
     },
     {
         id: 'pdf',
-        title: 'Document & PDF',
+        title: 'Document & PDF Tools',
         desc: 'Merge, split, and extract documents completely offline.',
-        icon: '📄',
         tools: [
-            { id: 'merge-pdf', title: 'Merge PDF Files', href: '/merge-pdf', desc: 'Combine multiple PDFs into one file.' },
-            { id: 'rotate-pdf', title: 'Rotate PDF Pages', href: '/rotate-pdf', desc: 'Fix upside-down scanned PDFs.' },
+            { id: 'merge-pdf', title: 'Merge PDF', href: '/merge-pdf', desc: 'Combine multiple PDFs into one file.' },
+            { id: 'rotate-pdf', title: 'Rotate PDF', href: '/rotate-pdf', desc: 'Fix upside-down scanned PDFs.' },
             { id: 'image-to-pdf', title: 'Images to PDF', href: '/image-to-pdf', desc: 'Merge JPG/PNG images into a single PDF.' },
             { id: 'pdf-to-image', title: 'PDF to Images', href: '/pdf-to-image', desc: 'Extract every page as a high-quality image.' },
             { id: 'split-pdf', title: 'Split & Extract', href: '/split-pdf', desc: 'Separate specific pages from any PDF.' },
-            { id: 'resume-builder', title: 'Pro Resume Builder', href: '/resume-builder', desc: 'Create a modern resume in 60 seconds.' },
+            { id: 'resume-builder', title: 'Resume Builder', href: '/resume-builder', desc: 'Create a modern resume in 60 seconds.' },
             { id: 'text-to-handwriting', title: 'Assignment Studio', href: '/text-to-handwriting', desc: 'Convert text into realistic handwriting.' },
-            { id: 'signature-maker', title: 'E-Signature Maker', href: '/signature-maker', desc: 'Draw or type digital signatures.' }
+            { id: 'signature-maker', title: 'Signature Maker', href: '/signature-maker', desc: 'Draw or type digital signatures.' }
         ]
     },
     {
         id: 'utilities',
         title: 'Utilities & Calculators',
         desc: 'Quick tools for everyday tasks and calculations.',
-        icon: '🔐',
         tools: [
             { id: 'qr-code-generator', title: 'QR Code Generator', href: '/qr-code-generator', desc: 'Create permanent QR codes.' },
-            { id: 'password-generator', title: 'Password Generator', href: '/password-generator', desc: 'Generate military-grade secure passwords.' },
-            { id: 'file-size-converter', title: 'File Size Converter', href: '/file-size-converter', desc: 'Instant calculator for Bytes ⇄ KB ⇄ MB.' },
-            { id: 'percentage-calculator', title: 'Percentage Calculator', href: '/percentage-calculator', desc: 'Quickly find % of numbers without reload.' },
+            { id: 'password-generator', title: 'Password Generator', href: '/password-generator', desc: 'Generate secure passwords.' },
+            { id: 'file-size-converter', title: 'File Size Converter', href: '/file-size-converter', desc: 'Instant calculator for Bytes to KB to MB.' },
+            { id: 'percentage-calculator', title: 'Percentage Calculator', href: '/percentage-calculator', desc: 'Quickly find percent of numbers.' },
             { id: 'age-calculator', title: 'Age Calculator', href: '/age-calculator', desc: 'Calculate exact age in years, months, days.' },
+            { id: 'image-to-text', title: 'Image to Text (OCR)', href: '/image-to-text', desc: 'Extract text from any image using OCR.' }
         ]
     }
 ];
 
+const customSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+        {
+            '@type': 'CollectionPage',
+            name: 'FormFix Tools',
+            description: PAGE_DESC,
+            url: `${SITE_URL}/tools`,
+            hasPart: categories.flatMap(c => c.tools).map(t => ({
+                '@type': 'SoftwareApplication',
+                name: t.title,
+                url: SITE_URL + t.href,
+                applicationCategory: 'UtilitiesApplication',
+                offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+            })),
+        }
+    ]
+};
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} active="tools" canonicalPath="/tools">
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} active="tools" canonicalPath="/tools" customSchema={customSchema}>
 
-<div class="dashboard-environment">
-    <div class="container dashboard-container">
-        
-        <!-- DASHBOARD HEADER -->
-        <header class="dashboard-header animate-in">
-            <div class="header-titles">
-                <h1>Command Center</h1>
-                <p class="greeting-line">Welcome back. Select a utility to begin local processing.</p>
-            </div>
-            
-            <div class="quick-bar">
-                <a href="/compress-image?size=20" class="bar-link">20KB Optimizer</a>
-                <a href="/passport-size-photo" class="bar-link">Passport Maker</a>
-                <a href="/resume-builder" class="bar-link">Resume Studio</a>
-            </div>
+<Breadcrumb items={[{ name: 'Home', path: '/' }, { name: 'All Tools', path: '/tools' }]} />
+
+<div class="tools-page">
+    <div class="container">
+
+        <header class="page-header">
+            <h1>All Tools</h1>
+            <p>Browse 30+ free tools. 100% private, runs in your browser.</p>
         </header>
 
-        <!-- TOP ACTIVE WORKSPACE (High Emphasis) -->
-        <section class="workspace-section animate-in delay-100" id="top-dashboard-area">
-            <div class="workspace-focal-card">
-                <div class="workspace-header">
-                    <span class="workspace-tag">Featured Engine</span>
-                    <h2>Image Compressor Pro</h2>
-                    <p>Hit exact 20KB or 50KB targets with extreme precision locally.</p>
+        <section class="featured-section">
+            <div class="featured-card">
+                <div class="featured-header">
+                    <span class="featured-tag">Featured</span>
+                    <h2>Image Compressor</h2>
+                    <p>Hit exact 20KB or 50KB targets with precision. Runs locally.</p>
                 </div>
-                <div class="workspace-body">
+                <div class="featured-body">
                     <CompressTool initialTarget="20" />
                 </div>
             </div>
         </section>
 
-        <!-- SEARCH AND FILTER BAR -->
-        <div class="dashboard-controls animate-in delay-200">
+        <div class="controls">
             <div class="search-wrap">
-                <svg class="search-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input type="search" id="tool-search" placeholder="Search 30+ tools..." aria-label="Search tools" />
+                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <label for="tool-search" class="sr-only">Search tools</label>
+                <input type="search" id="tool-search" placeholder="Search tools..." aria-label="Search tools" />
             </div>
-            <div class="filter-tabs">
-                <button class="filter-tab active" data-filter="all">All Tools</button>
-                <button class="filter-tab" data-filter="image">Image</button>
-                <button class="filter-tab" data-filter="pdf">PDF</button>
-                <button class="filter-tab" data-filter="utilities">Utilities</button>
+            <div class="filter-tabs" role="tablist" aria-label="Filter by category">
+                <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All</button>
+                <button class="filter-tab" data-filter="image" role="tab" aria-selected="false">Image</button>
+                <button class="filter-tab" data-filter="pdf" role="tab" aria-selected="false">PDF</button>
+                <button class="filter-tab" data-filter="utilities" role="tab" aria-selected="false">Utilities</button>
             </div>
         </div>
 
-        <!-- RECENT ACTIVITY (Medium Emphasis) -->
-        <div class="activity-bar hidden animate-in delay-300" id="activity-area">
+        <div class="activity-bar hidden" id="activity-area">
             <div class="activity-header">
-                <h3>Recent Activity</h3>
-                <button id="clear-recents" class="clear-btn">Clear</button>
+                <h2>Recent</h2>
+                <button id="clear-recents" class="clear-btn" type="button">Clear</button>
             </div>
-            <div id="recent-tools-container" class="recent-scroll-grid">
-                <!-- Populated by JS -->
-            </div>
+            <div id="recent-tools-container" class="recent-grid"></div>
         </div>
 
-        <!-- TOOL SECTIONS (Structured List) -->
         <div class="tools-library" id="groups-container">
             {categories.map(cat => (
-                <section class="tool-section" data-category={cat.id}>
+                <section class="tool-section" data-category={cat.id} aria-labelledby={`cat-${cat.id}`}>
                     <header class="section-header">
-                        <h2>{cat.title}</h2>
+                        <h2 id={`cat-${cat.id}`}>{cat.title}</h2>
                         <p>{cat.desc}</p>
                     </header>
-                    
-                    <div class="product-grid">
+
+                    <div class="tools-grid">
                         {cat.tools.map(tool => (
-                            <a href={tool.href} class="product-card search-item tracker-tool" data-id={tool.id} data-title={tool.title} data-icon={cat.icon} data-href={tool.href}>
-                                <div class="card-icon-wrap">
-                                    <span class="card-icon">{cat.icon}</span>
-                                </div>
+                            <a href={tool.href} class="tool-card search-item tracker-tool" data-id={tool.id} data-title={tool.title} data-href={tool.href} aria-label={`Open ${tool.title}`}>
                                 <h3>{tool.title}</h3>
                                 <p>{tool.desc}</p>
-                                <div class="card-hover-border"></div>
                             </a>
                         ))}
                     </div>
                 </section>
             ))}
-            
-            <div id="no-results" class="hidden no-results-state">
-                <div class="sad-icon">🔍</div>
-                <h3>No utilities found</h3>
-                <p>Try searching with a different keyword or category.</p>
+
+            <div id="no-results" class="hidden no-results" role="status">
+                <h3>No tools found</h3>
+                <p>Try a different search term.</p>
             </div>
         </div>
 
@@ -159,286 +160,273 @@ const categories = [
 </BaseLayout>
 
 <style>
-/* ───── STRUCTURED SPACIOUS DASHBOARD ───── */
-.dashboard-environment {
-    background: transparent;
-    padding: 100px 0 160px;
-    min-height: 100vh;
+.tools-page {
+    padding: 32px 0 120px;
 }
 
-.dashboard-container {
-    max-width: 1280px; /* Spacious max-width */
-    padding: 0 48px; /* Increased horizontal padding */
+.page-header {
+    margin-bottom: 40px;
 }
-
-@media (max-width: 768px) {
-    .dashboard-container { padding: 0 24px; }
-}
-
-/* Header */
-.dashboard-header {
-    margin-bottom: 64px;
-}
-.header-titles h1 {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    margin-bottom: 12px;
-    color: var(--text-primary);
-}
-.greeting-line { 
-    font-size: 1.2rem; 
-    color: var(--text-secondary); 
-    font-weight: 500;
-}
-
-.quick-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 32px;
-}
-.bar-link {
-    padding: 10px 20px;
-    background: var(--surface-2);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-full);
-    font-size: 0.95rem;
+.page-header h1 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
     font-weight: 600;
-    color: var(--text-primary);
-    text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
 }
-.bar-link:hover { 
-    background: var(--surface-3); 
-    border-color: var(--accent-primary);
-    color: var(--accent-primary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-soft);
+.page-header p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
 }
 
-/* ───── FOCAL WORKSPACE (High Emphasis) ───── */
-.workspace-section {
-    margin-bottom: 80px;
+/* Featured */
+.featured-section {
+    margin-bottom: 48px;
 }
-.workspace-focal-card {
-    background: var(--surface-3);
-    border: 1px solid var(--border-strong);
-    border-radius: 24px;
-    padding: 48px;
-    box-shadow: var(--shadow-lift);
-    position: relative;
-    overflow: hidden;
+.featured-card {
+    background: var(--surface-2);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
 }
-.workspace-focal-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    z-index: 10;
+.featured-header {
+    margin-bottom: 28px;
 }
-.workspace-header { margin-bottom: 40px; }
-.workspace-tag {
+.featured-tag {
     display: inline-block;
-    padding: 6px 14px;
+    padding: 4px 10px;
     background: var(--accent-soft);
     color: var(--accent-primary);
-    font-size: 0.8rem;
-    font-weight: 800;
+    font-size: 0.7rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    border-radius: var(--radius-full);
-    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+    border-radius: var(--radius-sm);
+    margin-bottom: 12px;
 }
-.workspace-header h2 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; color: var(--text-primary); }
-.workspace-header p { color: var(--text-secondary); font-size: 1.1rem; }
+.featured-header h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.featured-header p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
 
-/* ───── SEARCH & FILTERS ───── */
-.dashboard-controls {
+/* Controls */
+.controls {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    gap: 12px;
     align-items: center;
-    margin-bottom: 64px;
-    gap: 32px;
-    background: var(--surface-2);
-    padding: 24px;
-    border-radius: 20px;
-    border: 1px solid var(--border-subtle);
+    margin-bottom: 40px;
 }
 .search-wrap {
     position: relative;
     flex: 1;
-    min-width: 300px;
+    min-width: 240px;
 }
-.search-svg {
-    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
-    color: var(--text-secondary); pointer-events: none;
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
 }
 #tool-search {
     width: 100%;
-    padding: 16px 16px 16px 48px;
-    border: 1px solid var(--border-strong);
-    border-radius: 12px;
-    background: var(--surface-3);
+    padding: 10px 12px 10px 40px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
     color: var(--text-primary);
-    font-size: 1.05rem;
+    font-size: 0.85rem;
+    font-family: inherit;
     outline: none;
-    transition: 0.3s;
 }
-#tool-search:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 4px var(--accent-soft); }
+#tool-search:focus {
+    border-color: var(--accent-primary);
+}
 
-.filter-tabs { display: flex; flex-wrap: wrap; gap: 12px; }
+.filter-tabs {
+    display: flex;
+    gap: 4px;
+}
 .filter-tab {
-    padding: 12px 24px;
-    border: 1px solid transparent;
-    border-radius: 12px;
+    padding: 8px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
     background: transparent;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: 500;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: 0.3s;
+    font-family: inherit;
 }
-.filter-tab:hover { background: var(--surface-3); color: var(--text-primary); }
-.filter-tab.active { background: var(--text-primary); color: var(--surface-1); box-shadow: var(--shadow-soft); }
+.filter-tab:hover {
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+}
+.filter-tab.active {
+    background: var(--text-primary);
+    color: var(--surface-1);
+    border-color: var(--text-primary);
+}
 
-/* ───── ACTIVITY BAR ───── */
-.activity-bar { margin-bottom: 80px; }
-.activity-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px; }
-.activity-header h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); }
-.clear-btn { background: none; border: none; font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: 0.2s; }
-.clear-btn:hover { color: #ef4444; }
-
-.recent-scroll-grid {
+/* Activity */
+.activity-bar {
+    margin-bottom: 48px;
+}
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+.activity-header h2 {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.clear-btn {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: inherit;
+}
+.clear-btn:hover {
+    color: var(--error);
+}
+.recent-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
 }
-.mini-card {
+.recent-card {
     background: var(--surface-2);
-    padding: 20px;
-    border-radius: 16px;
-    border: 1px solid var(--border-strong);
-    display: flex; align-items: center; gap: 16px;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    gap: 12px;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.mini-card:hover { transform: translateY(-4px); border-color: var(--accent-primary); box-shadow: var(--shadow-medium); }
-.mini-icon { font-size: 1.5rem; width: 48px; height: 48px; background: var(--surface-3); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-.mini-title { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); }
+.recent-card:hover {
+    border-color: var(--border-strong);
+}
+.recent-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
 
-/* ───── TOOL SECTIONS (Breathable Library) ───── */
+/* Tool Sections */
 .tools-library {
-    opacity: 0.9; /* Slight fade to establish hierarchy vs workspace */
+    opacity: 0.95;
 }
 
 .tool-section {
-    margin-bottom: 100px; /* Massive spacing between categories */
+    margin-bottom: 56px;
 }
 
 .section-header {
-    margin-bottom: 32px;
-    padding-bottom: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
     border-bottom: 1px solid var(--border-subtle);
 }
-.section-header h2 { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
-.section-header p { font-size: 1.1rem; color: var(--text-secondary); }
-
-/* Structured 3-4 Column Grid */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px; /* Large breathable gap */
+.section-header h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.section-header p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
 }
 
-@media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px) { .product-grid { grid-template-columns: 1fr; } }
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
 
-/* ───── COMPONENT CARDS ───── */
-.product-card {
-    background: var(--surface-3);
+.tool-card {
+    background: var(--surface-2);
     border: 1px solid var(--border-subtle);
-    border-radius: 20px;
-    padding: 32px;
+    border-radius: var(--radius-md);
+    padding: 20px;
     text-decoration: none;
     display: flex;
     flex-direction: column;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: var(--shadow-soft);
+}
+.tool-card:hover {
+    border-color: var(--border-strong);
+}
+.tool-card h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+.tool-card p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
 }
 
-.card-icon-wrap {
-    width: 64px; height: 64px;
-    background: var(--surface-2);
-    border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 24px;
-    border: 1px solid var(--border-strong);
-    transition: 0.4s;
+.no-results {
+    text-align: center;
+    padding: 80px 0;
 }
-.card-icon { font-size: 2rem; }
-
-.product-card h3 { font-size: 1.3rem; font-weight: 800; color: var(--text-primary); margin-bottom: 12px; }
-.product-card p { font-size: 1rem; color: var(--text-secondary); line-height: 1.6; }
-
-.card-hover-border {
-    position: absolute; inset: 0; border-radius: 20px;
-    border: 2px solid var(--accent-primary);
-    opacity: 0; transition: 0.4s; pointer-events: none;
+.no-results h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.no-results p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
-.product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-medium);
+@media (max-width: 1024px) {
+    .tools-grid { grid-template-columns: repeat(2, 1fr); }
 }
-.product-card:hover .card-icon-wrap { transform: scale(1.1) rotate(5deg); background: var(--accent-soft); border-color: var(--accent-primary); }
-.product-card:hover .card-hover-border { opacity: 0.5; }
-.dark .product-card:hover .card-hover-border { opacity: 1; }
-
-/* Empty States */
-.no-results-state {
-    text-align: center; padding: 100px 0;
+@media (max-width: 640px) {
+    .tools-grid { grid-template-columns: 1fr; }
+    .controls { flex-direction: column; }
+    .search-wrap { min-width: 100%; }
 }
-.sad-icon { font-size: 3rem; margin-bottom: 20px; }
-.no-results-state h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
-.no-results-state p { color: var(--text-secondary); }
-
-/* Animation Utility */
-.animate-in { opacity: 0; animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-
-@keyframes fadeSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- RECENT TOOLS ---
         const RECENT_KEY = 'formfix_recent_tools';
         const recentContainer = document.getElementById('recent-tools-container');
         const activityArea = document.getElementById('activity-area');
         const clearBtn = document.getElementById('clear-recents');
-        
+
         function renderRecents() {
             if (!recentContainer) return;
             const data = localStorage.getItem(RECENT_KEY);
             let recents = data ? JSON.parse(data) : [];
-            
+
             if (recents.length === 0) {
                 if(activityArea) activityArea.classList.add('hidden');
                 return;
             }
 
             if(activityArea) activityArea.classList.remove('hidden');
-            
+
             recentContainer.innerHTML = recents.map(t => `
-                <a href="${t.href}" class="mini-card">
-                    <div class="mini-left">
-                        <span class="mini-icon">${t.icon}</span>
-                        <span class="mini-title">${t.title}</span>
-                    </div>
+                <a href="${t.href}" class="recent-card" aria-label="Recently used ${t.title}">
+                    <span class="recent-title">${t.title}</span>
                 </a>
             `).join('');
         }
@@ -448,17 +436,16 @@ const categories = [
             const toolData = {
                 id: card.dataset.id,
                 title: card.dataset.title,
-                icon: card.dataset.icon,
                 href: card.dataset.href
             };
 
             const data = localStorage.getItem(RECENT_KEY);
             let recents = data ? JSON.parse(data) : [];
-            
+
             recents = recents.filter(t => t.id !== toolData.id);
             recents.unshift(toolData);
             if (recents.length > 4) recents = recents.slice(0, 4);
-            
+
             localStorage.setItem(RECENT_KEY, JSON.stringify(recents));
         }
 
@@ -472,16 +459,15 @@ const categories = [
         }
         renderRecents();
 
-        // --- SEARCH & FILTER ---
         const searchInput = document.getElementById('tool-search');
         const filterBtns = document.querySelectorAll('.filter-tab');
         const sections = document.querySelectorAll('.tool-section');
-        const topArea = document.getElementById('top-dashboard-area');
+        const topArea = document.querySelector('.featured-section');
         const noResults = document.getElementById('no-results');
 
         let currentFilter = 'all';
         let currentSearch = '';
-        
+
         function runFilters() {
             let totalVisible = 0;
 
@@ -489,13 +475,13 @@ const categories = [
                 const cat = section.dataset.category;
                 const items = section.querySelectorAll('.search-item');
                 let groupHasVisibleItems = false;
-                
+
                 const matchesTab = (currentFilter === 'all' || currentFilter === cat);
 
                 items.forEach(item => {
                     const title = item.dataset.title.toLowerCase();
                     const matchesSearch = title.includes(currentSearch);
-                    
+
                     if (matchesTab && (currentSearch === '' || matchesSearch)) {
                         item.style.display = 'flex';
                         groupHasVisibleItems = true;
@@ -505,25 +491,19 @@ const categories = [
                     }
                 });
 
-                if (groupHasVisibleItems) {
-                    section.style.display = 'block';
-                } else {
-                    section.style.display = 'none';
-                }
+                section.style.display = groupHasVisibleItems ? 'block' : 'none';
             });
 
-            // Handle Top Area
             const isSearching = currentSearch.length > 0 || currentFilter !== 'all';
             if (topArea) topArea.style.display = isSearching ? 'none' : 'block';
             if (activityArea && !activityArea.classList.contains('hidden')) {
                 activityArea.style.display = isSearching ? 'none' : 'block';
             }
 
-            // Handle No Results
             if (totalVisible === 0) {
-                noResults.classList.remove('hidden');
+                noResults?.classList.remove('hidden');
             } else {
-                noResults.classList.add('hidden');
+                noResults?.classList.add('hidden');
             }
         }
 
@@ -536,8 +516,9 @@ const categories = [
 
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
+                filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
                 btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
                 currentFilter = btn.dataset.filter;
                 runFilters();
             });

@@ -1,5 +1,6 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 import UploadBox from '../components/UploadBox.astro';
 
@@ -27,6 +28,73 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/photo-to-sketch">
+    <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        const input = document.getElementById('file-input'), canvas = document.getElementById('sketch-canvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const intSlider = document.getElementById('intensity-slider'), intLabel = document.getElementById('int-label');
+        const uploadBoxElement = document.getElementById('upload-stage');
+        
+        let originalImage = new Image(), originalData = null, fileName = 'image.png';
+
+        if (input) {
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0]; if (!file) return;
+                handleFile(file);
+            });
+        }
+
+        function handleFile(file) {
+            fileName = file.name;
+            const r = new FileReader(); r.onload = (ev) => {
+                originalImage.onload = () => {
+                    const max = 1600; let w = originalImage.width, h = originalImage.height;
+                    if (w > max) { h = (max/w)*h; w = max; }
+                    canvas.width = w; canvas.height = h;
+                    ctx.drawImage(originalImage, 0, 0, w, h);
+                    originalData = ctx.getImageData(0, 0, w, h);
+                    
+                    document.getElementById('upload-stage').classList.add('hidden');
+                    document.getElementById('editor-stage').classList.remove('hidden'); 
+                    applyFilters();
+                };
+                originalImage.src = ev.target.result;
+            };
+            r.readAsDataURL(file);
+        }
+
+        const applyFilters = () => {
+            if (!originalImage.src) return;
+            const intensity = parseInt(intSlider.value); intLabel.innerText = intensity + '%';
+            const blurRadius = 2 + (intensity / 100) * 20;
+            const w = canvas.width, h = canvas.height;
+            
+            const bcvs = document.createElement('canvas'); bcvs.width=w; bcvs.height=h; const bctx = bcvs.getContext('2d');
+            bctx.filter = 'grayscale(100%)'; bctx.drawImage(originalImage, 0, 0, w, h);
+            
+            const blurcvs = document.createElement('canvas'); blurcvs.width=w; blurcvs.height=h; const blurctx = blurcvs.getContext('2d');
+            blurctx.filter = `grayscale(100%) invert(100%) blur(${blurRadius}px)`; blurctx.drawImage(originalImage, 0, 0, w, h);
+            
+            ctx.clearRect(0, 0, w, h);
+            ctx.globalCompositeOperation = 'source-over'; ctx.drawImage(bcvs, 0, 0, w, h);
+            ctx.globalCompositeOperation = 'color-dodge'; ctx.drawImage(blurcvs, 0, 0, w, h);
+            ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = 0.3; ctx.drawImage(bcvs, 0, 0, w, h);
+            ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1.0;
+        };
+
+        intSlider.oninput = applyFilters;
+
+        document.getElementById('dl-btn').onclick = () => {
+            const ext = fileName.split('.').pop() || 'jpg';
+            const mimeType = ext.toLowerCase() === 'png' ? 'image/png' : 'image/jpeg';
+            const finalName = fileName.replace(/\.[^/.]+$/, "") + "_sketch." + ext;
+            const a = document.createElement('a'); a.download = finalName; a.href = canvas.toDataURL(mimeType, 0.95); a.click();
+            if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
+        };
+    });
+</script>
+
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Photo to Pencil Sketch Online - Free Line Art Maker", path: "/photo-to-sketch" }]} />
+
     <ToolWrapper title="Pencil Sketch Maker" subtitle="Transform your photography into beautiful, hand-drawn line art instantly." currentTool="photo-to-sketch">
         
         <div slot="tool-ui">
@@ -113,116 +181,49 @@ const customSchema = {
              </div>
         </div>
     </ToolWrapper>
-</BaseLayout>
-
-<script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
-        const input = document.getElementById('file-input'), canvas = document.getElementById('sketch-canvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
-        const intSlider = document.getElementById('intensity-slider'), intLabel = document.getElementById('int-label');
-        const uploadBoxElement = document.getElementById('upload-stage');
-        
-        let originalImage = new Image(), originalData = null, fileName = 'image.png';
-
-        if (input) {
-            input.addEventListener('change', (e) => {
-                const file = e.target.files[0]; if (!file) return;
-                handleFile(file);
-            });
-        }
-
-        function handleFile(file) {
-            fileName = file.name;
-            const r = new FileReader(); r.onload = (ev) => {
-                originalImage.onload = () => {
-                    const max = 1600; let w = originalImage.width, h = originalImage.height;
-                    if (w > max) { h = (max/w)*h; w = max; }
-                    canvas.width = w; canvas.height = h;
-                    ctx.drawImage(originalImage, 0, 0, w, h);
-                    originalData = ctx.getImageData(0, 0, w, h);
-                    
-                    document.getElementById('upload-stage').classList.add('hidden');
-                    document.getElementById('editor-stage').classList.remove('hidden'); 
-                    applyFilters();
-                };
-                originalImage.src = ev.target.result;
-            };
-            r.readAsDataURL(file);
-        }
-
-        const applyFilters = () => {
-            if (!originalImage.src) return;
-            const intensity = parseInt(intSlider.value); intLabel.innerText = intensity + '%';
-            const blurRadius = 2 + (intensity / 100) * 20;
-            const w = canvas.width, h = canvas.height;
-            
-            const bcvs = document.createElement('canvas'); bcvs.width=w; bcvs.height=h; const bctx = bcvs.getContext('2d');
-            bctx.filter = 'grayscale(100%)'; bctx.drawImage(originalImage, 0, 0, w, h);
-            
-            const blurcvs = document.createElement('canvas'); blurcvs.width=w; blurcvs.height=h; const blurctx = blurcvs.getContext('2d');
-            blurctx.filter = `grayscale(100%) invert(100%) blur(${blurRadius}px)`; blurctx.drawImage(originalImage, 0, 0, w, h);
-            
-            ctx.clearRect(0, 0, w, h);
-            ctx.globalCompositeOperation = 'source-over'; ctx.drawImage(bcvs, 0, 0, w, h);
-            ctx.globalCompositeOperation = 'color-dodge'; ctx.drawImage(blurcvs, 0, 0, w, h);
-            ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = 0.3; ctx.drawImage(bcvs, 0, 0, w, h);
-            ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1.0;
-        };
-
-        intSlider.oninput = applyFilters;
-
-        document.getElementById('dl-btn').onclick = () => {
-            const ext = fileName.split('.').pop() || 'jpg';
-            const mimeType = ext.toLowerCase() === 'png' ? 'image/png' : 'image/jpeg';
-            const finalName = fileName.replace(/\.[^/.]+$/, "") + "_sketch." + ext;
-            const a = document.createElement('a'); a.download = finalName; a.href = canvas.toDataURL(mimeType, 0.95); a.click();
-            if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
-        };
-    });
-</script>
-
-<style>
+</BaseLayout><style>
     .workspace-editor { width: 100%; }
     .stage-container { display: flex; flex-direction: column; align-items: center; }
 
     .editor-layout { display: grid; grid-template-columns: 1fr 320px; gap: 40px; width: 100%; align-items: start; }
     
-    .canvas-panel { background: #fdfdfd; padding: 24px; display: flex; flex-direction: column; min-height: 500px; }
+    .canvas-panel { background:var(--surface-3); padding: 24px; display: flex; flex-direction: column; min-height: 500px; }
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .badge-accent { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 100px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+    .badge-accent { background: var(--accent-primary); color: #fff; padding: 4px 12px; border-radius: 100px; font-size: 0.7rem; font-weight:600; text-transform: uppercase; }
     .window-controls { display: flex; gap: 6px; }
     .window-controls span { width: 8px; height: 8px; border-radius: 50%; background: var(--surface-300); }
 
-    .canvas-container { border-radius: 16px; overflow: hidden; border: 1px solid var(--border-subtle); background: #fff; box-shadow: inset 0 2px 10px rgba(0,0,0,0.02); flex: 1; display: flex; align-items: center; justify-content: center; }
+    .canvas-container { border-radius: 16px; overflow: hidden; border: 1px solid var(--border-subtle); background:var(--surface-3); box-shadow: inset 0 2px 10px rgba(0,0,0,0.02); flex: 1; display: flex; align-items: center; justify-content: center; }
     
     .checkerboard { 
-        background-color: #fff; 
-        background-image: linear-gradient(45deg, #f8fafc 25%, transparent 25%, transparent 75%, #f8fafc 75%, #f8fafc), 
-                          linear-gradient(45deg, #f8fafc 25%, transparent 25%, transparent 75%, #f8fafc 75%, #f8fafc);
+        background-color:var(--surface-3); 
+        background-image: linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2)), 
+                          linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2));
         background-size: 20px 20px; background-position: 0 0, 10px 10px;
     }
 
     #sketch-canvas { max-width: 100%; max-height: 600px; display: block; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.08)); }
 
     .sidebar-panel { display: flex; flex-direction: column; gap: 24px; }
-    .settings-group { padding: 24px; background: #fff; }
+    .settings-group { padding: 24px; background:var(--surface-3); }
     .group-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .group-title { font-size: 0.85rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; }
-    .value-badge { background: var(--surface-100); color: var(--accent); border: 1.5px solid var(--accent); padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; }
+    .group-title { font-size: 0.85rem; font-weight:600; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; }
+    .value-badge { background: var(--surface-100); color: var(--accent-primary); border: 1.5px solid var(--accent-primary); padding: 4px 10px; border-radius: 8px; font-weight:600; font-size: 0.8rem; }
     
     .control-label { display: block; font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 12px; }
 
     .premium-slider { appearance: none; width: 100%; height: 6px; background: var(--surface-200); border-radius: 100px; outline: none; }
-    .premium-slider::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; background: var(--accent); border: 4px solid #fff; border-radius: 50%; box-shadow: var(--shadow-md); cursor: pointer; transition: 0.2s; }
-    .premium-slider::-webkit-slider-thumb:hover { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(37, 99, 235, 0.1); }
+    .premium-slider::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; background: var(--accent-primary); border:4px solid var(--border-subtle); border-radius: 50%; box-shadow: var(--shadow-md); cursor: pointer; transition: 0.2s; }
+    .premium-slider::-webkit-slider-thumb:hover { transform: scale(1.1); box-shadow: 0 0 0 8px var(--accent-soft); }
 
     .action-buttons { display: flex; flex-direction: column; gap: 12px; }
     .action-buttons .primary-btn { height: 56px; border-radius: 16px; font-size: 1rem; }
-    .action-buttons .secondary-btn { height: 56px; border-radius: 16px; background: #fff; border: 1.5px solid var(--border-subtle); color: var(--text-main); width: 100%; }
+    .action-buttons .secondary-btn { height: 56px; border-radius: 16px; background:var(--surface-3); border: 1.5px solid var(--border-subtle); color: var(--text-main); width: 100%; }
     
     .privacy-notice { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 8px; }
 
     /* Info Section Styles */
-    .pro-article h2 { font-size: 2rem; font-weight: 850; margin-bottom: 24px; }
+    .pro-article h2 { font-size: 2rem; font-weight:600; margin-bottom: 24px; }
     .pro-article p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 32px; }
     
     .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
@@ -232,9 +233,9 @@ const customSchema = {
     .f-item p { font-size: 0.95rem; margin-bottom: 0; line-height: 1.6; }
 
     .faq-accordion details { border-bottom: 1px solid var(--border-subtle); padding: 16px 0; }
-    .faq-accordion summary { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 1.05rem; cursor: pointer; list-style: none; }
+    .faq-accordion summary { display: flex; justify-content: space-between; align-items: center; font-weight:600; font-size: 1.05rem; cursor: pointer; list-style: none; }
     .faq-accordion .ans { padding-top: 12px; color: var(--text-muted); font-size: 0.95rem; }
-    .plus { color: var(--accent); font-weight: 400; font-size: 1.2rem; }
+    .plus { color: var(--accent-primary); font-weight: 400; font-size: 1.2rem; }
 
     @media (max-width: 900px) {
         .editor-layout { grid-template-columns: 1fr; gap: 24px; }

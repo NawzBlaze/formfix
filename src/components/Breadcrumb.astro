@@ -1,0 +1,85 @@
+---
+import { SITE_URL, buildCanonical, titleToBreadcrumb } from '../seo';
+
+interface Crumb { name: string; path: string; }
+
+interface Props {
+  items?: Crumb[];
+  title?: string;
+  path?: string;
+}
+
+const { items, title, path } = Astro.props;
+
+const computed: Crumb[] = items || [
+  { name: 'Home', path: '/' },
+  ...(path && path !== '/' ? [{ name: titleToBreadcrumb(title || ''), path }] : []),
+];
+---
+
+<nav class="ff-breadcrumb" aria-label="Breadcrumb">
+  <ol class="ff-breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    {computed.map((c, i) => (
+      <li
+        class="ff-breadcrumb-item"
+        itemprop="itemListElement"
+        itemscope
+        itemtype="https://schema.org/ListItem"
+      >
+        {i > 0 && (
+          <span class="ff-breadcrumb-sep" aria-hidden="true">/</span>
+        )}
+        {i === computed.length - 1 ? (
+          <span itemprop="name" aria-current="page">{c.name}</span>
+        ) : (
+          <a href={buildCanonical(c.path)} itemprop="item">
+            <span itemprop="name">{c.name}</span>
+          </a>
+        )}
+        <meta itemprop="position" content={String(i + 1)} />
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .ff-breadcrumb {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .ff-breadcrumb-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+  .ff-breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.4;
+  }
+  .ff-breadcrumb-item a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+  .ff-breadcrumb-item a:hover {
+    color: var(--accent-primary);
+  }
+  .ff-breadcrumb-item span[aria-current="page"] {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+  .ff-breadcrumb-sep {
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+</style>

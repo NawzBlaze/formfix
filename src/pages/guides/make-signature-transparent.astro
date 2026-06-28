@@ -1,11 +1,28 @@
 ---
 import BaseLayout from '../../components/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
 const title = "How to Remove White Background from Signature (Transparent Signature)";
 const description = "Learn how to make your signature background transparent for online forms and digital documents using FormFix's private tools.";
+
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Make Signature Background Transparent",
+  "description": "Step-by-step guide on removing the white background from a signature image.",
+  "step": [
+    { "@type": "HowToStep", "name": "Open Background Remover", "text": "Navigate to the FormFix Background Remover tool." },
+    { "@type": "HowToStep", "name": "Upload signature", "text": "Upload your signature image with a white background." },
+    { "@type": "HowToStep", "name": "Click white area", "text": "Click on the white background to remove it." },
+    { "@type": "HowToStep", "name": "Download", "text": "Download the transparent signature as PNG." }
+  ]
+};
 ---
 
-<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/make-signature-transparent">
+<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/make-signature-transparent" customSchema={howToSchema}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "How to Remove White Background from Signature (Transparent Signature)", path: "/guides/make-signature-transparent" }]} />
+
     <section class="page-header">
         <div class="container">
             <h1>How to Make Signature Background Transparent</h1>
@@ -44,13 +61,15 @@ const description = "Learn how to make your signature background transparent for
             </article>
         </div>
     </section>
+
+    <ShareBar title={title} />
 </BaseLayout>
 
 <style>
     .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
     .content-section { padding: 60px 0; }
-    .prose { line-height: 1.8; color: var(--slate); }
-    .prose h2 { color: var(--dark); margin-top: 2rem; margin-bottom: 1rem; }
+    .prose { line-height: 1.8; color: var(--text-secondary); }
+    .prose h2 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; }
     .prose p { margin-bottom: 1.5rem; }
     .prose ul, .prose ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
     .container-narrow { max-width: 800px; }

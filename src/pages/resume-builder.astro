@@ -1,461 +1,827 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
+import { TEMPLATES, FONT_OPTIONS } from '../components/resume-builder/data';
 
-const PAGE_TITLE = 'Pro Resume Builder - Create 1-Min Professional CV for Free | FormFix';
-const PAGE_DESC = 'Generate a clean, modern, and ATS-friendly resume in less than 60 seconds. Fill the form and download your professional PDF instantly.';
-const PAGE_KEYWORDS = 'free resume builder, online cv maker, 1-minute resume, professional pdf resume, ats-friendly cv, job application toolkit';
+const PAGE_TITLE = 'Resume Builder - Free ATS CV Maker & PDF Download | FormFix';
+const PAGE_DESC = 'Build a polished, ATS-friendly resume with live A4 preview, smart writing tools, templates, customization, autosave, and PDF export. Private and free.';
+const PAGE_KEYWORDS = 'resume builder, free cv maker, ATS resume checker, online resume creator, pdf resume download, resume maker online';
 
 const customSchema = {
-  "@context": "https://schema.org",
-  "@graph": [
+  '@context': 'https://schema.org',
+  '@graph': [
     {
-      "@type": "SoftwareApplication",
-      "name": "FormFix Pro Resume Builder",
-      "operatingSystem": "All",
-      "applicationCategory": "UtilitiesApplication",
-      "description": "Professional 1-minute resume generator for job seekers and students.",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    }
-  ]
+      '@type': 'SoftwareApplication',
+      name: 'FormFix Resume Builder',
+      operatingSystem: 'All',
+      applicationCategory: 'UtilitiesApplication',
+      description: PAGE_DESC,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    },
+  ],
 };
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/resume-builder">
-    <ToolWrapper title="1-Min Resume Builder" subtitle="Create a professional, ATS-friendly CV instantly. 100% free and private." currentTool="resume-builder">
-        
-        <div slot="tool-ui">
-             <div class="workspace-editor">
-                  <div class="builder-grid">
-                       <!-- 1. Editor Sidebar -->
-                       <div class="editor-sidebar">
-                            <div class="editor-card glass-card mb-24">
-                                 <div class="section mb-24">
-                                      <label class="section-label mb-16">1. Personal Info</label>
-                                      <div class="grid-2col gap-12 mb-12">
-                                           <input type="text" id="res-name" placeholder="Full Name" class="modern-input" />
-                                           <input type="text" id="res-title" placeholder="Job Title" class="modern-input" />
-                                      </div>
-                                      <div class="grid-2col gap-12 mb-12">
-                                           <input type="email" id="res-email" placeholder="Email Address" class="modern-input" />
-                                           <input type="text" id="res-phone" placeholder="Phone Number" class="modern-input" />
-                                      </div>
-                                      <input type="text" id="res-location" placeholder="City, Country" class="modern-input mb-12" />
-                                      <textarea id="res-summary" placeholder="Professional Summary (1-2 sentences)..." class="modern-textarea-sm"></textarea>
-                                 </div>
+  <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: 'Resume Builder', path: '/resume-builder' }]} />
 
-                                 <div class="section mb-24">
-                                      <label class="section-label mb-16">2. Career Experience</label>
-                                      <div class="experience-entry">
-                                           <input type="text" id="exp-comp" placeholder="Company & Current Role" class="modern-input mb-12" />
-                                           <input type="text" id="exp-dur" placeholder="Duration (e.g. 2021 - Present)" class="modern-input mb-12" />
-                                           <textarea id="exp-desc" placeholder="Responsibilities & Key Achievements..." class="modern-textarea-sm"></textarea>
-                                      </div>
-                                 </div>
+  <ToolWrapper title="Resume Builder" subtitle="Choose a template, fill your details, improve the writing, check ATS fit, and download a clean PDF." currentTool="resume-builder">
+    <div slot="tool-ui">
+      <div class="rb-shell" data-resume-builder>
+        <section class="rb-stage" aria-label="Resume builder workflow">
+          <div class="rb-stage-step is-active" data-step-dot="templates"><span>1</span> Templates</div>
+          <div class="rb-stage-step is-active" data-step-dot="editor"><span>2</span> Fill</div>
+          <div class="rb-stage-step" data-step-dot="customize"><span>3</span> Customize</div>
+          <div class="rb-stage-step" data-step-dot="download"><span>4</span> Download</div>
+        </section>
 
-                                 <div class="section mb-24">
-                                      <label class="section-label mb-16">3. Education & Skills</label>
-                                      <div class="grid-2col gap-12 mb-12">
-                                           <input type="text" id="edu-inst" placeholder="Degree / Institution" class="modern-input" />
-                                           <input type="text" id="edu-year" placeholder="Year" class="modern-input" />
-                                      </div>
-                                      <input type="text" id="res-skills" placeholder="Skills (React, Python, Management...)" class="modern-input" />
-                                 </div>
-
-                                 <div class="section mb-24 border-t pt-24">
-                                      <label class="section-label mb-16 text-primary">4. Layout & Personalization</label>
-                                      
-                                      <div class="control-row mb-16">
-                                           <div class="control-item">
-                                                <label class="p-label">Base Font Size</label>
-                                                <div class="d-flex align-center gap-8">
-                                                     <input type="range" id="size-body" min="8" max="14" value="10" class="unified-slider flex-1" />
-                                                     <span class="size-val" id="val-body">10pt</span>
-                                                </div>
-                                           </div>
-                                           <div class="control-item">
-                                                <label class="p-label">Heading Scale</label>
-                                                <div class="d-flex align-center gap-8">
-                                                     <input type="range" id="size-head" min="1.5" max="3" step="0.1" value="2.6" class="unified-slider flex-1" />
-                                                     <span class="size-val" id="val-head">2.6x</span>
-                                                </div>
-                                           </div>
-                                      </div>
-
-                                      <div class="control-row mb-16">
-                                           <div class="control-item">
-                                                <label class="p-label">Accent Color</label>
-                                                <div class="color-swatches" id="accent-picker">
-                                                     <button class="swatch active" data-color="#2563eb" style="background: #2563eb;"></button>
-                                                     <button class="swatch" data-color="#0f172a" style="background: #0f172a;"></button>
-                                                     <button class="swatch" data-color="#7c3aed" style="background: #7c3aed;"></button>
-                                                     <button class="swatch" data-color="#059669" style="background: #059669;"></button>
-                                                </div>
-                                           </div>
-                                           <div class="control-item">
-                                                <label class="p-label">Font Style</label>
-                                                <select id="font-pair" class="modern-select">
-                                                     <option value="helvetica" selected>Classic Clean</option>
-                                                     <option value="times">Traditional Serif</option>
-                                                     <option value="courier">Modern Minimal</option>
-                                                </select>
-                                           </div>
-                                      </div>
-                                 </div>
-
-                                 <button id="download-btn" class="primary-btn wide-btn pulse-glow lg-btn">Download Professional PDF</button>
-                                 <p class="privacy-tiny">🔒 Zero Data Retention. Privacy First.</p>
-                            </div>
-                       </div>
-
-                       <!-- 2. Live Preview Stage -->
-                       <div class="preview-stage">
-                            <div class="preview-header mb-16">
-                                 <span class="preview-badge">Live ATS-Friendly Preview</span>
-                            </div>
-                            <div class="cv-preview shadow-lg" id="cv-container">
-                                 <div class="cv-sheet">
-                                      <div class="cv-header mb-24">
-                                           <h1 id="pv-name">Full Name</h1>
-                                           <p id="pv-title" class="text-accent font-700">Expert Job Title</p>
-                                           <div class="cv-meta mt-8">
-                                                <span id="pv-email">email@example.com</span>
-                                                <span class="dot">•</span>
-                                                <span id="pv-phone">+00 000 0000</span>
-                                                <span class="dot">•</span>
-                                                <span id="pv-location">Location</span>
-                                           </div>
-                                      </div>
-                                      
-                                      <div class="cv-section mb-24">
-                                           <h3 class="cv-sec-title">PROFESSIONAL SUMMARY</h3>
-                                           <p id="pv-summary" class="cv-text">Summarize your professional journey and key focus areas here...</p>
-                                      </div>
-
-                                      <div class="cv-section mb-24">
-                                           <h3 class="cv-sec-title">EXPERIENCE</h3>
-                                           <div id="pv-exp-list">
-                                                <div class="exp-row">
-                                                     <div class="d-flex justify-between align-center mb-4">
-                                                          <strong id="pv-exp-comp" class="cv-strong">Company Name</strong>
-                                                          <span id="pv-exp-dur" class="cv-meta-sm">2021 - Present</span>
-                                                     </div>
-                                                     <p id="pv-exp-desc" class="cv-text text-muted">A detailed description of your professional impact and responsibilities...</p>
-                                                </div>
-                                           </div>
-                                      </div>
-
-                                      <div class="cv-section mb-24">
-                                           <h3 class="cv-sec-title">EDUCATION</h3>
-                                           <div id="pv-edu-list">
-                                                <div class="d-flex justify-between align-center">
-                                                     <strong id="pv-edu-inst" class="cv-strong">Degree / Institution</strong>
-                                                     <span id="pv-edu-year" class="cv-meta-sm">Year Finished</span>
-                                                </div>
-                                           </div>
-                                      </div>
-
-                                      <div class="cv-section">
-                                           <h3 class="cv-sec-title">SKILLS & EXPERTISE</h3>
-                                           <p id="pv-skills" class="cv-text">Core Competencies, Tech Stack, Soft Skills...</p>
-                                      </div>
-                                 </div>
-                            </div>
-                       </div>
-                  </div>
-             </div>
+        <div class="rb-toolbar" role="toolbar" aria-label="Resume actions">
+          <div class="rb-toolbar-main">
+            <button class="rb-tab is-active" type="button" data-panel-target="editor">Editor</button>
+            <button class="rb-tab" type="button" data-panel-target="templates">Templates</button>
+            <button class="rb-tab" type="button" data-panel-target="customize">Customize</button>
+            <button class="rb-tab" type="button" data-panel-target="ats">ATS</button>
+          </div>
+          <div class="rb-toolbar-actions">
+            <button class="rb-icon-btn" type="button" data-action="undo" aria-label="Undo" title="Undo">↶</button>
+            <button class="rb-icon-btn" type="button" data-action="redo" aria-label="Redo" title="Redo">↷</button>
+            <button class="rb-soft-btn" type="button" data-action="duplicate">Duplicate</button>
+            <button class="rb-soft-btn" type="button" data-action="export-json">Export JSON</button>
+            <label class="rb-soft-btn rb-file-btn">Import JSON<input type="file" accept="application/json" data-json-import /></label>
+            <button class="rb-primary-btn" type="button" data-action="download-pdf">Download PDF</button>
+          </div>
         </div>
 
-        <div slot="tool-info">
-             <div class="pro-article">
-                 <h2>One-Minute Professional Resume Builder</h2>
-                 <p>Our <strong>Professional Resume Builder</strong> is designed to help job seekers create optimized, ATS-friendly CVs in seconds. Fill in your details and download a print-ready PDF immediately. We use a standardized single-column layout which is proven to be the most compatible with Applicant Tracking Systems (ATS).</p>
-                 
-                 <div class="faq-accordion mt-32">
-                      <details class="faq-item">
-                           <summary>Will this pass recruiter filters (ATS)?</summary>
-                           <div class="ans">Yes. We use a standard single-column layout with clean headings and standard fonts, which is the most reliable way to ensure your resume is indexed correctly by ATS software used by most modern companies.</div>
-                      </details>
-                      <details class="faq-item">
-                           <summary>Is my career data saved?</summary>
-                           <div class="ans">No. We operate on a 'Zero Data Retention' policy. Your data is processed entirely in your browser's RAM and is purged the moment you close the tab. We never store or transmit your personal career information to any server.</div>
-                      </details>
-                 </div>
-             </div>
+        <div class="rb-workspace">
+          <aside class="rb-editor" aria-label="Resume editor">
+            <div class="rb-panel is-active" data-panel="editor">
+              <div class="rb-panel-head">
+                <p class="rb-kicker">Fast editor</p>
+                <h2>Build the content</h2>
+                <span data-save-state>Autosaved</span>
+              </div>
+              <div class="rb-section-list" data-section-list></div>
+              <button class="rb-add-section" type="button" data-action="add-custom">+ Add Custom Section</button>
+            </div>
+
+            <div class="rb-panel" data-panel="templates">
+              <div class="rb-panel-head">
+                <p class="rb-kicker">12 designs</p>
+                <h2>Choose a template</h2>
+              </div>
+              <div class="rb-template-grid" data-template-grid>
+                {TEMPLATES.map((template) => (
+                  <button class="rb-template-card" type="button" data-template-id={template.id}>
+                    <span class="rb-template-preview" style={`--tpl-accent:${template.config.accentColor};--tpl-bg:${template.config.backgroundColor};`}>
+                      <i></i><i></i><i></i>
+                    </span>
+                    <strong>{template.name}</strong>
+                    <small>{template.category}</small>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div class="rb-panel" data-panel="customize">
+              <div class="rb-panel-head">
+                <p class="rb-kicker">Design controls</p>
+                <h2>Fine tune layout</h2>
+              </div>
+              <div class="rb-control-grid">
+                <label class="rb-field">Accent Color<input type="color" data-customize="accentColor" /></label>
+                <label class="rb-field">Font Family<select data-customize="fontFamily">{FONT_OPTIONS.map((font) => <option value={font.value}>{font.label}</option>)}</select></label>
+                <label class="rb-field">Font Size<input type="range" min="9" max="12.5" step="0.25" data-customize="fontSize" /></label>
+                <label class="rb-field">Line Height<input type="range" min="1.35" max="1.8" step="0.05" data-customize="lineHeight" /></label>
+                <label class="rb-field">Section Spacing<input type="range" min="8" max="28" step="1" data-customize="sectionSpacing" /></label>
+                <label class="rb-field">Margins<input type="range" min="28" max="68" step="2" data-customize="margin" /></label>
+                <label class="rb-field">Header Style<select data-customize="headerStyle"><option value="centered">Centered</option><option value="left">Left</option><option value="split">Split</option><option value="stacked">Stacked</option><option value="sidebar">Sidebar</option></select></label>
+                <label class="rb-field">Icon Style<select data-customize="iconStyle"><option value="line">Line</option><option value="filled">Filled</option><option value="none">None</option></select></label>
+                <label class="rb-field">Divider Style<select data-customize="dividerStyle"><option value="line">Line</option><option value="dots">Dots</option><option value="double">Double</option><option value="none">None</option></select></label>
+                <label class="rb-field">Columns<select data-customize="columns"><option value="1">One column</option><option value="2">Two columns</option></select></label>
+                <label class="rb-field">Page Size<select data-customize="pageSize"><option value="a4">A4</option><option value="letter">Letter</option><option value="legal">Legal</option></select></label>
+                <label class="rb-field">Border Radius<input type="range" min="0" max="16" step="1" data-customize="borderRadius" /></label>
+                <label class="rb-check"><input type="checkbox" data-customize="photoEnabled" /> Show photo</label>
+                <label class="rb-check"><input type="checkbox" data-preview-dark /> Dark preview</label>
+              </div>
+            </div>
+
+            <div class="rb-panel" data-panel="ats">
+              <div class="rb-panel-head">
+                <p class="rb-kicker">ATS checker</p>
+                <h2>Improve your score</h2>
+              </div>
+              <div class="rb-score-card">
+                <div class="rb-score-ring"><strong data-ats-score>0</strong><span>/100</span></div>
+                <div class="rb-score-bars" data-ats-bars></div>
+              </div>
+              <div class="rb-suggestions" data-ats-suggestions></div>
+            </div>
+          </aside>
+
+          <section class="rb-preview-area" aria-label="Live resume preview">
+            <div class="rb-preview-top">
+              <div>
+                <p class="rb-kicker">Live A4 preview</p>
+                <h2 data-preview-title>Minimal</h2>
+              </div>
+              <div class="rb-preview-status"><span data-word-count>0 words</span><span data-page-count>1 page</span></div>
+            </div>
+            <div class="rb-preview-scroll">
+              <article class="rb-paper" id="rb-paper" data-resume-paper></article>
+            </div>
+          </section>
         </div>
-    </ToolWrapper>
+      </div>
+    </div>
+
+    <div slot="tool-info">
+      <h2>Private Resume Builder</h2>
+      <p>Your resume is edited, checked, saved, imported, exported, and rendered in your browser. The layout uses selectable text and standard section names so the result stays readable for recruiters and ATS systems.</p>
+      <div class="faq-grid">
+        <details class="faq-item">
+          <summary>Does autosave upload my resume?</summary>
+          <div class="ans">No. Autosave uses your browser storage only.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I keep multiple versions?</summary>
+          <div class="ans">Yes. Use Duplicate or Export JSON before making major edits.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Are creative templates ATS safe?</summary>
+          <div class="ans">The ATS template is safest. Creative templates keep clear headings and selectable text, but one-column layouts are best for strict systems.</div>
+        </details>
+      </div>
+    </div>
+  </ToolWrapper>
 </BaseLayout>
 
-<script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputs = ['res-name', 'res-title', 'res-email', 'res-phone', 'res-location', 'res-summary', 'res-skills'];
-        const pvs = ['pv-name', 'pv-title', 'pv-email', 'pv-phone', 'pv-location', 'pv-summary', 'pv-skills'];
-        
-        const downloadBtn = document.getElementById('download-btn');
-
-        // Live Preview Binding
-        inputs.forEach((id, i) => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.addEventListener('input', () => {
-                    const pv = document.getElementById(pvs[i]);
-                    // @ts-ignore
-                    if (pv) pv.textContent = (el).value || (id.split('-')[1].charAt(0).toUpperCase() + id.split('-')[1].slice(1));
-                });
-            }
-        });
-
-        // Dynamic Field Listeners
-        const dynamicFields = ['exp-comp', 'exp-dur', 'exp-desc', 'edu-inst', 'edu-year'];
-        dynamicFields.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.addEventListener('input', updateLists);
-        });
-
-        function updateLists() {
-             const comp = (document.getElementById('exp-comp')).value || 'Company Name';
-             const dur = (document.getElementById('exp-dur')).value || '2021 - Present';
-             const desc = (document.getElementById('exp-desc')).value || 'Responsibilities...';
-             
-             const expList = document.getElementById('pv-exp-list');
-             if (expList) {
-                expList.innerHTML = `
-                   <div class="exp-row">
-                        <div class="d-flex justify-between align-center mb-4">
-                             <strong class="cv-strong">${comp}</strong>
-                             <span class="cv-meta-sm">${dur}</span>
-                        </div>
-                        <p class="cv-text text-muted">${desc}</p>
-                   </div>`;
-             }
-             
-             const inst = (document.getElementById('edu-inst')).value || 'Degree / Institution';
-             const year = (document.getElementById('edu-year')).value || 'Year';
-             const eduList = document.getElementById('pv-edu-list');
-             if (eduList) {
-                eduList.innerHTML = `
-                   <div class="d-flex justify-between align-center">
-                        <strong class="cv-strong">${inst}</strong>
-                        <span class="cv-meta-sm">${year}</span>
-                   </div>`;
-             }
-        }
-
-        // Personalization Listeners
-        const sizeBody = document.getElementById('size-body');
-        const sizeHead = document.getElementById('size-head');
-        const valBody = document.getElementById('val-body');
-        const valHead = document.getElementById('val-head');
-        const fontPair = document.getElementById('font-pair');
-        const swatches = document.querySelectorAll('.swatch');
-        let currentAccent = '#2563eb';
-
-        function applyStyles() {
-            const bodyVal = (sizeBody).value;
-            const headScale = (sizeHead).value;
-            const fontVal = (fontPair).value;
-            const cvSheet = document.querySelector('.cv-sheet');
-            
-            if (valBody) valBody.textContent = `${bodyVal}pt`;
-            if (valHead) valHead.textContent = `${headScale}x`;
-
-            if (cvSheet) {
-                (cvSheet).style.setProperty('--cv-base-size', `${bodyVal}pt`);
-                (cvSheet).style.setProperty('--cv-head-size', `${bodyVal * headScale}pt`);
-                (cvSheet).style.setProperty('--cv-accent', currentAccent);
-                
-                let fontStack = 'system-ui, sans-serif';
-                if(fontVal === 'times') fontStack = '"Times New Roman", serif';
-                if(fontVal === 'courier') fontStack = '"Courier New", monospace';
-                (cvSheet).style.fontFamily = fontStack;
-            }
-        }
-
-        if (sizeBody) sizeBody.addEventListener('input', applyStyles);
-        if (sizeHead) sizeHead.addEventListener('input', applyStyles);
-        if (fontPair) fontPair.addEventListener('change', applyStyles);
-        swatches.forEach(s => {
-            s.addEventListener('click', () => {
-                swatches.forEach(sw => sw.classList.remove('active'));
-                s.classList.add('active');
-                currentAccent = (s).dataset.color;
-                applyStyles();
-            });
-        });
-
-        if (downloadBtn) {
-            downloadBtn.addEventListener('click', async () => {
-                // @ts-ignore
-                const { jsPDF } = await import('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-                // @ts-ignore
-                const doc = new jspdf.jsPDF({ unit: 'pt', format: 'a4' });
-                
-                const baseSize = parseInt((sizeBody).value);
-                const headSize = baseSize * parseFloat((sizeHead).value);
-                const fontVal = (fontPair).value;
-                const activeFont = fontVal === 'times' ? 'times' : (fontVal === 'courier' ? 'courier' : 'helvetica');
-                
-                const name = (document.getElementById('res-name')).value || "Full Name";
-                const title = (document.getElementById('res-title')).value || "Job Title";
-                const email = (document.getElementById('res-email')).value || "email@example.com";
-                const phone = (document.getElementById('res-phone')).value || "+00 000 000";
-                const loc = (document.getElementById('res-location')).value || "Location";
-                const sum = (document.getElementById('res-summary')).value || "Professional Summary";
-                const skills = (document.getElementById('res-skills')).value || "Skills & Expertise";
-
-                const expComp = (document.getElementById('exp-comp')).value || "Company Name";
-                const expDur = (document.getElementById('exp-dur')).value || "Duration";
-                const expDesc = (document.getElementById('exp-desc')).value || "Experience detail...";
-
-                const eduInst = (document.getElementById('edu-inst')).value || "Institution";
-                const eduYear = (document.getElementById('edu-year')).value || "Year";
-
-                function hexToRgb(hex) {
-                    const r = parseInt(hex.slice(1, 3), 16);
-                    const g = parseInt(hex.slice(3, 5), 16);
-                    const b = parseInt(hex.slice(5, 7), 16);
-                    return [r, g, b];
-                }
-                const accentRGB = hexToRgb(currentAccent);
-
-                // --- PDF GENERATION ENGINE ---
-                const margin = 45;
-                const pageWide = 595 - (margin * 2);
-                let y = 60;
-
-                // Header
-                doc.setFont(activeFont, "bold");
-                doc.setFontSize(headSize);
-                doc.text(name.toUpperCase(), margin, y);
-                y += (headSize * 0.8);
-
-                doc.setFont(activeFont, "bold");
-                doc.setFontSize(baseSize * 1.5);
-                doc.setTextColor(accentRGB[0], accentRGB[1], accentRGB[2]);
-                doc.text(title, margin, y);
-                y += 22;
-
-                doc.setFont(activeFont, "normal");
-                doc.setFontSize(baseSize * 0.9);
-                doc.setTextColor(110);
-                doc.text(`${email}  |  ${phone}  |  ${loc}`, margin, y);
-                
-                y += 12;
-                doc.setDrawColor(230);
-                doc.setLineWidth(1);
-                doc.line(margin, y, 595 - margin, y);
-                y += 35;
-
-                // Section Helper
-                const renderSection = (title, content, isList = false) => {
-                    doc.setFont(activeFont, "bold");
-                    doc.setFontSize(baseSize * 1.1);
-                    doc.setTextColor(15);
-                    doc.text(title.toUpperCase(), margin, y);
-                    
-                    y += 6;
-                    doc.setDrawColor(accentRGB[0], accentRGB[1], accentRGB[2]);
-                    doc.setLineWidth(1.5);
-                    doc.line(margin, y, margin + 40, y);
-                    y += 18;
-
-                    doc.setFont(activeFont, "normal");
-                    doc.setFontSize(baseSize);
-                    doc.setTextColor(60);
-                    
-                    const splitText = doc.splitTextToSize(content, pageWide);
-                    doc.text(splitText, margin, y);
-                    y += (splitText.length * (baseSize * 1.45)) + 24;
-                };
-
-                // Workflow
-                renderSection("About Me", sum);
-                
-                // Exp (Custom for dual column line)
-                doc.setFont(activeFont, "bold");
-                doc.setFontSize(baseSize * 1.1);
-                doc.setTextColor(15);
-                doc.text("EXPERIENCE", margin, y);
-                y += 6;
-                doc.line(margin, y, margin + 40, y);
-                y += 18;
-
-                doc.setFont(activeFont, "bold"); doc.setFontSize(baseSize); doc.setTextColor(20);
-                doc.text(expComp, margin, y);
-                doc.setFont(activeFont, "italic"); doc.setFontSize(baseSize * 0.9);
-                doc.text(expDur, 595 - margin, y, { align: 'right' });
-                y += 15;
-                doc.setFont(activeFont, "normal"); doc.setFontSize(baseSize); doc.setTextColor(60);
-                const expLines = doc.splitTextToSize(expDesc, pageWide);
-                doc.text(expLines, margin, y);
-                y += (expLines.length * (baseSize * 1.45)) + 24;
-
-                renderSection("Education", `${eduInst} (${eduYear})`);
-                renderSection("Skills", skills);
-
-                doc.save(`${name.replace(/\s+/g, '_')}_Resume.pdf`);
-                // @ts-ignore
-                if (window.triggerConfetti) window.triggerConfetti();
-            });
-        }
-    });
-</script>
-
 <style>
-    .workspace-editor { width: 100%; }
-    .builder-grid { display: grid; grid-template-columns: 480px 1fr; gap: 40px; align-items: start; }
-
-    .editor-sidebar { position: sticky; top: 20px; }
-    .editor-card { padding: 32px; background: #fff; }
-    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
-
-    .modern-input { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: var(--surface-50); font-weight: 600; font-size: 0.95rem; outline: none; transition: 0.2s; }
-    .modern-input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
-    
-    .modern-textarea-sm { width: 100%; height: 100px; border-radius: 12px; border: 1.5px solid var(--border-subtle); padding: 14px; background: var(--surface-50); font-weight: 600; outline: none; resize: vertical; }
-    .modern-textarea-sm:focus { border-color: var(--accent); background: #fff; }
-
-    .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-    /* Preview UI */
-    .preview-stage { min-width: 0; }
-    .preview-badge { display: inline-block; background: var(--accent); color: #fff; padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
-    
-    .cv-preview { background: #eaeff5; padding: 40px; border-radius: 12px; display: flex; justify-content: center; overflow: hidden; }
-    .cv-sheet { width: 100%; max-width: 595pt; background: #fff; padding: 60pt 50pt; box-shadow: 0 10px 40px rgba(0,0,0,0.1); color: #1e293b; text-align: left; --cv-base-size: 10pt; --cv-head-size: 28pt; --cv-accent: #2563eb; }
-    
-    .cv-header h1 { font-size: var(--cv-head-size); font-weight: 900; color: #0f172a; line-height: 1.1; margin-bottom: 4pt; }
-    .cv-meta { display: flex; align-items: center; gap: 8pt; font-size: calc(var(--cv-base-size) * 0.9); color: #64748b; font-weight: 600; }
-    .dot { opacity: 0.5; }
-
-    /* Personalization UI Updates */
-    .size-val { font-size: 0.8rem; font-weight: 800; color: var(--accent); min-width: 40px; text-align: right; }
-    .modern-select { width: 100%; padding: 8px; border-radius: 10px; border: 1.5px solid var(--border-subtle); background: var(--surface-100); font-weight: 600; outline: none; cursor: pointer; }
-    .swatch { width: 24px; height: 24px; }
-    
-    .cv-sheet { width: 100%; max-width: 595pt; background: #fff; padding: 60pt 50pt; box-shadow: 0 10px 40px rgba(0,0,0,0.1); color: #1e293b; text-align: left; --cv-base-size: 10pt; --cv-head-size: 28pt; --cv-accent: #2563eb; transition: font-family 0.3s; }
-    .text-muted { color: #64748b; }
-
-    .lg-btn { width: 100%; height: 64px; font-size: 1.1rem; border-radius: 18px; margin-top: 12px; }
-    .privacy-tiny { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 16px; }
-
-    /* Info */
-    .pro-article h2 { font-size: 1.75rem; font-weight: 850; margin-bottom: 24px; }
-    .ans { padding: 12px 0; color: var(--text-muted); font-size: 0.95rem; }
-
-    .d-flex { display: flex; }
-    .justify-between { justify-content: space-between; }
-    .align-center { align-items: center; }
-    .text-accent { color: var(--accent); }
-
-    @media (max-width: 1100px) {
-        .builder-grid { grid-template-columns: 1fr; }
-        .editor-sidebar { position: static; }
-        .cv-preview { padding: 20px; }
-        .cv-sheet { padding: 40pt 30pt; }
-    }
+  .rb-shell { --rb-accent: #10b981; --rb-text: #172033; --rb-muted: #667085; --rb-line: #d8dee8; --rb-soft: #f5f7fb; color: var(--rb-text); }
+  .rb-stage { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+  .rb-stage-step { min-height: 40px; display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--border-subtle); border-radius: 8px; color: var(--text-muted); background: var(--surface-3); font-weight: 700; font-size: .82rem; }
+  .rb-stage-step span { width: 22px; height: 22px; display: inline-grid; place-items: center; border-radius: 50%; background: var(--surface-2); }
+  .rb-stage-step.is-active { border-color: color-mix(in srgb, var(--rb-accent), white 65%); color: var(--text-primary); }
+  .rb-stage-step.is-active span { background: var(--rb-accent); color: #fff; }
+  .rb-toolbar { display: flex; justify-content: space-between; gap: 12px; padding: 12px; margin-bottom: 16px; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-3); position: sticky; top: 8px; z-index: 5; }
+  .rb-toolbar-main, .rb-toolbar-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .rb-tab, .rb-soft-btn, .rb-icon-btn, .rb-primary-btn, .rb-add-section { min-height: 38px; border-radius: 8px; border: 1px solid var(--border-subtle); background: var(--surface-50); color: var(--text-primary); font-weight: 800; cursor: pointer; }
+  .rb-tab { padding: 0 14px; }
+  .rb-tab.is-active { background: var(--rb-accent); border-color: var(--rb-accent); color: #fff; }
+  .rb-soft-btn { padding: 0 12px; font-size: .84rem; }
+  .rb-icon-btn { width: 38px; font-size: 1.05rem; }
+  .rb-primary-btn { padding: 0 16px; border-color: var(--rb-accent); background: var(--rb-accent); color: #fff; }
+  .rb-file-btn { display: inline-flex; align-items: center; }
+  .rb-file-btn input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .rb-workspace { display: grid; grid-template-columns: minmax(360px, 44%) minmax(420px, 1fr); gap: 18px; align-items: start; }
+  .rb-editor { border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-3); overflow: hidden; }
+  .rb-panel { display: none; padding: 16px; }
+  .rb-panel.is-active { display: block; }
+  .rb-panel-head { display: flex; justify-content: space-between; align-items: end; gap: 12px; margin-bottom: 14px; }
+  .rb-panel-head h2, .rb-preview-top h2 { margin: 0; font-size: 1rem; }
+  .rb-kicker { margin: 0 0 3px; font-size: .72rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+  .rb-section-list { display: flex; flex-direction: column; gap: 10px; }
+  .rb-edit-section { border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-50); overflow: hidden; }
+  .rb-edit-section.is-drag-over { border-color: var(--rb-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent), transparent 82%); }
+  .rb-edit-head { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--border-subtle); }
+  .rb-edit-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .rb-edit-title strong { font-size: .9rem; overflow-wrap: anywhere; }
+  .rb-edit-actions { display: flex; gap: 4px; }
+  .rb-mini { width: 30px; height: 30px; border: 1px solid var(--border-subtle); border-radius: 7px; background: var(--surface-3); color: var(--text-primary); cursor: pointer; }
+  .rb-edit-body { padding: 12px; display: grid; gap: 10px; }
+  .rb-edit-section.is-collapsed .rb-edit-body { display: none; }
+  .rb-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .rb-field { display: grid; gap: 5px; font-size: .76rem; color: var(--text-muted); font-weight: 800; }
+  .rb-field input, .rb-field textarea, .rb-field select { width: 100%; min-height: 38px; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 9px 10px; background: var(--surface-1); color: var(--text-primary); font: inherit; font-weight: 600; box-sizing: border-box; }
+  .rb-field textarea { min-height: 90px; resize: vertical; line-height: 1.5; }
+  .rb-field input:focus, .rb-field textarea:focus, .rb-field select:focus, button:focus-visible, .rb-file-btn:focus-within { outline: 3px solid color-mix(in srgb, var(--rb-accent), transparent 72%); outline-offset: 2px; }
+  .rb-entry-stack { display: grid; gap: 10px; }
+  .rb-entry { border: 1px solid var(--border-subtle); border-left: 3px solid var(--rb-accent); border-radius: 8px; padding: 10px; display: grid; gap: 9px; background: var(--surface-3); }
+  .rb-entry-bar { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+  .rb-entry-tools { display: flex; flex-wrap: wrap; gap: 5px; }
+  .rb-add-btn, .rb-ai-btn { min-height: 36px; border: 1px dashed var(--rb-accent); color: var(--rb-accent); background: transparent; border-radius: 8px; font-weight: 800; cursor: pointer; }
+  .rb-ai-btn { border-style: solid; padding: 0 10px; justify-self: start; }
+  .rb-add-section { width: 100%; margin-top: 12px; border-style: dashed; color: var(--rb-accent); }
+  .rb-template-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .rb-template-card { text-align: left; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-50); padding: 10px; cursor: pointer; color: var(--text-primary); }
+  .rb-template-card.is-active { border-color: var(--rb-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent), transparent 78%); }
+  .rb-template-preview { height: 92px; display: grid; align-content: start; gap: 8px; padding: 12px; margin-bottom: 8px; background: var(--tpl-bg); border: 1px solid #e5e7eb; border-radius: 6px; }
+  .rb-template-preview::before { content: ""; width: 48%; height: 12px; background: var(--tpl-accent); border-radius: 2px; }
+  .rb-template-preview i { display: block; height: 7px; background: #cbd5e1; border-radius: 1px; }
+  .rb-template-card strong, .rb-template-card small { display: block; }
+  .rb-template-card small { color: var(--text-muted); text-transform: capitalize; }
+  .rb-control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .rb-check { display: flex; align-items: center; gap: 8px; min-height: 40px; font-weight: 800; color: var(--text-primary); }
+  .rb-score-card { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: center; padding: 14px; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-50); }
+  .rb-score-ring { width: 108px; height: 108px; border-radius: 50%; display: grid; place-content: center; text-align: center; border: 10px solid color-mix(in srgb, var(--rb-accent), white 72%); }
+  .rb-score-ring strong { font-size: 2rem; line-height: 1; }
+  .rb-score-bars, .rb-suggestions { display: grid; gap: 8px; }
+  .rb-bar { display: grid; gap: 4px; font-size: .8rem; font-weight: 800; }
+  .rb-bar i { height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+  .rb-bar i span { display: block; height: 100%; background: var(--rb-accent); }
+  .rb-suggestion { padding: 10px; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-50); font-size: .84rem; }
+  .rb-preview-area { position: sticky; top: 8px; min-width: 0; }
+  .rb-preview-top { display: flex; justify-content: space-between; gap: 12px; align-items: end; padding: 12px; border: 1px solid var(--border-subtle); border-radius: 8px 8px 0 0; background: var(--surface-3); }
+  .rb-preview-status { display: flex; gap: 8px; flex-wrap: wrap; color: var(--text-muted); font-weight: 800; font-size: .78rem; }
+  .rb-preview-scroll { display: flex; justify-content: center; padding: 24px; max-height: 86vh; overflow: auto; border: 1px solid var(--border-subtle); border-top: 0; border-radius: 0 0 8px 8px; background: #edf1f7; }
+  .rb-shell.is-dark-preview .rb-preview-scroll { background: #111827; }
+  .rb-paper { width: 210mm; min-height: 297mm; max-width: 100%; box-sizing: border-box; background: #fff; color: #1f2937; box-shadow: 0 12px 34px rgba(16,24,40,.16); font-size: 10.5pt; line-height: 1.55; overflow-wrap: break-word; }
+  .cv-head { display: grid; gap: 6px; margin-bottom: var(--cv-section-gap); }
+  .cv-head.centered { text-align: center; }
+  .cv-head.split { grid-template-columns: 1fr auto; align-items: end; }
+  .cv-head.sidebar { padding: 18px; margin: calc(var(--cv-margin) * -1) calc(var(--cv-margin) * -1) var(--cv-section-gap); background: color-mix(in srgb, var(--cv-accent), white 88%); }
+  .cv-photo { width: 72px; height: 72px; border-radius: var(--cv-radius); object-fit: cover; border: 2px solid var(--cv-accent); }
+  .cv-name { margin: 0; font-family: var(--cv-heading-font); font-size: 25pt; line-height: 1.05; color: var(--cv-heading); letter-spacing: 0; }
+  .cv-role { margin: 0; color: var(--cv-accent); font-weight: 800; }
+  .cv-contact { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--cv-muted); font-size: .86em; }
+  .cv-head.centered .cv-contact { justify-content: center; }
+  .cv-grid { display: grid; gap: var(--cv-section-gap); }
+  .cv-grid.cols-2 { grid-template-columns: minmax(0, 1.45fr) minmax(190px, .75fr); align-items: start; }
+  .cv-section { break-inside: avoid; page-break-inside: avoid; }
+  .cv-section h3 { margin: 0 0 8px; padding-bottom: 5px; color: var(--cv-accent); font-family: var(--cv-heading-font); font-size: .86em; text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid #d7dde8; }
+  .cv-section.divider-dots h3 { border-bottom-style: dotted; }
+  .cv-section.divider-double h3 { border-bottom-style: double; border-bottom-width: 3px; }
+  .cv-section.divider-none h3 { border-bottom: 0; padding-bottom: 0; }
+  .cv-item { margin-bottom: 10px; }
+  .cv-item:last-child { margin-bottom: 0; }
+  .cv-line { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .cv-item-title { font-weight: 900; color: var(--cv-heading); }
+  .cv-date { color: var(--cv-muted); white-space: nowrap; font-size: .86em; }
+  .cv-sub { color: var(--cv-muted); font-weight: 700; }
+  .cv-desc { margin-top: 4px; white-space: pre-line; }
+  .cv-skills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .cv-pill { border: 1px solid color-mix(in srgb, var(--cv-accent), white 70%); border-radius: var(--cv-radius); padding: 2px 8px; background: color-mix(in srgb, var(--cv-accent), white 94%); }
+  .cv-ats .cv-pill { border: 0; padding: 0; background: transparent; }
+  .cv-ats .cv-pill:not(:last-child)::after { content: ","; }
+  @media print {
+    body * { visibility: hidden; }
+    .rb-paper, .rb-paper * { visibility: visible; }
+    .rb-paper { position: absolute; inset: 0 auto auto 0; width: 210mm; box-shadow: none; }
+  }
+  @media (max-width: 1080px) {
+    .rb-workspace { grid-template-columns: 1fr; }
+    .rb-preview-area { position: static; }
+  }
+  @media (max-width: 720px) {
+    .rb-stage { grid-template-columns: 1fr 1fr; }
+    .rb-toolbar, .rb-preview-top { position: static; flex-direction: column; align-items: stretch; }
+    .rb-row, .rb-control-grid, .rb-template-grid, .rb-score-card { grid-template-columns: 1fr; }
+    .rb-workspace { gap: 12px; }
+    .rb-preview-scroll { padding: 12px; }
+    .rb-paper { min-width: 680px; transform-origin: top center; }
+  }
 </style>
+
+<script define:vars={{ templates: TEMPLATES, fontOptions: FONT_OPTIONS }}>
+  const root = document.querySelector('[data-resume-builder]');
+  const paper = document.querySelector('[data-resume-paper]');
+  const STORAGE_KEY = 'formfix.resumeBuilder.v2';
+  const sectionMeta = {
+    personal: { label: 'Personal Information', icon: 'ID', kind: 'single' },
+    summary: { label: 'Professional Summary', icon: 'T', kind: 'single' },
+    experience: { label: 'Experience', icon: 'W', kind: 'list' },
+    education: { label: 'Education', icon: 'E', kind: 'list' },
+    projects: { label: 'Projects', icon: 'P', kind: 'list' },
+    skills: { label: 'Skills', icon: 'S', kind: 'list' },
+    languages: { label: 'Languages', icon: 'L', kind: 'list' },
+    certificates: { label: 'Certificates', icon: 'C', kind: 'list' },
+    achievements: { label: 'Achievements', icon: 'A', kind: 'list' },
+    volunteerWork: { label: 'Volunteer Work', icon: 'V', kind: 'list' },
+    references: { label: 'References', icon: 'R', kind: 'list' },
+  };
+  const sample = {
+    personal: { fullName: 'Aarav Mehta', jobTitle: 'Product Designer', email: 'aarav@example.com', phone: '+91 98765 43210', location: 'Mumbai, India', website: 'aaravmehta.com', linkedin: 'linkedin.com/in/aarav', github: '', photo: '' },
+    summary: 'Product designer with 5+ years of experience turning complex workflows into clear, conversion-focused SaaS experiences. Strong background in research, design systems, prototyping, and cross-functional delivery.',
+    experience: [{ company: 'Formly Labs', position: 'Senior Product Designer', location: 'Remote', startDate: '2022', endDate: 'Present', current: true, description: 'Led redesign of a document automation workflow, reducing task completion time by 38%.\nBuilt a reusable component system used across 6 product teams.\nPartnered with engineering and support to improve onboarding activation by 21%.' }],
+    education: [{ institution: 'University of Mumbai', degree: 'Bachelor of Design', field: 'Interaction Design', location: 'Mumbai', startDate: '2016', endDate: '2020', current: false, gpa: '', description: '' }],
+    projects: [{ name: 'Resume Quality Auditor', technologies: 'Figma, Research, Analytics', url: '', startDate: '2024', endDate: '', description: 'Designed an ATS feedback dashboard that helps job seekers identify missing sections, weak verbs, and formatting risks.' }],
+    skills: [{ name: 'Product Strategy', level: 'Expert', category: 'Design' }, { name: 'UX Research', level: 'Advanced', category: 'Design' }, { name: 'Figma', level: 'Expert', category: 'Tools' }, { name: 'Design Systems', level: 'Expert', category: 'Design' }],
+    languages: [{ name: 'English', proficiency: 'Fluent' }, { name: 'Hindi', proficiency: 'Native' }],
+    certificates: [],
+    achievements: [{ title: 'Improved activation by 21%', date: '2025', description: 'Redesigned onboarding based on behavioral analytics and user interviews.' }],
+    volunteerWork: [],
+    references: [],
+    customSections: [],
+    sectionOrder: ['summary', 'experience', 'projects', 'skills', 'education', 'certificates', 'achievements', 'languages', 'volunteerWork', 'references'],
+    sectionVisibility: {},
+  };
+  let state = loadState();
+  let undoStack = [];
+  let redoStack = [];
+  let saveTimer = 0;
+  let draggedSectionId = '';
+
+  function blankItem(type) {
+    const base = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()) };
+    return {
+      experience: { ...base, company: '', position: '', location: '', startDate: '', endDate: '', current: false, description: '' },
+      education: { ...base, institution: '', degree: '', field: '', location: '', startDate: '', endDate: '', current: false, gpa: '', description: '' },
+      projects: { ...base, name: '', technologies: '', url: '', startDate: '', endDate: '', description: '' },
+      skills: { ...base, name: '', level: 'Intermediate', category: '' },
+      languages: { ...base, name: '', proficiency: 'Professional' },
+      certificates: { ...base, name: '', issuer: '', date: '', url: '', description: '' },
+      achievements: { ...base, title: '', date: '', description: '' },
+      volunteerWork: { ...base, organization: '', role: '', startDate: '', endDate: '', current: false, description: '' },
+      references: { ...base, name: '', title: '', company: '', email: '', phone: '', relationship: '' },
+    }[type];
+  }
+  function loadState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try { return normalize(JSON.parse(saved)); } catch {}
+    }
+    return normalize({ data: sample, templateId: 'minimal', collapsed: {}, customization: {} });
+  }
+  function normalize(input) {
+    const template = templates.find((tpl) => tpl.id === (input.templateId || 'minimal')) || templates[0];
+    const data = { ...sample, ...(input.data || input), personal: { ...sample.personal, ...((input.data || input).personal || {}) } };
+    Object.keys(sectionMeta).forEach((key) => {
+      if (sectionMeta[key].kind === 'list') data[key] = Array.isArray(data[key]) ? data[key] : [];
+    });
+    data.customSections = Array.isArray(data.customSections) ? data.customSections : [];
+    data.sectionOrder = Array.isArray(data.sectionOrder) ? data.sectionOrder : template.config.sectionOrder.filter((id) => id !== 'personal');
+    data.sectionVisibility = { ...Object.fromEntries(Object.keys(sectionMeta).map((id) => [id, true])), ...(data.sectionVisibility || {}) };
+    return { data, templateId: template.id, customization: { ...template.config, pageSize: 'a4', theme: 'light', ...(input.customization || {}) }, collapsed: input.collapsed || {} };
+  }
+  function snapshot() { return JSON.stringify(state); }
+  function remember() { undoStack.push(snapshot()); if (undoStack.length > 60) undoStack.shift(); redoStack = []; }
+  function commit(options = {}) {
+    const shouldRenderEditor = options.renderEditor !== false;
+    const shouldRenderControls = options.renderControls !== false;
+    clearTimeout(saveTimer);
+    document.querySelector('[data-save-state]').textContent = 'Saving...';
+    saveTimer = setTimeout(() => {
+      localStorage.setItem(STORAGE_KEY, snapshot());
+      document.querySelector('[data-save-state]').textContent = 'Autosaved';
+    }, 160);
+    render({ renderEditor: shouldRenderEditor, renderControls: shouldRenderControls });
+  }
+  function esc(value) {
+    const div = document.createElement('div');
+    div.textContent = value == null ? '' : String(value);
+    return div.innerHTML;
+  }
+  function nonEmpty(value) { return String(value || '').trim(); }
+  function dateRange(item) { return [item.startDate, item.current ? 'Present' : item.endDate].filter(nonEmpty).join(' - '); }
+  function setNested(path, value) {
+    remember();
+    if (path.startsWith('customTitle.')) {
+      const section = state.data.customSections.find((item) => item.id === path.split('.')[1]);
+      if (section) section.title = value;
+      commit({ renderEditor: false });
+      return;
+    }
+    const parts = path.split('.');
+    let target = state;
+    parts.slice(0, -1).forEach((part) => { target = target[part]; });
+    target[parts.at(-1)] = value;
+    commit({ renderEditor: false });
+  }
+  function field(label, path, value, type = 'text', options = '') {
+    if (type === 'textarea') return `<label class="rb-field">${label}<textarea data-path="${path}" rows="3">${esc(value)}</textarea></label>`;
+    if (type === 'select') return `<label class="rb-field">${label}<select data-path="${path}">${options}</select></label>`;
+    if (type === 'checkbox') return `<label class="rb-check"><input type="checkbox" data-path="${path}" ${value ? 'checked' : ''}>${label}</label>`;
+    return `<label class="rb-field">${label}<input type="${type}" data-path="${path}" value="${esc(value)}"></label>`;
+  }
+  function renderEditor() {
+    const list = document.querySelector('[data-section-list]');
+    const sections = ['personal', ...state.data.sectionOrder, ...state.data.customSections.map((section) => section.id)];
+    list.innerHTML = sections.map((id, index) => renderSection(id, index, sections.length)).join('');
+  }
+  function renderSection(id, index, total) {
+    const custom = state.data.customSections.find((section) => section.id === id);
+    const meta = custom ? { label: custom.title || 'Custom Section', icon: 'X', kind: 'custom' } : sectionMeta[id];
+    if (!meta) return '';
+    const collapsed = state.collapsed[id] ? ' is-collapsed' : '';
+    const required = id === 'personal';
+    return `<section class="rb-edit-section${collapsed}" data-section-id="${id}" draggable="${!required}">
+      <div class="rb-edit-head">
+        <div class="rb-edit-title"><span>${meta.icon}</span><strong>${esc(meta.label)}</strong></div>
+        <div class="rb-edit-actions">
+          <button class="rb-mini" type="button" data-section-action="up" ${index === 0 ? 'disabled' : ''} title="Move up">↑</button>
+          <button class="rb-mini" type="button" data-section-action="down" ${index === total - 1 ? 'disabled' : ''} title="Move down">↓</button>
+          <button class="rb-mini" type="button" data-section-action="collapse" title="Collapse or expand">${state.collapsed[id] ? '+' : '-'}</button>
+          ${required ? '' : `<button class="rb-mini" type="button" data-section-action="toggle" title="Show or hide">${state.data.sectionVisibility[id] === false ? '○' : '●'}</button>`}
+          ${custom ? `<button class="rb-mini" type="button" data-section-action="delete" title="Delete custom section">×</button>` : ''}
+        </div>
+      </div>
+      <div class="rb-edit-body">${renderSectionBody(id)}</div>
+    </section>`;
+  }
+  function renderSectionBody(id) {
+    const d = state.data;
+    if (id === 'personal') return `
+      <div class="rb-row">${field('Full Name', 'data.personal.fullName', d.personal.fullName)}${field('Job Title', 'data.personal.jobTitle', d.personal.jobTitle)}</div>
+      <div class="rb-row">${field('Email', 'data.personal.email', d.personal.email, 'email')}${field('Phone', 'data.personal.phone', d.personal.phone, 'tel')}</div>
+      <div class="rb-row">${field('Location', 'data.personal.location', d.personal.location)}${field('Website', 'data.personal.website', d.personal.website, 'url')}</div>
+      <div class="rb-row">${field('LinkedIn', 'data.personal.linkedin', d.personal.linkedin, 'url')}${field('GitHub', 'data.personal.github', d.personal.github, 'url')}</div>
+      <label class="rb-field">Profile Photo<input type="file" accept="image/*" data-photo-input></label>`;
+    if (id === 'summary') return `${field('Summary', 'data.summary', d.summary, 'textarea')}<button class="rb-ai-btn" type="button" data-ai="summary">Suggest Summary</button>`;
+    if (id === 'customSections') return '';
+    const custom = d.customSections.find((section) => section.id === id);
+    if (custom) return `${field('Section Title', `customTitle.${id}`, custom.title)}<div class="rb-entry-stack">${custom.items.map((item, i) => renderEntry('custom', item, i, id)).join('')}</div><button class="rb-add-btn" type="button" data-add-item="custom" data-custom-id="${id}">+ Add Item</button>`;
+    return `<div class="rb-entry-stack">${(d[id] || []).map((item, i) => renderEntry(id, item, i)).join('')}</div><button class="rb-add-btn" type="button" data-add-item="${id}">+ Add ${esc(sectionMeta[id].label)}</button>`;
+  }
+  function renderEntry(type, item, i, customId = '') {
+    const path = customId ? `data.customSections.${state.data.customSections.findIndex((s) => s.id === customId)}.items.${i}` : `data.${type}.${i}`;
+    let body = '';
+    if (type === 'experience') body = `<div class="rb-row">${field('Position', `${path}.position`, item.position)}${field('Company', `${path}.company`, item.company)}</div><div class="rb-row">${field('Location', `${path}.location`, item.location)}${field('Start Date', `${path}.startDate`, item.startDate)}</div><div class="rb-row">${field('End Date', `${path}.endDate`, item.endDate)}${field('Current role', `${path}.current`, item.current, 'checkbox')}</div>${field('Impact bullets', `${path}.description`, item.description, 'textarea')}<button class="rb-ai-btn" type="button" data-ai="bullets" data-entry-type="${type}" data-index="${i}">Improve Bullets</button>`;
+    if (type === 'education') body = `<div class="rb-row">${field('Degree', `${path}.degree`, item.degree)}${field('Institution', `${path}.institution`, item.institution)}</div><div class="rb-row">${field('Field', `${path}.field`, item.field)}${field('Location', `${path}.location`, item.location)}</div><div class="rb-row">${field('Start Date', `${path}.startDate`, item.startDate)}${field('End Date', `${path}.endDate`, item.endDate)}</div>${field('Details', `${path}.description`, item.description, 'textarea')}`;
+    if (type === 'projects') body = `<div class="rb-row">${field('Project Name', `${path}.name`, item.name)}${field('Technologies', `${path}.technologies`, item.technologies)}</div><div class="rb-row">${field('URL', `${path}.url`, item.url, 'url')}${field('Date', `${path}.startDate`, item.startDate)}</div>${field('Description', `${path}.description`, item.description, 'textarea')}<button class="rb-ai-btn" type="button" data-ai="project" data-entry-type="${type}" data-index="${i}">Generate Description</button>`;
+    if (type === 'skills') body = `<div class="rb-row">${field('Skill', `${path}.name`, item.name)}${field('Category', `${path}.category`, item.category)}</div>${field('Level', `${path}.level`, item.level, 'select', ['Beginner','Intermediate','Advanced','Expert'].map((x) => `<option ${x === item.level ? 'selected' : ''}>${x}</option>`).join(''))}`;
+    if (type === 'languages') body = `<div class="rb-row">${field('Language', `${path}.name`, item.name)}${field('Proficiency', `${path}.proficiency`, item.proficiency, 'select', ['Native','Fluent','Professional','Conversational','Basic'].map((x) => `<option ${x === item.proficiency ? 'selected' : ''}>${x}</option>`).join(''))}</div>`;
+    if (type === 'certificates') body = `<div class="rb-row">${field('Certificate', `${path}.name`, item.name)}${field('Issuer', `${path}.issuer`, item.issuer)}</div><div class="rb-row">${field('Date', `${path}.date`, item.date)}${field('URL', `${path}.url`, item.url, 'url')}</div>${field('Description', `${path}.description`, item.description, 'textarea')}`;
+    if (type === 'achievements') body = `<div class="rb-row">${field('Achievement', `${path}.title`, item.title)}${field('Date', `${path}.date`, item.date)}</div>${field('Description', `${path}.description`, item.description, 'textarea')}`;
+    if (type === 'volunteerWork') body = `<div class="rb-row">${field('Role', `${path}.role`, item.role)}${field('Organization', `${path}.organization`, item.organization)}</div><div class="rb-row">${field('Start Date', `${path}.startDate`, item.startDate)}${field('End Date', `${path}.endDate`, item.endDate)}</div>${field('Description', `${path}.description`, item.description, 'textarea')}`;
+    if (type === 'references') body = `<div class="rb-row">${field('Name', `${path}.name`, item.name)}${field('Title', `${path}.title`, item.title)}</div><div class="rb-row">${field('Company', `${path}.company`, item.company)}${field('Relationship', `${path}.relationship`, item.relationship)}</div><div class="rb-row">${field('Email', `${path}.email`, item.email, 'email')}${field('Phone', `${path}.phone`, item.phone, 'tel')}</div>`;
+    if (type === 'custom') body = `<div class="rb-row">${field('Title', `${path}.title`, item.title)}${field('Subtitle', `${path}.subtitle`, item.subtitle)}</div>${field('Date', `${path}.date`, item.date)}${field('Description', `${path}.description`, item.description, 'textarea')}`;
+    return `<div class="rb-entry" data-entry-type="${type}" data-index="${i}" data-custom-id="${customId}">
+      <div class="rb-entry-bar"><strong>${esc(type === 'custom' ? 'Item' : sectionMeta[type].label)} ${i + 1}</strong><div class="rb-entry-tools">
+        <button class="rb-mini" type="button" data-entry-action="up" title="Move up">↑</button><button class="rb-mini" type="button" data-entry-action="down" title="Move down">↓</button><button class="rb-mini" type="button" data-entry-action="duplicate" title="Duplicate">+</button><button class="rb-mini" type="button" data-entry-action="delete" title="Delete">×</button>
+      </div></div>${body}</div>`;
+  }
+  function renderPreview() {
+    const { data, customization } = state;
+    const tpl = templates.find((t) => t.id === state.templateId) || templates[0];
+    root.style.setProperty('--rb-accent', customization.accentColor);
+    document.querySelector('[data-preview-title]').textContent = tpl.name;
+    const visible = (id) => data.sectionVisibility[id] !== false;
+    const contact = ['email', 'phone', 'location', 'website', 'linkedin', 'github'].map((key) => data.personal[key]).filter(nonEmpty);
+    const sections = data.sectionOrder.filter((id) => visible(id)).map(renderCvSection).join('') + data.customSections.map(renderCustomCvSection).join('');
+    const twoCols = String(customization.columns) === '2' && state.templateId !== 'ats';
+    paper.className = `rb-paper cv-${state.templateId} ${state.templateId === 'ats' ? 'cv-ats' : ''}`;
+    paper.style.cssText = `--cv-accent:${customization.accentColor};--cv-heading:${tpl.config.headingColor};--cv-muted:${tpl.config.secondaryColor};--cv-heading-font:${customization.headingFontFamily || customization.fontFamily};--cv-section-gap:${customization.sectionSpacing}px;--cv-margin:${customization.margin}px;--cv-radius:${customization.borderRadius}px;padding:${customization.margin}px;font-family:${customization.fontFamily};font-size:${customization.fontSize}pt;line-height:${customization.lineHeight};background:${tpl.config.backgroundColor};color:${tpl.config.textColor};`;
+    paper.innerHTML = `<header class="cv-head ${customization.headerStyle}">
+      <div>${customization.photoEnabled && data.personal.photo ? `<img class="cv-photo" src="${data.personal.photo}" alt="">` : ''}<h1 class="cv-name">${esc(data.personal.fullName || 'Your Name')}</h1><p class="cv-role">${esc(data.personal.jobTitle || 'Target Role')}</p></div>
+      <div class="cv-contact">${contact.map((x) => `<span>${esc(x)}</span>`).join('')}</div>
+    </header><div class="cv-grid ${twoCols ? 'cols-2' : ''}">${sections}</div>`;
+    const words = paper.textContent.trim().split(/\s+/).filter(Boolean).length;
+    document.querySelector('[data-word-count]').textContent = `${words} words`;
+    document.querySelector('[data-page-count]').textContent = `${Math.max(1, Math.ceil(paper.scrollHeight / paper.clientHeight))} page`;
+  }
+  function renderCvSection(id) {
+    const d = state.data;
+    const div = state.customization.dividerStyle;
+    if (id === 'summary' && nonEmpty(d.summary)) return cvWrap('Professional Summary', `<p class="cv-desc">${esc(d.summary)}</p>`, div);
+    if (id === 'experience') return cvWrap('Experience', d.experience.filter((e) => e.company || e.position || e.description).map((e) => cvItem(e.position || e.company, e.company, [e.location, dateRange(e)].filter(nonEmpty).join(' | '), e.description)).join(''), div);
+    if (id === 'education') return cvWrap('Education', d.education.filter((e) => e.institution || e.degree).map((e) => cvItem([e.degree, e.field].filter(nonEmpty).join(', '), e.institution, [e.location, dateRange(e), e.gpa && `GPA ${e.gpa}`].filter(nonEmpty).join(' | '), e.description)).join(''), div);
+    if (id === 'projects') return cvWrap('Projects', d.projects.filter((e) => e.name || e.description).map((e) => cvItem(e.name, e.technologies, [e.url, e.startDate].filter(nonEmpty).join(' | '), e.description)).join(''), div);
+    if (id === 'skills') return cvWrap('Skills', `<div class="cv-skills">${d.skills.filter((s) => s.name).map((s) => `<span class="cv-pill">${esc(s.name)}${s.level ? ` - ${esc(s.level)}` : ''}</span>`).join('')}</div>`, div);
+    if (id === 'languages') return cvWrap('Languages', `<div class="cv-skills">${d.languages.filter((s) => s.name).map((s) => `<span class="cv-pill">${esc(s.name)} - ${esc(s.proficiency)}</span>`).join('')}</div>`, div);
+    if (id === 'certificates') return cvWrap('Certificates', d.certificates.filter((e) => e.name).map((e) => cvItem(e.name, e.issuer, e.date, e.description)).join(''), div);
+    if (id === 'achievements') return cvWrap('Achievements', d.achievements.filter((e) => e.title || e.description).map((e) => cvItem(e.title, '', e.date, e.description)).join(''), div);
+    if (id === 'volunteerWork') return cvWrap('Volunteer Work', d.volunteerWork.filter((e) => e.organization || e.role).map((e) => cvItem(e.role, e.organization, dateRange(e), e.description)).join(''), div);
+    if (id === 'references') return cvWrap('References', d.references.filter((e) => e.name).map((e) => cvItem(e.name, [e.title, e.company].filter(nonEmpty).join(', '), e.relationship, [e.email, e.phone].filter(nonEmpty).join(' | '))).join(''), div);
+    return '';
+  }
+  function renderCustomCvSection(section) {
+    return cvWrap(section.title, section.items.filter((e) => e.title || e.description).map((e) => cvItem(e.title, e.subtitle, e.date, e.description)).join(''), state.customization.dividerStyle);
+  }
+  function cvWrap(title, body, divider) { return body ? `<section class="cv-section divider-${divider}"><h3>${esc(title)}</h3>${body}</section>` : ''; }
+  function cvItem(title, sub, meta, desc) { return `<div class="cv-item"><div class="cv-line"><strong class="cv-item-title">${esc(title || sub)}</strong><span class="cv-date">${esc(meta || '')}</span></div>${sub && sub !== title ? `<div class="cv-sub">${esc(sub)}</div>` : ''}${desc ? `<div class="cv-desc">${esc(desc)}</div>` : ''}</div>`; }
+  function atsScore() {
+    const d = state.data;
+    const text = paper.textContent.toLowerCase();
+    const has = {
+      summary: nonEmpty(d.summary), experience: d.experience.some((e) => e.company || e.description), education: d.education.some((e) => e.institution || e.degree),
+      skills: d.skills.some((s) => s.name), contact: nonEmpty(d.personal.email) && nonEmpty(d.personal.phone), bullets: /\n|•|-/.test(d.experience.map((e) => e.description).join('\n')),
+    };
+    const actionWords = ['led','built','improved','reduced','increased','launched','managed','designed','implemented','optimized'].filter((w) => text.includes(w)).length;
+    const metrics = /\d+%|\d+x|\$\d+|\d+\+/.test(text);
+    const keyword = Math.min(100, (d.skills.filter((s) => s.name).length * 12) + actionWords * 6 + (metrics ? 16 : 0));
+    const formatting = state.templateId === 'ats' || String(state.customization.columns) === '1' ? 96 : 82;
+    const completeness = Math.round(Object.values(has).filter(Boolean).length / Object.keys(has).length * 100);
+    const readability = paper.textContent.length > 700 && paper.textContent.length < 4500 ? 90 : 68;
+    const overall = Math.round(keyword * .25 + formatting * .25 + completeness * .3 + readability * .2);
+    const suggestions = [];
+    if (!has.contact) suggestions.push('Add email and phone so recruiters can contact you.');
+    if (!has.summary) suggestions.push('Add a 2-3 line professional summary tailored to the role.');
+    if (!metrics) suggestions.push('Add measurable outcomes such as percentages, revenue, time saved, or team size.');
+    if (actionWords < 4) suggestions.push('Start more bullets with strong action verbs like led, built, improved, reduced, and launched.');
+    if (String(state.customization.columns) === '2') suggestions.push('Use one column for the strictest ATS parsing.');
+    if (!suggestions.length) suggestions.push('Strong foundation. Tailor keywords to each job description before applying.');
+    return { overall, bars: { Keyword: keyword, Formatting: formatting, Readability: readability, Completeness: completeness }, suggestions };
+  }
+  function renderAts() {
+    const result = atsScore();
+    document.querySelector('[data-ats-score]').textContent = result.overall;
+    document.querySelector('[data-ats-bars]').innerHTML = Object.entries(result.bars).map(([k, v]) => `<div class="rb-bar"><span>${k} ${v}</span><i><span style="width:${v}%"></span></i></div>`).join('');
+    document.querySelector('[data-ats-suggestions]').innerHTML = result.suggestions.map((s) => `<div class="rb-suggestion">${esc(s)}</div>`).join('');
+  }
+  function renderTemplates() {
+    document.querySelectorAll('[data-template-id]').forEach((btn) => btn.classList.toggle('is-active', btn.dataset.templateId === state.templateId));
+  }
+  function renderControls() {
+    document.querySelectorAll('[data-customize]').forEach((input) => {
+      const key = input.dataset.customize;
+      if (input.type === 'checkbox') input.checked = !!state.customization[key];
+      else input.value = state.customization[key];
+    });
+  }
+  function render(options = {}) {
+    if (options.renderEditor !== false) renderEditor();
+    renderTemplates();
+    if (options.renderControls !== false) renderControls();
+    renderPreview();
+    renderAts();
+  }
+
+  root.addEventListener('input', (event) => {
+    const el = event.target;
+    if (el.matches('[data-path]')) setNested(el.dataset.path, el.type === 'checkbox' ? el.checked : el.value);
+    if (el.matches('[data-customize]')) {
+      remember();
+      const key = el.dataset.customize;
+      state.customization[key] = el.type === 'checkbox' ? el.checked : (['fontSize','lineHeight','sectionSpacing','margin','borderRadius'].includes(key) ? Number(el.value) : el.value);
+      commit({ renderEditor: false, renderControls: false });
+    }
+    if (el.matches('[data-preview-dark]')) root.classList.toggle('is-dark-preview', el.checked);
+  });
+  root.addEventListener('change', (event) => {
+    const file = event.target.files && event.target.files[0];
+    if (event.target.matches('[data-photo-input]') && file) {
+      const reader = new FileReader();
+      reader.onload = () => { remember(); state.data.personal.photo = reader.result; state.customization.photoEnabled = true; commit(); };
+      reader.readAsDataURL(file);
+    }
+    if (event.target.matches('[data-json-import]') && file) {
+      const reader = new FileReader();
+      reader.onload = () => { try { remember(); state = normalize(JSON.parse(reader.result)); commit(); notice('Resume imported.', 'success'); } catch { notice('That JSON file could not be imported.', 'error'); } };
+      reader.readAsText(file);
+    }
+  });
+  root.addEventListener('click', async (event) => {
+    const btn = event.target.closest('button, label');
+    if (!btn) return;
+    const panel = btn.dataset.panelTarget;
+    if (panel) {
+      document.querySelectorAll('[data-panel-target]').forEach((x) => x.classList.toggle('is-active', x.dataset.panelTarget === panel));
+      document.querySelectorAll('[data-panel]').forEach((x) => x.classList.toggle('is-active', x.dataset.panel === panel));
+      document.querySelector(`[data-step-dot="${panel === 'ats' ? 'download' : panel}"]`)?.classList.add('is-active');
+    }
+    if (btn.dataset.templateId) {
+      remember();
+      const tpl = templates.find((t) => t.id === btn.dataset.templateId);
+      state.templateId = tpl.id;
+      state.customization = { ...state.customization, ...tpl.config, pageSize: state.customization.pageSize || 'a4' };
+      state.data.sectionOrder = tpl.config.sectionOrder.filter((id) => id !== 'personal');
+      commit();
+    }
+    if (btn.dataset.sectionAction) sectionAction(btn);
+    if (btn.dataset.entryAction) entryAction(btn);
+    if (btn.dataset.addItem) addItem(btn.dataset.addItem, btn.dataset.customId);
+    if (btn.dataset.action === 'add-custom') addCustomSection();
+    if (btn.dataset.action === 'undo') restore(undoStack, redoStack);
+    if (btn.dataset.action === 'redo') restore(redoStack, undoStack);
+    if (btn.dataset.action === 'duplicate') duplicateResume();
+    if (btn.dataset.action === 'export-json') exportJson();
+    if (btn.dataset.action === 'download-pdf') downloadPdf();
+    if (btn.dataset.ai) runAi(btn);
+  });
+  root.addEventListener('dragstart', (event) => {
+    const section = event.target.closest('[data-section-id]');
+    if (!section || section.dataset.sectionId === 'personal') return;
+    draggedSectionId = section.dataset.sectionId;
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', draggedSectionId);
+  });
+  root.addEventListener('dragover', (event) => {
+    const section = event.target.closest('[data-section-id]');
+    if (!section || !draggedSectionId || section.dataset.sectionId === draggedSectionId) return;
+    event.preventDefault();
+    section.classList.add('is-drag-over');
+  });
+  root.addEventListener('dragleave', (event) => {
+    event.target.closest('[data-section-id]')?.classList.remove('is-drag-over');
+  });
+  root.addEventListener('drop', (event) => {
+    const section = event.target.closest('[data-section-id]');
+    document.querySelectorAll('.rb-edit-section.is-drag-over').forEach((item) => item.classList.remove('is-drag-over'));
+    if (!section || !draggedSectionId || section.dataset.sectionId === draggedSectionId) return;
+    event.preventDefault();
+    moveSectionBefore(draggedSectionId, section.dataset.sectionId);
+    draggedSectionId = '';
+  });
+  root.addEventListener('dragend', () => {
+    draggedSectionId = '';
+    document.querySelectorAll('.rb-edit-section.is-drag-over').forEach((item) => item.classList.remove('is-drag-over'));
+  });
+  function moveSectionBefore(fromId, toId) {
+    const customFrom = state.data.customSections.findIndex((section) => section.id === fromId);
+    const customTo = state.data.customSections.findIndex((section) => section.id === toId);
+    remember();
+    if (customFrom >= 0 && customTo >= 0) {
+      const [item] = state.data.customSections.splice(customFrom, 1);
+      state.data.customSections.splice(state.data.customSections.findIndex((section) => section.id === toId), 0, item);
+      commit();
+      return;
+    }
+    const from = state.data.sectionOrder.indexOf(fromId);
+    const to = state.data.sectionOrder.indexOf(toId);
+    if (from >= 0 && to >= 0) {
+      const [item] = state.data.sectionOrder.splice(from, 1);
+      state.data.sectionOrder.splice(state.data.sectionOrder.indexOf(toId), 0, item);
+      commit();
+    }
+  }
+  function sectionAction(btn) {
+    const id = btn.closest('[data-section-id]').dataset.sectionId;
+    remember();
+    if (btn.dataset.sectionAction === 'collapse') state.collapsed[id] = !state.collapsed[id];
+    if (btn.dataset.sectionAction === 'toggle') state.data.sectionVisibility[id] = state.data.sectionVisibility[id] === false;
+    if (btn.dataset.sectionAction === 'delete') {
+      state.data.customSections = state.data.customSections.filter((section) => section.id !== id);
+      delete state.collapsed[id];
+      commit();
+      return;
+    }
+    if (['up','down'].includes(btn.dataset.sectionAction) && id !== 'personal') {
+      const customIndex = state.data.customSections.findIndex((section) => section.id === id);
+      if (customIndex >= 0) {
+        const customTo = btn.dataset.sectionAction === 'up' ? customIndex - 1 : customIndex + 1;
+        if (customTo >= 0 && customTo < state.data.customSections.length) [state.data.customSections[customIndex], state.data.customSections[customTo]] = [state.data.customSections[customTo], state.data.customSections[customIndex]];
+        commit();
+        return;
+      }
+      const all = state.data.sectionOrder;
+      const i = all.indexOf(id);
+      const to = btn.dataset.sectionAction === 'up' ? i - 1 : i + 1;
+      if (i >= 0 && to >= 0 && to < all.length) [all[i], all[to]] = [all[to], all[i]];
+    }
+    commit();
+  }
+  function entryAction(btn) {
+    const entry = btn.closest('[data-entry-type]');
+    const type = entry.dataset.entryType;
+    const index = Number(entry.dataset.index);
+    const customId = entry.dataset.customId;
+    const arr = customId ? state.data.customSections.find((s) => s.id === customId).items : state.data[type];
+    remember();
+    if (btn.dataset.entryAction === 'delete') arr.splice(index, 1);
+    if (btn.dataset.entryAction === 'duplicate') arr.splice(index + 1, 0, { ...structuredClone(arr[index]), id: crypto.randomUUID() });
+    if (btn.dataset.entryAction === 'up' && index > 0) [arr[index - 1], arr[index]] = [arr[index], arr[index - 1]];
+    if (btn.dataset.entryAction === 'down' && index < arr.length - 1) [arr[index + 1], arr[index]] = [arr[index], arr[index + 1]];
+    commit();
+  }
+  function addItem(type, customId) {
+    remember();
+    if (type === 'custom') state.data.customSections.find((s) => s.id === customId).items.push({ id: crypto.randomUUID(), title: '', subtitle: '', date: '', description: '' });
+    else state.data[type].push(blankItem(type));
+    commit();
+  }
+  function addCustomSection() {
+    remember();
+    state.data.customSections.push({ id: crypto.randomUUID(), title: 'Custom Section', items: [] });
+    commit();
+  }
+  function restore(from, to) {
+    if (!from.length) return;
+    to.push(snapshot());
+    state = normalize(JSON.parse(from.pop()));
+    commit();
+  }
+  function duplicateResume() {
+    localStorage.setItem(`${STORAGE_KEY}.${Date.now()}`, snapshot());
+    notice('A duplicate copy was saved in this browser.', 'success');
+  }
+  function exportJson() {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${(state.data.personal.fullName || 'resume').replace(/\s+/g, '-').toLowerCase()}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+  function runAi(btn) {
+    remember();
+    if (btn.dataset.ai === 'summary') {
+      const role = state.data.personal.jobTitle || 'professional';
+      const skills = state.data.skills.map((s) => s.name).filter(Boolean).slice(0, 4).join(', ');
+      state.data.summary = `${role} with hands-on experience delivering measurable results across ${skills || 'cross-functional priorities'}. Known for clear communication, structured problem solving, and improving outcomes through practical, user-focused execution.`;
+    }
+    if (btn.dataset.ai === 'bullets') {
+      const item = state.data.experience[Number(btn.dataset.index)];
+      const base = item.description || `Managed ${item.position || 'key responsibilities'} at ${item.company || 'the organization'}.`;
+      item.description = base.split(/\n+/).filter(Boolean).map((line) => {
+        const clean = line.replace(/^[-•]\s*/, '');
+        return /^(Led|Built|Improved|Reduced|Increased|Launched|Managed|Designed|Implemented|Optimized)\b/i.test(clean) ? clean : `Improved ${clean.charAt(0).toLowerCase()}${clean.slice(1)}`;
+      }).join('\n');
+    }
+    if (btn.dataset.ai === 'project') {
+      const item = state.data.projects[Number(btn.dataset.index)];
+      item.description = item.description || `Built ${item.name || 'this project'} using ${item.technologies || 'modern tools'} to solve a real user problem, improve workflow clarity, and demonstrate practical delivery skills.`;
+    }
+    commit();
+    notice('Suggestion applied. You can edit it freely.', 'success');
+  }
+  function validate() {
+    const bad = [];
+    const { personal } = state.data;
+    const email = personal.email;
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) bad.push('Check the email format.');
+    if (personal.phone && !/^[+()\d\s.-]{7,}$/.test(personal.phone)) bad.push('Check the phone number format.');
+    ['website','linkedin','github'].forEach((key) => {
+      const value = personal[key];
+      if (value && !/^(https?:\/\/)?[\w.-]+\.[a-z]{2,}/i.test(value)) bad.push(`Check the ${key} link.`);
+    });
+    const datedItems = [...state.data.experience, ...state.data.education, ...state.data.volunteerWork];
+    if (datedItems.some((item) => item.startDate && item.endDate && !item.current && item.startDate > item.endDate)) bad.push('Check date ranges. Start dates should not come after end dates.');
+    if (!personal.fullName) bad.push('Add your full name.');
+    return bad;
+  }
+  async function downloadPdf() {
+    const issues = validate();
+    if (issues.length) { notice(issues[0], 'error'); return; }
+    try {
+      const { jsPDF } = await import('jspdf');
+      const page = state.customization.pageSize || 'a4';
+      const doc = new jsPDF({ unit: 'pt', format: page });
+      const width = doc.internal.pageSize.getWidth();
+      const height = doc.internal.pageSize.getHeight();
+      const margin = Number(state.customization.margin) || 48;
+      const rgb = state.customization.accentColor.replace('#', '').match(/.{2}/g).map((h) => parseInt(h, 16));
+      let y = margin;
+      const addPageIfNeeded = (needed = 32) => { if (y + needed > height - margin) { doc.addPage(); y = margin; } };
+      const text = (value, x, opts = {}) => {
+        const size = opts.size || state.customization.fontSize || 10.5;
+        doc.setFont('helvetica', opts.bold ? 'bold' : 'normal'); doc.setFontSize(size); doc.setTextColor(...(opts.color || [31, 41, 55]));
+        const lines = doc.splitTextToSize(String(value || ''), opts.width || width - margin * 2);
+        addPageIfNeeded(lines.length * size * 1.4);
+        doc.text(lines, x || margin, y, opts.align ? { align: opts.align } : undefined);
+        y += lines.length * size * 1.35;
+      };
+      text(state.data.personal.fullName || 'Your Name', margin, { size: 24, bold: true, color: [17, 24, 39] });
+      text(state.data.personal.jobTitle || 'Target Role', margin, { size: 12, bold: true, color: rgb });
+      text(['email','phone','location','website','linkedin','github'].map((k) => state.data.personal[k]).filter(Boolean).join(' | '), margin, { size: 9, color: [75, 85, 99] });
+      doc.setDrawColor(...rgb); doc.setLineWidth(1.2); doc.line(margin, y + 4, width - margin, y + 4); y += 22;
+      const section = (title, hasContent, body) => {
+        if (!hasContent) return;
+        addPageIfNeeded(34);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(...rgb); doc.text(title.toUpperCase(), margin, y); y += 8;
+        doc.setDrawColor(215, 221, 232); doc.line(margin, y, width - margin, y); y += 14;
+        body();
+        y += Number(state.customization.sectionSpacing) * .6;
+      };
+      const writeItems = (items, getTitle, getMeta, getDescription) => items.forEach((item) => {
+        text(getTitle(item), margin, { bold: true, size: 10 });
+        const meta = getMeta(item);
+        if (meta) text(meta, margin, { size: 8.5, color: [75,85,99] });
+        const description = getDescription(item);
+        if (description) text(description, margin, { size: 9.5 });
+        y += 6;
+      });
+      const pdfSections = {
+        summary: () => section('Professional Summary', nonEmpty(state.data.summary), () => text(state.data.summary, margin, { size: 10 })),
+        experience: () => {
+          const items = state.data.experience.filter((e) => e.company || e.position || e.description);
+          section('Experience', items.length, () => writeItems(items, (e) => `${e.position || e.company}${e.company && e.position ? `, ${e.company}` : ''}`, (e) => [e.location, dateRange(e)].filter(Boolean).join(' | '), (e) => e.description));
+        },
+        education: () => {
+          const items = state.data.education.filter((e) => e.institution || e.degree || e.description);
+          section('Education', items.length, () => writeItems(items, (e) => [e.degree, e.field, e.institution].filter(Boolean).join(' - '), (e) => [e.location, dateRange(e), e.gpa && `GPA ${e.gpa}`].filter(Boolean).join(' | '), (e) => e.description));
+        },
+        projects: () => {
+          const items = state.data.projects.filter((e) => e.name || e.description);
+          section('Projects', items.length, () => writeItems(items, (e) => e.name || 'Project', (e) => [e.technologies, e.url, e.startDate].filter(Boolean).join(' | '), (e) => e.description));
+        },
+        skills: () => {
+          const skills = state.data.skills.map((s) => [s.name, s.level].filter(Boolean).join(' - ')).filter(Boolean).join(', ');
+          section('Skills', skills, () => text(skills, margin, { size: 10 }));
+        },
+        languages: () => {
+          const languages = state.data.languages.map((s) => [s.name, s.proficiency].filter(Boolean).join(' - ')).filter(Boolean).join(', ');
+          section('Languages', languages, () => text(languages, margin, { size: 10 }));
+        },
+        certificates: () => {
+          const items = state.data.certificates.filter((e) => e.name || e.description);
+          section('Certificates', items.length, () => writeItems(items, (e) => [e.name, e.issuer].filter(Boolean).join(' - '), (e) => e.date, (e) => e.description));
+        },
+        achievements: () => {
+          const items = state.data.achievements.filter((e) => e.title || e.description);
+          section('Achievements', items.length, () => writeItems(items, (e) => e.title || 'Achievement', (e) => e.date, (e) => e.description));
+        },
+        volunteerWork: () => {
+          const items = state.data.volunteerWork.filter((e) => e.organization || e.role || e.description);
+          section('Volunteer Work', items.length, () => writeItems(items, (e) => [e.role, e.organization].filter(Boolean).join(' - '), (e) => dateRange(e), (e) => e.description));
+        },
+        references: () => {
+          const items = state.data.references.filter((e) => e.name || e.email || e.phone);
+          section('References', items.length, () => writeItems(items, (e) => e.name || 'Reference', (e) => [e.title, e.company, e.relationship].filter(Boolean).join(' | '), (e) => [e.email, e.phone].filter(Boolean).join(' | ')));
+        },
+      };
+      state.data.sectionOrder.filter((id) => state.data.sectionVisibility[id] !== false).forEach((id) => pdfSections[id]?.());
+      state.data.customSections.forEach((custom) => {
+        const items = custom.items.filter((item) => item.title || item.description);
+        section(custom.title || 'Custom Section', items.length, () => writeItems(items, (item) => item.title || item.subtitle || 'Item', (item) => [item.subtitle, item.date].filter(Boolean).join(' | '), (item) => item.description));
+      });
+      doc.save(`${(state.data.personal.fullName || 'Resume').replace(/\s+/g, '_')}_Resume.pdf`);
+      notice('PDF downloaded successfully.', 'success');
+    } catch (error) {
+      notice('PDF export failed. Please try the browser print option.', 'error');
+    }
+  }
+  function notice(message, type) {
+    if (window.ffNotice) window.ffNotice(message, type);
+  }
+  render();
+</script>

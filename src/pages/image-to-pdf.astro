@@ -1,5 +1,6 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Convert Image to PDF Online - Merge JPG, PNG to PDF for Free | FormFix';
@@ -26,6 +27,212 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/image-to-pdf">
+    <script is:inline type="module">
+    import { jsPDF } from 'https://cdn.skypack.dev/jspdf';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileInput = document.getElementById('multi-file-input');
+        const controls = document.getElementById('controls');
+        const uploadBox = document.getElementById('u-box-container');
+        const sortableList = document.getElementById('sortable-list');
+        const generateBtn = document.getElementById('generate-btn');
+        const loader = document.getElementById('loader');
+        const btnLabel = document.getElementById('btn-label');
+        const settingPills = document.querySelectorAll('.setting-pill');
+        const resultStage = document.getElementById('result-stage');
+        
+        let imageItems = [];
+        let fitMode = 'exact';
+
+        fileInput?.addEventListener('change', (e) => {
+             const files = Array.from(e.target.files || []);
+             if (files.length > 0) handleFiles(files);
+        });
+
+        uploadBox?.addEventListener('dragover', (e) => {
+             e.preventDefault();
+             uploadBox?.querySelector('.upload-box')?.classList.add('drag-active');
+        });
+        uploadBox?.addEventListener('dragleave', () => {
+             uploadBox?.querySelector('.upload-box')?.classList.remove('drag-active');
+        });
+        uploadBox?.addEventListener('drop', (e) => {
+             e.preventDefault();
+             uploadBox?.querySelector('.upload-box')?.classList.remove('drag-active');
+             if (e.dataTransfer?.files.length) {
+                 handleFiles(Array.from(e.dataTransfer.files));
+             }
+        });
+
+        function handleFiles(files) {
+             const allowed = ['image/png','image/jpeg','image/webp'];
+             const valid = files.filter(f => allowed.includes(f.type));
+             if (valid.length === 0) {
+                 if (typeof window.ffNotice === 'function') window.ffNotice('Please select PNG, JPG, or WebP images.', 'error');
+                 return;
+             }
+             valid.forEach(file => {
+                 const url = URL.createObjectURL(file);
+                 const id = Math.random().toString(36).substring(2, 11);
+                 imageItems.push({ id, file, url });
+             });
+             renderGrid();
+             uploadBox?.classList.add('hidden');
+             controls?.classList.remove('hidden');
+        }
+
+        settingPills.forEach(pill => pill?.addEventListener('click', () => {
+            settingPills.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            fitMode = pill.dataset.fit || 'fit';
+        }));
+
+        const renderGrid = () => {
+                   if (sortableList) sortableList.innerHTML = '';
+             imageItems.forEach((item, index) => {
+                  const el = document.createElement('div');
+                  el.className = 'sort-item shadow-sm';
+                  el.draggable = true;
+                  el.dataset.id = item.id;
+                  
+                  el.innerHTML = `
+                      <span class="p-num">${index + 1}</span>
+                      <img src="${item.url}" draggable="false" alt="Image to PDF page preview" loading="lazy" decoding="async" />
+                      <button class="p-del" data-id="${item.id}">×</button>
+                  `;
+                  
+                  el.addEventListener('dragstart', (e) => {
+                      el.classList.add('dragging');
+                      e.dataTransfer.setData('text/plain', item.id);
+                  });
+                  el.addEventListener('dragend', () => el.classList.remove('dragging'));
+                  
+                   el.querySelector('.p-del')?.addEventListener('click', () => {
+                      imageItems = imageItems.filter(i => i.id !== item.id);
+                      if (imageItems.length === 0) location.reload();
+                      else renderGrid();
+                  });
+
+                   if (sortableList) sortableList.appendChild(el);
+             });
+        };
+
+        sortableList?.addEventListener('dragover', e => {
+             e.preventDefault();
+             const draggable = document.querySelector('.dragging');
+             if (!draggable) return;
+             
+             const afterElement = getDragAfterElement(sortableList, e.clientX, e.clientY);
+             if (afterElement == null) {
+                 sortableList?.appendChild(draggable);
+             } else {
+                 sortableList?.insertBefore(draggable, afterElement);
+             }
+        });
+
+        sortableList?.addEventListener('drop', e => {
+             const orderedIds = Array.from(sortableList?.children || []).map(child => child.dataset.id);
+             imageItems = orderedIds.map(id => imageItems.find(item => item.id === id)).filter(Boolean);
+             renderGrid();
+         });
+
+        function getDragAfterElement(container, x, y) {
+             const draggableElements = [...container.querySelectorAll('.sort-item:not(.dragging)')];
+             return draggableElements.reduce((closest, child) => {
+                 const box = child.getBoundingClientRect();
+                 const offsetX = x - box.left - box.width / 2;
+                 const offsetY = y - box.top - box.height / 2;
+                 const distance = Math.sqrt(offsetX*offsetX + offsetY*offsetY);
+                 if (distance < closest.distance) return { distance, element: child };
+                 else return closest;
+             }, { distance: Number.POSITIVE_INFINITY, element: null }).element;
+        }
+
+        generateBtn?.addEventListener('click', async () => {
+             if (imageItems.length === 0) return;
+             generateBtn.disabled = true;
+             btnLabel.textContent = 'Generating PDF...';
+             loader?.classList.remove('hidden');
+
+             try {
+                 let pdf;
+
+                 for (let i = 0; i < imageItems.length; i++) {
+                     const item = imageItems[i];
+                     const img = new Image();
+                     img.src = item.url;
+                     await new Promise(r => img.onload = r);
+
+                     const format = item.file.type === 'image/jpeg' ? 'JPEG' : 'PNG';
+
+                     if (fitMode === 'exact') {
+                         const ptW = img.naturalWidth * 0.75;
+                         const ptH = img.naturalHeight * 0.75;
+                         
+                         if (i === 0) {
+                             pdf = new jsPDF({
+                                 orientation: ptW > ptH ? 'landscape' : 'portrait',
+                                 unit: 'pt',
+                                 format: [ptW, ptH]
+                             });
+                         } else {
+                             pdf.addPage([ptW, ptH], ptW > ptH ? 'landscape' : 'portrait');
+                         }
+                         pdf.addImage(img, format, 0, 0, ptW, ptH);
+                     } else {
+                         if (i === 0) {
+                             pdf = new jsPDF();
+                         } else {
+                             pdf.addPage();
+                         }
+                         
+                         const pageWidth = pdf.internal.pageSize.getWidth();
+                         const pageHeight = pdf.internal.pageSize.getHeight();
+                         
+                         const imgRatio = img.naturalWidth / img.naturalHeight;
+                         const pageRatio = pageWidth / pageHeight;
+                         let finalW = pageWidth;
+                         let finalH = pageHeight;
+                         
+                         if (imgRatio > pageRatio) {
+                             finalH = pageWidth / imgRatio;
+                         } else {
+                             finalW = pageHeight * imgRatio;
+                         }
+
+                         const x = (pageWidth - finalW) / 2;
+                         const y = (pageHeight - finalH) / 2;
+                         pdf.addImage(img, format, x, y, finalW, finalH);
+                     }
+                 }
+
+                 const blob = pdf.output('blob');
+                 const outUrl = URL.createObjectURL(blob);
+
+                 document.getElementById('download-btn').href = outUrl;
+                 document.getElementById('download-btn').download = `formfix-converted.pdf`;
+                 document.getElementById('final-pages-count').textContent = imageItems.length.toString();
+
+                 controls?.classList.add('hidden');
+                 resultStage?.classList.remove('hidden');
+                 resultStage.scrollIntoView({ behavior: 'smooth' });
+                 
+                 if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
+
+             } catch (err) {
+                 console.error(err);
+                 if (typeof window.ffNotice === 'function') window.ffNotice('Error generating PDF. Some images might be corrupted or too large.', 'error');
+             } finally {
+                 generateBtn.disabled = false;
+                 btnLabel.textContent = '⬇️ Create PDF Document';
+                 loader?.classList.add('hidden');
+             }
+        });
+    });
+</script>
+
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Convert Image to PDF Online - Merge JPG, PNG to PDF for Free", path: "/image-to-pdf" }]} />
+
     <ToolWrapper title="Image to PDF" subtitle="Compile multiple photos or scanned documents into a single professional PDF." currentTool="image-to-pdf">
         
         <div slot="tool-ui">
@@ -123,258 +330,58 @@ const customSchema = {
              </div>
         </div>
     </ToolWrapper>
-</BaseLayout>
-
-<script is:inline type="module">
-    import { jsPDF } from 'https://cdn.skypack.dev/jspdf';
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const fileInput = document.getElementById('multi-file-input');
-        const controls = document.getElementById('controls');
-        const uploadBox = document.getElementById('u-box-container');
-        const sortableList = document.getElementById('sortable-list');
-        const generateBtn = document.getElementById('generate-btn');
-        const loader = document.getElementById('loader');
-        const btnLabel = document.getElementById('btn-label');
-        const settingPills = document.querySelectorAll('.setting-pill');
-        const resultStage = document.getElementById('result-stage');
-        
-        let imageItems = [];
-        let fitMode = 'exact';
-
-        fileInput.addEventListener('change', (e) => {
-             const files = Array.from(e.target.files || []);
-             if (files.length > 0) handleFiles(files);
-        });
-
-        uploadBox.addEventListener('dragover', (e) => {
-             e.preventDefault();
-             uploadBox.querySelector('.upload-box').classList.add('drag-active');
-        });
-        uploadBox.addEventListener('dragleave', () => {
-             uploadBox.querySelector('.upload-box').classList.remove('drag-active');
-        });
-        uploadBox.addEventListener('drop', (e) => {
-             e.preventDefault();
-             uploadBox.querySelector('.upload-box').classList.remove('drag-active');
-             if (e.dataTransfer?.files.length) {
-                 handleFiles(Array.from(e.dataTransfer.files));
-             }
-        });
-
-        function handleFiles(files) {
-             files.forEach(file => {
-                 const url = URL.createObjectURL(file);
-                 const id = Math.random().toString(36).substring(2, 11);
-                 imageItems.push({ id, file, url });
-             });
-             renderGrid();
-             uploadBox.classList.add('hidden');
-             controls.classList.remove('hidden');
-        }
-
-        settingPills.forEach(pill => pill.addEventListener('click', () => {
-            settingPills.forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-            fitMode = pill.dataset.fit || 'fit';
-        }));
-
-        const renderGrid = () => {
-             sortableList.innerHTML = '';
-             imageItems.forEach((item, index) => {
-                  const el = document.createElement('div');
-                  el.className = 'sort-item shadow-sm';
-                  el.draggable = true;
-                  el.dataset.id = item.id;
-                  
-                  el.innerHTML = `
-                      <span class="p-num">${index + 1}</span>
-                      <img src="${item.url}" draggable="false" alt="Image to PDF page preview" />
-                      <button class="p-del" data-id="${item.id}">×</button>
-                  `;
-                  
-                  el.addEventListener('dragstart', (e) => {
-                      el.classList.add('dragging');
-                      e.dataTransfer.setData('text/plain', item.id);
-                  });
-                  el.addEventListener('dragend', () => el.classList.remove('dragging'));
-                  
-                  el.querySelector('.p-del').addEventListener('click', () => {
-                      imageItems = imageItems.filter(i => i.id !== item.id);
-                      if (imageItems.length === 0) location.reload();
-                      else renderGrid();
-                  });
-
-                  sortableList.appendChild(el);
-             });
-        };
-
-        sortableList.addEventListener('dragover', e => {
-             e.preventDefault();
-             const draggable = document.querySelector('.dragging');
-             if (!draggable) return;
-             
-             const afterElement = getDragAfterElement(sortableList, e.clientX, e.clientY);
-             if (afterElement == null) {
-                 sortableList.appendChild(draggable);
-             } else {
-                 sortableList.insertBefore(draggable, afterElement);
-             }
-        });
-
-        sortableList.addEventListener('drop', e => {
-             const orderedIds = Array.from(sortableList.children).map(child => child.dataset.id);
-             imageItems = orderedIds.map(id => imageItems.find(item => item.id === id)).filter(Boolean);
-             renderGrid();
-         });
-
-        function getDragAfterElement(container, x, y) {
-             const draggableElements = [...container.querySelectorAll('.sort-item:not(.dragging)')];
-             return draggableElements.reduce((closest, child) => {
-                 const box = child.getBoundingClientRect();
-                 const offsetX = x - box.left - box.width / 2;
-                 const offsetY = y - box.top - box.height / 2;
-                 const distance = Math.sqrt(offsetX*offsetX + offsetY*offsetY);
-                 if (distance < closest.distance) return { distance, element: child };
-                 else return closest;
-             }, { distance: Number.POSITIVE_INFINITY, element: null }).element;
-        }
-
-        generateBtn.addEventListener('click', async () => {
-             if (imageItems.length === 0) return;
-             generateBtn.disabled = true;
-             btnLabel.textContent = 'Generating PDF...';
-             loader.classList.remove('hidden');
-
-             try {
-                 let pdf;
-
-                 for (let i = 0; i < imageItems.length; i++) {
-                     const item = imageItems[i];
-                     const img = new Image();
-                     img.src = item.url;
-                     await new Promise(r => img.onload = r);
-
-                     const format = item.file.type === 'image/jpeg' ? 'JPEG' : 'PNG';
-
-                     if (fitMode === 'exact') {
-                         const ptW = img.naturalWidth * 0.75;
-                         const ptH = img.naturalHeight * 0.75;
-                         
-                         if (i === 0) {
-                             pdf = new jsPDF({
-                                 orientation: ptW > ptH ? 'landscape' : 'portrait',
-                                 unit: 'pt',
-                                 format: [ptW, ptH]
-                             });
-                         } else {
-                             pdf.addPage([ptW, ptH], ptW > ptH ? 'landscape' : 'portrait');
-                         }
-                         pdf.addImage(img, format, 0, 0, ptW, ptH);
-                     } else {
-                         if (i === 0) {
-                             pdf = new jsPDF();
-                         } else {
-                             pdf.addPage();
-                         }
-                         
-                         const pageWidth = pdf.internal.pageSize.getWidth();
-                         const pageHeight = pdf.internal.pageSize.getHeight();
-                         
-                         const imgRatio = img.naturalWidth / img.naturalHeight;
-                         const pageRatio = pageWidth / pageHeight;
-                         let finalW = pageWidth;
-                         let finalH = pageHeight;
-                         
-                         if (imgRatio > pageRatio) {
-                             finalH = pageWidth / imgRatio;
-                         } else {
-                             finalW = pageHeight * imgRatio;
-                         }
-
-                         const x = (pageWidth - finalW) / 2;
-                         const y = (pageHeight - finalH) / 2;
-                         pdf.addImage(img, format, x, y, finalW, finalH);
-                     }
-                 }
-
-                 const blob = pdf.output('blob');
-                 const outUrl = URL.createObjectURL(blob);
-
-                 document.getElementById('download-btn').href = outUrl;
-                 document.getElementById('download-btn').download = `formfix-converted.pdf`;
-                 document.getElementById('final-pages-count').textContent = imageItems.length.toString();
-
-                 controls.classList.add('hidden');
-                 resultStage.classList.remove('hidden');
-                 resultStage.scrollIntoView({ behavior: 'smooth' });
-                 
-                 if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
-
-             } catch (err) {
-                 console.error(err);
-                 alert('Error generating PDF. Some images might be corrupted or too large.');
-             } finally {
-                 generateBtn.disabled = false;
-                 btnLabel.textContent = '⬇️ Create PDF Document';
-                 loader.classList.add('hidden');
-             }
-        });
-    });
-</script>
-
-<style>
+</BaseLayout><style>
     .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; }
     
     .upload-container { display: flex; justify-content: center; }
     .upload-box { background: var(--surface-50); border: 2.5px dashed var(--border-subtle); border-radius: 32px; padding: 60px 40px; text-align: center; width: 100%; cursor: pointer; transition: 0.2s; }
-    .upload-box:hover, .upload-box.drag-active { border-color: var(--accent); background: var(--surface-100); }
+    .upload-box:hover, .upload-box.drag-active { border-color: var(--accent-primary); background: var(--surface-100); }
     .upload-icon { font-size: 3.5rem; margin-bottom: 24px; line-height: 1; }
 
     .crop-grid { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
     
-    .preview-panel { background: #fff; border: 1px solid var(--border-subtle); border-radius: 24px; position: relative; height: 500px; display: flex; flex-direction: column; overflow: hidden; }
+    .preview-panel { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 24px; position: relative; height: 500px; display: flex; flex-direction: column; overflow: hidden; }
 
     .sortable-canvas { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; align-content: start; }
-    .sort-item { position: relative; aspect-ratio: 3/4; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle); cursor: grab; transition: 0.2s; }
+    .sort-item { position: relative; aspect-ratio: 3/4; background:var(--surface-3); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle); cursor: grab; transition: 0.2s; }
     .sort-item:active { cursor: grabbing; }
     .sort-item.dragging { opacity: 0.4; transform: scale(1.05); }
-    .sort-item img { width: 100%; height: 100%; object-fit: contain; background: #e2e8f0; }
+    .sort-item img { width: 100%; height: 100%; object-fit: contain; background: var(--border-subtle); }
     
-    .p-num { position: absolute; top: 8px; left: 8px; background: var(--accent); color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 900; box-shadow: var(--shadow-sm); z-index: 2; }
-    .p-del { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%; background: #fee2e2; color: #ef4444; border: none; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; z-index: 2; }
-    .p-del:hover { background: #ef4444; color: #fff; }
+    .p-num { position: absolute; top: 8px; left: 8px; background: var(--accent-primary); color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight:600; box-shadow: var(--shadow-sm); z-index: 2; }
+    .p-del { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%; background:var(--error-soft); color: var(--error); border: none; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; z-index: 2; }
+    .p-del:hover { background: var(--error); color: #fff; }
 
     .controls-sidebar { display: flex; flex-direction: column; }
     .settings-card { background: var(--surface-50); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); }
     
-    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    .section-label { font-size: 0.75rem; font-weight:600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
     
     .toggle-pill-group { display: flex; background: var(--border-subtle); padding: 6px; border-radius: 12px; gap: 4px; }
-    .setting-pill { flex: 1; padding: 10px 16px; border-radius: 10px; font-weight: 800; font-size: 0.85rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); text-align: center; }
+    .setting-pill { flex: 1; padding: 10px 16px; border-radius: 10px; font-weight:600; font-size: 0.85rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); text-align: center; }
     .setting-pill:hover { color: var(--text-main); }
-    .setting-pill.active { background: #fff; color: var(--accent); box-shadow: var(--shadow-sm); }
+    .setting-pill.active { background:var(--surface-3); color: var(--accent-primary); box-shadow: var(--shadow-sm); }
 
     .action-stack { display: flex; flex-direction: column; }
-    .wide-btn { height: 60px; font-weight: 850; font-size: 1rem; border-radius: 16px; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
+    .wide-btn { height: 60px; font-weight:600; font-size: 1rem; border-radius: 16px; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
     .privacy-note { font-size: 0.8rem; color: var(--text-muted); }
 
     /* Result Stage */
-    .result-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: 32px; padding: 40px; }
+    .result-card { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 32px; padding: 40px; }
     .success-banner { display: flex; align-items: center; gap: 16px; background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 20px; border-radius: 20px; }
-    .check-icon { width: 40px; height: 40px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: bold; flex-shrink: 0; }
+    .check-icon { width: 40px; height: 40px; background: var(--accent-primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight:600; flex-shrink: 0; }
     
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .mini-stat { background: var(--surface-50); padding: 24px; border-radius: 20px; border: 1px solid var(--border-subtle); text-align: center; }
-    .mini-stat.active { border-color: var(--accent); background: #fff; box-shadow: var(--shadow-sm); }
-    .mini-stat label { font-size: 0.72rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
-    .mini-stat span { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
+    .mini-stat.active { border-color: var(--accent-primary); background:var(--surface-3); box-shadow: var(--shadow-sm); }
+    .mini-stat label { font-size: 0.72rem; font-weight:600; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
+    .mini-stat span { font-size: 1.2rem; font-weight:600; color: var(--text-main); }
 
     /* FAQ */
     .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight: 800; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+    .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
@@ -392,8 +399,8 @@ const customSchema = {
     .mt-32 { margin-top: 32px; }
     .p-24 { padding: 24px; }
     .gap-16 { gap: 16px; }
-    .font-800 { font-weight: 800; }
-    .font-850 { font-weight: 850; }
+    .font-800 { font-weight:600; }
+    .font-850 { font-weight:600; }
     .font-600 { font-weight: 600; }
     .small { font-size: 0.85rem; }
     .px-40 { padding-left: 40px; padding-right: 40px; }
@@ -408,7 +415,7 @@ const customSchema = {
     .align-center { align-items: center; }
     .overflow-hidden { overflow: hidden; }
     .text-center { text-align: center; }
-    .text-accent { color: var(--accent); }
+    .text-accent { color: var(--accent-primary); }
     .hidden { display: none !important; }
 
     @media (max-width: 900px) {

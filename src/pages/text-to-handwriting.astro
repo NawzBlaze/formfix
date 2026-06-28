@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Text to Handwriting Converter - Realistic Assignment Maker | FormFix';
@@ -26,6 +27,8 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/text-to-handwriting">
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Text to Handwriting Converter - Realistic Assignment Maker", path: "/text-to-handwriting" }]} />
+
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Indie+Flower&family=Patrick+Hand&family=Handlee&family=Homemade+Apple&family=Kalam:wght@300;400;700&family=Shadows+Into+Light&family=Satisfy&display=swap" rel="stylesheet">
 
     <ToolWrapper title="Text to Handwriting" subtitle="Transform any text into realistic handwriting on ruled paper instantly." currentTool="text-to-handwriting">
@@ -71,7 +74,7 @@ const customSchema = {
                                            <div class="ink-selector" id="ink-group">
                                                 <button class="ink-dot active" data-color="#003366" style="background: #003366" title="Dark Blue"></button>
                                                 <button class="ink-dot" data-color="#111827" style="background: #111827" title="Black"></button>
-                                                <button class="ink-dot" data-color="#065f46" style="background: #065f46" title="Dark Green"></button>
+                                                 <button class="ink-dot" data-color="#166534" style="background: #166534" title="Dark Green"></button>
                                                 <button class="ink-dot" data-color="#b91c1c" style="background: #b91c1c" title="Red"></button>
                                            </div>
                                       </div>
@@ -145,235 +148,61 @@ const customSchema = {
              </div>
         </div>
     </ToolWrapper>
-</BaseLayout>
-
-<script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
-        const textInput = document.getElementById('text-input');
-        const fontSelect = document.getElementById('font-select');
-        const paperSelect = document.getElementById('paper-select');
-        const fontSizeSlider = document.getElementById('font-size');
-        const tiltSlider = document.getElementById('tilt-slider');
-        const inkGroup = document.getElementById('ink-group');
-        const downloadBtn = document.getElementById('download-btn');
-        
-        const fontSizeVal = document.getElementById('font-size-val');
-        const tiltVal = document.getElementById('tilt-val');
-        
-        const canvas = document.getElementById('handwriting-canvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-
-        let activeInk = '#003366';
-        
-        const A4_RATIO = 1.414;
-        const CANVAS_WIDTH = 1240; // 300 DPI for A4 width
-        const CANVAS_HEIGHT = CANVAS_WIDTH * A4_RATIO;
-        canvas.width = CANVAS_WIDTH;
-        canvas.height = CANVAS_HEIGHT;
-
-        function render() {
-            const paper = paperSelect.value;
-            const font = fontSelect.value;
-            const text = textInput.value;
-            const baseFontSize = parseFloat(fontSizeSlider.value) * 22;
-            const lineHeight = baseFontSize * 1.6;
-            const jitterAmount = parseInt(tiltSlider.value) / 10;
-            
-            fontSizeVal.textContent = fontSizeSlider.value;
-            const jitLabels = ['Off','Min', 'Low', 'Low+', 'Med-', 'Med', 'Med+', 'High-', 'High', 'Max', 'Ultra'];
-            tiltVal.textContent = jitLabels[parseInt(tiltSlider.value)];
-
-            // Background
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-            drawPaper(paper);
-
-            // Font setup
-            ctx.fillStyle = activeInk;
-            ctx.font = `${baseFontSize}px ${font}`;
-            ctx.textBaseline = "alphabetic";
-
-            const marginX = 140;
-            const rightMargin = 80;
-            const maxWidth = CANVAS_WIDTH - marginX - rightMargin;
-            const startY = 160;
-
-            const paragraphs = text.split('\n');
-            let currentLineY = startY;
-
-            paragraphs.forEach((para) => {
-                if (!para.trim()) {
-                    currentLineY += lineHeight;
-                    return;
-                }
-                const words = para.split(' ');
-                let currentLine = '';
-
-                for (let n = 0; n < words.length; n++) {
-                    const testLine = currentLine + words[n] + ' ';
-                    const metrics = ctx.measureText(testLine);
-                    const testWidth = metrics.width;
-
-                    if (testWidth > maxWidth && n > 0) {
-                        drawHandwrittenLine(currentLine, marginX, currentLineY, jitterAmount);
-                        currentLine = words[n] + ' ';
-                        currentLineY += lineHeight;
-                        if (currentLineY > CANVAS_HEIGHT - 60) break;
-                    } else {
-                        currentLine = testLine;
-                    }
-                }
-                drawHandwrittenLine(currentLine, marginX, currentLineY, jitterAmount);
-                currentLineY += lineHeight;
-                if (currentLineY > CANVAS_HEIGHT - 60) return;
-            });
-        }
-
-        function drawHandwrittenLine(text, x, y, jitter) {
-            if (y > CANVAS_HEIGHT - 40) return;
-            
-            ctx.save();
-            if (jitter > 0) {
-                const tilt = (Math.random() - 0.5) * jitter * 0.04;
-                const shiftX = (Math.random() - 0.5) * jitter * 6;
-                const shiftY = (Math.random() - 0.5) * jitter * 4;
-                ctx.translate(x + shiftX, y + shiftY);
-                ctx.rotate(tilt);
-            } else {
-                ctx.translate(x, y);
-            }
-
-            ctx.shadowBlur = jitter * 0.2;
-            ctx.shadowColor = activeInk;
-            ctx.globalAlpha = 0.85 + (Math.random() * 0.15);
-            
-            ctx.fillText(text.trim(), 0, 0);
-            ctx.restore();
-        }
-
-        function drawPaper(type) {
-            if (type === 'ruled') {
-                // Vertical Red Margin
-                ctx.strokeStyle = "rgba(255, 0, 0, 0.25)";
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(110, 0); ctx.lineTo(110, CANVAS_HEIGHT);
-                ctx.stroke();
-
-                // Blue horizontal lines
-                ctx.strokeStyle = "#e2e8f0";
-                ctx.lineWidth = 1.5;
-                for (let y = 168; y < CANVAS_HEIGHT; y += 42) {
-                    ctx.beginPath();
-                    ctx.moveTo(0, y); ctx.lineTo(CANVAS_WIDTH, y);
-                    ctx.stroke();
-                }
-            } else if (type === 'boxed') {
-                ctx.strokeStyle = "#f1f5f9";
-                ctx.lineWidth = 1;
-                for (let x = 0; x < CANVAS_WIDTH; x += 35) {
-                    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, CANVAS_HEIGHT); ctx.stroke();
-                }
-                for (let y = 0; y < CANVAS_HEIGHT; y += 35) {
-                    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(CANVAS_WIDTH, y); ctx.stroke();
-                }
-            } else if (type === 'yellow') {
-                ctx.fillStyle = "#fffde7";
-                ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                ctx.strokeStyle = "rgba(255,0,0,0.15)";
-                ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.moveTo(110, 0); ctx.lineTo(110, CANVAS_HEIGHT); ctx.stroke();
-                ctx.strokeStyle = "#ffe082";
-                for (let y = 168; y < CANVAS_HEIGHT; y += 40) {
-                    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(CANVAS_WIDTH, y); ctx.stroke();
-                }
-            } else if (type === 'old') {
-                ctx.fillStyle = "#faf3e0";
-                ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                for(let i=0; i<800; i++) {
-                    ctx.fillStyle = `rgba(139, 69, 19, ${Math.random() * 0.05})`;
-                    ctx.fillRect(Math.random() * CANVAS_WIDTH, Math.random() * CANVAS_HEIGHT, 1.5, 1.5);
-                }
-            }
-        }
-
-        [textInput, fontSelect, paperSelect, fontSizeSlider, tiltSlider].forEach(el => {
-            el.addEventListener('input', render);
-        });
-
-        if (inkGroup) {
-            inkGroup.addEventListener('click', (e) => {
-                const btn = e.target.closest('.ink-dot');
-                if(!btn) return;
-                document.querySelectorAll('.ink-dot').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activeInk = btn.getAttribute('data-color');
-                render();
-            });
-        }
-
-        if (downloadBtn) {
-            downloadBtn.onclick = () => {
-                const link = document.createElement('a');
-                link.download = "assignment_formfix.jpg";
-                link.href = canvas.toDataURL('image/jpeg', 0.95);
-                link.click();
-            };
-        }
-
-        // Wait for fonts to load before first render
-        document.fonts.ready.then(() => {
-            render();
-        });
-    });
-</script>
-
-<style>
+</BaseLayout><style>
     .workspace-editor { width: 100%; max-width: 1200px; margin: 0 auto; }
     .studio-grid { display: grid; grid-template-columns: 420px 1fr; gap: 40px; }
 
     .controls-sidebar { position: sticky; top: 20px; }
-    .settings-card { padding: 32px; background: #fff; }
-    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    .settings-card { padding: 32px; background: var(--surface-3); }
+    .section-label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
 
     .modern-textarea { width: 100%; height: 200px; padding: 16px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: var(--surface-50); font-weight: 600; font-size: 1rem; outline: none; transition: 0.2s; resize: none; line-height: 1.5; }
-    .modern-textarea:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+    .modern-textarea:focus { border-color: var(--accent-primary); background: var(--surface-3); box-shadow: 0 0 0 4px var(--accent-soft); }
 
     .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .modern-select { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: #fff; font-weight: 800; font-size: 0.9rem; outline: none; transition: 0.2s; cursor: pointer; }
-    .modern-select:hover { border-color: var(--accent); }
+    .setting-item { display: flex; flex-direction: column; }
+    .modern-select { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: var(--surface-3); font-weight: 600; font-size: 0.9rem; outline: none; transition: 0.2s; cursor: pointer; }
+    .modern-select:hover { border-color: var(--accent-primary); }
 
     .ink-selector { display: flex; gap: 12px; }
-    .ink-dot { width: 34px; height: 34px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--border-subtle); cursor: pointer; transition: 0.2s; }
-    .ink-dot.active { transform: scale(1.15); box-shadow: 0 0 0 2px var(--accent); }
+    .ink-dot { width: 34px; height: 34px; border-radius: 50%; border: 3px solid var(--border-subtle); box-shadow: 0 0 0 2px var(--border-subtle); cursor: pointer; transition: 0.2s; }
+    .ink-dot.active { transform: scale(1.15); box-shadow: 0 0 0 2px var(--accent-primary); }
 
-    .status-pill { font-size: 0.75rem; font-weight: 900; color: var(--accent); background: #f0f7ff; padding: 2px 10px; border-radius: 20px; }
+    .status-pill { font-size: 0.75rem; font-weight: 600; color: var(--accent-primary); background: var(--accent-soft); padding: 2px 10px; border-radius: 20px; }
     .premium-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--surface-200); appearance: none; outline: none; }
-    .premium-slider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--accent); border: 4px solid #fff; border-radius: 50%; box-shadow: var(--shadow-sm); cursor: pointer; transition: 0.2s; }
+    .premium-slider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--accent-primary); border: 4px solid var(--border-subtle); border-radius: 50%; box-shadow: var(--shadow-sm); cursor: pointer; transition: 0.2s; }
     .premium-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
     .lg-btn { width: 100%; height: 64px; font-size: 1.1rem; border-radius: 18px; margin-top: 12px; }
     .privacy-tiny { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 16px; }
 
-    /* Preview UI */
     .preview-stage { min-width: 0; }
-    .preview-badge { display: inline-block; background: var(--text-main); color: #fff; padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
-    .assignment-preview { padding: 40px; background: #eaeff5; display: flex; justify-content: center; overflow: hidden; }
-    .canvas-wrap { max-width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border-radius: 4px; overflow: auto; background: #fff; }
+    .preview-header { }
+    .preview-badge { display: inline-block; background: var(--text-main); color: var(--surface-3); padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+    .assignment-preview { padding: 40px; background: var(--surface-2); display: flex; justify-content: center; overflow: hidden; }
+    .canvas-wrap { max-width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border-radius: 4px; overflow: auto; background: var(--surface-3); }
     #handwriting-canvas { display: block; height: auto; width: 100%; max-width: 800px; }
 
-    /* Info */
-    .pro-article h2 { font-size: 1.75rem; font-weight: 850; margin-bottom: 24px; }
+    .pro-article h2 { font-size: 1.75rem; font-weight: 600; margin-bottom: 24px; }
     .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
     .f-item { padding: 24px; background: var(--surface-50); border-radius: 20px; border: 1px solid var(--border-subtle); }
     .f-icon { font-size: 2rem; display: block; margin-bottom: 12px; }
-    .ans { padding: 12px 0; color: var(--text-muted); font-size: 0.95rem; }
+    .faq-accordion { display: grid; gap: 12px; }
+    .faq-item { background: var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
+    .faq-item summary { font-weight: 600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; }
+    .ans { padding: 12px 20px 20px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
 
     .d-flex { display: flex; }
     .justify-between { justify-content: space-between; }
     .align-center { align-items: center; }
+    .m-0 { margin: 0; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+    .mt-32 { margin-top: 32px; }
+    .hidden { display: none !important; }
 
     @media (max-width: 1100px) {
         .studio-grid { grid-template-columns: 1fr; }
@@ -381,3 +210,162 @@ const customSchema = {
         .assignment-preview { padding: 20px; }
     }
 </style>
+
+<script>
+    const textInput = document.getElementById('text-input');
+    const fontSelect = document.getElementById('font-select');
+    const paperSelect = document.getElementById('paper-select');
+    const fontSizeSlider = document.getElementById('font-size');
+    const tiltSlider = document.getElementById('tilt-slider');
+    const inkGroup = document.getElementById('ink-group');
+    const downloadBtn = document.getElementById('download-btn');
+    const fontSizeVal = document.getElementById('font-size-val');
+    const tiltVal = document.getElementById('tilt-val');
+    const canvas = document.getElementById('handwriting-canvas');
+    if (!canvas) throw new Error('Canvas not found');
+    const ctx = canvas.getContext('2d');
+
+    let activeInk = '#003366';
+    const A4_RATIO = 1.414;
+    const CANVAS_WIDTH = 1240;
+    const CANVAS_HEIGHT = CANVAS_WIDTH * A4_RATIO;
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
+
+    function render() {
+        const paper = paperSelect.value;
+        const font = fontSelect.value;
+        const text = textInput.value;
+        const baseFontSize = parseFloat(fontSizeSlider.value) * 22;
+        const lineHeight = baseFontSize * 1.6;
+        const jitterAmount = parseInt(tiltSlider.value) / 10;
+
+        fontSizeVal.textContent = fontSizeSlider.value;
+        const jitLabels = ['Off','Min', 'Low', 'Low+', 'Med-', 'Med', 'Med+', 'High-', 'High', 'Max', 'Ultra'];
+        tiltVal.textContent = jitLabels[parseInt(tiltSlider.value)];
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        drawPaper(paper);
+
+        ctx.fillStyle = activeInk;
+        ctx.font = `${baseFontSize}px ${font}`;
+        ctx.textBaseline = "alphabetic";
+
+        const marginX = 140;
+        const rightMargin = 80;
+        const maxWidth = CANVAS_WIDTH - marginX - rightMargin;
+        const startY = 160;
+        const paragraphs = text.split('\n');
+        let currentLineY = startY;
+
+        paragraphs.forEach((para) => {
+            if (!para.trim()) { currentLineY += lineHeight; return; }
+            const words = para.split(' ');
+            let currentLine = '';
+            for (let n = 0; n < words.length; n++) {
+                const testLine = currentLine + words[n] + ' ';
+                const testWidth = ctx.measureText(testLine).width;
+                if (testWidth > maxWidth && n > 0) {
+                    drawHandwrittenLine(currentLine, marginX, currentLineY, jitterAmount);
+                    currentLine = words[n] + ' ';
+                    currentLineY += lineHeight;
+                    if (currentLineY > CANVAS_HEIGHT - 60) break;
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            drawHandwrittenLine(currentLine, marginX, currentLineY, jitterAmount);
+            currentLineY += lineHeight;
+            if (currentLineY > CANVAS_HEIGHT - 60) return;
+        });
+    }
+
+    function drawHandwrittenLine(text, x, y, jitter) {
+        if (y > CANVAS_HEIGHT - 40) return;
+        ctx.save();
+        if (jitter > 0) {
+            const tilt = (Math.random() - 0.5) * jitter * 0.04;
+            const shiftX = (Math.random() - 0.5) * jitter * 6;
+            const shiftY = (Math.random() - 0.5) * jitter * 4;
+            ctx.translate(x + shiftX, y + shiftY);
+            ctx.rotate(tilt);
+        } else {
+            ctx.translate(x, y);
+        }
+        ctx.shadowBlur = jitter * 0.2;
+        ctx.shadowColor = activeInk;
+        ctx.globalAlpha = 0.85 + (Math.random() * 0.15);
+        ctx.fillText(text.trim(), 0, 0);
+        ctx.restore();
+    }
+
+    function drawPaper(type) {
+        if (type === 'ruled') {
+            ctx.strokeStyle = "rgba(255, 0, 0, 0.25)";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(110, 0); ctx.lineTo(110, CANVAS_HEIGHT);
+            ctx.stroke();
+            ctx.strokeStyle = "#c8d6e5";
+            ctx.lineWidth = 1.5;
+            for (let y = 168; y < CANVAS_HEIGHT; y += 42) {
+                ctx.beginPath();
+                ctx.moveTo(0, y); ctx.lineTo(CANVAS_WIDTH, y);
+                ctx.stroke();
+            }
+        } else if (type === 'boxed') {
+            ctx.strokeStyle = "#d0d0d0";
+            ctx.lineWidth = 1;
+            for (let x = 0; x < CANVAS_WIDTH; x += 35) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, CANVAS_HEIGHT); ctx.stroke();
+            }
+            for (let y = 0; y < CANVAS_HEIGHT; y += 35) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(CANVAS_WIDTH, y); ctx.stroke();
+            }
+        } else if (type === 'yellow') {
+            ctx.fillStyle = "#fffde7";
+            ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ctx.strokeStyle = "rgba(255,0,0,0.15)";
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(110, 0); ctx.lineTo(110, CANVAS_HEIGHT); ctx.stroke();
+            ctx.strokeStyle = "#ffe082";
+            for (let y = 168; y < CANVAS_HEIGHT; y += 40) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(CANVAS_WIDTH, y); ctx.stroke();
+            }
+        } else if (type === 'old') {
+            ctx.fillStyle = "#faf3e0";
+            ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            for (let i = 0; i < 800; i++) {
+                ctx.fillStyle = `rgba(139, 69, 19, ${Math.random() * 0.05})`;
+                ctx.fillRect(Math.random() * CANVAS_WIDTH, Math.random() * CANVAS_HEIGHT, 1.5, 1.5);
+            }
+        }
+    }
+
+    [textInput, fontSelect, paperSelect, fontSizeSlider, tiltSlider].forEach(el => {
+        el.addEventListener('input', render);
+    });
+
+    if (inkGroup) {
+        inkGroup.addEventListener('click', (e) => {
+            const btn = e.target.closest('.ink-dot');
+            if (!btn) return;
+            document.querySelectorAll('#ink-group .ink-dot').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeInk = btn.getAttribute('data-color');
+            render();
+        });
+    }
+
+    if (downloadBtn) {
+        downloadBtn.onclick = () => {
+            const link = document.createElement('a');
+            link.download = "assignment_formfix.jpg";
+            link.href = canvas.toDataURL('image/jpeg', 0.95);
+            link.click();
+        };
+    }
+
+    document.fonts.ready.then(() => { render(); });
+</script>

@@ -1,0 +1,281 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { SITE_URL, SITE_NAME } from '../seo';
+
+const PAGE_TITLE = 'Security & Privacy | FormFix';
+const PAGE_DESC = 'Learn how FormFix protects your data. Zero-upload architecture, client-side processing, and privacy-first design.';
+
+const customSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: PAGE_TITLE,
+  description: PAGE_DESC,
+  url: `${SITE_URL}/security`,
+  publisher: {
+    '@type': 'Organization',
+    name: SITE_NAME,
+    url: SITE_URL
+  }
+};
+---
+
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} canonicalPath="/security" customSchema={customSchema}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: 'Security', path: '/security' }]} />
+
+    <div class="page">
+        <div class="container page-inner">
+
+            <header class="page-header">
+                <h1>Security & Privacy</h1>
+                <p>Your data never leaves your device. Here's how we guarantee it.</p>
+            </header>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <h3>Zero-Upload Architecture</h3>
+                    <p>Every tool runs entirely in your browser. Your files are processed locally and never uploaded to any server.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3>Client-Side Processing</h3>
+                    <p>All image compression, PDF merging, and file conversion happens directly on your device in a sandboxed environment.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                    </div>
+                    <h3>No Data Collection</h3>
+                    <p>We do not collect, store, or transmit any personal data, file content, or usage information to external servers.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </div>
+                    <h3>Encrypted Connection</h3>
+                    <p>All pages are served over HTTPS with TLS encryption. HSTS headers ensure your browser always uses a secure connection.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                    <h3>Open Source</h3>
+                    <p>Our source code is publicly available on <a href="https://github.com/NawzBlaze/Formfix" target="_blank" rel="noopener noreferrer">GitHub</a>. Anyone can audit our code.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <h3>No Accounts Required</h3>
+                    <p>We never ask for registration, email, or personal information. No accounts, no passwords, no data associated with your usage.</p>
+                </div>
+            </div>
+
+            <section class="protocols">
+                <h2>Security Headers</h2>
+                <div class="protocol-list">
+                    <div class="protocol-item">
+                        <span class="protocol-badge">HSTS</span>
+                        <span>Forces HTTPS for all connections</span>
+                    </div>
+                    <div class="protocol-item">
+                        <span class="protocol-badge">CSP</span>
+                        <span>Prevents XSS and unauthorized script injection</span>
+                    </div>
+                    <div class="protocol-item">
+                        <span class="protocol-badge">X-Frame-Options</span>
+                        <span>Prevents clickjacking via iframe embedding</span>
+                    </div>
+                    <div class="protocol-item">
+                        <span class="protocol-badge">Permissions-Policy</span>
+                        <span>Blocks camera, microphone, geolocation APIs</span>
+                    </div>
+                    <div class="protocol-item">
+                        <span class="protocol-badge">X-Content-Type</span>
+                        <span>Prevents MIME-type sniffing attacks</span>
+                    </div>
+                    <div class="protocol-item">
+                        <span class="protocol-badge">Referrer-Policy</span>
+                        <span>Limits referrer information leakage</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-section">
+                <h2>Have a Security Concern?</h2>
+                <p>If you discover a vulnerability, reach out to us directly.</p>
+                <div class="cta-btns">
+                    <a href="mailto:formfix.support@gmail.com?subject=Security%20Report%20-%20FormFix" class="btn-primary">Email Us</a>
+                    <a href="https://github.com/NawzBlaze/Formfix/issues" target="_blank" rel="noopener noreferrer" class="btn-secondary">Report on GitHub</a>
+                </div>
+                <p class="cta-email">formfix.support@gmail.com</p>
+            </section>
+
+        </div>
+    </div>
+</BaseLayout>
+
+<style>
+.page { padding: 32px 0 80px; }
+.page-inner { max-width: 860px; }
+
+.page-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+.page-header h1 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.page-header p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 56px;
+}
+.card {
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 24px;
+}
+.card:hover {
+    border-color: var(--border-strong);
+}
+.card-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--accent-soft);
+    color: var(--accent-primary);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+.card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+.card a {
+    color: var(--accent-primary);
+    font-weight: 500;
+}
+
+.protocols {
+    margin-bottom: 56px;
+}
+.protocols h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.protocol-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.protocol-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: var(--surface-2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+}
+.protocol-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    background: var(--accent-soft);
+    color: var(--accent-primary);
+    padding: 4px 10px;
+    border-radius: var(--radius-xs);
+    white-space: nowrap;
+    min-width: 110px;
+    text-align: center;
+}
+.protocol-item span:last-child {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.cta-section {
+    text-align: center;
+    padding: 40px;
+    background: var(--surface-2);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+}
+.cta-section h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.cta-section p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+.btn-primary {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--accent-primary);
+    color: #fff;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.btn-primary:hover {
+    background: var(--accent-hover);
+    color: #fff;
+}
+.btn-secondary {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--surface-3);
+    color: var(--text-primary);
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-subtle);
+}
+.btn-secondary:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+.cta-email { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+
+@media (max-width: 768px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .protocol-item { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+</style>

@@ -1,11 +1,28 @@
 ---
 import BaseLayout from '../../components/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
-const title = "Passport Size Photo Specifications Guide (2024-25)";
+const title = "Passport Size Photo Specifications Guide (2026)";
 const description = "Everything you need to know about official passport photo dimensions, background requirements, and file size limits for exams.";
+
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Create a Passport Photo",
+  "description": "Step-by-step guide on creating a compliant passport photo for online forms.",
+  "step": [
+    { "@type": "HowToStep", "name": "Prepare your photo", "text": "Take a clear front-facing photo with a plain background." },
+    { "@type": "HowToStep", "name": "Open the Passport Photo Maker", "text": "Navigate to the FormFix Passport Photo Maker." },
+    { "@type": "HowToStep", "name": "Upload and crop", "text": "Upload your photo and adjust the crop to 3.5cm x 4.5cm." },
+    { "@type": "HowToStep", "name": "Download", "text": "Download your compliant passport photo." }
+  ]
+};
 ---
 
-<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/passport-photo-specifications">
+<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/passport-photo-specifications" customSchema={howToSchema}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Passport Size Photo Specifications Guide (2024-25)", path: "/guides/passport-photo-specifications" }]} />
+
     <section class="page-header">
         <div class="container">
             <h1>Passport Photo Specifications</h1>
@@ -62,12 +79,14 @@ const description = "Everything you need to know about official passport photo d
             </article>
         </div>
     </section>
+
+    <ShareBar title={title} />
 </BaseLayout>
 
 <style>
     .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
     .content-section { padding: 60px 0; }
-    .prose { line-height: 1.8; color: var(--slate); }
+    .prose { line-height: 1.8; color: var(--text-secondary); }
     .container-narrow { max-width: 800px; }
     .cta-box { background: var(--primary-light); padding: 32px; border-radius: 16px; text-align: center; }
 </style>

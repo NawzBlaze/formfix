@@ -1,5 +1,6 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Split PDF Online - Extract Pages from PDF for Free | FormFix';
@@ -26,6 +27,20 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/split-pdf">
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Split PDF Online - Extract Pages from PDF for Free", path: "/split-pdf" }]} />
+
+    <!-- Load PDF.js library via a deferred DOM injection to keep HTML valid -->
+    <script is:inline>
+        (function() {
+            if (document.querySelector('script[data-pdfjs-loader]')) return;
+            const s = document.createElement('script');
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+            s.defer = true;
+            s.dataset.pdfjsLoader = '1';
+            document.head.appendChild(s);
+        })();
+    </script>
+
     <ToolWrapper title="Split PDF Files" subtitle="Extract specific pages from any PDF document quickly and securely." currentTool="split-pdf">
         
         <div slot="tool-ui">
@@ -97,10 +112,8 @@ const customSchema = {
              </div>
         </div>
     </ToolWrapper>
-</BaseLayout>
 
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
+<!-- Load pdf-lib lazily for merging (only when needed) -->
 <script is:inline>
     const loadPdfLib = async () => {
         if (window.PDFLib) return;
@@ -131,14 +144,14 @@ const customSchema = {
         let totalPagesNum = 0;
         let selectedIndices = new Set(); // 0-indexed
 
-        fileInput.addEventListener('change', async (e) => {
+        fileInput?.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if(!file || file.type !== 'application/pdf') return;
             fileName = file.name;
             
-            docName.textContent = fileName;
-            uploadStage.classList.add('hidden');
-            loadingStage.classList.remove('hidden');
+            if (docName) docName.textContent = fileName;
+            uploadStage?.classList.add('hidden');
+            loadingStage?.classList.remove('hidden');
             
             try {
                 pdfBytesOriginal = await file.arrayBuffer();
@@ -146,9 +159,9 @@ const customSchema = {
                 const pdf = await loadingTask.promise;
                 
                 totalPagesNum = pdf.numPages;
-                docPages.textContent = `${totalPagesNum} Pages loaded`;
+                if (docPages) docPages.textContent = `${totalPagesNum} Pages loaded`;
                 
-                pagesGrid.innerHTML = '';
+                if (pagesGrid) pagesGrid.innerHTML = '';
                 selectedIndices.clear();
 
                 for (let i = 1; i <= totalPagesNum; i++) {
@@ -168,7 +181,7 @@ const customSchema = {
                     item.className = 'page-thumbnail selected shadow-sm';
                     item.dataset.index = (i - 1).toString();
                     item.innerHTML = `
-                         <img src="${canvas.toDataURL()}" alt="PDF segment thumbnail" />
+                         <img src="${canvas.toDataURL()}" alt="PDF segment thumbnail" loading="lazy" decoding="async" />
                          <label class="p-num">Page ${i}</label>
                          <div class="sel-overlay"></div>
                          <div class="sel-tick">✔</div>
@@ -186,26 +199,26 @@ const customSchema = {
                          updateExtractBtn();
                     });
                     
-                    pagesGrid.appendChild(item);
+                    if (pagesGrid) pagesGrid.appendChild(item);
                 }
                 
-                loadingStage.classList.add('hidden');
-                editorStage.classList.remove('hidden');
-                mainCard.classList.remove('max-w-lg');
-                mainCard.classList.add('max-w-xl');
+                loadingStage?.classList.add('hidden');
+                editorStage?.classList.remove('hidden');
+                if (mainCard) mainCard.classList.remove('max-w-lg');
+                if (mainCard) mainCard.classList.add('max-w-xl');
                 updateExtractBtn();
 
             } catch(err) {
                 console.error(err);
-                alert("Could not load PDF. It might be encrypted or corrupted.");
-                loadingStage.classList.add('hidden');
-                uploadStage.classList.remove('hidden');
+                window.ffNotice("Could not load PDF. It might be encrypted or corrupted.", "error");
+                loadingStage?.classList.add('hidden');
+                uploadStage?.classList.remove('hidden');
             }
         });
         
-        selectAllBtn.addEventListener('click', () => {
+        selectAllBtn?.addEventListener('click', () => {
              selectedIndices.clear();
-             const thumbs = pagesGrid.querySelectorAll('.page-thumbnail');
+             const thumbs = pagesGrid?.querySelectorAll('.page-thumbnail') || [];
              thumbs.forEach((thumb, idx) => {
                  selectedIndices.add(idx);
                  thumb.classList.add('selected');
@@ -213,9 +226,9 @@ const customSchema = {
              updateExtractBtn();
         });
 
-        clearAllBtn.addEventListener('click', () => {
+        clearAllBtn?.addEventListener('click', () => {
              selectedIndices.clear();
-             const thumbs = pagesGrid.querySelectorAll('.page-thumbnail');
+             const thumbs = pagesGrid?.querySelectorAll('.page-thumbnail') || [];
              thumbs.forEach((thumb, idx) => {
                  thumb.classList.remove('selected');
              });
@@ -224,26 +237,26 @@ const customSchema = {
 
         function updateExtractBtn() {
             if (selectedIndices.size === 0) {
-                 extractBtn.disabled = true;
-                 extractBtn.textContent = 'Select at least 1 page';
-                 extractBtn.style.opacity = '0.5';
+                 if (extractBtn) extractBtn.disabled = true;
+                 if (extractBtn) extractBtn.textContent = 'Select at least 1 page';
+                 if (extractBtn) extractBtn.style.opacity = '0.5';
             } else {
-                 extractBtn.disabled = false;
-                 extractBtn.innerHTML = `⬇️ Extract ${selectedIndices.size} Pages`;
-                 extractBtn.style.opacity = '1';
+                 if (extractBtn) extractBtn.disabled = false;
+                 if (extractBtn) extractBtn.innerHTML = `⬇️ Extract ${selectedIndices.size} Pages`;
+                 if (extractBtn) extractBtn.style.opacity = '1';
             }
         }
 
-        resetBtn.addEventListener('click', () => {
+        resetBtn?.addEventListener('click', () => {
             pdfBytesOriginal = null;
-            fileInput.value = '';
-            uploadStage.classList.remove('hidden');
-            editorStage.classList.add('hidden');
-            mainCard.classList.add('max-w-lg');
-            mainCard.classList.remove('max-w-xl');
+            if (fileInput) fileInput.value = '';
+            uploadStage?.classList.remove('hidden');
+            editorStage?.classList.add('hidden');
+            if (mainCard) mainCard.classList.add('max-w-lg');
+            if (mainCard) mainCard.classList.remove('max-w-xl');
         });
 
-        extractBtn.addEventListener('click', async () => {
+        extractBtn?.addEventListener('click', async () => {
             if (!pdfBytesOriginal || selectedIndices.size === 0) return;
 
             extractBtn.textContent = '⏳ Extracting...';
@@ -265,41 +278,51 @@ const customSchema = {
                 link.download = fileName.replace('.pdf', '') + '_extracted.pdf';
                 link.href = url;
                 link.click();
+                if (window.triggerConfetti) window.triggerConfetti();
+                var shareTxt = encodeURIComponent("I just extracted pages from a PDF using FormFix! 100% private, no uploads. Try it: " + window.__SITE_URL + "/split-pdf");
+                var existing = document.getElementById('post-split-share');
+                if (!existing) {
+                    var div = document.createElement('div');
+                    div.id = 'post-split-share';
+                    div.style.cssText = 'margin-top:20px;text-align:center;';
+                    div.innerHTML = '<p style="font-weight:600;margin-bottom:10px;color:var(--success);">Love FormFix? Share it!</p><div style="display:flex;gap:8px;justify-content:center;"><a href="https://twitter.com/intent/tweet?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#000;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">Share on X</a><a href="https://wa.me/?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">WhatsApp</a></div>';
+                    extractBtn?.parentElement?.appendChild(div);
+                }
             } catch (err) {
                  console.error(err);
-                 alert('Error generating the split document.');
+                  window.ffNotice('Error generating the split document.', 'error');
             } finally {
                  updateExtractBtn();
-                 extractBtn.style.pointerEvents = 'all';
+                 if (extractBtn) extractBtn.style.pointerEvents = 'all';
             }
         });
     });
 </script>
 
 <style>
-    .main-h1 { font-size: 3.5rem; font-weight: 1000; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--dark); line-height: 1.1; }
-    .hero-sub { color: var(--slate); font-weight: 600; font-size: 1.25rem; margin-bottom: 24px; }
+    .main-h1 { font-size: 3.5rem; font-weight:600; letter-spacing: -0.05em; margin-bottom: 12px; color: var(--text-primary); line-height: 1.1; }
+    .hero-sub { color: var(--text-secondary); font-weight: 600; font-size: 1.25rem; margin-bottom: 24px; }
     .tool-wrapper { max-width: 960px; margin: 0 auto; padding-bottom: 100px; }
     .max-w-lg { max-width: 550px; margin-inline: auto;transition: max-width 0.4s;}
     .max-w-xl { max-width: 850px; margin-inline: auto;transition: max-width 0.4s;}
     
-    .upload-container { background: #f8fafc; border: 2.5px dashed var(--border); border-radius: 32px; padding: 60px 20px; text-align: center; cursor: pointer; transition: 0.3s; margin-top:16px; min-height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .upload-container:hover { border-color: var(--primary); background: #f0fdf4; transform: translateY(-4px); }
-    .upload-circle { width: 90px; height: 90px; background: #fff; border-radius: 50%; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 3rem; }
-    .u-title { font-size: 1.8rem; font-weight: 1000; color: var(--dark); margin-bottom: 8px; }
-    .u-sub { font-size: 1.1rem; color: var(--slate); font-weight: 600; margin-bottom: 32px; }
+    .upload-container { background: var(--surface-2); border: 2.5px dashed var(--border); border-radius: 32px; padding: 60px 20px; text-align: center; cursor: pointer; transition: 0.3s; margin-top:16px; min-height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .upload-container:hover { border-color: var(--primary); background: var(--success-soft); transform: translateY(-4px); }
+    .upload-circle { width: 90px; height: 90px; background:var(--surface-3); border-radius: 50%; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 3rem; }
+    .u-title { font-size: 1.8rem; font-weight:600; color: var(--text-primary); margin-bottom: 8px; }
+    .u-sub { font-size: 1.1rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 32px; }
 
-    #editor-stage { background: #fff; padding: 24px; border-radius: 24px; border: 1.5px solid var(--border); }
+    #editor-stage { background:var(--surface-3); padding: 24px; border-radius: 24px; border: 1.5px solid var(--border); }
     
-    .pages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; max-height: 400px; overflow-y: auto; padding: 12px; border: 1px solid var(--border); border-radius: 12px; background: #f8fafc; }
+    .pages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; max-height: 400px; overflow-y: auto; padding: 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); }
     
-    .page-thumbnail { position: relative; background: #fff; border-radius: 8px; overflow: hidden; cursor: pointer; border: 3px solid transparent; transition: 0.2s; }
+    .page-thumbnail { position: relative; background:var(--surface-3); border-radius: 8px; overflow: hidden; cursor: pointer; border: 3px solid transparent; transition: 0.2s; }
     .page-thumbnail img { width: 100%; height: 160px; object-fit: contain; padding: 4px; background: white;}
     .page-thumbnail:hover { transform: scale(1.02); }
-    .page-thumbnail .p-num { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: white; text-align: center; font-size: 0.8rem; padding: 4px; font-weight: 700; }
+    .page-thumbnail .p-num { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.75); color: white; text-align: center; font-size: 0.8rem; padding: 4px; font-weight:600; }
     
     .sel-overlay { position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(59, 130, 246, 0.2); opacity: 0; transition: 0.2s; }
-    .sel-tick { position: absolute; top: 8px; right: 8px; background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 900; opacity: 0; transform: scale(0.5); transition: 0.2s; }
+    .sel-tick { position: absolute; top: 8px; right: 8px; background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight:600; opacity: 0; transform: scale(0.5); transition: 0.2s; }
     
     .page-thumbnail.selected { border-color: var(--primary); }
     .page-thumbnail.selected .sel-overlay { opacity: 1; }
@@ -308,11 +331,11 @@ const customSchema = {
     .selection-controls { display: flex; gap: 12px; justify-content: flex-end; }
     .text-sm { font-size: 0.9rem; padding: 8px 16px; min-width: unset; height: auto; }
 
-    .info-banner { display: flex; align-items: center; gap: 16px; padding: 20px; background: #fff; border: 1.5px solid var(--border); border-radius: 16px; }
+    .info-banner { display: flex; align-items: center; gap: 16px; padding: 20px; background:var(--surface-3); border: 1.5px solid var(--border); border-radius: 16px; }
     .f-icon { font-size: 2.5rem; }
     .f-text { display: flex; flex-direction: column; overflow: hidden; }
-    .f-name { font-weight: 900; color: var(--dark); font-size: 1.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
-    .f-size { color: var(--primary); font-size: 1rem; font-weight: 700; margin-top:4px; }
+    .f-name { font-weight:600; color: var(--text-primary); font-size: 1.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+    .f-size { color: var(--primary); font-size: 1rem; font-weight:600; margin-top:4px; }
 
     .d-flex { display: flex; }
     .text-center { text-align: center; }
@@ -325,8 +348,8 @@ const customSchema = {
     .gap-16 { gap: 16px; }
     .py-48 { padding: 48px 0; }
     
-    .wide-btn { padding: 22px 24px; font-weight: 1000; font-size: 1.25rem; border-radius: 100px; display: block; }
-    .wide-btn-half { padding: 18px 24px; font-weight: 900; border-radius: 100px; flex: 1; border: 2px solid var(--border); background: #fff; }
+    .wide-btn { padding: 22px 24px; font-weight:600; font-size: 1.25rem; border-radius: 100px; display: block; }
+    .wide-btn-half { padding: 18px 24px; font-weight:600; border-radius: 100px; flex: 1; border: 2px solid var(--border); background:var(--surface-3); }
     
     .hidden { display: none !important; }
 

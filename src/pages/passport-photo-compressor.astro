@@ -1,30 +1,119 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Passport Photo Compressor Online (Standard 3.5x4.5cm) | FormFix';
-const PAGE_DESC = 'Compress passport photos to 20KB, 50KB or 100KB for online forms. Official dimensions for SSC, UPSC, and Banking exams included.';
-const PAGE_KEYWORDS = 'passport photo compressor, compress passport photo to 20kb, resize passport photo online, official photo resizer';
+const PAGE_DESC = 'Compress passport photos to 20KB, 50KB or 100KB for online forms. Official dimensions for SSC, UPSC, and Banking exams included. 100% private, browser-based.';
+const PAGE_KEYWORDS = 'passport photo compressor, compress passport photo to 20kb, resize passport photo online, official photo resizer, 3.5x4.5 compressor';
+
+const faqs = [
+  {
+    q: 'What is the standard passport photo size in India?',
+    a: 'In India, government and exam forms typically require a 3.5cm × 4.5cm passport photo at 200–300 DPI, which translates to approximately 350 × 450 pixels. FormFix auto-resizes your photo to this exact ratio.',
+  },
+  {
+    q: 'Can I compress my passport photo to 20KB?',
+    a: 'Yes. Use our dedicated 20KB compressor for signatures and small ID photos. For passport photos where the visual quality matters more, the 50KB target is usually the sweet spot.',
+  },
+  {
+    q: 'Will my photo look blurry after compression?',
+    a: 'Our smart compression retains facial detail and color fidelity even at small file sizes. Starting from a tightly cropped photo and using the JPG format gives the best results.',
+  },
+  {
+    q: 'Is this safe for ID documents?',
+    a: 'Absolutely. FormFix runs entirely in your browser. Your passport photo never leaves your device. We have no way to see, store, or share your ID documents.',
+  },
+];
+
+const customSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Passport Photo Compressor - FormFix",
+      "operatingSystem": "All",
+      "applicationCategory": "MultimediaApplication",
+      "description": "Free online passport photo compressor with standard 3.5x4.5cm dimensions. Resize and compress in one step.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(({ q, a }) => ({
+        "@type": "Question",
+        "name": q,
+        "acceptedAnswer": { "@type": "Answer", "text": a }
+      }))
+    }
+  ]
+};
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} active="tools" canonicalPath="/passport-size-photo">
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="passport-maker" canonicalPath="/passport-photo-compressor" faq={faqs}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Passport Photo Compressor", path: "/passport-photo-compressor" }]} />
+
     <ToolWrapper title="Passport Photo Compressor" subtitle="Hit exact KB targets for your official passport photos." currentTool="passport-maker">
         <div slot="tool-ui">
              <div class="cta-box text-center">
                  <p class="mb-24">Use our specialized maker to crop and compress your passport photo in one go.</p>
-                 <a href="/passport-size-photo" class="primary-btn lg-btn">Start Passport Photo Maker →</a>
+                 <a href="/passport-size-photo" class="primary-btn lg-btn">Open Passport Photo Maker →</a>
+                 <a href="/compress-image" class="secondary-btn lg-btn">Open Image Compressor →</a>
              </div>
         </div>
         <div slot="tool-info">
-             <h2>Expert Passport Photo Compression Tips</h2>
-             <p>Most portals like SSC or UPSC require photos between 20KB and 50KB. Our <a href="/passport-size-photo">Passport Photo Maker</a> is designed to help you crop to 3.5x4.5cm and then compress with 100% accuracy.</p>
+             <article class="prose">
+                 <h2>Expert Passport Photo Compression Tips</h2>
+                 <p>Most Indian government portals like SSC, UPSC, IBPS, and state public service commissions require photos between 20KB and 50KB. Our <a href="/passport-size-photo">Passport Photo Maker</a> is designed to help you crop to the standard 3.5cm x 4.5cm ratio and then compress with 100% accuracy using the binary-search algorithm — all in your browser, with zero uploads.</p>
+
+                 <h3>Recommended workflow</h3>
+                 <ol>
+                     <li><strong>Crop first:</strong> Open the <a href="/passport-size-photo">Passport Photo Maker</a> and crop your photo to the standard 3.5cm x 4.5cm aspect ratio.</li>
+                     <li><strong>Compress to target:</strong> Use the <a href="/compress-image">Image Compressor</a> to hit your target KB (20KB, 50KB, or 100KB) while preserving visual quality.</li>
+                     <li><strong>Download instantly:</strong> Get your optimized JPG ready for upload to any government or exam portal.</li>
+                 </ol>
+
+                 <h3>Why compress passport photos at all?</h3>
+                 <p>Most exam portals reject uploads that exceed their strict size limits. Common requirements:</p>
+                 <ul>
+                     <li><strong>SSC:</strong> 20KB–50KB photos, 10KB–20KB signatures</li>
+                     <li><strong>UPSC:</strong> 20KB–300KB photos, 20KB–100KB signatures</li>
+                     <li><strong>IBPS / SBI:</strong> 20KB–50KB photos and signatures</li>
+                     <li><strong>NEET:</strong> 10KB–200KB passport and postcard photos</li>
+                 </ul>
+
+                 <div class="faq-section mt-48">
+                     <h3>Frequently Asked Questions</h3>
+                     {faqs.map(({ q, a }) => (
+                         <details class="minimal-faq">
+                             <summary>{q} <span class="indicator">+</span></summary>
+                             <div class="faq-body"><p>{a}</p></div>
+                         </details>
+                     ))}
+                 </div>
+             </article>
         </div>
     </ToolWrapper>
 </BaseLayout>
 
 <style>
     .cta-box { padding: 40px; background: var(--surface-50); border-radius: 20px; border: 1.5px dashed var(--border-subtle); }
+    .cta-box a + a { margin-left: 12px; }
     .text-center { text-align: center; }
     .mb-24 { margin-bottom: 24px; }
-    .lg-btn { font-size: 1.1rem; padding: 16px 32px; }
+    .lg-btn { font-size: 1.05rem; padding: 14px 24px; display: inline-block; }
+
+    .prose h2 { color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.85rem; font-weight:600; }
+    .prose h3 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 0.75rem; font-size: 1.35rem; font-weight:600; }
+    .prose p, .prose li { color: var(--text-secondary); line-height: 1.75; font-size: 1.05rem; }
+    .prose ul, .prose ol { padding-left: 24px; margin-bottom: 1.5rem; }
+    .prose li { margin-bottom: 8px; }
+    .prose a { color: var(--accent-primary); text-decoration: underline; text-underline-offset: 3px; }
+
+    .faq-section { margin-top: 3rem; }
+    .minimal-faq { background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+    .minimal-faq summary { padding: 16px 20px; cursor: pointer; font-weight:600; color: var(--text-primary); list-style: none; position: relative; }
+    .minimal-faq summary::-webkit-details-marker { display: none; }
+    .minimal-faq summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.4rem; color: var(--accent-primary); }
+    .minimal-faq[open] summary::after { content: '−'; }
+    .faq-body { padding: 0 20px 20px; color: var(--text-secondary); line-height: 1.7; }
 </style>

@@ -1,170 +1,173 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { SITE_URL } from '../seo';
 
 const customSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
   "name": "About FormFix",
-  "description": "Learn about FormFix, our mission, and the team behind the 100% free, private, browser-based image and PDF optimization tools.",
-  "url": "https://formfix.pages.dev/about",
-  "publisher": {
+  "description": "Learn about FormFix, our mission, and the privacy-first browser-based tools we build.",
+  "url": `${SITE_URL}/about`,
+  "mainEntity": {
     "@type": "Organization",
     "name": "FormFix",
-    "logo": "https://formfix.pages.dev/favicon.png"
+    "url": SITE_URL,
+    "logo": `${SITE_URL}/favicon.png`,
+    "foundingDate": "2024",
+    "description": "FormFix provides free, privacy-first browser-based tools for image and PDF processing."
   }
 };
 ---
 
 <BaseLayout 
-    title="About FormFix | Secure & Privacy-First Online Image Tools"
-    description="Discover FormFix: your trusted, 100% free browser-based toolkit for image compression, PDF merging, and photo editing. We prioritize your privacy with zero-upload local processing."
+    title="About FormFix | Privacy-First Online Image Tools"
+    description="FormFix is a 100% free browser-based toolkit for image compression, PDF merging, and photo editing. Privacy-first, zero uploads."
     canonicalPath="/about"
     customSchema={customSchema}
 >
-    <!-- Keep the simple static look aligned with FormFix aesthetics -->
-    <div class="legal-page py-20 pb-40">
-        <div class="container" style="max-width: 800px; margin: 0 auto;">
-            
-            <a href="/" class="back-link mb-10 inline-flex items-center text-primary font-bold hover:text-white transition-colors duration-200">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m15 18-6-6 6-6"/></svg>
-                Back to Home
-            </a>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "About", path: "/about" }]} />
 
-            <div class="legal-header mb-16">
-                <div class="badge inline-block bg-primary/20 text-primary px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6">Transparency & Privacy</div>
-                <h1 class="text-5xl md:text-6xl font-black mb-6 leading-[1.1] tracking-tight" style="color: #0f172a;">Focusing on User <br/><span class="text-primary italic">Privacy Standards</span></h1>
-                <p class="text-2xl font-medium" style="color: #475569;">Secure, browser-based tools for your daily digital needs.</p>
-            </div>
+    <div class="page">
+        <div class="container page-inner">
 
-            <div class="legal-content">
-                <h2 style="color: #0f172a;">Our Mission</h2>
-                <p style="color: #475569;">
-                    FormFix was built to provide reliable and secure image and PDF utilities that work entirely in your browser. We noticed a common issue with online tools: many are cluttered with intrusive ads, require paid subscriptions for basic features, or upload your sensitive documents to remote servers without your explicit knowledge.
+            <header class="page-header">
+                <h1>About FormFix</h1>
+                <p>Secure, browser-based tools for your daily digital needs.</p>
+            </header>
+
+            <div class="content">
+                <h2>Our Mission</h2>
+                <p>
+                    FormFix was built to provide reliable and secure image and PDF utilities that work entirely in your browser. We noticed a common issue with online tools: many are cluttered with intrusive ads, require paid subscriptions for basic features, or upload your sensitive documents to remote servers without your knowledge.
                 </p>
 
-                <h2 style="color: #0f172a;">Core Privacy Standards</h2>
-                <ul class="clean-list">
+                <h2>Core Values</h2>
+                <ul class="values-list">
                     <li>
-                        <div style="color: #475569;">
-                            <strong style="color: #0f172a;">Local Processing:</strong> Everything happens on your device. FormFix processes your files locally using modern web APIs. This means your files are not uploaded to our servers, significantly reducing privacy risks.
-                        </div>
+                        <strong>Local Processing</strong>
+                        <span>Everything happens on your device. FormFix processes your files locally using modern web APIs, significantly reducing privacy risks.</span>
                     </li>
                     <li>
-                        <div style="color: #475569;">
-                            <strong style="color: #0f172a;">No Hidden Costs:</strong> We offer tools without hidden paywalls or watermarks for standard usage.
-                        </div>
+                        <strong>No Hidden Costs</strong>
+                        <span>We offer tools without hidden paywalls or watermarks for standard usage.</span>
                     </li>
                     <li>
-                        <div style="color: #475569;">
-                            <strong style="color: #0f172a;">Built for Speed:</strong> Since processing is local, you don't have to wait for large file uploads or network processing.
-                        </div>
+                        <strong>Built for Speed</strong>
+                        <span>Since processing is local, you don't have to wait for large file uploads or network processing.</span>
                     </li>
                     <li>
-                        <div style="color: #475569;">
-                            <strong style="color: #0f172a;">No Installation:</strong> Our tools are available instantly through a web browser, eliminating the need to download or install additional software.
-                        </div>
+                        <strong>No Installation</strong>
+                        <span>Our tools are available instantly through a web browser, no downloads required.</span>
                     </li>
                 </ul>
 
-                <h2 style="color: #0f172a;">Who Can Use These Tools</h2>
-                <p style="color: #475569;">
+                <h2>Who Can Use These Tools</h2>
+                <p>
                     From students formatting assignments to job seekers preparing passport photos, FormFix offers a suite of utilities tailored for anyone who values their data privacy and needs a quick, efficient way to manage digital files.
                 </p>
 
-                <h2 style="color: #0f172a;">Feedback & Support</h2>
-                <p style="color: #475569;">
-                    We are dedicated to improving FormFix based on user feedback. If you have any suggestions, bug reports, or feature requests, feel free to visit our <a href="/contact" class="text-primary hover:underline font-bold">Contact Page</a>. We appreciate your support in help us build better tools.
+                <h2>Feedback & Support</h2>
+                <p>
+                    We are dedicated to improving FormFix based on user feedback. If you have any suggestions, bug reports, or feature requests, visit our <a href="/contact">Contact Page</a>.
                 </p>
 
-                <div class="mt-12 border border-slate-200 rounded-2xl p-8 text-center" style="background-color: #f8fafc;">
-                    <h3 class="text-2xl font-bold mb-4" style="color: #0f172a;">Try Our Professional Tools</h3>
-                    <p class="mb-6" style="color: #475569;">Explore the full range of secure, private utilities.</p>
-                    <a href="/tools" class="inline-flex items-center justify-center bg-primary text-white font-bold px-8 py-4 rounded-xl hover:shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all">
-                        Explore All Tools
-                    </a>
+                <div class="cta-box">
+                    <h3>Try Our Tools</h3>
+                    <p>Explore the full range of secure, private utilities.</p>
+                    <a href="/tools" class="btn-primary">Explore All Tools</a>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </BaseLayout>
 
 <style>
-    .legal-content h2 {
-        color: var(--dark);
-        margin-top: 3.5rem;
-        margin-bottom: 1.5rem;
-        font-size: 2.2rem;
-        font-weight: 900;
-        letter-spacing: -0.04em;
-    }
-    
-    .legal-content h3 {
-        color: var(--dark);
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        font-size: 1.6rem;
-        font-weight: 800;
-    }
-    
-    .legal-content p {
-        margin-bottom: 1.5rem;
-        line-height: 1.8;
-        font-size: 1.15rem;
-        color: var(--slate);
-    }
+.page { padding: 32px 0 80px; }
+.page-inner { max-width: 760px; }
 
-    /* Grid-based bullet system for 100% stable alignment */
-    .clean-list {
-        list-style: none;
-        padding: 0;
-        margin: 2.5rem 0;
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-    }
-    
-    .clean-list li {
-        display: grid;
-        grid-template-columns: 12px 1fr;
-        gap: 16px;
-        align-items: start;
-        padding: 0;
-        margin: 0;
-        text-align: left;
-    }
+.page-header {
+    margin-bottom: 40px;
+}
+.page-header h1 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.page-header p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
 
-    .clean-list li::before {
-        content: "";
-        width: 10px;
-        height: 10px;
-        background: var(--primary);
-        border-radius: 50%;
-        margin-top: 8px;
-        display: block;
-    }
-    
-    .clean-list strong {
-        color: var(--dark);
-        font-weight: 800;
-        display: block;
-        margin-bottom: 2px;
-        font-size: 1.25rem;
-        line-height: 1.2;
-    }
+.content h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 32px;
+    margin-bottom: 12px;
+}
 
-    .clean-list li div {
-        line-height: 1.7;
-        font-size: 1.15rem;
-        color: var(--slate);
-    }
+.content p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
 
-    /* Header text should be dark too if parent is white back */
-    .legal-header h1 {
-        color: var(--dark);
-        text-shadow: none;
-    }
-    .legal-header p {
-        color: var(--slate);
-    }
+.values-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.values-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.values-list strong {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.values-list span {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.cta-box {
+    margin-top: 40px;
+    padding: 32px;
+    background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+.cta-box h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.cta-box p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+.btn-primary {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--accent-primary);
+    color: #fff;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.btn-primary:hover {
+    background: var(--accent-hover);
+    color: #fff;
+}
 </style>

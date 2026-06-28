@@ -1,11 +1,29 @@
 ---
 import BaseLayout from '../../components/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
 const title = "How to Compress Image to 20KB for Online Forms (UPSC, SSC, Bank)";
 const description = "Step-by-step guide on how to compress your photo to exactly 20KB without losing quality. Perfect for government exam portals like UPSC, SSC, and Banking.";
+
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Compress Image to 20KB",
+  "description": "Step-by-step guide on compressing images to exactly 20KB for government exam portals.",
+  "step": [
+    { "@type": "HowToStep", "name": "Prepare your original", "text": "Start with the clearest photo you have." },
+    { "@type": "HowToStep", "name": "Visit the Compressor", "text": "Open the FormFix Image Compressor." },
+    { "@type": "HowToStep", "name": "Select your file", "text": "Drag your photo into the upload zone." },
+    { "@type": "HowToStep", "name": "Use the 20KB Preset", "text": "Click the 20 KB preset button to trigger the smart compression engine." },
+    { "@type": "HowToStep", "name": "Review and Download", "text": "Preview the compressed image and download it." }
+  ]
+};
 ---
 
-<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/how-to-compress-image-to-20kb">
+<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/how-to-compress-image-to-20kb" customSchema={howToSchema}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "How to Compress Image to 20KB for Online Forms (UPSC, SSC, Bank)", path: "/guides/how-to-compress-image-to-20kb" }]} />
+
     <section class="page-header">
         <div class="container">
             <h1>How to Compress Image to 20KB</h1>
@@ -53,13 +71,15 @@ const description = "Step-by-step guide on how to compress your photo to exactly
             </article>
         </div>
     </section>
+
+    <ShareBar title={title} />
 </BaseLayout>
 
 <style>
     .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
     .content-section { padding: 60px 0; }
-    .prose { line-height: 1.8; color: var(--slate); }
-    .prose h2 { color: var(--dark); margin-top: 2rem; margin-bottom: 1rem; }
+    .prose { line-height: 1.8; color: var(--text-secondary); }
+    .prose h2 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; }
     .prose p { margin-bottom: 1.5rem; }
     .prose ul, .prose ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
     .container-narrow { max-width: 800px; }

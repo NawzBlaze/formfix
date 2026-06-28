@@ -1,11 +1,15 @@
 ---
 import BaseLayout from '../../components/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
 const title = "How to Generate Branded QR Codes for Free (No Expire)";
 const description = "Learn how to create permanent QR codes for URLs, WiFi, and VCards with custom branding using our privacy-first generator.";
 ---
 
 <BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/generating-branded-qr-codes">
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "How to Generate Branded QR Codes for Free (No Expire)", path: "/guides/generating-branded-qr-codes" }]} />
+
     <section class="page-header">
         <div class="container">
             <h1>Branded QR Code Generation</h1>
@@ -56,12 +60,14 @@ const description = "Learn how to create permanent QR codes for URLs, WiFi, and 
             </article>
         </div>
     </section>
+
+    <ShareBar title={title} />
 </BaseLayout>
 
 <style>
     .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
     .content-section { padding: 60px 0; }
-    .prose { line-height: 1.8; color: var(--slate); }
+    .prose { line-height: 1.8; color: var(--text-secondary); }
     .container-narrow { max-width: 800px; }
     .cta-box { background: var(--primary-light); padding: 32px; border-radius: 16px; text-align: center; }
 </style>

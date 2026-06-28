@@ -1,5 +1,6 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
 const PAGE_TITLE = 'Passport Size Photo Maker Online (3.5 x 4.5 cm) | FormFix';
@@ -26,6 +27,229 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="passport-maker" canonicalPath="/passport-size-photo">
+    <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectionPanel = document.getElementById('selection-panel');
+        const workspacePanel = document.getElementById('workspace-panel');
+        const photoControls = document.getElementById('photo-controls');
+        const signControls = document.getElementById('sign-controls');
+        const cropOverlay = document.getElementById('crop-overlay');
+        const dragHint = document.getElementById('drag-hint');
+
+        const canvas = document.getElementById('active-canvas');
+        const ctx = canvas?.getContext('2d');
+        const pInput = document.getElementById('photo-input');
+        const sInput = document.getElementById('sign-input');
+
+        pInput?.addEventListener('change', (e) => handleUpload(e, 'photo'));
+        sInput?.addEventListener('change', (e) => handleUpload(e, 'sign'));
+
+        function handleUpload(e, type) {
+            const file = e.target.files[0];
+            if (!file) return;
+            mode = type;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                originalImg = new Image();
+                originalImg.onload = () => {
+                    selectionPanel.style.display = 'none';
+                    workspacePanel.style.display = 'block';
+                    
+                    if (mode === 'photo') {
+                        if (photoControls) photoControls.style.display = 'block';
+                        if (cropOverlay) cropOverlay.style.display = 'block';
+                        if (dragHint) dragHint.innerText = "👉 Drag to center your face in the box.";
+                        initPhoto();
+                    } else {
+                        if (signControls) signControls.style.display = 'block';
+                        if (dragHint) dragHint.style.display = 'none';
+                        initSign();
+                    }
+                };
+                originalImg.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // --- PASSPORT PHOTO LOGIC ---
+        function initPhoto() {
+            canvas.width = 600;
+            canvas.height = 800; // 3.5:4.5 roughly 3:4
+            if (document.getElementById('photo-zoom')) document.getElementById('photo-zoom').value = "1";
+            baseScale = Math.max(canvas.width / originalImg.width, canvas.height / originalImg.height);
+            // Default: fit the screen perfectly
+            imgScale = baseScale;
+            imgX = (canvas.width - originalImg.width * imgScale) / 2;
+            imgY = (canvas.height - originalImg.height * imgScale) / 2;
+            render();
+        }
+
+        // --- SIGNATURE LOGIC ---
+        function initSign() {
+            canvas.width = originalImg.width;
+            canvas.height = originalImg.height;
+            render();
+        }
+
+        function render() {
+            if (!originalImg || !ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (mode === 'photo') {
+                if (activeBg === 'white') { ctx.fillStyle = "#fff"; ctx.fillRect(0,0,canvas.width, canvas.height); }
+                ctx.filter = `brightness(${document.getElementById('photo-bright')?.value || 100}%)`;
+                ctx.drawImage(originalImg, imgX, imgY, originalImg.width * imgScale, originalImg.height * imgScale);
+            } else {
+                ctx.drawImage(originalImg, 0, 0);
+                applySignFilter();
+            }
+        }
+
+        function applySignFilter() {
+             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+             const data = imgData.data;
+             const thresh = parseInt(document.getElementById('sign-thresh')?.value || '180');
+
+             for (let i = 0; i < data.length; i += 4) {
+                 const b = (data[i] + data[i+1] + data[i+2]) / 3;
+                 if (b > thresh) { data[i+3] = 0; }
+                 else {
+                     if (activeInk === 'black') { data[i]=0; data[i+1]=0; data[i+2]=0; }
+                     else if (activeInk === 'blue') { data[i]=0; data[i+1]=50; data[i+2]=180; }
+                 }
+             }
+             ctx.putImageData(imgData, 0, 0);
+        }
+
+        let originalImg = null;
+        let mode = ''; 
+        let imgX = 0, imgY = 0, imgScale = 1, baseScale = 1;
+        let isDragging = false, lastMouseX = 0, lastMouseY = 0;
+        let activeBg = 'orig';
+        let activeInk = 'orig';
+
+        // INTERACTION LOGIC
+        canvas?.addEventListener('pointerdown', (e) => {
+            if (mode !== 'photo') return;
+            isDragging = true;
+            lastMouseX = e.clientX; lastMouseY = e.clientY;
+            canvas?.setPointerCapture(e.pointerId);
+        });
+
+        let isRenderPending = false;
+        window.addEventListener('pointermove', (e) => {
+            if (!isDragging) return;
+            const dx = (e.clientX - lastMouseX);
+            const dy = (e.clientY - lastMouseY);
+            imgX += dx; imgY += dy;
+            lastMouseX = e.clientX; lastMouseY = e.clientY;
+            
+            if (!isRenderPending) {
+                isRenderPending = true;
+                requestAnimationFrame(() => {
+                    render();
+                    isRenderPending = false;
+                });
+            }
+        });
+
+        window.addEventListener('pointerup', (e) => {
+            isDragging = false;
+            if (e.pointerType === 'touch') {
+                evCache = evCache.filter(ev => ev.pointerId !== e.pointerId);
+                if (evCache.length < 2) prevDiff = -1;
+            }
+        });
+
+        // Touch Zoom Support (Pinch)
+        let evCache = [];
+        let prevDiff = -1;
+
+        canvas?.addEventListener('pointerdown', (e) => {
+            if (e.pointerType === 'touch') evCache.push(e);
+        });
+
+        canvas?.addEventListener('pointermove', (e) => {
+            if (e.pointerType !== 'touch' || evCache.length !== 2) return;
+            
+            // Find this event in the cache and update its record
+            const index = evCache.findIndex(ev => ev.pointerId === e.pointerId);
+            if (index > -1) evCache[index] = e;
+
+            // Calculate distance between the two pointers
+            const curDiff = Math.hypot(evCache[0].clientX - evCache[1].clientX, evCache[0].clientY - evCache[1].clientY);
+
+            if (prevDiff > 0) {
+                if (curDiff > prevDiff) {
+                    imgScale *= 1.02;
+                } else if (curDiff < prevDiff) {
+                    imgScale *= 0.98;
+                }
+                const zoomInput = document.getElementById('photo-zoom');
+                if (zoomInput) zoomInput.value = (imgScale / baseScale).toString();
+                render();
+            }
+            prevDiff = curDiff;
+        });
+
+        // CONTROLS LISTENERS
+        document.getElementById('photo-bright')?.addEventListener('input', render);
+        
+        document.getElementById('photo-zoom')?.addEventListener('input', (e) => {
+            const oldWidth = originalImg.width * imgScale;
+            const oldHeight = originalImg.height * imgScale;
+            
+            imgScale = baseScale * parseFloat(e.target.value);
+            
+            const newWidth = originalImg.width * imgScale;
+            const newHeight = originalImg.height * imgScale;
+            
+            // Adjust position so it zooms from the center by default
+            imgX -= (newWidth - oldWidth) / 2;
+            imgY -= (newHeight - oldHeight) / 2;
+            
+            render();
+        });
+
+        document.getElementById('sign-thresh')?.addEventListener('input', render);
+        
+        document.getElementById('bg-orig')?.addEventListener('click', (e) => { activeBg='orig'; toggleActive(e); render(); });
+        document.getElementById('bg-white')?.addEventListener('click', (e) => { activeBg='white'; toggleActive(e); render(); });
+        
+        document.getElementById('ink-orig')?.addEventListener('click', (e) => { activeInk='orig'; toggleActive(e); render(); });
+        document.getElementById('ink-black')?.addEventListener('click', (e) => { activeInk='black'; toggleActive(e); render(); });
+        document.getElementById('ink-blue')?.addEventListener('click', (e) => { activeInk='blue'; toggleActive(e); render(); });
+
+        function toggleActive(e) {
+            const btns = e.target.parentElement.querySelectorAll('.toggle-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+        }
+
+        document.getElementById('dl-photo')?.addEventListener('click', () => {
+            const link = document.createElement('a'); link.download = "passport_formfix.jpg";
+            link.href = canvas.toDataURL('image/jpeg', 0.9); link.click();
+            if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
+            var shareTxt = encodeURIComponent("I just created my passport photo using FormFix! 100% private, no uploads. Try it: " + window.__SITE_URL + "/passport-size-photo");
+            var existing = document.getElementById('post-passport-share');
+            if (!existing) {
+                var div = document.createElement('div');
+                div.id = 'post-passport-share';
+                div.style.cssText = 'margin-top:20px;text-align:center;';
+                div.innerHTML = '<p style="font-weight:600;margin-bottom:10px;color:var(--success);">Love FormFix? Share it!</p><div style="display:flex;gap:8px;justify-content:center;"><a href="https://twitter.com/intent/tweet?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#000;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">Share on X</a><a href="https://wa.me/?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">WhatsApp</a></div>';
+                document.getElementById('dl-photo')?.parentElement?.appendChild(div);
+            }
+        });
+        document.getElementById('dl-sign')?.addEventListener('click', () => {
+            const link = document.createElement('a'); link.download = "signature_formfix.png";
+            link.href = canvas.toDataURL('image/png'); link.click();
+            if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
+        });
+    });
+</script>
+
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Passport Size Photo Maker Online (3.5 x 4.5 cm)", path: "/passport-size-photo" }]} />
+
     <ToolWrapper title="Official Form Maker" subtitle="Generate standardized passport photos and digital signatures for competitive exams." currentTool="passport-maker">
         
         <div slot="tool-ui">
@@ -178,242 +402,41 @@ const customSchema = {
              </article>
         </div>
     </ToolWrapper>
-</BaseLayout>
-
-<script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
-        const selectionPanel = document.getElementById('selection-panel');
-        const workspacePanel = document.getElementById('workspace-panel');
-        const photoControls = document.getElementById('photo-controls');
-        const signControls = document.getElementById('sign-controls');
-        const cropOverlay = document.getElementById('crop-overlay');
-        const dragHint = document.getElementById('drag-hint');
-
-        const canvas = document.getElementById('active-canvas');
-        const ctx = canvas.getContext('2d');
-        const pInput = document.getElementById('photo-input');
-        const sInput = document.getElementById('sign-input');
-
-        pInput.addEventListener('change', (e) => handleUpload(e, 'photo'));
-        sInput.addEventListener('change', (e) => handleUpload(e, 'sign'));
-
-        function handleUpload(e, type) {
-            const file = e.target.files[0];
-            if (!file) return;
-            mode = type;
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                originalImg = new Image();
-                originalImg.onload = () => {
-                    selectionPanel.style.display = 'none';
-                    workspacePanel.style.display = 'block';
-                    
-                    if (mode === 'photo') {
-                        photoControls.style.display = 'block';
-                        cropOverlay.style.display = 'block';
-                        dragHint.innerText = "👉 Drag to center your face in the box.";
-                        initPhoto();
-                    } else {
-                        signControls.style.display = 'block';
-                        dragHint.style.display = 'none';
-                        initSign();
-                    }
-                };
-                originalImg.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // --- PASSPORT PHOTO LOGIC ---
-        function initPhoto() {
-            canvas.width = 600;
-            canvas.height = 800; // 3.5:4.5 roughly 3:4
-            document.getElementById('photo-zoom').value = "1";
-            baseScale = Math.max(canvas.width / originalImg.width, canvas.height / originalImg.height);
-            // Default: fit the screen perfectly
-            imgScale = baseScale;
-            imgX = (canvas.width - originalImg.width * imgScale) / 2;
-            imgY = (canvas.height - originalImg.height * imgScale) / 2;
-            render();
-        }
-
-        // --- SIGNATURE LOGIC ---
-        function initSign() {
-            canvas.width = originalImg.width;
-            canvas.height = originalImg.height;
-            render();
-        }
-
-        function render() {
-            if (!originalImg) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            if (mode === 'photo') {
-                if (activeBg === 'white') { ctx.fillStyle = "#fff"; ctx.fillRect(0,0,canvas.width, canvas.height); }
-                ctx.filter = `brightness(${document.getElementById('photo-bright').value}%)`;
-                ctx.drawImage(originalImg, imgX, imgY, originalImg.width * imgScale, originalImg.height * imgScale);
-            } else {
-                ctx.drawImage(originalImg, 0, 0);
-                applySignFilter();
-            }
-        }
-
-        function applySignFilter() {
-             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-             const data = imgData.data;
-             const thresh = parseInt(document.getElementById('sign-thresh').value);
-
-             for (let i = 0; i < data.length; i += 4) {
-                 const b = (data[i] + data[i+1] + data[i+2]) / 3;
-                 if (b > thresh) { data[i+3] = 0; }
-                 else {
-                     if (activeInk === 'black') { data[i]=0; data[i+1]=0; data[i+2]=0; }
-                     else if (activeInk === 'blue') { data[i]=0; data[i+1]=50; data[i+2]=180; }
-                 }
-             }
-             ctx.putImageData(imgData, 0, 0);
-        }
-
-        let originalImg = null;
-        let mode = ''; 
-        let imgX = 0, imgY = 0, imgScale = 1, baseScale = 1;
-        let isDragging = false, lastMouseX = 0, lastMouseY = 0;
-        let activeBg = 'orig';
-        let activeInk = 'orig';
-
-        // INTERACTION LOGIC
-        canvas.addEventListener('pointerdown', (e) => {
-            if (mode !== 'photo') return;
-            isDragging = true;
-            lastMouseX = e.clientX; lastMouseY = e.clientY;
-            canvas.setPointerCapture(e.pointerId);
-        });
-
-        let isRenderPending = false;
-        window.addEventListener('pointermove', (e) => {
-            if (!isDragging) return;
-            const dx = (e.clientX - lastMouseX);
-            const dy = (e.clientY - lastMouseY);
-            imgX += dx; imgY += dy;
-            lastMouseX = e.clientX; lastMouseY = e.clientY;
-            
-            if (!isRenderPending) {
-                isRenderPending = true;
-                requestAnimationFrame(() => {
-                    render();
-                    isRenderPending = false;
-                });
-            }
-        });
-
-        window.addEventListener('pointerup', (e) => {
-            isDragging = false;
-            if (e.pointerType === 'touch') {
-                evCache = evCache.filter(ev => ev.pointerId !== e.pointerId);
-                if (evCache.length < 2) prevDiff = -1;
-            }
-        });
-
-        // Touch Zoom Support (Pinch)
-        let evCache = [];
-        let prevDiff = -1;
-
-        canvas.addEventListener('pointerdown', (e) => {
-            if (e.pointerType === 'touch') evCache.push(e);
-        });
-
-        canvas.addEventListener('pointermove', (e) => {
-            if (e.pointerType !== 'touch' || evCache.length !== 2) return;
-            
-            // Find this event in the cache and update its record
-            const index = evCache.findIndex(ev => ev.pointerId === e.pointerId);
-            if (index > -1) evCache[index] = e;
-
-            // Calculate distance between the two pointers
-            const curDiff = Math.hypot(evCache[0].clientX - evCache[1].clientX, evCache[0].clientY - evCache[1].clientY);
-
-            if (prevDiff > 0) {
-                if (curDiff > prevDiff) {
-                    imgScale *= 1.02;
-                } else if (curDiff < prevDiff) {
-                    imgScale *= 0.98;
-                }
-                const zoomInput = document.getElementById('photo-zoom');
-                if (zoomInput) zoomInput.value = (imgScale / baseScale).toString();
-                render();
-            }
-            prevDiff = curDiff;
-        });
-
-        // CONTROLS LISTENERS
-        document.getElementById('photo-bright').addEventListener('input', render);
-        
-        document.getElementById('photo-zoom').addEventListener('input', (e) => {
-            const oldWidth = originalImg.width * imgScale;
-            const oldHeight = originalImg.height * imgScale;
-            
-            imgScale = baseScale * parseFloat(e.target.value);
-            
-            const newWidth = originalImg.width * imgScale;
-            const newHeight = originalImg.height * imgScale;
-            
-            // Adjust position so it zooms from the center by default
-            imgX -= (newWidth - oldWidth) / 2;
-            imgY -= (newHeight - oldHeight) / 2;
-            
-            render();
-        });
-
-        document.getElementById('sign-thresh').addEventListener('input', render);
-        
-        document.getElementById('bg-orig').addEventListener('click', (e) => { activeBg='orig'; toggleActive(e); render(); });
-        document.getElementById('bg-white').addEventListener('click', (e) => { activeBg='white'; toggleActive(e); render(); });
-        
-        document.getElementById('ink-orig').addEventListener('click', (e) => { activeInk='orig'; toggleActive(e); render(); });
-        document.getElementById('ink-black').addEventListener('click', (e) => { activeInk='black'; toggleActive(e); render(); });
-        document.getElementById('ink-blue').addEventListener('click', (e) => { activeInk='blue'; toggleActive(e); render(); });
-
-        function toggleActive(e) {
-            const btns = e.target.parentElement.querySelectorAll('.toggle-btn');
-            btns.forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-        }
-
-        document.getElementById('dl-photo').addEventListener('click', () => {
-            const link = document.createElement('a'); link.download = "passport_formfix.jpg";
-            link.href = canvas.toDataURL('image/jpeg', 0.9); link.click();
-            if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
-        });
-        document.getElementById('dl-sign').addEventListener('click', () => {
-            const link = document.createElement('a'); link.download = "signature_formfix.png";
-            link.href = canvas.toDataURL('image/png'); link.click();
-            if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
-        });
-    });
-</script>
-
-<style>
+</BaseLayout><style>
     .selection-workspace { padding: 40px 0; }
     .choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .choice-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 32px; cursor: pointer; transition: 0.2s; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
-    .choice-card:hover { border-color: var(--accent); background: var(--surface-50); transform: translateY(-4px); }
+    .choice-card { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 32px; cursor: pointer; transition: 0.2s; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
+    .choice-card:hover { border-color: var(--accent-primary); background: var(--surface-50); transform: translateY(-4px); }
     .choice-icon { width: 64px; height: 64px; background: var(--surface-100); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; transition: 0.2s; }
-    .choice-card:hover .choice-icon { background: var(--accent); color: #fff; }
-    .choice-text h4 { font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
+    .choice-card:hover .choice-icon { background: var(--accent-primary); color: #fff; }
+    .choice-text h4 { font-size: 1.1rem; font-weight:600; color: var(--text-main); margin-bottom: 4px; }
     .choice-text p { font-size: 0.85rem; color: var(--text-muted); }
 
     .workspace-grid { display: grid; grid-template-columns: 1fr 340px; gap: 40px; align-items: start; }
+    .editor-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+    .preview-stage { background: var(--surface-50, var(--surface-2)); border-radius: var(--radius-md); overflow: hidden; }
+    .preview-header { padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; }
+    .preview-badge { font-size: 0.7rem; font-weight:600; text-transform: uppercase; color: var(--accent-primary); background: var(--accent-light, var(--accent-soft)); padding: 4px 10px; border-radius: 100px; }
+    .canvas-frame { min-height: 300px; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; }
+    .hint-pill { font-size: 0.8rem; font-weight:600; color: var(--text-muted); text-align: center; padding: 8px 16px; background: var(--surface-100); border-radius: 100px; display: inline-block; margin: 0 auto; }
+    .sidebar-controls { display: flex; flex-direction: column; gap: 16px; }
+    .settings-card { background: var(--surface-50, #fff); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 20px; }
+    .setting-item { margin-bottom: 0; }
+    .pill-toggle-group { display: flex; gap: 8px; }
+    .pill-toggle-group .toggle-pill { flex: 1; padding: 10px; border-radius: 12px; border: 1px solid var(--border-subtle); background: var(--surface-50, #fff); font-weight:600; font-size: 0.8rem; cursor: pointer; transition: 0.2s; text-align: center; }
+    .pill-toggle-group .toggle-pill.active { background: var(--text-main); color: var(--surface-3); border-color: var(--text-main); }
+    .unified-slider { width: 100%; accent-color: var(--accent-primary); }
     
     .crop-frame { position: absolute; inset: 10%; border: 2px solid rgba(255,255,255,0.5); pointer-events: none; border-radius: 4px; box-shadow: 0 0 0 1000px rgba(0,0,0,0.5); z-index: 10; }
     
-    .settings-card-plain { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 24px; }
+    .settings-card-plain { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 24px; }
     
-    .section-label { font-size: 0.75rem; font-weight: 800; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: block; }
-    .l-text { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
+    .section-label { font-size: 0.75rem; font-weight:600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: block; }
+    .l-text { font-size: 0.85rem; font-weight:600; color: var(--text-muted); }
     
     .toggle-pill-group { display: flex; gap: 8px; }
-    .toggle-pill { flex: 1; padding: 10px; border-radius: 12px; border: 1px solid var(--border-subtle); background: #fff; font-weight: 800; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
-    .toggle-pill.active { background: var(--text-main); color: #fff; border-color: var(--text-main); }
+    .toggle-pill { flex: 1; padding: 10px; border-radius: 12px; border: 1px solid var(--border-subtle); background:var(--surface-3); font-weight:600; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+    .toggle-pill.active { background: var(--text-main); color: var(--surface-3); border-color: var(--text-main); }
 
     #active-canvas { max-width: 100%; max-height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.1)); }
     
@@ -442,5 +465,9 @@ const customSchema = {
     @media (max-width: 600px) {
         .choice-grid { grid-template-columns: 1fr; gap: 16px; }
         .workspace-grid { grid-template-columns: 1fr; gap: 24px; }
+        .editor-layout { grid-template-columns: 1fr; gap: 16px; }
+        .canvas-frame { min-height: 220px; padding: 12px; }
+        .settings-card { padding: 16px; }
+        .toggle-pill { padding: 8px !important; font-size: 0.75rem !important; }
     }
 </style>

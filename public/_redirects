@@ -1,0 +1,9 @@
+# FormFix — Cloudflare Pages Redirects
+# Astro generates URLs without trailing slashes (trailingSlash: 'never')
+# No redirect rules needed — Cloudflare Pages handles this natively
+
+# Reserve / at root
+/  /  200
+
+# Consolidate duplicate compressors
+/photo-compressor  /compress-image  301

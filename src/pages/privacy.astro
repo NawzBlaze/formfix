@@ -1,111 +1,110 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { SITE_URL } from '../seo';
 
-const PAGE_TITLE = 'Privacy Policy | formfix Image Editor';
-const PAGE_DESC = 'Read the privacy policy for formfix. We do not upload your images. All image processing happens entirely in your web browser, ensuring 100% privacy and security.';
+const PAGE_TITLE = 'Privacy Policy | FormFix';
+const PAGE_DESC = 'Read the FormFix privacy policy. All processing happens in your browser. We never upload or store your files.';
+
+const customSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'PrivacyPolicy',
+  name: 'FormFix Privacy Policy',
+  description: PAGE_DESC,
+  url: `${SITE_URL}/privacy`,
+  publisher: {
+    '@type': 'Organization',
+    name: 'FormFix',
+    url: SITE_URL
+  }
+};
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC}>
-    <div class="legal-page card">
-        <h1>Privacy Policy</h1>
-        <p class="updated"><strong>Effective Date:</strong> {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-        
-        <section class="legal-section">
-            <h2>1. Introduction</h2>
-            <p>Welcome to formfix. We respect your privacy and are committed to protecting any information that could identify you. This Privacy Policy explains how we handle your data when you visit and use our website at <strong>formfix.pages.dev</strong>.</p>
-        </section>
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} canonicalPath="/privacy" customSchema={customSchema}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Privacy Policy", path: "/privacy" }]} />
 
-        <section class="legal-section">
-            <h2>2. 100% Client-Side Processing</h2>
-            <p>formfix is designed from the ground up to respect your privacy. <strong>We do not upload, store, or transmit your images to any servers.</strong></p>
-            <p>All image processing, resizing, and compression happen directly within your web browser using your device's resources (Canvas API). Once you close the tab, the uploaded image data is cleared from your browser's memory. We literally have no access to the files you process.</p>
-        </section>
+    <div class="page">
+        <div class="container page-inner">
+            <h1>Privacy Policy</h1>
+            <p class="updated">Effective Date: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
 
-        <section class="legal-section">
-            <h2>3. Analytics and Tracking</h2>
-            <p>We believe in minimal tracking. We may use basic, privacy-friendly analytics tools to see aggregate data (like how many people visit the site or which browsers are used) to improve the tool. We do not use intrusive trackers or sell your data to third parties.</p>
-        </section>
+            <section class="section">
+                <h2>1. Introduction</h2>
+                <p>Welcome to FormFix. We respect your privacy and are committed to protecting any information that could identify you. This Privacy Policy explains how we handle your data when you visit and use our website at <strong>formfix.pages.dev</strong>.</p>
+            </section>
 
-        <section class="legal-section">
-            <h2>4. Cookies</h2>
-            <p>formfix itself does not require or set any tracking cookies to function.</p>
-        </section>
+            <section class="section">
+                <h2>2. Client-Side Processing</h2>
+                <p>FormFix is designed from the ground up to respect your privacy. <strong>We do not upload, store, or transmit your images to any servers.</strong></p>
+                <p>All image processing, resizing, and compression happen directly within your web browser using your device's resources. Once you close the tab, the uploaded image data is cleared from your browser's memory. We have no access to the files you process.</p>
+            </section>
 
-        <section class="legal-section">
-            <h2>5. Changes to This Privacy Policy</h2>
-            <p>We may update this Privacy Policy from time to time. The updated version will be indicated by an updated "Effective Date" at the top of this page. Your continued use of the website after any changes constitutes your acceptance of the new Privacy Policy.</p>
-        </section>
+            <section class="section">
+                <h2>3. Analytics</h2>
+                <p>We may use basic, privacy-friendly analytics tools to see aggregate data (like how many people visit the site or which browsers are used) to improve the tool. We do not use intrusive trackers or sell your data to third parties.</p>
+            </section>
 
-        <section class="legal-section">
-            <h2>6. Contact Us</h2>
-            <p>If you have any questions or concerns about this Privacy Policy, please contact us at: <a href="mailto:support@formfix.pages.dev">support@formfix.pages.dev</a></p>
-        </section>
+            <section class="section">
+                <h2>4. Cookies</h2>
+                <p>FormFix does not require or set any tracking cookies to function.</p>
+            </section>
+
+            <section class="section">
+                <h2>5. Changes to This Policy</h2>
+                <p>We may update this Privacy Policy from time to time. The updated version will be indicated by an updated "Effective Date" at the top of this page. Your continued use of the website after any changes constitutes your acceptance of the new Privacy Policy.</p>
+            </section>
+
+            <section class="section">
+                <h2>6. Contact Us</h2>
+                <p>If you have any questions about this Privacy Policy, please contact us at: <a href="mailto:formfix.support@gmail.com">formfix.support@gmail.com</a></p>
+            </section>
+        </div>
     </div>
 </BaseLayout>
 
 <style>
-    .legal-page {
-        max-width: 900px !important;
-        margin: 60px auto;
-        padding: 60px !important;
-        background: #fff;
-        border: 1px solid var(--border-subtle);
-        border-radius: 24px;
-    }
+.page { padding: 32px 0 80px; }
+.page-inner { max-width: 760px; }
 
-    h1 {
-        font-size: 3rem;
-        font-weight: 800;
-        margin-bottom: 12px;
-        letter-spacing: -0.05em;
-        color: var(--text-main);
-    }
+h1 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
 
-    .updated {
-        color: var(--text-muted);
-        margin-bottom: 48px;
-        font-size: 0.95rem;
-    }
+.updated {
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    font-size: 0.85rem;
+}
 
-    .legal-section {
-        margin-bottom: 48px;
-    }
+.section {
+    margin-bottom: 36px;
+}
 
-    .legal-section h2 {
-        font-size: 1.75rem;
-        margin-bottom: 16px;
-        color: var(--text-main);
-        font-weight: 800;
-        letter-spacing: -0.03em;
-    }
+.section h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
 
-    .legal-section p {
-        font-size: 1.1rem;
-        line-height: 1.7;
-        color: var(--surface-700);
-    }
+.section p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
 
-    .legal-section strong {
-        color: var(--text-main);
-    }
+.section strong {
+    color: var(--text-primary);
+}
 
-    .legal-section a {
-        color: var(--accent);
-        text-decoration: none;
-        font-weight: 700;
-    }
+.section a {
+    color: var(--accent-primary);
+    font-weight: 500;
+}
 
-    .legal-section a:hover {
-        text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-        .legal-page { 
-            padding: 32px 20px !important; 
-            margin: 20px auto;
-            border: none;
-        }
-        h1 { font-size: 2.2rem; }
-        .legal-section h2 { font-size: 1.5rem; }
-    }
+.section a:hover {
+    text-decoration: underline;
+}
 </style>

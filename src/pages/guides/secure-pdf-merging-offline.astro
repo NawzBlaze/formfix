@@ -1,11 +1,28 @@
 ---
 import BaseLayout from '../../components/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
 const title = "Ultimate Guide to Secure & Private PDF Merging Offline";
 const description = "Learn why merging PDFs offline in your browser is the safest way to handle sensitive documents. Free, no-upload PDF tools explained.";
+
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Merge PDFs Securely Offline",
+  "description": "Step-by-step guide on merging multiple PDF files without uploading them to a server.",
+  "step": [
+    { "@type": "HowToStep", "name": "Open the Merge Tool", "text": "Navigate to the FormFix Merge PDF tool." },
+    { "@type": "HowToStep", "name": "Upload PDFs", "text": "Select or drag and drop 2 or more PDF files." },
+    { "@type": "HowToStep", "name": "Arrange order", "text": "Drag and drop files to reorder them as needed." },
+    { "@type": "HowToStep", "name": "Merge and download", "text": "Click Merge and download the combined PDF." }
+  ]
+};
 ---
 
-<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/secure-pdf-merging-offline">
+<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/secure-pdf-merging-offline" customSchema={howToSchema}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Ultimate Guide to Secure & Private PDF Merging Offline", path: "/guides/secure-pdf-merging-offline" }]} />
+
     <section class="page-header">
         <div class="container">
             <h1>Secure & Private PDF Merging</h1>
@@ -57,12 +74,14 @@ const description = "Learn why merging PDFs offline in your browser is the safes
             </article>
         </div>
     </section>
+
+    <ShareBar title={title} />
 </BaseLayout>
 
 <style>
     .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
     .content-section { padding: 60px 0; }
-    .prose { line-height: 1.8; color: var(--slate); }
-    .prose h2 { color: var(--dark); margin-top: 2rem; margin-bottom: 1rem; }
+    .prose { line-height: 1.8; color: var(--text-secondary); }
+    .prose h2 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; }
     .container-narrow { max-width: 800px; }
 </style>

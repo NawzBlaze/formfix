@@ -1,25 +1,68 @@
----
+﻿---
 import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
 
-const PAGE_TITLE = 'Compress Image to 20KB Online - Professional Size Reducer | FormFix';
-const PAGE_DESC = 'Easily compress any JPEG, PNG, or WebP image to exactly 20KB or less. Perfect for official portals, passports, and ID applications globally. 100% private processing.';
-const PAGE_KEYWORDS = 'compress image to 20kb, reduce image size to 20kb online, image compressor 20kb, 20kb photo resizer, official form photo compressor';
+const PAGE_TITLE = 'Compress Image to 20KB Online - Free 20KB Photo Compressor | FormFix';
+const PAGE_DESC = 'Compress any JPG, PNG, or WebP image to exactly 20KB online. Perfect for signatures, ID photos, and government forms. 100% private.';
+const PAGE_KEYWORDS = 'compress image to 20kb, image compressor 20kb, reduce image to 20kb, 20kb photo resizer, 20kb signature, government form photo, ssc photo';
+
+const faqs = [
+  {
+    q: 'How do I compress an image to exactly 20KB?',
+    a: 'Upload your image to FormFix, click the "20 KB" preset, then hit Optimize. Our smart binary-search algorithm tests multiple quality levels and dimensions to deliver a final file that is exactly 20KB or just below it, while preserving as much sharpness as possible.',
+  },
+  {
+    q: 'Will the image be too blurry at 20KB?',
+    a: '20KB is very small, but for tight crops (signatures, ID photos, passport-size images) our algorithm retains acceptable clarity. For best results, crop tightly around your subject before uploading — wasted background space forces the algorithm to drop quality on the parts that matter.',
+  },
+  {
+    q: 'Is this safe for government ID documents?',
+    a: 'Absolutely. FormFix runs entirely in your browser. We never upload, store, or transmit your images to any server. Your Aadhaar, PAN, passport photos, and signatures stay 100% on your device.',
+  },
+  {
+    q: 'Do I need to install software?',
+    a: 'No installation required. FormFix is a web app that runs in Chrome, Safari, Firefox, Edge, and any modern browser. Open the page, upload, compress, download.',
+  },
+  {
+    q: 'Which Indian forms require a 20KB photo or signature?',
+    a: 'Many forms specify a 20KB upper limit, including SSC (CGL, CHSL, MTS) signature uploads, certain state exam applications, scholarship portals, and signature sections of banking forms. A 20KB signature is small enough to upload on slow networks while still being legible.',
+  },
+  {
+    q: 'Can I compress a 20MB photo down to 20KB?',
+    a: 'Yes. Our compressor handles large source files efficiently. The browser-side engine can compress very large JPGs and PNGs down to 20KB in just a few seconds, depending on your device speed.',
+  },
+];
 
 const customSchema = {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "20KB Image Compressor",
-  "description": "High-precision compression tool for meeting strict 20KB file size limits on official portals.",
-  "applicationCategory": "MultimediaApplication",
-  "operatingSystem": "All"
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "20KB Image Compressor - FormFix",
+      "operatingSystem": "All",
+      "applicationCategory": "MultimediaApplication",
+      "description": "Free online tool to compress any image to exactly 20KB or less for signature uploads and government forms.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(({ q, a }) => ({
+        "@type": "Question",
+        "name": q,
+        "acceptedAnswer": { "@type": "Answer", "text": a }
+      }))
+    }
+  ]
 };
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/compress-image-to-20kb">
-    <ToolWrapper 
-        title="20KB Precision Compressor" 
-        subtitle="Hit exact file size targets for official portals and digital IDs worldwide."
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/compress-image-to-20kb" faq={faqs}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Compress Image to 20KB Online", path: "/compress-image-to-20kb" }]} />
+
+    <ToolWrapper
+        title="20KB Precision Compressor"
+        subtitle="Hit exact file size targets for official portals, signatures, and digital IDs worldwide."
         currentTool="compress-20kb"
     >
         <div slot="tool-ui">
@@ -37,41 +80,53 @@ const customSchema = {
         <div slot="tool-info">
              <article class="prose">
                  <h2>Why use a 20KB Precision Compressor?</h2>
-                 <p>Most online application portals—whether for government IDs, university admissions, or professional certifications—have a strict upper limit for file uploads. The <strong>20KB limit</strong> is one of the most common and difficult to hit without losing too much image quality.</p>
-                 
+                 <p>Most online application portals — whether for government IDs, university admissions, or professional certifications — have a strict upper limit for file uploads. The <strong>20KB limit</strong> is one of the most common and difficult to hit without losing too much image quality. Traditional image editors require confusing export settings; FormFix automates the entire process with a single click.</p>
+
                  <div class="feature-grid">
                      <div class="feature-card">
                          <h3>Local Processing</h3>
-                         <p>Your document never leaves your browser. We use local RAM for compression, ensuring 100% data privacy.</p>
+                         <p>Your document never leaves your browser. We use local RAM for compression, ensuring 100% data privacy and zero upload risk.</p>
                      </div>
                      <div class="feature-card">
                          <h3>High Fidelity</h3>
-                         <p>Our algorithms prioritize facial features and text clarity even at extremely small file sizes.</p>
+                         <p>Our algorithms prioritize facial features and text clarity even at extremely small file sizes. Signatures remain readable, faces remain identifiable.</p>
+                     </div>
+                     <div class="feature-card">
+                         <h3>Smart Target Engine</h3>
+                         <p>Binary-search logic iterates through quality levels and dimensions to find the highest-fidelity output that fits under 20KB.</p>
+                     </div>
+                     <div class="feature-card">
+                         <h3>Free Forever</h3>
+                         <p>No watermarks, no sign-up, no premium tier. Use it as often as you like, on any device, anywhere in the world.</p>
                      </div>
                  </div>
 
                  <h2>How to compress your photo to 20KB</h2>
                  <ol>
                      <li><strong>Launch the Tool:</strong> Click on "Open 20KB Compressor" to start the specialized editor.</li>
-                     <li><strong>Select Image:</strong> Upload your photo, signature, or scanned document.</li>
-                     <li><strong>Set Target:</strong> Our preset is optimized for the 20KB threshold.</li>
-                     <li><strong>Download:</strong> Get your optimized JPG instantly.</li>
+                     <li><strong>Select Image:</strong> Upload your photo, signature, or scanned document (JPG, PNG, or WebP).</li>
+                     <li><strong>Set Target:</strong> The "20 KB" preset is pre-configured for the 20KB threshold.</li>
+                     <li><strong>Download:</strong> Get your optimized JPG instantly with no watermark or compression artifacts.</li>
                  </ol>
 
+                 <h2>Best practices for the sharpest 20KB result</h2>
+                 <ul>
+                     <li><strong>Crop tight around the subject:</strong> For signature images, leave only the signature plus a small white margin. For ID photos, fill the frame with the face.</li>
+                     <li><strong>Start from a clean source:</strong> Avoid compressing an already-compressed image. Start from the original photo whenever possible.</li>
+                     <li><strong>Pre-resize if needed:</strong> For very large source images (e.g., 4000x3000 pixels), pre-resize with our <a href="/resize-image">Resize Image tool</a> to 800x1000 px before compressing. This dramatically improves the final quality at 20KB.</li>
+                     <li><strong>Use JPG for signatures:</strong> Signatures are line-art and compress extremely well in JPG format.</li>
+                 </ul>
+
                  <div class="faq-section mt-48">
-                     <h3>Global Standard FAQ</h3>
-                     <details class="minimal-faq">
-                         <summary>Will my photo be blurry at 20KB? <span class="indicator">+</span></summary>
-                         <div class="faq-body">
-                             <p>While 20KB is very small, our tool uses advanced quantization to keep the image sharp enough for human and machine validation on official portals.</p>
-                         </div>
-                     </details>
-                     <details class="minimal-faq">
-                         <summary>Is this tool safe for ID documents? <span class="indicator">+</span></summary>
-                         <div class="faq-body">
-                             <p>Absolutely. Unlike other compressors, FormFix does NOT upload your files to any server. All processing happens on your own computer.</p>
-                         </div>
-                     </details>
+                     <h3>Frequently Asked Questions</h3>
+                     {faqs.map(({ q, a }) => (
+                         <details class="minimal-faq">
+                             <summary>{q} <span class="indicator">+</span></summary>
+                             <div class="faq-body">
+                                 <p>{a}</p>
+                             </div>
+                         </details>
+                     ))}
                  </div>
              </article>
         </div>
@@ -80,13 +135,29 @@ const customSchema = {
 
 <style>
     .global-workspace { text-align: center; padding: 20px 0; }
-    .global-alert { background: #f0fdf4; border-left: 4px solid #10b981; padding: 16px; border-radius: 8px; margin-bottom: 32px; color: #065f46; font-size: 0.95rem; }
-    .tool-actions-centered { display: flex; gap: 16px; justify-content: center; align-items: center; }
+    .global-alert { background: var(--success-soft); border-left: 4px solid var(--success); padding: 16px; border-radius: 8px; margin-bottom: 32px; color: var(--success); font-size: 0.95rem; }
+    .tool-actions-centered { display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap; }
     .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
     .feature-card { background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 24px; border-radius: 16px; }
-    .feature-card h3 { font-size: 1.1rem; margin-bottom: 12px; }
-    .feature-card p { font-size: 0.9rem; color: var(--text-muted); }
-    
+    .feature-card h3 { font-size: 1.1rem; margin-bottom: 12px; color: var(--text-primary); }
+    .feature-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+    .prose h2 { color: var(--text-primary); margin-top: 3rem; margin-bottom: 1rem; font-size: 1.85rem; font-weight:600; letter-spacing: -0.03em; }
+    .prose h3 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 0.75rem; font-size: 1.35rem; font-weight:600; }
+    .prose p, .prose li { color: var(--text-secondary); line-height: 1.75; font-size: 1.05rem; }
+    .prose ul, .prose ol { padding-left: 24px; margin-bottom: 1.5rem; }
+    .prose li { margin-bottom: 8px; }
+    .prose strong { color: var(--text-primary); }
+    .prose a { color: var(--accent-primary); text-decoration: underline; text-underline-offset: 3px; }
+
+    .faq-section { margin-top: 3rem; }
+    .minimal-faq { background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+    .minimal-faq summary { padding: 16px 20px; cursor: pointer; font-weight:600; color: var(--text-primary); list-style: none; position: relative; }
+    .minimal-faq summary::-webkit-details-marker { display: none; }
+    .minimal-faq summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.4rem; color: var(--accent-primary); }
+    .minimal-faq[open] summary::after { content: '−'; }
+    .faq-body { padding: 0 20px 20px; color: var(--text-secondary); line-height: 1.7; }
+
     @media (max-width: 600px) {
         .feature-grid { grid-template-columns: 1fr; }
     }

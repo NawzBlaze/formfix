@@ -88,21 +88,16 @@ if (imageTools.includes(currentTool)) {
     }
     .related-header h3 {
         font-size: 1.3rem;
-        font-weight: 900;
-        color: var(--dark);
-        letter-spacing: -0.03em;
+        font-weight:600;
+        color: var(--text-primary);
     }
     .related-view-all {
         font-size: 0.85rem;
-        font-weight: 800;
-        color: var(--primary);
+        font-weight:600;
+        color: var(--accent-primary);
         text-decoration: none;
-        transition: var(--transition-fast);
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
     }
-    .related-view-all:hover { opacity: 0.75; transform: translateX(2px); }
+    .related-view-all:hover { opacity: 0.75; }
 
     .related-grid {
         display: grid;
@@ -114,34 +109,28 @@ if (imageTools.includes(currentTool)) {
         display: flex;
         align-items: center;
         gap: 16px;
-        background: #ffffff;
+        background: var(--surface-3);
         border: 1px solid var(--border-subtle);
         border-radius: var(--radius-md);
         padding: 16px;
         text-decoration: none;
-        transition: all 0.25s var(--spring-smooth);
         position: relative;
-        box-shadow: var(--shadow-sm);
     }
     .related-card:hover {
-        transform: translateY(-3px);
-        border-color: var(--accent);
-        box-shadow: var(--shadow-md);
+        border-color: var(--accent-primary);
     }
-    .related-card:hover .r-title { color: var(--accent); }
-    .related-card:hover .r-arrow { opacity: 1; transform: translateX(3px); }
+    .related-card:hover .r-title { color: var(--accent-primary); }
 
     .r-icon {
         font-size: 1.6rem;
         width: 42px; height: 42px;
-        background: var(--bg-subtle);
+        background: var(--surface-2);
         border-radius: 12px;
         display: flex; align-items: center; justify-content: center;
         flex-shrink: 0;
-        transition: var(--transition-smooth);
     }
     .related-card:hover .r-icon {
-        background: var(--primary-light);
+        background: var(--accent-soft);
     }
 
     .r-content {
@@ -152,18 +141,17 @@ if (imageTools.includes(currentTool)) {
         min-width: 0;
     }
     .r-title {
-        font-weight: 800;
-        color: var(--dark);
+        font-weight:600;
+        color: var(--text-primary);
         font-size: 0.88rem;
         line-height: 1.3;
-        transition: color 0.2s;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
     .r-desc {
         font-size: 0.75rem;
-        color: var(--gray);
+        color: var(--text-muted);
         font-weight: 600;
         line-height: 1.3;
         white-space: nowrap;
@@ -173,12 +161,13 @@ if (imageTools.includes(currentTool)) {
 
     .r-arrow {
         font-size: 0.9rem;
-        color: var(--light-gray);
+        color: var(--text-muted);
         flex-shrink: 0;
         opacity: 0;
-        transition: var(--transition-smooth);
-        font-weight: 800;
+        font-weight:600;
+        transition: opacity 0.2s;
     }
+    .related-card:hover .r-arrow { opacity: 1; }
 
     @media (max-width: 768px) {
         .related-grid { grid-template-columns: 1fr 1fr; gap: 10px; }

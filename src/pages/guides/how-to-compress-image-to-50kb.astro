@@ -1,11 +1,28 @@
 ---
 import BaseLayout from '../../components/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
 const title = "How to Compress Image to 50KB without Quality Loss (Free Online)";
 const description = "Learn how to compress photos to 50KB for online registrations, SSC, and official forms. Simple, private, and 100% browser-based tool.";
+
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Compress Image to 50KB",
+  "description": "Step-by-step guide on compressing images to exactly 50KB for online forms.",
+  "step": [
+    { "@type": "HowToStep", "name": "Open the compressor", "text": "Navigate to the FormFix Image Compressor." },
+    { "@type": "HowToStep", "name": "Upload your image", "text": "Drag and drop or click to upload your photo." },
+    { "@type": "HowToStep", "name": "Select 50KB preset", "text": "Click the 50 KB preset button." },
+    { "@type": "HowToStep", "name": "Download result", "text": "Preview and download the compressed image." }
+  ]
+};
 ---
 
-<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/how-to-compress-image-to-50kb">
+<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/how-to-compress-image-to-50kb" customSchema={howToSchema}>
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "How to Compress Image to 50KB without Quality Loss (Free Online)", path: "/guides/how-to-compress-image-to-50kb" }]} />
+
     <section class="page-header">
         <div class="container">
             <h1>How to Compress Image to 50KB</h1>
@@ -53,13 +70,15 @@ const description = "Learn how to compress photos to 50KB for online registratio
             </article>
         </div>
     </section>
+
+    <ShareBar title={title} />
 </BaseLayout>
 
 <style>
     .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
     .content-section { padding: 60px 0; }
-    .prose { line-height: 1.8; color: var(--slate); }
-    .prose h2 { color: var(--dark); margin-top: 2rem; margin-bottom: 1rem; }
+    .prose { line-height: 1.8; color: var(--text-secondary); }
+    .prose h2 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; }
     .prose p { margin-bottom: 1.5rem; }
     .prose ul, .prose ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
     .container-narrow { max-width: 800px; }
