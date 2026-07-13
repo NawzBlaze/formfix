@@ -160,57 +160,78 @@ const customSchema = {
 
              try {
                  let pdf;
+                 let pagesAdded = 0;
 
                  for (let i = 0; i < imageItems.length; i++) {
                      const item = imageItems[i];
-                     const img = new Image();
-                     img.src = item.url;
-                     await new Promise((resolve, reject) => {
-                         img.onload = resolve;
-                         img.onerror = () => reject(new Error('Failed to load image: ' + item.file.name));
-                     });
+                     try {
+                         const img = new Image();
+                         img.src = item.url;
+                         await new Promise((resolve, reject) => {
+                             img.onload = resolve;
+                             img.onerror = () => reject(new Error('Failed to load: ' + item.file.name));
+                         });
 
-                     const format = item.file.type === 'image/jpeg' ? 'JPEG' : 'PNG';
+                         const canvas = document.createElement('canvas');
+                         canvas.width = img.naturalWidth;
+                         canvas.height = img.naturalHeight;
+                         const ctx = canvas.getContext('2d');
+                         ctx.fillStyle = '#FFFFFF';
+                         ctx.fillRect(0, 0, canvas.width, canvas.height);
+                         ctx.drawImage(img, 0, 0);
+                         const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
 
-                     if (fitMode === 'exact') {
-                         const ptW = img.naturalWidth * 0.75;
-                         const ptH = img.naturalHeight * 0.75;
-                         
-                         if (i === 0) {
-                             pdf = new window.jspdf.jsPDF({
-                                 orientation: ptW > ptH ? 'landscape' : 'portrait',
-                                 unit: 'pt',
-                                 format: [ptW, ptH]
-                             });
-                         } else {
-                             pdf.addPage([ptW, ptH], ptW > ptH ? 'landscape' : 'portrait');
-                         }
-                         pdf.addImage(img, format, 0, 0, ptW, ptH);
-                     } else {
-                         if (i === 0) {
-                             pdf = new window.jspdf.jsPDF();
-                         } else {
-                             pdf.addPage();
-                         }
-                         
-                         const pageWidth = pdf.internal.pageSize.getWidth();
-                         const pageHeight = pdf.internal.pageSize.getHeight();
-                         
-                         const imgRatio = img.naturalWidth / img.naturalHeight;
-                         const pageRatio = pageWidth / pageHeight;
-                         let finalW = pageWidth;
-                         let finalH = pageHeight;
-                         
-                         if (imgRatio > pageRatio) {
-                             finalH = pageWidth / imgRatio;
-                         } else {
-                             finalW = pageHeight * imgRatio;
-                         }
+                         const format = 'JPEG';
 
-                         const x = (pageWidth - finalW) / 2;
-                         const y = (pageHeight - finalH) / 2;
-                         pdf.addImage(img, format, x, y, finalW, finalH);
+                         if (fitMode === 'exact') {
+                             const ptW = img.naturalWidth * 0.75;
+                             const ptH = img.naturalHeight * 0.75;
+                             
+                             if (!pdf) {
+                                 pdf = new window.jspdf.jsPDF({
+                                     orientation: ptW > ptH ? 'landscape' : 'portrait',
+                                     unit: 'pt',
+                                     format: [ptW, ptH]
+                                 });
+                             } else {
+                                 pdf.addPage([ptW, ptH], ptW > ptH ? 'landscape' : 'portrait');
+                             }
+                             pdf.addImage(dataUrl, format, 0, 0, ptW, ptH);
+                         } else {
+                             if (!pdf) {
+                                 pdf = new window.jspdf.jsPDF();
+                             } else {
+                                 pdf.addPage();
+                             }
+                             
+                             const pageWidth = pdf.internal.pageSize.getWidth();
+                             const pageHeight = pdf.internal.pageSize.getHeight();
+                             
+                             const imgRatio = img.naturalWidth / img.naturalHeight;
+                             const pageRatio = pageWidth / pageHeight;
+                             let finalW = pageWidth;
+                             let finalH = pageHeight;
+                             
+                             if (imgRatio > pageRatio) {
+                                 finalH = pageWidth / imgRatio;
+                             } else {
+                                 finalW = pageHeight * imgRatio;
+                             }
+
+                             const x = (pageWidth - finalW) / 2;
+                             const y = (pageHeight - finalH) / 2;
+                             pdf.addImage(dataUrl, format, x, y, finalW, finalH);
+                         }
+                         pagesAdded++;
+                     } catch (imgErr) {
+                         console.warn('Skipping image ' + item.file.name + ':', imgErr);
+                         if (typeof window.ffNotice === 'function') window.ffNotice('Skipped "' + item.file.name + '" — ' + imgErr.message, 'error');
                      }
+                 }
+
+                 if (!pdf || pagesAdded === 0) {
+                     if (typeof window.ffNotice === 'function') window.ffNotice('No images could be converted. Please try different files.', 'error');
+                     return;
                  }
 
                  const blob = pdf.output('blob');
@@ -218,7 +239,7 @@ const customSchema = {
 
                  document.getElementById('download-btn').href = outUrl;
                  document.getElementById('download-btn').download = `formfix-converted.pdf`;
-                 document.getElementById('final-pages-count').textContent = imageItems.length.toString();
+                 document.getElementById('final-pages-count').textContent = pagesAdded.toString();
 
                  controls?.classList.add('hidden');
                  resultStage?.classList.remove('hidden');
