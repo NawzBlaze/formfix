@@ -29,21 +29,13 @@ const customSchema = {
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/split-pdf">
     <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Split PDF Online - Extract Pages from PDF for Free", path: "/split-pdf" }]} />
 
-    <!-- Load PDF.js library via a deferred DOM injection to keep HTML valid -->
-    <script is:inline>
-        (function() {
-            if (document.querySelector('script[data-pdfjs-loader]')) return;
-            const s = document.createElement('script');
-            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-            s.defer = true;
-            s.dataset.pdfjsLoader = '1';
-            s.onload = function() {
-                if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
-                    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-                }
-            };
-            document.head.appendChild(s);
-        })();
+    <!-- Load PDF libraries from npm bundle -->
+    <script type="module">
+        import * as pdfjsLib from 'pdfjs-dist';
+        import { PDFDocument } from 'pdf-lib';
+        window.pdfjsLib = pdfjsLib;
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).href;
+        window.PDFLib = { PDFDocument };
     </script>
 
     <ToolWrapper title="Split PDF Files" subtitle="Extract specific pages from any PDF document quickly and securely." currentTool="split-pdf">
@@ -118,17 +110,7 @@ const customSchema = {
         </div>
     </ToolWrapper>
 
-<!-- Load pdf-lib lazily for merging (only when needed) -->
 <script is:inline>
-    const loadPdfLib = async () => {
-        if (window.PDFLib) return;
-        return new Promise((resolve, reject) => {
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
-            script.onload = resolve; script.onerror = reject; document.head.appendChild(script);
-        });
-    };
-
     document.addEventListener('DOMContentLoaded', () => {
         const fileInput = document.getElementById('pdf-upload');
         const uploadStage = document.getElementById('upload-stage');
@@ -159,7 +141,6 @@ const customSchema = {
             loadingStage?.classList.remove('hidden');
             
             // Preload pdf-lib in background while user selects pages
-            loadPdfLib();
             
             try {
                 pdfBytesOriginal = await file.arrayBuffer();
@@ -271,7 +252,6 @@ const customSchema = {
             extractBtn.style.pointerEvents = 'none';
 
             try {
-                await loadPdfLib();
                 const { PDFDocument } = window.PDFLib;
                 const sourcePdf = await PDFDocument.load(pdfBytesOriginal.slice(0));
                 const newPdf = await PDFDocument.create();

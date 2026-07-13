@@ -37,7 +37,7 @@ const customSchema = {
         if (pdfjsLib) return pdfjsLib;
         const mod = await import('pdfjs-dist');
         pdfjsLib = mod;
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+        pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).href;
         return pdfjsLib;
     }
 

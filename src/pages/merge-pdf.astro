@@ -27,18 +27,12 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/merge-pdf">
-    <script is:inline>
-    const loadPdfLib = async () => {
-        if (window.PDFLib) return;
-        return new Promise((resolve, reject) => {
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
-            script.onload = resolve;
-            script.onerror = reject;
-            document.head.appendChild(script);
-        });
-    };
+    <script type="module">
+        import { PDFDocument } from 'pdf-lib';
+        window.PDFLib = { PDFDocument };
+    </script>
 
+    <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
         const fileInput = document.getElementById('pdf-upload');
         const uploadStage = document.getElementById('upload-stage');
@@ -61,9 +55,6 @@ const customSchema = {
             
             uploadStage?.classList.add('hidden');
             actionStage?.classList.remove('hidden');
-            
-            // Pre-load library while they look at files
-            loadPdfLib();
         }
 
         fileInput?.addEventListener('change', (e) => handleFiles(e.target.files));
@@ -136,7 +127,6 @@ const customSchema = {
              if (mergeBtn) mergeBtn.style.pointerEvents = 'none';
              
              try {
-                 await loadPdfLib();
                  const { PDFDocument } = window.PDFLib;
                  const mergedPdf = await PDFDocument.create();
 

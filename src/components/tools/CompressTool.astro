@@ -15,6 +15,10 @@ const { initialTarget = 'auto' } = Astro.props;
             <div class="config-header">
                 <h3>Optimization Settings</h3>
                 <p>Choose your target file size below.</p>
+                <div id="orig-size-badge" class="orig-size-badge hidden">
+                    <span class="size-label">Original Size</span>
+                    <span id="orig-size-val" class="size-value">0 KB</span>
+                </div>
             </div>
             
             <div class="section-group">
@@ -66,13 +70,17 @@ const { initialTarget = 'auto' } = Astro.props;
             </div>
 
             <div class="stats-row mb-32">
+                <div class="data-card">
+                    <span class="d-label">Original</span>
+                    <span id="orig-stat" class="d-value">0 KB</span>
+                </div>
                 <div class="data-card active">
-                    <span class="d-label">Final Size</span>
+                    <span class="d-label">Compressed</span>
                     <span id="final-stat" class="d-value">0 KB</span>
                 </div>
                 <div class="data-card">
-                    <span class="d-label">Target Met</span>
-                    <span id="accuracy-stat" class="d-value">100%</span>
+                    <span class="d-label">Saved</span>
+                    <span id="saved-stat" class="d-value">0%</span>
                 </div>
             </div>
 
@@ -133,6 +141,13 @@ const { initialTarget = 'auto' } = Astro.props;
                 fileObj = f; 
                 uBox?.classList.add('hidden'); 
                 ctrl?.classList.remove('hidden');
+
+                const origSizeBadge = document.getElementById('orig-size-badge');
+                const origSizeVal = document.getElementById('orig-size-val');
+                if (origSizeBadge && origSizeVal) {
+                    origSizeBadge.classList.remove('hidden');
+                    origSizeVal.textContent = f.size < 1024 ? f.size + ' B' : (f.size / 1024).toFixed(1) + ' KB';
+                }
                 
                 const r = new FileReader(); 
                 r.onload = (ev) => {
@@ -179,8 +194,11 @@ const { initialTarget = 'auto' } = Astro.props;
                         const url = URL.createObjectURL(res.blob);
                         const fp = document.getElementById('final-preview'); if(fp) fp.src = url;
                         const fs = document.getElementById('final-stat'); if(fs) fs.textContent = (res.blob.size / 1024).toFixed(1) + ' KB';
-                        const acc = res.blob.size <= targetKB * 1024 ? 100 : Math.min(100, (targetKB * 1024 / res.blob.size) * 100);
-                        const as = document.getElementById('accuracy-stat'); if(as) as.textContent = acc.toFixed(1) + '%';
+                        const origKB = fileObj.size / 1024;
+                        const compKB = res.blob.size / 1024;
+                        const savedPct = origKB > 0 ? Math.max(0, ((1 - compKB / origKB) * 100)) : 0;
+                        const origStat = document.getElementById('orig-stat'); if(origStat) origStat.textContent = origKB.toFixed(1) + ' KB';
+                        const savedStat = document.getElementById('saved-stat'); if(savedStat) savedStat.textContent = savedPct.toFixed(0) + '%';
                         
                         const dl = document.getElementById('download-btn'); if(dl) { dl.href = url; dl.download = `formfix-${targetKB}kb.jpg`; }
                         ctrl?.classList.add('hidden'); resBox?.classList.remove('hidden');
@@ -248,6 +266,9 @@ const { initialTarget = 'auto' } = Astro.props;
     .config-header { margin-bottom: 32px; }
     .config-header h3 { font-size: 1.5rem; font-weight:600; margin-bottom: 4px; }
     .config-header p { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; }
+    .orig-size-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-soft); border: 1px solid var(--accent-primary); padding: 6px 14px; border-radius: 100px; margin-top: 12px; }
+    .orig-size-badge .size-label { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+    .orig-size-badge .size-value { font-size: 0.85rem; font-weight: 700; color: var(--accent-primary); }
 
     .section-group { margin-bottom: 32px; }
     .group-label { display: block; font-size: 0.75rem; font-weight:600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
@@ -274,7 +295,7 @@ const { initialTarget = 'auto' } = Astro.props;
     .text-content h4 { font-size: 1.15rem; font-weight:600; margin-bottom: 2px; color: var(--success, var(--success)); }
     .text-content p { color: var(--success, var(--success)); opacity: 0.8; font-size: 0.9rem; font-weight: 600; }
 
-    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
     .data-card { background: var(--surface-3); border: 1.5px solid var(--border-subtle); padding: 24px; border-radius: 20px; text-align: center; transition: 0.3s; }
     .data-card.active { border-color: var(--accent-primary); background: var(--accent-soft); transform: translateY(-2px); }
     .d-label { font-size: 0.7rem; font-weight:600; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 8px; }
