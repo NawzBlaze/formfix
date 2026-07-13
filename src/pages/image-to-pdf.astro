@@ -33,7 +33,6 @@ const customSchema = {
         const s = document.createElement('script');
         s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
         s.dataset.jspdfLoader = '1';
-        s.defer = true;
         document.head.appendChild(s);
     })();
     </script>
@@ -159,10 +158,24 @@ const customSchema = {
 
         generateBtn?.addEventListener('click', async () => {
              if (imageItems.length === 0) return;
+             
+             // Wait for jsPDF library with retry
              if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
-                 if (typeof window.ffNotice === 'function') window.ffNotice('PDF library is still loading. Please try again in a moment.', 'warning');
-                 return;
+                 generateBtn.disabled = true;
+                 btnLabel.textContent = 'Loading PDF library...';
+                 let waited = 0;
+                 while (waited < 10000 && (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined')) {
+                     await new Promise(r => setTimeout(r, 200));
+                     waited += 200;
+                 }
+                 if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+                     if (typeof window.ffNotice === 'function') window.ffNotice('PDF library failed to load. Please refresh the page.', 'error');
+                     generateBtn.disabled = false;
+                     btnLabel.textContent = '⚡ Generate PDF';
+                     return;
+                 }
              }
+
              generateBtn.disabled = true;
              btnLabel.textContent = 'Generating PDF...';
              loader?.classList.remove('hidden');

@@ -158,6 +158,9 @@ const customSchema = {
             uploadStage?.classList.add('hidden');
             loadingStage?.classList.remove('hidden');
             
+            // Preload pdf-lib in background while user selects pages
+            loadPdfLib();
+            
             try {
                 pdfBytesOriginal = await file.arrayBuffer();
                 const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(pdfBytesOriginal) });
