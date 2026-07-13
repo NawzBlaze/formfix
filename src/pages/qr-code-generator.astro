@@ -1,4 +1,4 @@
-﻿---
+---
 import BaseLayout from '../components/BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
@@ -50,15 +50,29 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/qr-code-generator" faq={faqs}>
+    <!-- Load QR library first via DOM injection to keep HTML valid -->
     <script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
+        (function() {
+            if (document.querySelector('script[data-qr-loader]')) return;
+            const s = document.createElement('script');
+            s.src = 'https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js';
+            s.onload = () => {
+                document.dispatchEvent(new Event('qr-ready'));
+            };
+            s.dataset.qrLoader = '1';
+            document.head.appendChild(s);
+        })();
+    </script>
+
+    <script is:inline>
+    function initQR() {
         const qrIn = document.getElementById('qr-input');
         const qCol = document.getElementById('qr-color');
         const bCol = document.getElementById('bg-color');
         const doGrad = document.getElementById('do-grad');
         const gs = document.getElementById('g-s');
         const ge = document.getElementById('g-e');
-        
+
         const logoFile = document.getElementById('logo-input');
         const logoDrop = document.getElementById('logo-zone');
         const logoSize = document.getElementById('logo-size');
@@ -204,22 +218,16 @@ const customSchema = {
         };
         
         update();
-    });
-</script>
+    }
+
+    if (typeof QRCodeStyling !== 'undefined') {
+        initQR();
+    } else {
+        document.addEventListener('qr-ready', initQR);
+    }
+    </script>
 
     <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Professional QR Code Generator with Logo | Custom QR Maker", path: "/qr-code-generator" }]} />
-
-    <!-- Load QR library lazily via DOM injection to keep HTML valid -->
-    <script is:inline>
-        (function() {
-            if (document.querySelector('script[data-qr-loader]')) return;
-            const s = document.createElement('script');
-            s.src = 'https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js';
-            s.defer = true;
-            s.dataset.qrLoader = '1';
-            document.head.appendChild(s);
-        })();
-    </script>
 
     <ToolWrapper title="Professional QR Designer" subtitle="Create high-resolution, custom-branded QR codes instantly. 100% private." currentTool="qr-code-generator">
         

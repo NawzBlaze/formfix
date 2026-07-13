@@ -27,9 +27,18 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/image-to-pdf">
-    <script is:inline type="module">
-    import { jsPDF } from 'https://cdn.skypack.dev/jspdf';
+    <script is:inline>
+    (function() {
+        if (document.querySelector('script[data-jspdf-loader]')) return;
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
+        s.dataset.jspdfLoader = '1';
+        s.defer = true;
+        document.head.appendChild(s);
+    })();
+    </script>
 
+    <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
         const fileInput = document.getElementById('multi-file-input');
         const controls = document.getElementById('controls');
@@ -150,6 +159,10 @@ const customSchema = {
 
         generateBtn?.addEventListener('click', async () => {
              if (imageItems.length === 0) return;
+             if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+                 if (typeof window.ffNotice === 'function') window.ffNotice('PDF library is still loading. Please try again in a moment.', 'warning');
+                 return;
+             }
              generateBtn.disabled = true;
              btnLabel.textContent = 'Generating PDF...';
              loader?.classList.remove('hidden');
@@ -170,7 +183,7 @@ const customSchema = {
                          const ptH = img.naturalHeight * 0.75;
                          
                          if (i === 0) {
-                             pdf = new jsPDF({
+                             pdf = new window.jspdf.jsPDF({
                                  orientation: ptW > ptH ? 'landscape' : 'portrait',
                                  unit: 'pt',
                                  format: [ptW, ptH]
@@ -181,7 +194,7 @@ const customSchema = {
                          pdf.addImage(img, format, 0, 0, ptW, ptH);
                      } else {
                          if (i === 0) {
-                             pdf = new jsPDF();
+                             pdf = new window.jspdf.jsPDF();
                          } else {
                              pdf.addPage();
                          }

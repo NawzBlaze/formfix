@@ -1,4 +1,4 @@
-﻿---
+---
 import BaseLayout from '../components/BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
@@ -193,9 +193,13 @@ const customSchema = {
         });
 
         // CONTROLS LISTENERS
-        document.getElementById('photo-bright')?.addEventListener('input', render);
+        document.getElementById('photo-bright')?.addEventListener('input', (e) => {
+            document.getElementById('bright-val').textContent = e.target.value + '%';
+            render();
+        });
         
         document.getElementById('photo-zoom')?.addEventListener('input', (e) => {
+            document.getElementById('zoom-val').textContent = parseFloat(e.target.value).toFixed(1) + 'x';
             const oldWidth = originalImg.width * imgScale;
             const oldHeight = originalImg.height * imgScale;
             
@@ -211,7 +215,10 @@ const customSchema = {
             render();
         });
 
-        document.getElementById('sign-thresh')?.addEventListener('input', render);
+        document.getElementById('sign-thresh')?.addEventListener('input', (e) => {
+            document.getElementById('sign-thresh-val').textContent = e.target.value;
+            render();
+        });
         
         document.getElementById('bg-orig')?.addEventListener('click', (e) => { activeBg='orig'; toggleActive(e); render(); });
         document.getElementById('bg-white')?.addEventListener('click', (e) => { activeBg='white'; toggleActive(e); render(); });

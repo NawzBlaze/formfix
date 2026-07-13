@@ -1,4 +1,9 @@
-import type { ResumeData, Template, TemplateConfig, Customization } from './types';
+import type {
+  ResumeData, Template, TemplateConfig, Customization,
+  Experience, Education, Project, Skill, Language,
+  Certificate, Achievement, VolunteerWork, Reference,
+  CustomSection, CustomSectionItem
+} from './types';
 
 export const DEFAULT_PERSONAL_INFO = {
   fullName: '',

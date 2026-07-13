@@ -19,6 +19,10 @@ import SocialShare from './SocialShare.astro';
         </div>
 
         <div class="tool-secondary">
+            <div class="tool-info-section">
+                <slot name="tool-info" />
+            </div>
+
             <div class="tool-share">
                 <SocialShare title={title} url={Astro.url.href} />
             </div>
@@ -72,6 +76,53 @@ import SocialShare from './SocialShare.astro';
 
     .tool-secondary {
         opacity: 0.9;
+    }
+
+    .tool-info-section {
+        margin-bottom: 40px;
+    }
+
+    .tool-info-section h2 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--text-primary);
+    }
+
+    .tool-info-section h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-top: 24px;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+    }
+
+    .tool-info-section p {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+    }
+
+    .tool-info-section ul, .tool-info-section ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .tool-info-section li {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: var(--text-secondary);
+        margin-bottom: 6px;
+    }
+
+    .tool-info-section strong {
+        color: var(--text-primary);
+    }
+
+    .tool-info-section a {
+        color: var(--accent-primary);
+        text-decoration: underline;
     }
 
     .tool-secondary:hover {

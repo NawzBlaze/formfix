@@ -1,4 +1,4 @@
-﻿---
+---
 import BaseLayout from '../components/BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
@@ -32,6 +32,23 @@ const customSchema = {
         const input = document.getElementById('img-input'), canvas = document.getElementById('main-canvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
         const tolInput = document.getElementById('tolerance'), smoothInput = document.getElementById('smoothing');
         let originalImg = null, originalData = null, selectedColor = null;
+
+        const dropZone = document.getElementById('drop-zone');
+        if (dropZone) {
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.style.borderColor = 'var(--accent-primary)'; dropZone.style.background = 'var(--surface-100)'; });
+            dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.style.borderColor = ''; dropZone.style.background = ''; });
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault(); e.stopPropagation();
+                dropZone.style.borderColor = ''; dropZone.style.background = '';
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    input.files = e.dataTransfer.files;
+                    input.dispatchEvent(new Event('change'));
+                } else {
+                    if (typeof window.ffNotice === 'function') window.ffNotice('Please drop a PNG, JPG, or WebP image.', 'error');
+                }
+            });
+        }
 
         input.onchange = (e) => {
             const file = e.target.files[0]; if (!file) return;
@@ -92,7 +109,7 @@ const customSchema = {
                 div.id = 'post-bg-share';
                 div.style.cssText = 'margin-top:20px;text-align:center;';
                 div.innerHTML = '<p style="font-weight:600;margin-bottom:10px;color:var(--success);">Love FormFix? Share it!</p><div style="display:flex;gap:8px;justify-content:center;"><a href="https://twitter.com/intent/tweet?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#000;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">Share on X</a><a href="https://wa.me/?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">WhatsApp</a></div>';
-                a.parentElement.appendChild(div);
+                document.querySelector('.action-stack')?.appendChild(div);
             }
         };
     });

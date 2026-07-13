@@ -10,11 +10,12 @@ self.onmessage = async (e) => {
         
         // Setup OffscreenCanvas
         const canvas = new OffscreenCanvas(imageBitmap.width, imageBitmap.height);
-        const ctx = canvas.getContext('2d')!;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { self.postMessage({ success: false, error: 'Failed to get canvas context' }); return; }
         ctx.drawImage(imageBitmap, 0, 0);
         
         let low = minQuality, high = 1.0, quality = 0.8;
-        let bestBlob: Blob | null = null;
+        let bestBlob = null;
         let currentBestSize = 0;
 
         // Binary Search Loop for Maximum Precision

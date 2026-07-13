@@ -1,4 +1,4 @@
-﻿---
+---
 import BaseLayout from '../components/BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import ToolWrapper from '../components/ToolWrapper.astro';
@@ -97,6 +97,7 @@ const customSchema = {
         }
 
         const updateFlow = () => {
+             if (!originalImg) return;
              targetResTxt.textContent = `${widthInput.value || 0} x ${heightInput.value || 0}`;
              // update preview size visually
              let displayW = parseInt(widthInput.value) || originalImg.naturalWidth;
