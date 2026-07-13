@@ -104,7 +104,7 @@ const customSchema = {
             ctx.drawImage(originalImg, 0, 0, imgW, imgH);
 
             const text = textInput?.value || 'WATERMARK';
-            const fontSize = parseInt(sizeSlider?.value || '24') * 2;
+            const fontSize = parseInt(sizeSlider?.value || '24');
             const opacity = parseInt(opacitySlider?.value || '40') / 100;
             const color = colorInput?.value || '#ffffff';
 

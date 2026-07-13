@@ -373,7 +373,7 @@ const customSchema = {
     #base-canvas { position: relative; z-index: 1; filter: drop-shadow(0 15px 40px rgba(0,0,0,0.1)); display: block; }
     #fx-canvas { display: none; }
     /* draw-canvas must exactly overlay base-canvas */
-    #draw-canvas { position: absolute; z-index: 10; opacity: 0; cursor: crosshair; touch-action: none; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    #draw-canvas { position: absolute; z-index: 10; cursor: crosshair; touch-action: none; top: 0; left: 0; }
 
     .preview-badge { display: inline-block; background: var(--text-main); color: var(--surface-3); padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight:600; text-transform: uppercase; }
 

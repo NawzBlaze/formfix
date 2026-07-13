@@ -185,6 +185,8 @@ const customSchema = {
         
         cropBox.querySelectorAll('.drag-handle').forEach(h => {
              h.addEventListener('pointerdown', (e) => { e.stopPropagation(); onStart(e, e.target.dataset.dir); });
+             h.addEventListener('pointerup', onEnd);
+             h.addEventListener('pointercancel', onEnd);
         });
 
         ratioBtns.forEach(btn => btn.addEventListener('click', () => {

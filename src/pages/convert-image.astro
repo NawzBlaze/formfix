@@ -61,7 +61,9 @@ const customSchema = {
              e.preventDefault();
              uploadBox.querySelector('.upload-box').classList.remove('drag-active');
              if (e.dataTransfer?.files.length) {
-                 fileInput.files = e.dataTransfer.files;
+                 const dt = new DataTransfer();
+                 dt.items.add(e.dataTransfer.files[0]);
+                 fileInput.files = dt.files;
                  handleFile(e.dataTransfer.files[0]);
              }
         });

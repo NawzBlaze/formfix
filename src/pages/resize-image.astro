@@ -98,12 +98,16 @@ const customSchema = {
 
         const updateFlow = () => {
              if (!originalImg) return;
-             targetResTxt.textContent = `${widthInput.value || 0} x ${heightInput.value || 0}`;
-             // update preview size visually
-             let displayW = parseInt(widthInput.value) || originalImg.naturalWidth;
-             let displayH = parseInt(heightInput.value) || originalImg.naturalHeight;
-             source.style.width = displayW + 'px';
-             source.style.height = displayH + 'px';
+             const w = parseInt(widthInput.value) || 0;
+             const h = parseInt(heightInput.value) || 0;
+             targetResTxt.textContent = `${w || originalImg.naturalWidth} x ${h || originalImg.naturalHeight}`;
+             if (w > 0 && h > 0) {
+                 source.style.width = w + 'px';
+                 source.style.height = h + 'px';
+             } else {
+                 source.style.width = '';
+                 source.style.height = '';
+             }
         };
 
         aspectLock.addEventListener('change', () => {
@@ -117,11 +121,17 @@ const customSchema = {
         });
 
         widthInput.addEventListener('input', () => {
-            if (aspectLock.checked) heightInput.value = Math.round(parseInt(widthInput.value || 0) / originalRatio).toString();
+            if (aspectLock.checked) {
+                const w = parseInt(widthInput.value) || 0;
+                heightInput.value = w > 0 ? Math.round(w / originalRatio).toString() : '';
+            }
             updateFlow();
         });
         heightInput.addEventListener('input', () => {
-            if (aspectLock.checked) widthInput.value = Math.round(parseInt(heightInput.value || 0) * originalRatio).toString();
+            if (aspectLock.checked) {
+                const h = parseInt(heightInput.value) || 0;
+                widthInput.value = h > 0 ? Math.round(h * originalRatio).toString() : '';
+            }
             updateFlow();
         });
 

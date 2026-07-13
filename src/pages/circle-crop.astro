@@ -160,21 +160,28 @@ const customSchema = {
             const imgRect = source.getBoundingClientRect();
             const boxRect = circle.getBoundingClientRect();
             
+            // Account for CSS transform zoom on the image container
+            const containerRect = imgContainer.getBoundingClientRect();
+            const displayW = source.naturalWidth * (imgRect.width / source.naturalWidth);
+            const displayH = source.naturalHeight * (imgRect.height / source.naturalHeight);
+            
             const scaleX = source.naturalWidth / imgRect.width;
+            const scaleY = source.naturalHeight / imgRect.height;
             
-            // Calculate relative positions to the true image dimensions
             const relativeX = (boxRect.left - imgRect.left) * scaleX;
-            const relativeY = (boxRect.top - imgRect.top) * scaleX;
+            const relativeY = (boxRect.top - imgRect.top) * scaleY;
             const relativeW = boxRect.width * scaleX;
+            const relativeH = boxRect.height * scaleY;
             
-            canvas.width = relativeW; canvas.height = relativeW;
+            const side = Math.min(relativeW, relativeH);
+            canvas.width = side; canvas.height = side;
             
             // Draw circular clipping path
             ctx.beginPath(); 
-            ctx.arc(relativeW/2, relativeW/2, relativeW/2, 0, Math.PI * 2); 
+            ctx.arc(side/2, side/2, side/2, 0, Math.PI * 2); 
             ctx.clip();
             
-            ctx.drawImage(source, relativeX, relativeY, relativeW, relativeW, 0, 0, relativeW, relativeW);
+            ctx.drawImage(source, relativeX, relativeY, side, side, 0, 0, side, side);
             
             canvas.toBlob(blob => {
                  const url = URL.createObjectURL(blob);

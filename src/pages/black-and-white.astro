@@ -35,6 +35,23 @@ const customSchema = {
         
         let originalImage = new Image(), originalData = null, fileName = 'image.png';
 
+        const dropZone = document.getElementById('drop-zone');
+        if (dropZone) {
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.style.borderColor = 'var(--accent-primary)'; dropZone.style.background = 'var(--surface-100)'; });
+            dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.style.borderColor = ''; dropZone.style.background = ''; });
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault(); e.stopPropagation();
+                dropZone.style.borderColor = ''; dropZone.style.background = '';
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    input.files = e.dataTransfer.files;
+                    input.dispatchEvent(new Event('change'));
+                } else {
+                    if (typeof window.ffNotice === 'function') window.ffNotice('Please drop a PNG, JPG, or WebP image.', 'error');
+                }
+            });
+        }
+
         input.onchange = (e) => {
             const file = e.target.files[0]; if (!file) return;
             if (!['image/png','image/jpeg','image/webp'].includes(file.type)) {

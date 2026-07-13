@@ -124,6 +124,9 @@ const customSchema = {
 
              } catch (err) {
                  console.error(err);
+                 if (typeof window.ffNotice === 'function') window.ffNotice('Extraction failed. The PDF may be corrupted or protected.', 'error');
+                 controls?.classList.remove('hidden');
+                 resultStage?.classList.add('hidden');
              } finally {
                  extractBtn.disabled = false;
                  if (btnLabel) btnLabel.textContent = `Extract All Pages`;

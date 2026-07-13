@@ -284,6 +284,17 @@ const googleFontsUrl = "https://fonts.googleapis.com/css2?" + fontList.map(font 
             });
         });
 
+        // Custom color picker
+        const customColor = document.getElementById('custom-color');
+        if (customColor) {
+            customColor.addEventListener('input', (e) => {
+                colBtns.forEach(b => b.classList.remove('active'));
+                strokeColor = e.target.value;
+                if (ctx) ctx.strokeStyle = strokeColor;
+                if(isTypeMode && typeInput) typeInput.style.color = strokeColor;
+            });
+        }
+
         // Fonts
         const fontBtns = document.getElementById('font-selector')?.querySelectorAll('.font-card') || [];
         fontBtns.forEach(btn => {

@@ -179,7 +179,7 @@ const { initialTarget = 'auto' } = Astro.props;
                         const url = URL.createObjectURL(res.blob);
                         const fp = document.getElementById('final-preview'); if(fp) fp.src = url;
                         const fs = document.getElementById('final-stat'); if(fs) fs.textContent = (res.blob.size / 1024).toFixed(1) + ' KB';
-                        const acc = Math.min(100, (res.blob.size / (targetKB * 1024)) * 100);
+                        const acc = res.blob.size <= targetKB * 1024 ? 100 : Math.min(100, (targetKB * 1024 / res.blob.size) * 100);
                         const as = document.getElementById('accuracy-stat'); if(as) as.textContent = acc.toFixed(1) + '%';
                         
                         const dl = document.getElementById('download-btn'); if(dl) { dl.href = url; dl.download = `formfix-${targetKB}kb.jpg`; }

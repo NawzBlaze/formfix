@@ -109,9 +109,9 @@
 
     const zone = document.getElementById('upload-box');
     const card = document.getElementById('uploaded-card');
-    const input = document.getElementById('file-input') as HTMLInputElement;
+    const input = document.getElementById('file-input');
     
-    const thumb = document.getElementById('preview-thumb') as HTMLImageElement;
+    const thumb = document.getElementById('preview-thumb');
     const fName = document.getElementById('file-name');
     const fSize = document.getElementById('file-size');
     const fDims = document.getElementById('file-dims');
@@ -119,7 +119,7 @@
     const changeBtn = document.getElementById('change-image-btn');
     const removeBtn = document.getElementById('remove-image-btn');
 
-    function validateFile(file: File): boolean {
+    function validateFile(file) {
         if (!ALLOWED_TYPES.includes(file.type)) {
             if (typeof window.ffNotice === 'function') window.ffNotice('Please select a PNG, JPG, or WebP image.', 'error');
             return false;
@@ -131,7 +131,7 @@
         return true;
     }
 
-    function processFile(file: File) {
+    function processFile(file) {
         if (!validateFile(file)) return;
         const dt = new DataTransfer();
         dt.items.add(file);
@@ -143,7 +143,7 @@
     if (zone && input) {
         zone.addEventListener('click', () => input.click());
 
-        zone.addEventListener('keydown', (e: KeyboardEvent) => {
+        zone.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 input.click();
@@ -166,12 +166,12 @@
         });
 
         input.addEventListener('change', (e) => {
-             const file = (e.target as HTMLInputElement).files?.[0];
+             const file = e.target.files?.[0];
              if (file) handleUIUpdate(file);
         });
     }
 
-    function handleUIUpdate(file: File) {
+    function handleUIUpdate(file) {
         if (!file) return;
         zone?.classList.add('hidden');
         card?.classList.remove('hidden');
@@ -180,7 +180,7 @@
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            const url = e.target?.result as string;
+            const url = e.target?.result;
             thumb.src = url;
             const imgBuffer = new Image();
             imgBuffer.onload = () => {
@@ -196,7 +196,7 @@
          location.reload();
     });
 
-    function formatKB(b: number) { 
+    function formatKB(b) { 
         if (b > 1024 * 1024) return (b / (1024 * 1024)).toFixed(1) + ' MB';
         return (b / 1024).toFixed(1) + ' KB';
     }
