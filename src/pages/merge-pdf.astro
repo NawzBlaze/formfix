@@ -27,12 +27,9 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/merge-pdf">
-    <script type="module">
+<script>
     import { PDFDocument } from 'pdf-lib';
-    window.PDFLib = { PDFDocument };
-    </script>
 
-    <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
         const fileInput = document.getElementById('pdf-upload');
         const uploadStage = document.getElementById('upload-stage');
@@ -127,7 +124,6 @@ const customSchema = {
              if (mergeBtn) mergeBtn.style.pointerEvents = 'none';
              
              try {
-                 const { PDFDocument } = window.PDFLib;
                  const mergedPdf = await PDFDocument.create();
 
                  for (const file of pendingFiles) {

@@ -28,12 +28,9 @@ const customSchema = {
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/image-to-pdf">
 
-    <script type="module">
+<script>
     import { jsPDF } from 'jspdf';
-    window.jspdf = { jsPDF };
-    </script>
 
-    <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
         const fileInput = document.getElementById('multi-file-input');
         const controls = document.getElementById('controls');
@@ -189,7 +186,7 @@ const customSchema = {
                              const ptH = img.naturalHeight * 0.75;
                              
                              if (!pdf) {
-                                 pdf = new window.jspdf.jsPDF({
+                                 pdf = new jsPDF({
                                      orientation: ptW > ptH ? 'landscape' : 'portrait',
                                      unit: 'pt',
                                      format: [ptW, ptH]
@@ -200,7 +197,7 @@ const customSchema = {
                              pdf.addImage(dataUrl, format, 0, 0, ptW, ptH);
                          } else {
                              if (!pdf) {
-                                 pdf = new window.jspdf.jsPDF();
+                                 pdf = new jsPDF();
                              } else {
                                  pdf.addPage();
                              }
