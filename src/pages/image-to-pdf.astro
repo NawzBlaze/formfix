@@ -27,9 +27,10 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/image-to-pdf">
+
     <script type="module">
-        import { jsPDF } from 'jspdf';
-        window.jspdf = { jsPDF };
+    import { jsPDF } from 'jspdf';
+    window.jspdf = { jsPDF };
     </script>
 
     <script is:inline>

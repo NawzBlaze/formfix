@@ -29,13 +29,12 @@ const customSchema = {
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/split-pdf">
     <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Split PDF Online - Extract Pages from PDF for Free", path: "/split-pdf" }]} />
 
-    <!-- Load PDF libraries from npm bundle -->
     <script type="module">
-        import * as pdfjsLib from 'pdfjs-dist';
-        import { PDFDocument } from 'pdf-lib';
-        window.pdfjsLib = pdfjsLib;
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).href;
-        window.PDFLib = { PDFDocument };
+    import * as pdfjsLib from 'pdfjs-dist';
+    import { PDFDocument } from 'pdf-lib';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).href;
+    window.pdfjsLib = pdfjsLib;
+    window.PDFLib = { PDFDocument };
     </script>
 
     <ToolWrapper title="Split PDF Files" subtitle="Extract specific pages from any PDF document quickly and securely." currentTool="split-pdf">

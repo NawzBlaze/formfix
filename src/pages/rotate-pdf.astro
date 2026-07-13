@@ -28,11 +28,11 @@ const customSchema = {
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/rotate-pdf">
     <script type="module">
-        import * as pdfjsLib from 'pdfjs-dist';
-        import { PDFDocument } from 'pdf-lib';
-        window.pdfjsLib = pdfjsLib;
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).href;
-        window.PDFLib = { PDFDocument };
+    import * as pdfjsLib from 'pdfjs-dist';
+    import { PDFDocument, degrees } from 'pdf-lib';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).href;
+    window.pdfjsLib = pdfjsLib;
+    window.PDFLib = { PDFDocument, degrees };
     </script>
 
     <script is:inline>
@@ -55,7 +55,7 @@ const customSchema = {
 
         async function renderPreview(arrayBuffer) {
              const typedarray = new Uint8Array(arrayBuffer.slice(0));
-             const pdf = await window.pdfjsLib.getDocument({ data: typedarray }).promise;
+             const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
              const page = await pdf.getPage(1);
              
              const viewport = page.getViewport({ scale: 1.0 });
@@ -149,7 +149,6 @@ const customSchema = {
 
             try {
                 const { PDFDocument, degrees } = window.PDFLib;
-                
                 const pdfDoc = await PDFDocument.load(pdfBytesOriginal.slice(0));
                 const pages = pdfDoc.getPages();
 
