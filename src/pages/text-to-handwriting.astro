@@ -24,9 +24,14 @@ const customSchema = {
     }
   ]
 };
+
+const faqs = [
+  { q: "How do I make it look real?", a: "Use a 'Low' or 'Med' jitter setting. Adjust the font scale so your text sits naturally on the ruled lines. Real handwriting is rarely perfectly centered, so those small 'irregularities' are key." },
+  { q: "Can I print the output?", a: "Yes. The download is a high-resolution JPG optimized for 300 DPI printing. It will look like a scanned photo of a real piece of paper when printed." },
+];
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/text-to-handwriting">
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/text-to-handwriting" faqs={faqs}>
     <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Text to Handwriting Converter - Realistic Assignment Maker", path: "/text-to-handwriting" }]} />
 
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Indie+Flower&family=Patrick+Hand&family=Handlee&family=Homemade+Apple&family=Kalam:wght@300;400;700&family=Shadows+Into+Light&family=Satisfy&display=swap" rel="stylesheet">
@@ -150,13 +155,13 @@ const customSchema = {
     </ToolWrapper>
 </BaseLayout><style>
     .workspace-editor { width: 100%; max-width: 1200px; margin: 0 auto; }
-    .studio-grid { display: grid; grid-template-columns: 420px 1fr; gap: 40px; }
+    .studio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
 
     .controls-sidebar { position: sticky; top: 20px; }
     .settings-card { padding: 32px; background: var(--surface-3); }
     .section-label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
 
-    .modern-textarea { width: 100%; height: 200px; padding: 16px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: var(--surface-50); font-weight: 600; font-size: 1rem; outline: none; transition: 0.2s; resize: none; line-height: 1.5; }
+    .modern-textarea { width: 100%; height: 200px; padding: 16px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: var(--surface-3); font-weight: 600; font-size: 1rem; outline: none; transition: 0.2s; resize: none; line-height: 1.5; }
     .modern-textarea:focus { border-color: var(--accent-primary); background: var(--surface-3); box-shadow: 0 0 0 4px var(--accent-soft); }
 
     .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -169,7 +174,7 @@ const customSchema = {
     .ink-dot.active { transform: scale(1.15); box-shadow: 0 0 0 2px var(--accent-primary); }
 
     .status-pill { font-size: 0.75rem; font-weight: 600; color: var(--accent-primary); background: var(--accent-soft); padding: 2px 10px; border-radius: 20px; }
-    .premium-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--surface-200); appearance: none; outline: none; }
+    .premium-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--border-subtle); appearance: none; outline: none; }
     .premium-slider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--accent-primary); border: 4px solid var(--border-subtle); border-radius: 50%; box-shadow: var(--shadow-sm); cursor: pointer; transition: 0.2s; }
     .premium-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
@@ -178,40 +183,33 @@ const customSchema = {
 
     .preview-stage { min-width: 0; }
     .preview-header { }
-    .preview-badge { display: inline-block; background: var(--text-main); color: var(--surface-3); padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+    .preview-badge { display: inline-block; background: var(--text-primary); color: var(--surface-3); padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
     .assignment-preview { padding: 40px; background: var(--surface-2); display: flex; justify-content: center; overflow: hidden; }
     .canvas-wrap { max-width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border-radius: 4px; overflow: auto; background: var(--surface-3); }
     #handwriting-canvas { display: block; height: auto; width: 100%; max-width: 800px; }
 
     .pro-article h2 { font-size: 1.75rem; font-weight: 600; margin-bottom: 24px; }
     .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
-    .f-item { padding: 24px; background: var(--surface-50); border-radius: 20px; border: 1px solid var(--border-subtle); }
+    .f-item { padding: 24px; background: var(--surface-3); border-radius: 20px; border: 1px solid var(--border-subtle); }
     .f-icon { font-size: 2rem; display: block; margin-bottom: 12px; }
     .faq-accordion { display: grid; gap: 12px; }
     .faq-item { background: var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight: 600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; }
+    .faq-item summary { font-weight: 600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-primary); list-style-type: none; }
     .ans { padding: 12px 20px 20px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
-
-    .d-flex { display: flex; }
-    .justify-between { justify-content: space-between; }
-    .align-center { align-items: center; }
-    .m-0 { margin: 0; }
-    .mb-8 { margin-bottom: 8px; }
-    .mb-12 { margin-bottom: 12px; }
-    .mb-16 { margin-bottom: 16px; }
-    .mb-24 { margin-bottom: 24px; }
-    .mb-32 { margin-bottom: 32px; }
-    .mt-32 { margin-top: 32px; }
-    .hidden { display: none !important; }
 
     @media (max-width: 1100px) {
         .studio-grid { grid-template-columns: 1fr; }
         .controls-sidebar { position: static; }
         .assignment-preview { padding: 20px; }
     }
+    @media (max-width: 640px) {
+        .feature-grid { grid-template-columns: 1fr; }
+        .settings-card { padding: 20px; }
+    }
 </style>
 
-<script>
+<script is:inline>
+try {
     const textInput = document.getElementById('text-input');
     const fontSelect = document.getElementById('font-select');
     const paperSelect = document.getElementById('paper-select');
@@ -222,7 +220,7 @@ const customSchema = {
     const fontSizeVal = document.getElementById('font-size-val');
     const tiltVal = document.getElementById('tilt-val');
     const canvas = document.getElementById('handwriting-canvas');
-    if (!canvas) throw new Error('Canvas not found');
+    if (!canvas) { if (typeof window.ffNotice === 'function') window.ffNotice('Canvas element not found. Please reload the page.', 'error'); return; }
     const ctx = canvas.getContext('2d');
 
     let activeInk = '#003366';
@@ -258,8 +256,10 @@ const customSchema = {
         const startY = 160;
         const paragraphs = text.split('\n');
         let currentLineY = startY;
+        let truncated = false;
 
         paragraphs.forEach((para) => {
+            if (truncated) return;
             if (!para.trim()) { currentLineY += lineHeight; return; }
             const words = para.split(' ');
             let currentLine = '';
@@ -270,15 +270,21 @@ const customSchema = {
                     drawHandwrittenLine(currentLine, marginX, currentLineY, jitterAmount);
                     currentLine = words[n] + ' ';
                     currentLineY += lineHeight;
-                    if (currentLineY > CANVAS_HEIGHT - 60) break;
+                    if (currentLineY > CANVAS_HEIGHT - 60) { truncated = true; break; }
                 } else {
                     currentLine = testLine;
                 }
             }
-            drawHandwrittenLine(currentLine, marginX, currentLineY, jitterAmount);
-            currentLineY += lineHeight;
-            if (currentLineY > CANVAS_HEIGHT - 60) return;
+            if (!truncated) {
+                drawHandwrittenLine(currentLine, marginX, currentLineY, jitterAmount);
+                currentLineY += lineHeight;
+                if (currentLineY > CANVAS_HEIGHT - 60) truncated = true;
+            }
         });
+
+        if (truncated) {
+            if (typeof window.ffNotice === 'function') window.ffNotice('Some text was cut off. Try reducing the font scale or shorten your text to fit on one page.', 'warning');
+        }
     }
 
     function drawHandwrittenLine(text, x, y, jitter) {
@@ -368,4 +374,8 @@ const customSchema = {
     }
 
     document.fonts.ready.then(() => { render(); });
+} catch(err) {
+    console.error('Handwriting tool error:', err);
+    if (typeof window.ffNotice === 'function') window.ffNotice('Something went wrong with the handwriting tool. Please try again.', 'error');
+}
 </script>

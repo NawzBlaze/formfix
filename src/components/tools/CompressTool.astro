@@ -32,6 +32,26 @@ const { initialTarget = 'auto' } = Astro.props;
             </div>
 
             <div class="section-group">
+                <label class="group-label">Output Format</label>
+                <div class="toggle-pill-group">
+                    <button class="setting-pill active" data-format="jpeg">JPG</button>
+                    <button class="setting-pill" data-format="png">PNG</button>
+                    <button class="setting-pill" data-format="webp">WebP</button>
+                </div>
+            </div>
+
+            <div class="section-group">
+                <label class="group-label">Quality Override</label>
+                <div class="quality-slider-wrap">
+                    <input type="range" id="quality-slider" min="1" max="100" value="0" class="quality-slider" />
+                    <div class="quality-label-row">
+                        <span class="quality-val" id="quality-val">Auto</span>
+                        <span class="quality-hint">Leave at 0 for auto-detection</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-group">
                 <label class="group-label">Custom Target</label>
                 <div class="custom-input-wrap">
                     <input type="number" id="custom-kb" placeholder="Custom size..." min="5" max="10000" value={initialTarget === 'auto' ? '' : initialTarget} class="premium-field" />
@@ -134,6 +154,26 @@ const { initialTarget = 'auto' } = Astro.props;
         const resBox = document.getElementById('advanced-result');
 
         let fileObj = null, targetKB = document.querySelector('.preset-chip.active')?.dataset.kb || 20;
+        let outputFormat = 'jpeg';
+        let manualQuality = 0;
+
+        const formatPills = document.querySelectorAll('.setting-pill[data-format]');
+        formatPills.forEach(btn => {
+            btn.addEventListener('click', () => {
+                formatPills.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                outputFormat = btn.dataset.format;
+            });
+        });
+
+        const qualitySlider = document.getElementById('quality-slider');
+        const qualityVal = document.getElementById('quality-val');
+        if (qualitySlider) {
+            qualitySlider.addEventListener('input', () => {
+                manualQuality = parseInt(qualitySlider.value);
+                qualityVal.textContent = manualQuality === 0 ? 'Auto' : manualQuality + '%';
+            });
+        }
 
         if (fileIn) {
             fileIn.addEventListener('change', (e) => {
@@ -185,7 +225,7 @@ const { initialTarget = 'auto' } = Astro.props;
                 if(progPct) progPct.textContent = '0%';
                 if(progText) progText.textContent = 'Initializing...';
                 try {
-                    const res = await runRBQS(fileObj, parseInt(targetKB), (pct, msg) => {
+                    const res = await runRBQS(fileObj, parseInt(targetKB), outputFormat, manualQuality, (pct, msg) => {
                         if(progFill) progFill.style.width = pct + '%';
                         if(progPct) progPct.textContent = pct + '%';
                         if (msg && progText) progText.textContent = msg;
@@ -200,7 +240,8 @@ const { initialTarget = 'auto' } = Astro.props;
                         const origStat = document.getElementById('orig-stat'); if(origStat) origStat.textContent = origKB.toFixed(1) + ' KB';
                         const savedStat = document.getElementById('saved-stat'); if(savedStat) savedStat.textContent = savedPct.toFixed(0) + '%';
                         
-                        const dl = document.getElementById('download-btn'); if(dl) { dl.href = url; dl.download = `formfix-${targetKB}kb.jpg`; }
+                        const ext = outputFormat === 'jpeg' ? 'jpg' : outputFormat;
+                        const dl = document.getElementById('download-btn'); if(dl) { dl.href = url; dl.download = FormFix.sanitizeFilename(fileObj.name.replace(/\.[^/.]+$/, '') + `-compressed.${ext}`); }
                         ctrl?.classList.add('hidden'); resBox?.classList.remove('hidden');
                         
                         const shareX = document.getElementById('share-x');
@@ -225,7 +266,8 @@ const { initialTarget = 'auto' } = Astro.props;
             };
         }
 
-        async function runRBQS(file, target, onProgress) {
+        async function runRBQS(file, target, format, manualQ, onProgress) {
+            const mimeType = format === 'jpeg' ? 'image/jpeg' : format === 'png' ? 'image/png' : 'image/webp';
             const img = await createImageBitmap(file), targetBytes = target * 1024;
             let scale = target < 30 ? 0.6 : target < 80 ? 0.8 : 1.0;
             let w = Math.max(1, Math.floor(img.width * scale)), h = Math.max(1, Math.floor(img.height * scale));
@@ -234,20 +276,27 @@ const { initialTarget = 'auto' } = Astro.props;
             let step = 0;
             if (onProgress) onProgress(5, 'Preparing image...');
             await new Promise(r => setTimeout(r, 50));
-            for(let s=0; s<3; s++) {
+
+            if (manualQ > 0) {
                 cvs.width = w; cvs.height = h; ctx.fillStyle="#fff"; ctx.fillRect(0,0,w,h); ctx.drawImage(img,0,0,w,h);
-                if (onProgress) onProgress(Math.round(10 + (s / 3) * 20), 'Scale pass ' + (s+1) + '/3...');
-                let low=0.01, hi=0.98;
-                for(let i=0; i<7; i++) {
-                    let q = (low+hi)/2; let b = await new Promise(r => cvs.toBlob(bl => r(bl), 'image/jpeg', q));
-                    step++;
-                    const pct = Math.round(10 + (step / totalSteps) * 80);
-                    if (onProgress) onProgress(pct, 'Testing quality ' + Math.round(q * 100) + '%...');
-                    if(b.size <= targetBytes) { best = b; low = q; if(targetBytes-b.size < 512) break; } else hi = q;
+                if (onProgress) onProgress(50, 'Applying quality ' + manualQ + '%...');
+                best = await new Promise(r => cvs.toBlob(bl => r(bl), mimeType, manualQ / 100));
+            } else {
+                for(let s=0; s<3; s++) {
+                    cvs.width = w; cvs.height = h; ctx.fillStyle="#fff"; ctx.fillRect(0,0,w,h); ctx.drawImage(img,0,0,w,h);
+                    if (onProgress) onProgress(Math.round(10 + (s / 3) * 20), 'Scale pass ' + (s+1) + '/3...');
+                    let low=0.01, hi=0.98;
+                    for(let i=0; i<7; i++) {
+                        let q = (low+hi)/2; let b = await new Promise(r => cvs.toBlob(bl => r(bl), mimeType, q));
+                        step++;
+                        const pct = Math.round(10 + (step / totalSteps) * 80);
+                        if (onProgress) onProgress(pct, 'Testing quality ' + Math.round(q * 100) + '%...');
+                        if(b.size <= targetBytes) { best = b; low = q; if(targetBytes-b.size < 512) break; } else hi = q;
+                    }
+                    if(best) break; w = Math.floor(w*0.75); h = Math.floor(h*0.75);
                 }
-                if(best) break; w = Math.floor(w*0.75); h = Math.floor(h*0.75);
             }
-            if(!best) best = await new Promise(r => cvs.toBlob(bl => r(bl), 'image/jpeg', 0.01));
+            if(!best) best = await new Promise(r => cvs.toBlob(bl => r(bl), mimeType, 0.01));
             if (onProgress) onProgress(100, 'Compression complete!');
             return { blob: best };
         }
@@ -256,6 +305,11 @@ const { initialTarget = 'auto' } = Astro.props;
         if (resetBtn) {
             resetBtn.onclick = () => location.reload();
         }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'o') { e.preventDefault(); fileIn?.click(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); cBtn?.click(); }
+        });
     });
 </script>
 
@@ -282,6 +336,19 @@ const { initialTarget = 'auto' } = Astro.props;
     .premium-field { width: 100%; height: 56px; padding: 0 100px 0 20px; border-radius: 14px; border: 1.5px solid var(--border-subtle); background: var(--surface-3); font-weight:600; font-size: 1rem; outline: none; transition: 0.2s; }
     .premium-field:focus { border-color: var(--accent-primary); background: var(--surface-3); box-shadow: 0 0 0 4px var(--accent-soft); }
     .field-suffix { position: absolute; right: 20px; font-size: 0.75rem; font-weight:600; color: var(--text-muted); text-transform: uppercase; pointer-events: none; }
+
+    .toggle-pill-group { display: flex; gap: 8px; }
+    .setting-pill { flex: 1; height: 48px; background: var(--surface-3); border: 1.5px solid var(--border-subtle); border-radius: 12px; font-weight:600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; color: var(--text-primary); }
+    .setting-pill:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
+    .setting-pill.active { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); box-shadow: var(--shadow-md); }
+
+    .quality-slider-wrap { display: flex; flex-direction: column; gap: 8px; }
+    .quality-slider { width: 100%; height: 6px; -webkit-appearance: none; appearance: none; background: var(--surface-100); border-radius: 100px; outline: none; }
+    .quality-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--accent-primary); border-radius: 50%; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .quality-slider::-moz-range-thumb { width: 20px; height: 20px; background: var(--accent-primary); border: none; border-radius: 50%; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .quality-label-row { display: flex; justify-content: space-between; align-items: center; }
+    .quality-val { font-size: 0.85rem; font-weight: 700; color: var(--accent-primary); }
+    .quality-hint { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
 
     .lg-btn { height: 64px; font-size: 1.1rem; border-radius: 18px; margin-top: 12px; }
     .fun-spinner-sm { width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 12px; }
@@ -329,6 +396,7 @@ const { initialTarget = 'auto' } = Astro.props;
 
     @media (max-width: 600px) {
         .preset-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .toggle-pill-group { flex-direction: column; }
         .stats-row, .comparison-visuals, .final-actions { grid-template-columns: 1fr; display: flex; flex-direction: column; gap: 16px; }
         .display-pane { height: 260px; }
         .settings-hub { padding: 24px 16px; }

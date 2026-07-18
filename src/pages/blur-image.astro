@@ -24,11 +24,17 @@ const customSchema = {
     }
   ]
 };
+
+const faqs = [
+  { q: "Does this actually delete the pixels?", a: "Yes. Unlike \"black bar\" overlays which can sometimes be removed, our tool performs a destructive pixelation or gaussian blur on the actual image data before you download the final file." },
+  { q: "Is my original photo stored?", a: "Never. FormFix uses a \"Zero-Vault\" architecture. All processing is transient and happens in your browser's RAM. Once you close the tab, everything is gone." },
+];
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/blur-image">
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/blur-image" faqs={faqs}>
     <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
+        try {
         const uploadBox = document.getElementById('u-box-container');
         const controls = document.getElementById('controls');
         const fileInput = document.getElementById('blur-input');
@@ -51,10 +57,18 @@ const customSchema = {
         const downloadBtn = document.getElementById('download-btn');
 
         let originalImg = null;
+        let originalFileType = 'image/jpeg';
+        let originalFileName = 'formfix-censored';
+        let exifOrientation = 1;
         let drawScale = 1;
         let isDrawing = false;
         let currentMode = 'blur';
         let lastVisualEffect = 'blur';
+        let currentShape = 'free';
+        let undoStack = [];
+        let redoStack = [];
+        let strokeStartPos = null;
+        let snapshotBeforeStroke = null;
 
         fileInput.addEventListener('change', (e) => {
              const file = e.target.files?.[0];
@@ -78,6 +92,12 @@ const customSchema = {
         });
 
         function handleFile(file) {
+             if (!file.type.startsWith('image/')) {
+                 if (typeof window.ffNotice === 'function') window.ffNotice('Please upload an image file.', 'error');
+                 return;
+             }
+             originalFileType = file.type === 'image/png' ? 'image/png' : file.type === 'image/webp' ? 'image/webp' : 'image/jpeg';
+             originalFileName = file.name ? file.name.replace(/\.[^/.]+$/, '') : 'formfix-censored';
              const reader = new FileReader();
              reader.onload = (ev) => {
                  originalImg = new Image();
@@ -89,6 +109,11 @@ const customSchema = {
                  originalImg.src = ev.target?.result;
              };
              reader.readAsDataURL(file);
+             const exifReader = new FileReader();
+             exifReader.onload = (exifEv) => {
+                 exifOrientation = (window.FormFix && window.FormFix.readExifOrientation) ? window.FormFix.readExifOrientation(exifEv.target.result) : 1;
+             };
+             exifReader.readAsArrayBuffer(file);
         }
 
         typeBtns.forEach(btn => btn.addEventListener('click', () => {
@@ -111,8 +136,44 @@ const customSchema = {
         });
 
         clearBtn.addEventListener('click', () => {
+             saveUndoState();
              dCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
              renderFinal();
+        });
+
+        const undoBtn = document.getElementById('undo-btn');
+        const redoBtn = document.getElementById('redo-btn');
+        if (undoBtn) undoBtn.addEventListener('click', undo);
+        if (redoBtn) redoBtn.addEventListener('click', redo);
+
+        function saveUndoState() {
+             undoStack.push(dCtx.getImageData(0, 0, drawCanvas.width, drawCanvas.height));
+             if (undoStack.length > 30) undoStack.shift();
+             redoStack = [];
+        }
+        function undo() {
+             if (undoStack.length === 0) return;
+             redoStack.push(dCtx.getImageData(0, 0, drawCanvas.width, drawCanvas.height));
+             dCtx.putImageData(undoStack.pop(), 0, 0);
+             renderFinal();
+        }
+        function redo() {
+             if (redoStack.length === 0) return;
+             undoStack.push(dCtx.getImageData(0, 0, drawCanvas.width, drawCanvas.height));
+             dCtx.putImageData(redoStack.pop(), 0, 0);
+             renderFinal();
+        }
+
+        const shapeBtns = document.querySelectorAll('.shape-btn');
+        shapeBtns.forEach(btn => btn.addEventListener('click', () => {
+             shapeBtns.forEach(b => b.classList.remove('active'));
+             btn.classList.add('active');
+             currentShape = btn.dataset.shape || 'free';
+        }));
+
+        window.addEventListener('keydown', (e) => {
+             if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); undo(); }
+             if ((e.ctrlKey || e.metaKey) && e.key === 'y') { e.preventDefault(); redo(); }
         });
 
         function initCanvas() {
@@ -131,7 +192,11 @@ const customSchema = {
              fxCanvas.width = cw; fxCanvas.height = ch;
              drawCanvas.width = cw; drawCanvas.height = ch;
 
-             bCtx.drawImage(originalImg, 0, 0, cw, ch);
+             if (window.FormFix && window.FormFix.applyExifOrientation && exifOrientation > 1) {
+                 window.FormFix.applyExifOrientation(bCtx, originalImg, exifOrientation, 0, 0, cw, ch);
+             } else {
+                 bCtx.drawImage(originalImg, 0, 0, cw, ch);
+             }
              
              generateEffect();
              renderFinal();
@@ -206,7 +271,11 @@ const customSchema = {
         }
 
         function renderFinal() {
-             bCtx.drawImage(originalImg, 0, 0, baseCanvas.width, baseCanvas.height);
+             if (window.FormFix && window.FormFix.applyExifOrientation && exifOrientation > 1) {
+                 window.FormFix.applyExifOrientation(bCtx, originalImg, exifOrientation, 0, 0, baseCanvas.width, baseCanvas.height);
+             } else {
+                 bCtx.drawImage(originalImg, 0, 0, baseCanvas.width, baseCanvas.height);
+             }
              
              const tmp = document.createElement('canvas');
              tmp.width = baseCanvas.width; tmp.height = baseCanvas.height;
@@ -222,20 +291,60 @@ const customSchema = {
         const startDraw = (e) => {
              isDrawing = true;
              const {x, y} = getMousePos(e);
-             strokeMask(x, y);
-             renderFinal();
+             strokeStartPos = { x, y };
+             snapshotBeforeStroke = dCtx.getImageData(0, 0, drawCanvas.width, drawCanvas.height);
+             if (currentShape === 'free') {
+                  strokeMask(x, y);
+                  renderFinal();
+             }
         };
 
         const draw = (e) => {
              if (!isDrawing) return;
-             // e.preventDefault(); // allow some scroll on mobile when drawing if outside bounds, but let's prevent to allow draw
              e.preventDefault();
              const {x, y} = getMousePos(e);
-             strokeMask(x, y);
-             renderFinal();
+             if (currentShape === 'free') {
+                  strokeMask(x, y);
+                  renderFinal();
+             } else {
+                  dCtx.putImageData(snapshotBeforeStroke, 0, 0);
+                  dCtx.fillStyle = 'black';
+                  if (currentShape === 'rect') {
+                       const rx = Math.min(strokeStartPos.x, x);
+                       const ry = Math.min(strokeStartPos.y, y);
+                       const rw = Math.abs(x - strokeStartPos.x);
+                       const rh = Math.abs(y - strokeStartPos.y);
+                       dCtx.fillRect(rx, ry, rw, rh);
+                  } else if (currentShape === 'circle') {
+                       const dx = x - strokeStartPos.x;
+                       const dy = y - strokeStartPos.y;
+                       const radius = Math.sqrt(dx * dx + dy * dy);
+                       dCtx.beginPath();
+                       dCtx.arc(strokeStartPos.x, strokeStartPos.y, radius, 0, Math.PI * 2);
+                       dCtx.fill();
+                  }
+                  renderFinal();
+             }
         };
 
-        const stopDraw = () => isDrawing = false;
+        const stopDraw = () => {
+             if (isDrawing && snapshotBeforeStroke) {
+                  if (currentShape !== 'free') {
+                       saveUndoState();
+                  } else {
+                       const prev = snapshotBeforeStroke;
+                       const now = dCtx.getImageData(0, 0, drawCanvas.width, drawCanvas.height);
+                       let changed = false;
+                       for (let i = 0; i < prev.data.length; i += 4) {
+                            if (prev.data[i] !== now.data[i] || prev.data[i+1] !== now.data[i+1] || prev.data[i+2] !== now.data[i+2] || prev.data[i+3] !== now.data[i+3]) { changed = true; break; }
+                       }
+                       if (changed) undoStack.push(prev);
+                  }
+             }
+             isDrawing = false;
+             strokeStartPos = null;
+             snapshotBeforeStroke = null;
+        };
 
         drawCanvas.addEventListener('mousedown', startDraw);
         drawCanvas.addEventListener('mousemove', draw);
@@ -246,14 +355,18 @@ const customSchema = {
         window.addEventListener('touchend', stopDraw);
 
         downloadBtn.addEventListener('click', () => {
+             const ext = originalFileType === 'image/png' ? 'png' : originalFileType === 'image/webp' ? 'webp' : 'jpg';
              baseCanvas.toBlob(blob => {
+                 if (!blob) { if (typeof window.ffNotice === 'function') window.ffNotice('Failed to generate image. Try a different format.', 'error'); return; }
                  const url = URL.createObjectURL(blob);
                  const a = document.createElement('a');
                  a.href = url;
-                 a.download = `formfix-censored.jpg`;
+                 a.download = `${originalFileName}-censored.${ext}`;
                  a.click();
-             }, 'image/jpeg', 0.95);
+                 URL.revokeObjectURL(url);
+             }, originalFileType, 0.95);
         });
+        } catch(err) { console.error('Blur tool error:', err); if (typeof window.ffNotice === 'function') window.ffNotice('Something went wrong. Please try a different image.', 'error'); }
     });
 </script>
 
@@ -277,8 +390,8 @@ const customSchema = {
                   </div>
 
                   <!-- 2. Editor Stage -->
-                  <div id="controls" class="hidden">
-                       <div class="blur-grid">
+                   <div id="controls" class="hidden">
+                        <div class="crop-grid">
                             <div class="preview-panel shadow-sm">
                                  <div class="preview-header mb-16 d-flex justify-between align-center">
                                       <span class="preview-badge">Live Redaction Canvas</span>
@@ -293,14 +406,23 @@ const customSchema = {
 
                             <div class="controls-sidebar">
                                  <div class="settings-card shadow-sm mb-24">
-                                      <div class="section mb-24">
-                                           <label class="section-label m-0 mb-12">Effect Style</label>
-                                           <div class="toggle-pill-group">
-                                                <button class="setting-pill active" data-fx="blur">Soft Blur</button>
-                                                <button class="setting-pill" data-fx="pixel">Pixelate</button>
-                                                <button class="setting-pill" data-fx="erase">Erase 🧽</button>
-                                           </div>
-                                      </div>
+                                       <div class="section mb-24">
+                                            <label class="section-label m-0 mb-12">Effect Style</label>
+                                            <div class="toggle-pill-group">
+                                                 <button class="setting-pill active" data-fx="blur">Soft Blur</button>
+                                                 <button class="setting-pill" data-fx="pixel">Pixelate</button>
+                                                 <button class="setting-pill" data-fx="erase">Erase 🧽</button>
+                                            </div>
+                                       </div>
+
+                                       <div class="section mb-24">
+                                            <label class="section-label m-0 mb-12">Brush Shape</label>
+                                            <div class="toggle-pill-group">
+                                                 <button class="setting-pill active shape-btn" data-shape="free">✏️ Free</button>
+                                                 <button class="setting-pill shape-btn" data-shape="rect">▭ Rect</button>
+                                                 <button class="setting-pill shape-btn" data-shape="circle">○ Circle</button>
+                                            </div>
+                                       </div>
                                       
                                       <div class="section mb-24">
                                            <div class="d-flex justify-between align-center mb-16">
@@ -319,13 +441,17 @@ const customSchema = {
                                       </div>
                                  </div>
 
-                                 <div class="action-stack">
-                                      <button id="download-btn" class="primary-btn wide-btn pulse-glow mb-12">⬇️ Download Redacted</button>
-                                      <div class="d-flex gap-12">
-                                           <button id="clear-btn" class="secondary-btn wide-btn flex-1">🗑️ Clear</button>
-                                           <button class="secondary-btn wide-btn flex-1" onclick="location.reload()">↺ New</button>
-                                      </div>
-                                 </div>
+                                  <div class="action-stack">
+                                       <button id="download-btn" class="primary-btn wide-btn pulse-glow mb-12">⬇️ Download Redacted</button>
+                                       <div class="d-flex gap-12 mb-12">
+                                            <button id="undo-btn" class="secondary-btn wide-btn flex-1" title="Ctrl+Z">↩ Undo</button>
+                                            <button id="redo-btn" class="secondary-btn wide-btn flex-1" title="Ctrl+Y">↪ Redo</button>
+                                       </div>
+                                       <div class="d-flex gap-12">
+                                            <button id="clear-btn" class="secondary-btn wide-btn flex-1">🗑️ Clear</button>
+                                            <button class="secondary-btn wide-btn flex-1" onclick="location.reload()">↺ New</button>
+                                       </div>
+                                  </div>
                                  <p class="privacy-note text-center mt-16 mb-0 font-600 text-muted">🔒 Processed entirely in browser RAM.</p>
                             </div>
                        </div>
@@ -350,88 +476,11 @@ const customSchema = {
         </div>
     </ToolWrapper>
 </BaseLayout><style>
-    .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; }
-    
-    .upload-container { display: flex; justify-content: center; }
-    .upload-box { background: var(--surface-50); border: 2.5px dashed var(--border-subtle); border-radius: 32px; padding: 60px 40px; text-align: center; width: 100%; cursor: pointer; transition: 0.2s; }
-    .upload-box:hover, .upload-box.drag-active { border-color: var(--accent-primary); background: var(--surface-100); }
-    .upload-icon { font-size: 3.5rem; margin-bottom: 24px; }
-
-    .blur-grid { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
-    .preview-panel { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px; }
-    
-    .checkerboard { 
-        background:var(--surface-3);
-        background-image: linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2)), 
-                          linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%, var(--surface-2));
-        background-size: 20px 20px; background-position: 0 0, 10px 10px;
-        border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-sm);
-        position: relative;
-        display: flex; align-items: center; justify-content: center; width: 100%;
-    }
-    
-    #base-canvas { position: relative; z-index: 1; filter: drop-shadow(0 15px 40px rgba(0,0,0,0.1)); display: block; }
-    #fx-canvas { display: none; }
-    /* draw-canvas must exactly overlay base-canvas */
-    #draw-canvas { position: absolute; z-index: 10; cursor: crosshair; touch-action: none; top: 0; left: 0; }
-
-    .preview-badge { display: inline-block; background: var(--text-main); color: var(--surface-3); padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; font-weight:600; text-transform: uppercase; }
-
-    .controls-sidebar { display: flex; flex-direction: column; }
-    .settings-card { background: var(--surface-50); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); }
-    
-    .section-label { font-size: 0.75rem; font-weight:600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
-    
-    .status-pill { font-size: 0.75rem; font-weight:600; color: var(--accent-primary); background:var(--surface-3); padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; }
-    .status-pill.highlight { border-color: var(--accent-primary); }
-    
-    .toggle-pill-group { display: flex; background: var(--border-subtle); padding: 6px; border-radius: 100px; }
-    .setting-pill { flex: 1; padding: 10px 16px; border-radius: 100px; font-weight:600; font-size: 0.85rem; background: transparent; border: none; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
-    .setting-pill:hover { color: var(--text-main); }
-    .setting-pill.active { background:var(--surface-3); color: var(--text-main); box-shadow: var(--shadow-sm); }
-    
-    .unified-slider { width: 100%; height: 6px; border-radius: 100px; background: var(--border-subtle); appearance: none; outline: none; margin: 0; }
-    .unified-slider::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; background: var(--accent-primary); border-radius: 50%; border:4px solid var(--border-subtle); box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
-    .unified-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
-
-    .action-stack { display: flex; flex-direction: column; }
-    .wide-btn { height: 60px; font-weight:600; font-size: 1rem; border-radius: 16px; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
-    .privacy-note { font-size: 0.8rem; color: var(--text-muted); }
-
-    /* FAQ */
-    .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
-    .faq-item[open] summary::after { content: '−'; }
-    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
-
-    .d-flex { display: flex; }
-    .justify-between { justify-content: space-between; }
-    .align-center { align-items: center; }
-    .text-center { text-align: center; }
-    .mb-8 { margin-bottom: 8px; }
-    .mb-12 { margin-bottom: 12px; }
-    .mb-16 { margin-bottom: 16px; }
-    .mb-24 { margin-bottom: 24px; }
-    .mt-12 { margin-top: 12px; }
-    .mt-16 { margin-top: 16px; }
-    .mt-32 { margin-top: 32px; }
-    .gap-12 { gap: 12px; }
-    .font-800 { font-weight:600; }
-    .font-850 { font-weight:600; }
-    .font-600 { font-weight: 600; }
-    .text-muted { color: var(--text-muted); }
-    .select-none { user-select: none; }
-    .px-40 { padding-left: 40px; padding-right: 40px; }
-    .m-0 { margin: 0; }
-    .mb-0 { margin-bottom: 0; }
-    .w-100 { width: 100%; }
-    .flex-1 { flex: 1; }
-    .hidden { display: none !important; }
-
     @media (max-width: 900px) {
-        .blur-grid { grid-template-columns: 1fr; }
+        .crop-grid { grid-template-columns: 1fr; }
         .preview-panel { min-height: 350px; padding: 16px; }
+    }
+    @media (max-width: 640px) {
+        .upload-box { padding: 40px 24px; }
     }
 </style>

@@ -117,15 +117,13 @@ export default defineConfig({
           manualChunks: {
             'pdf-lib': ['pdf-lib'],
             'jspdf': ['jspdf'],
-            'fabric': ['fabric'],
-            'qrcode': ['qrcode', 'qrcode.react', 'qr-code-styling'],
-            'tfjs': ['@tensorflow/tfjs', '@tensorflow-models/body-pix'],
+            'jszip': ['jszip'],
+            'pdfjs-dist': ['pdfjs-dist'],
+            'qr-code-styling': ['qr-code-styling'],
           },
         },
       },
     },
-    ssr: {
-      noExternal: ['lucide-react'],
-    },
+
   },
 });

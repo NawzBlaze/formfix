@@ -24,13 +24,19 @@ const customSchema = {
     }
   ]
 };
+
+const faqs = [
+  { q: "Can I merge password-protected PDFs?", a: "Our tool currently supports merging standard PDFs. If a file is encrypted or password-protected, you must unlock it first before it can be merged through the browser engine." },
+  { q: "Is there a file size limit for merging?", a: "Since the merging happens in your computer's RAM, the only limit is your device's available memory. Most modern computers and phones can easily merge files up to several hundred megabytes." },
+];
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/merge-pdf">
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/merge-pdf" faqs={faqs}>
 <script>
     import { PDFDocument } from 'pdf-lib';
 
     document.addEventListener('DOMContentLoaded', () => {
+    try {
         const fileInput = document.getElementById('pdf-upload');
         const uploadStage = document.getElementById('upload-stage');
         const actionStage = document.getElementById('editor-stage');
@@ -40,6 +46,9 @@ const customSchema = {
         const dropZone = document.getElementById('upload-stage');
         
         let pendingFiles = [];
+        let draggedIndex = null;
+        let touchDragClone = null;
+        let touchDragFromIndex = null;
 
         async function handleFiles(files) {
             const validPdfs = Array.from(files).filter(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
@@ -72,12 +81,15 @@ const customSchema = {
             pendingFiles.forEach((file, index) => {
                 const row = document.createElement('div');
                 row.className = 'file-row shadow-sm';
+                row.setAttribute('draggable', 'true');
+                row.dataset.index = index;
                 
                 const sizeKb = (file.size / 1024).toFixed(1);
-                const safeName = file.name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+                const safeName = (window.FormFix && window.FormFix.escapeHtml) ? window.FormFix.escapeHtml(file.name) : file.name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
                 
                 row.innerHTML = `
                     <div class="f-info">
+                        <span class="drag-handle" title="Drag to reorder">☰</span>
                         <span class="f-icon">📄</span>
                         <div class="f-text">
                             <span class="f-name">${safeName}</span>
@@ -89,9 +101,9 @@ const customSchema = {
                 if (fileListContainer) fileListContainer.appendChild(row);
             });
 
-            // Re-bind drops
             document.querySelectorAll('.remove-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     const idx = parseInt(e.currentTarget.dataset.index);
                     pendingFiles.splice(idx, 1);
                     if(pendingFiles.length === 0) {
@@ -101,6 +113,13 @@ const customSchema = {
                     }
                 });
             });
+
+            fileListContainer?.querySelectorAll('.file-row').forEach(row => {
+                row.addEventListener('dragstart', handleDragStart);
+                row.addEventListener('dragend', handleDragEnd);
+            });
+
+            bindTouchEvents();
             
             if (mergeBtn) mergeBtn.innerHTML = `⚡ Merge ${pendingFiles.length} PDFs`;
             const countPill = document.getElementById('file-count-pill');
@@ -117,11 +136,118 @@ const customSchema = {
 
         resetBtn?.addEventListener('click', resetApp);
 
+        function handleDragStart(e) {
+            draggedIndex = parseInt(this.dataset.index);
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', draggedIndex);
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            draggedIndex = null;
+            fileListContainer?.querySelectorAll('.file-row').forEach(r => r.classList.remove('drag-over'));
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            const row = e.target.closest('.file-row');
+            if (!row) return;
+            fileListContainer?.querySelectorAll('.file-row').forEach(r => r.classList.remove('drag-over'));
+            row.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            const row = e.target.closest('.file-row');
+            if (row && !row.contains(e.relatedTarget)) {
+                row.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const row = e.target.closest('.file-row');
+            if (!row) return;
+            const toIndex = parseInt(row.dataset.index);
+            if (draggedIndex === null || draggedIndex === toIndex) return;
+            const [movedFile] = pendingFiles.splice(draggedIndex, 1);
+            pendingFiles.splice(toIndex, 0, movedFile);
+            renderFileList();
+        }
+
+        fileListContainer?.addEventListener('dragover', handleDragOver);
+        fileListContainer?.addEventListener('drop', handleDrop);
+        fileListContainer?.addEventListener('dragleave', handleDragLeave);
+
+        function bindTouchEvents() {
+            const handles = fileListContainer?.querySelectorAll('.drag-handle') || [];
+            handles.forEach(handle => {
+                handle.addEventListener('touchstart', handleTouchStart, { passive: false });
+                handle.addEventListener('touchmove', handleTouchMove, { passive: false });
+                handle.addEventListener('touchend', handleTouchEnd);
+            });
+        }
+
+        function handleTouchStart(e) {
+            const row = e.target.closest('.file-row');
+            if (!row) return;
+            touchDragFromIndex = parseInt(row.dataset.index);
+            row.classList.add('dragging');
+            touchDragClone = row.cloneNode(true);
+            touchDragClone.style.position = 'fixed';
+            touchDragClone.style.pointerEvents = 'none';
+            touchDragClone.style.opacity = '0.8';
+            touchDragClone.style.zIndex = '9999';
+            touchDragClone.style.width = row.offsetWidth + 'px';
+            touchDragClone.classList.remove('dragging');
+            document.body.appendChild(touchDragClone);
+            const touch = e.touches[0];
+            touchDragClone.style.left = (touch.clientX - row.offsetWidth / 2) + 'px';
+            touchDragClone.style.top = (touch.clientY - 20) + 'px';
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            if (!touchDragClone) return;
+            const touch = e.touches[0];
+            touchDragClone.style.left = (touch.clientX - touchDragClone.offsetWidth / 2) + 'px';
+            touchDragClone.style.top = (touch.clientY - 20) + 'px';
+            touchDragClone.style.display = 'none';
+            const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+            touchDragClone.style.display = '';
+            const rowBelow = elementBelow?.closest('.file-row');
+            fileListContainer?.querySelectorAll('.file-row').forEach(r => r.classList.remove('drag-over'));
+            if (rowBelow && parseInt(rowBelow.dataset.index) !== touchDragFromIndex) {
+                rowBelow.classList.add('drag-over');
+            }
+        }
+
+        function handleTouchEnd() {
+            if (touchDragClone) {
+                document.body.removeChild(touchDragClone);
+                touchDragClone = null;
+            }
+            const overRow = fileListContainer?.querySelector('.file-row.drag-over');
+            if (overRow && touchDragFromIndex !== null) {
+                const toIndex = parseInt(overRow.dataset.index);
+                const [movedFile] = pendingFiles.splice(touchDragFromIndex, 1);
+                pendingFiles.splice(toIndex, 0, movedFile);
+                renderFileList();
+            }
+            fileListContainer?.querySelectorAll('.file-row').forEach(r => {
+                r.classList.remove('dragging');
+                r.classList.remove('drag-over');
+            });
+            touchDragFromIndex = null;
+        }
+
         mergeBtn?.addEventListener('click', async () => {
              if(pendingFiles.length < 2) return window.ffNotice("You need at least 2 PDF files to merge them!", "error");
              
              if (mergeBtn) mergeBtn.textContent = '⏳ Processing...';
              if (mergeBtn) mergeBtn.style.pointerEvents = 'none';
+             document.getElementById('merge-overlay')?.classList.add('active');
              
              try {
                  const mergedPdf = await PDFDocument.create();
@@ -162,10 +288,12 @@ const customSchema = {
                  console.error(e);
                  window.ffNotice("There was an error merging your PDFs. One of them might be encrypted or corrupted.", "error");
              } finally {
+                 document.getElementById('merge-overlay')?.classList.remove('active');
                  if (mergeBtn) mergeBtn.innerHTML = `⚡ Merge ${pendingFiles.length} PDFs`;
                  if (mergeBtn) mergeBtn.style.pointerEvents = 'all';
              }
         });
+    } catch(err) { console.error('merge-pdf error:', err); if (typeof window.ffNotice === 'function') window.ffNotice('Something went wrong. Please try again.', 'error'); }
     });
 </script>
 
@@ -186,6 +314,10 @@ const customSchema = {
 
                   <!-- 2. Workspace Step -->
                   <div id="editor-stage" class="hidden">
+                       <div id="merge-overlay" class="processing-overlay">
+                            <div class="processing-spinner"></div>
+                            <span class="processing-text">Merging PDFs...</span>
+                       </div>
                        <div class="editor-layout">
                             <div class="file-workspace shadow-sm">
                                  <div class="workspace-header">
@@ -222,6 +354,16 @@ const customSchema = {
              <h2>The Safest Way to Combine PDF Files</h2>
              <p>Our <strong>Free PDF Merger</strong> lets you easily bring together multiple digital records, tax documents, or scanned pages into one neat PDF file. The biggest advantage? Your files are processed <strong>100% locally</strong> inside your browser. This means absolutely zero data is uploaded to our servers, keeping your sensitive information completely private.</p>
              
+             <div class="how-it-works mt-32">
+                  <h3>How It Works</h3>
+                  <ol class="steps">
+                       <li><strong>Step 1:</strong> Select PDF files</li>
+                       <li><strong>Step 2:</strong> Drag to reorder</li>
+                       <li><strong>Step 3:</strong> Click Merge</li>
+                       <li><strong>Step 4:</strong> Download combined PDF</li>
+                  </ol>
+             </div>
+
              <div class="faq-grid mt-32">
                   <details class="faq-item">
                        <summary>Can I merge password-protected PDFs?</summary>
@@ -241,7 +383,7 @@ const customSchema = {
     .max-w-lg { max-width: 600px; margin-inline: auto; }
     
     .upload-container { background: var(--surface-2); border: 2.5px dashed var(--border); border-radius: 32px; padding: 60px 20px; text-align: center; cursor: pointer; transition: 0.3s; margin-top:16px; min-height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .upload-container:hover, .upload-container.drag-active { border-color: var(--primary); background: var(--success-soft); transform: translateY(-4px); }
+    .upload-container:hover, .upload-container.drag-active { border-color: var(--accent-primary); background: var(--success-soft); transform: translateY(-4px); }
     .upload-circle { width: 90px; height: 90px; background:var(--surface-3); border-radius: 50%; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 3rem; }
     .u-title { font-size: 1.8rem; font-weight:600; color: var(--text-primary); margin-bottom: 8px; }
     .u-sub { font-size: 1.1rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 32px; }
@@ -256,8 +398,13 @@ const customSchema = {
     .file-list::-webkit-scrollbar { width: 6px; }
     .file-list::-webkit-scrollbar-thumb { background-color: var(--text-muted); border-radius: 10px; }
     
-    .file-row { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 16px; transition: 0.2s; }
-    .file-row:hover { border-color: var(--primary-light); background:var(--surface-3); }
+    .file-row { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 16px; transition: 0.2s; cursor: default; }
+    .file-row:hover { border-color: var(--accent-soft); background:var(--surface-3); }
+    .file-row.dragging { opacity: 0.4; border-style: dashed; }
+    .file-row.drag-over { border-top: 3px solid var(--accent-primary); margin-top: -3px; }
+    .drag-handle { cursor: grab; user-select: none; padding: 8px; font-size: 1.2rem; opacity: 0.5; transition: opacity 0.2s; }
+    .drag-handle:hover { opacity: 1; }
+    .drag-handle:active { cursor: grabbing; }
     .f-info { display: flex; align-items: center; gap: 16px; overflow: hidden; }
     .f-icon { font-size: 2rem; }
     .f-text { display: flex; flex-direction: column; overflow: hidden; }
@@ -266,27 +413,19 @@ const customSchema = {
     .remove-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; opacity: 0.5; transition: 0.2s; padding: 8px; }
     .remove-btn:hover { opacity: 1; transform: scale(1.2); }
 
-    .d-flex { display: flex; }
-    .flex-column { flex-direction: column; }
-    .align-center { align-items: center; }
-    .justify-between { justify-content: space-between; }
-    .gap-16 { gap: 16px; }
-    .mt-16 { margin-top: 16px; }
-    .mt-24 { margin-top: 24px; }
-    .mt-32 { margin-top: 32px; }
-    .mt-48 { margin-top: 48px; }
-    .mb-16 { margin-bottom: 16px; }
-    .m-0 { margin: 0; }
-    .font-bold { font-weight:600; }
     .text-xl { font-size: 1.35rem; color: var(--text-primary); }
 
     .wide-btn { padding: 22px 24px; font-weight:600; font-size: 1.25rem; border-radius: 100px; display: block; }
     .small-btn { padding: 10px 18px; border-radius: 100px; font-weight:600; font-size: 0.95rem; }
-    .hidden { display: none !important; }
 
     @media (max-width: 640px) {
         .editor-layout { grid-template-columns: 1fr; gap: 16px; }
         .f-name { max-width: 180px; }
         .upload-container { padding: 40px 16px; min-height: 300px; }
     }
+
+    .how-it-works h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 12px; color: var(--text-primary); }
+    .steps { padding-left: 20px; margin: 0; }
+    .steps li { font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-bottom: 8px; }
+    .steps li strong { color: var(--text-primary); }
 </style>

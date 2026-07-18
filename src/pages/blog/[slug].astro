@@ -2,7 +2,7 @@
 import BaseLayout from '../../components/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import RelatedTools from '../../components/RelatedTools.astro';
-import { SITE_URL } from '../../seo';
+import { SITE_URL, articleSchema } from '../../seo';
 
 export function getStaticPaths() {
   return [
@@ -11,6 +11,7 @@ export function getStaticPaths() {
       props: { 
         title: 'How to Compress Image to 20KB Instantly', 
         desc: 'A comprehensive guide to effectively reducing your image size to exactly 20KB without losing critical quality using safe browser tools.',
+        date: '2026-01-15',
         content: `
           <h2>The 20KB Constraint</h2>
           <p>Whether you are filling out an official application, signing up for a college portal, or applying for an international visa, you will inevitably hit the dreaded file size limit: <strong>"Image must be under 20KB"</strong>.</p>
@@ -35,6 +36,7 @@ export function getStaticPaths() {
       props: { 
         title: 'The Best Image Size for Online Forms & Portals', 
         desc: 'Discover the ultimate standardized image dimensions and file sizes required for seamless online form and job portal submissions globally.',
+        date: '2026-02-10',
         content: `
           <h2>Understanding Web Portal Standards</h2>
           <p>Every web portal has its own unique rules for image uploads, but after analyzing thousands of platforms globally, a clear standard emerges. If you follow these baseline rules, your photos will be accepted 99% of the time.</p>
@@ -54,6 +56,7 @@ export function getStaticPaths() {
       props: { 
         title: 'How to Reduce Image Size Without Losing Quality', 
         desc: 'Learn advanced, secure techniques to brutally compress photo weights while maintaining high-definition visual fidelity for web usage.',
+        date: '2026-03-05',
         content: `
           <h2>Lossless vs. Lossy Compression</h2>
           <p>When trying to shrink a 5MB photograph down to a web-friendly size, you must understand the difference between compression types.</p>
@@ -72,26 +75,16 @@ export function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const { title, desc, content } = Astro.props;
+const { title, desc, content, date } = Astro.props;
 
-const customSchema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Article",
-      "headline": title,
-      "description": desc,
-      "url": `${SITE_URL}/blog/${slug}`,
-      "author": {
-        "@type": "Organization",
-        "name": "FormFix Editorial"
-      }
-    }
-  ]
-};
+const customSchema = articleSchema({
+  title,
+  description: desc,
+  path: `/blog/${slug}`,
+});
 ---
 
-<BaseLayout title={`${title} | FormFix Blog`} description={desc} active="home" canonicalPath={`/blog/${slug}`} customSchema={customSchema}>
+<BaseLayout title={`${title} | FormFix Blog`} description={desc} active="home" canonicalPath={`/blog/${slug}`} customSchema={customSchema} ogType="article" publishedTime={date} modifiedTime={date}>
     <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }, { name: title, path: `/blog/${slug}` }]} />
 
     <div class="blog-wrapper animate-fade-up">
@@ -139,8 +132,6 @@ const customSchema = {
     .main-h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight:600; letter-spacing: -0.04em; margin-bottom: 24px; color: var(--text-primary); line-height: 1.1; max-width: 800px; margin-inline: auto; }
     .hero-sub { color: var(--text-secondary); font-weight: 500; font-size: 1.15rem; margin-bottom: 40px; max-width: 600px; margin-inline: auto; line-height: 1.6; }
     .blog-wrapper { max-width: 900px; margin: 0 auto; padding-bottom: 100px; padding-top: 64px; }
-    .mt-48 { margin-top: 48px; }
-    
     .brand-badge {
         display: inline-block;
         padding: 6px 16px;
@@ -177,13 +168,23 @@ const customSchema = {
         .main-h1 { font-size: 2.2rem; }
     }
 
+    @media (max-width: 640px) {
+        .blog-wrapper { padding-top: 40px; }
+        .main-h1 { font-size: 1.5rem; }
+        :global(.cms-content h2) { font-size: 1.25rem; }
+        :global(.cms-content h3) { font-size: 1.1rem; }
+        :global(.cms-content p) { font-size: 1rem; }
+        :global(.cms-content ol), :global(.cms-content ul) { font-size: 1rem; }
+        .share-btn { width: 44px; height: 44px; }
+    }
+
     /* Share Bar */
     .share-bar {
         display: flex; align-items: center; justify-content: center; gap: 12px;
         margin: 40px auto; max-width: 900px; padding: 20px;
-        border-top: 1px solid var(--border-subtle, var(--border-subtle)); border-bottom: 1px solid var(--border-subtle, var(--border-subtle));
+        border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);
     }
-    .share-label { font-size: 14px; font-weight: 600; color: var(--text-secondary, var(--text-secondary)); }
+    .share-label { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
     .share-btns { display: flex; gap: 8px; }
     .share-btn {
         display: inline-flex; align-items: center; justify-content: center;
@@ -191,7 +192,7 @@ const customSchema = {
         text-decoration: none; transition: all 0.2s;
     }
     .share-x { background: #000; color: #fff; }
-    .share-x:hover { background: #1a1a1a; }
+    .share-x:hover { background: var(--text-primary); }
     .share-wa { background: #25d366; color: #fff; }
     .share-wa:hover { background: #1da851; }
     .share-li { background: #0077b5; color: #fff; }

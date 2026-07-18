@@ -20,7 +20,7 @@ const howToSchema = {
 };
 ---
 
-<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/make-signature-transparent" customSchema={howToSchema}>
+<BaseLayout title={title} description={description} active="tools" canonicalPath="/guides/make-signature-transparent" customSchema={howToSchema} ogType="article" publishedTime="2026-04-01" modifiedTime="2026-07-17">
     <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "How to Remove White Background from Signature (Transparent Signature)", path: "/guides/make-signature-transparent" }]} />
 
     <section class="page-header">
@@ -66,12 +66,17 @@ const howToSchema = {
 </BaseLayout>
 
 <style>
-    .page-header { padding: 80px 0 40px; background: var(--bg-subtle); text-align: center; }
+    .page-header { padding: 80px 0 40px; background: var(--surface-2); text-align: center; }
     .content-section { padding: 60px 0; }
     .prose { line-height: 1.8; color: var(--text-secondary); }
     .prose h2 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; }
     .prose p { margin-bottom: 1.5rem; }
     .prose ul, .prose ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
     .container-narrow { max-width: 800px; }
-    .cta-box { background: var(--primary-light); padding: 32px; border-radius: 16px; border: 1px solid var(--primary-mid); text-align: center; }
+    .cta-box { background: var(--accent-soft); padding: 32px; border-radius: 16px; border: 1px solid rgba(var(--accent-rgb), 0.2); text-align: center; }
+
+    @media (max-width: 640px) {
+        .page-header { padding: 40px 0; }
+        .page-header h1 { font-size: 1.5rem; }
+    }
 </style>

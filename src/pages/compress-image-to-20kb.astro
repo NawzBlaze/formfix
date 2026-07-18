@@ -134,31 +134,5 @@ const customSchema = {
 </BaseLayout>
 
 <style>
-    .global-workspace { text-align: center; padding: 20px 0; }
-    .global-alert { background: var(--success-soft); border-left: 4px solid var(--success); padding: 16px; border-radius: 8px; margin-bottom: 32px; color: var(--success); font-size: 0.95rem; }
-    .tool-actions-centered { display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap; }
-    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
-    .feature-card { background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 24px; border-radius: 16px; }
-    .feature-card h3 { font-size: 1.1rem; margin-bottom: 12px; color: var(--text-primary); }
-    .feature-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
-
-    .prose h2 { color: var(--text-primary); margin-top: 3rem; margin-bottom: 1rem; font-size: 1.85rem; font-weight:600; letter-spacing: -0.03em; }
-    .prose h3 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 0.75rem; font-size: 1.35rem; font-weight:600; }
-    .prose p, .prose li { color: var(--text-secondary); line-height: 1.75; font-size: 1.05rem; }
-    .prose ul, .prose ol { padding-left: 24px; margin-bottom: 1.5rem; }
-    .prose li { margin-bottom: 8px; }
-    .prose strong { color: var(--text-primary); }
-    .prose a { color: var(--accent-primary); text-decoration: underline; text-underline-offset: 3px; }
-
     .faq-section { margin-top: 3rem; }
-    .minimal-faq { background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
-    .minimal-faq summary { padding: 16px 20px; cursor: pointer; font-weight:600; color: var(--text-primary); list-style: none; position: relative; }
-    .minimal-faq summary::-webkit-details-marker { display: none; }
-    .minimal-faq summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.4rem; color: var(--accent-primary); }
-    .minimal-faq[open] summary::after { content: '−'; }
-    .faq-body { padding: 0 20px 20px; color: var(--text-secondary); line-height: 1.7; }
-
-    @media (max-width: 600px) {
-        .feature-grid { grid-template-columns: 1fr; }
-    }
 </style>

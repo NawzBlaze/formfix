@@ -139,7 +139,7 @@ const customSchema = {
 
                     <div class="tools-grid">
                         {cat.tools.map(tool => (
-                            <a href={tool.href} class="tool-card search-item tracker-tool" data-id={tool.id} data-title={tool.title} data-href={tool.href} aria-label={`Open ${tool.title}`}>
+                            <a href={tool.href} class="tool-card search-item tracker-tool" data-id={tool.id} data-title={tool.title} data-desc={tool.desc} data-href={tool.href} aria-label={`Open ${tool.title}`}>
                                 <h3>{tool.title}</h3>
                                 <p>{tool.desc}</p>
                             </a>
@@ -480,7 +480,8 @@ const customSchema = {
 
                 items.forEach(item => {
                     const title = item.dataset.title.toLowerCase();
-                    const matchesSearch = title.includes(currentSearch);
+                    const desc = (item.dataset.desc || '').toLowerCase();
+                    const matchesSearch = title.includes(currentSearch) || desc.includes(currentSearch);
 
                     if (matchesTab && (currentSearch === '' || matchesSearch)) {
                         item.style.display = 'flex';

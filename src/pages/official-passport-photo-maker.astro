@@ -163,30 +163,12 @@ const customSchema = {
 </BaseLayout>
 
 <style>
-    .global-workspace { text-align: center; padding: 20px 0; }
-    .global-alert { background: var(--accent-soft); border-left: 4px solid var(--accent-primary); padding: 16px; border-radius: 8px; margin-bottom: 32px; color: #1e40af; font-size: 0.95rem; }
-    .tool-actions-centered { display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap; }
     .specs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin: 32px 0; }
-    .spec-card { background: var(--surface-50); border: 1px solid var(--border-subtle); padding: 20px; border-radius: 16px; text-align: left; }
-    .spec-card h3 { font-size: 1.05rem; margin-bottom: 12px; color: var(--text-main); }
+    .spec-card { background: var(--surface-3); border: 1px solid var(--border-subtle); padding: 20px; border-radius: 16px; text-align: left; }
+    .spec-card h3 { font-size: 1.05rem; margin-bottom: 12px; color: var(--text-primary); }
     .spec-card p { font-size: 0.88rem; color: var(--text-muted); margin: 4px 0; }
     .spec-card strong { color: var(--text-secondary); font-weight:600; }
-
-    .prose h2 { color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.85rem; font-weight:600; }
-    .prose h3 { color: var(--text-primary); margin-top: 2rem; margin-bottom: 0.75rem; font-size: 1.35rem; font-weight:600; }
-    .prose p, .prose li { color: var(--text-secondary); line-height: 1.75; font-size: 1.05rem; }
-    .prose ul, .prose ol { padding-left: 24px; margin-bottom: 1.5rem; }
-    .prose li { margin-bottom: 8px; }
-    .prose strong { color: var(--text-primary); }
-
     .faq-section { margin-top: 3rem; }
-    .minimal-faq { background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
-    .minimal-faq summary { padding: 16px 20px; cursor: pointer; font-weight:600; color: var(--text-primary); list-style: none; position: relative; }
-    .minimal-faq summary::-webkit-details-marker { display: none; }
-    .minimal-faq summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.4rem; color: var(--accent-primary); }
-    .minimal-faq[open] summary::after { content: '−'; }
-    .faq-body { padding: 0 20px 20px; color: var(--text-secondary); line-height: 1.7; }
-
     @media (max-width: 900px) { .specs-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 600px) { .specs-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .specs-grid { grid-template-columns: 1fr; gap: 12px; } }
 </style>

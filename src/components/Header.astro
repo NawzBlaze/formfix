@@ -109,8 +109,8 @@ const navItems = [
     background: transparent;
     border: 1px solid var(--border-subtle);
     color: var(--text-secondary);
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
     border-radius: var(--radius-sm);
     cursor: pointer;
     display: flex;
@@ -139,7 +139,7 @@ const navItems = [
     opacity: 0.9;
 }
 
-.menu-toggle { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 4px; border: none; background: transparent; width: 32px; height: 32px; border-radius: var(--radius-sm); cursor: pointer; }
+.menu-toggle { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 4px; border: none; background: transparent; width: 44px; height: 44px; border-radius: var(--radius-sm); cursor: pointer; }
 .menu-toggle span { width: 16px; height: 1.5px; background: var(--text-primary); border-radius: 1px; transition: 0.2s; }
 
 /* Mobile Drawer */
@@ -162,10 +162,10 @@ const navItems = [
 .drawer-overlay.open { opacity: 1; pointer-events: all; }
 
 .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle); }
-.drawer-header button { background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px; display: flex; }
+.drawer-header button { background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 13px; display: flex; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
 .drawer-nav { display: flex; flex-direction: column; gap: 2px; }
 .drawer-link {
-    padding: 10px 14px;
+    padding: 14px 14px;
     color: var(--text-primary);
     text-decoration: none;
     font-weight: 500;
@@ -176,6 +176,9 @@ const navItems = [
     text-align: left;
     cursor: pointer;
     font-family: inherit;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
 }
 .drawer-link:hover { background: var(--surface-2); }
 .text-left { text-align: left; }
@@ -212,12 +215,16 @@ const navItems = [
         toggle?.setAttribute('aria-expanded', 'false');
     });
 
+    const FOCUSABLE = 'button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
     const openDrawer = () => {
         drawer?.classList.add('open');
         overlay?.classList.add('open');
         toggle?.setAttribute('aria-expanded', 'true');
         drawer?.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        const firstFocusable = drawer?.querySelector(FOCUSABLE);
+        firstFocusable?.focus();
     };
     const closeDrawer = () => {
         drawer?.classList.remove('open');
@@ -225,7 +232,23 @@ const navItems = [
         toggle?.setAttribute('aria-expanded', 'false');
         drawer?.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+        toggle?.focus();
     };
+
+    drawer?.addEventListener('keydown', (e) => {
+        if (e.key !== 'Tab' || !drawer) return;
+        const focusables = [...drawer.querySelectorAll(FOCUSABLE)];
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+        }
+    });
 
     toggle?.addEventListener('click', openDrawer);
     [close, overlay].forEach(el => el?.addEventListener('click', closeDrawer));

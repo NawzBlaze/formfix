@@ -24,12 +24,18 @@ const customSchema = {
     }
   ]
 };
+
+const faqs = [
+  { q: "What languages can it recognize?", a: "Currently, our tool is optimized for the English language using the latest LSTM deep learning models. This ensures high accuracy for both printed documents and high-quality scans." },
+  { q: "Is there a file size limit?", a: "Since the processing happens in your browser, the limit depends on your device's RAM. We recommend images under 10MB for the smoothest experience." },
+];
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/image-to-text">
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/image-to-text" faqs={faqs}>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" is:inline></script>
 <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
+    try {
         const fileInput = document.getElementById('image-upload');
         const uploadStage = document.getElementById('upload-stage');
         const editorStage = document.getElementById('editor-stage');
@@ -86,16 +92,22 @@ const customSchema = {
         }
 
         extractBtn?.addEventListener('click', async () => {
+             if (typeof Tesseract === 'undefined') {
+                 if (typeof window.ffNotice === 'function') window.ffNotice('OCR library failed to load. Please check your internet connection and refresh.', 'error');
+                 else alert('OCR library failed to load. Please check your internet connection and refresh.');
+                 return;
+             }
              overlay?.classList.remove('hidden');
              extractBtn.disabled = true;
              overlayStatus.textContent = 'Enhancing Document Clarity...';
              
+             let worker = null;
              try {
                 const processedImgBase64 = await preProcessImage();
                 resultText.value = "";
                 overlayStatus.textContent = 'Initializing OCR Engine...';
                 
-                const worker = await Tesseract.createWorker('eng', 1, {
+                worker = await Tesseract.createWorker('eng', 1, {
                     logger: m => {
                         if (m.status === 'recognizing text') {
                             const prog = Math.round(m.progress * 100);
@@ -113,7 +125,6 @@ const customSchema = {
                     .trim();
 
                 resultText.value = cleanText || "Could not detect any text. Is the image clear?";
-                await worker.terminate();
                 
                 overlay?.classList.add('hidden');
                 resultArea?.classList.remove('hidden');
@@ -124,6 +135,7 @@ const customSchema = {
                  if (typeof window.ffNotice === 'function') window.ffNotice('Extraction failed. Ensure the document is clear.', 'error');
                  else console.error('OCR failed');
              } finally {
+                 if (worker) { try { await worker.terminate(); } catch (e) {} }
                  extractBtn.disabled = false;
              }
         });
@@ -134,6 +146,25 @@ const customSchema = {
             copyBtn.textContent = '✅ Copied!';
             setTimeout(() => copyBtn.textContent = '📋 Copy all text', 2000);
         });
+
+        if (uploadStage) {
+            uploadStage.addEventListener('dragover', (e) => { e.preventDefault(); uploadStage.classList.add('drag-active'); });
+            uploadStage.addEventListener('dragleave', () => uploadStage.classList.remove('drag-active'));
+            uploadStage.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadStage.classList.remove('drag-active');
+                if (e.dataTransfer?.files.length) {
+                    const fileInput = document.getElementById('image-upload');
+                    if (fileInput) {
+                        fileInput.files = e.dataTransfer.files;
+                        fileInput.dispatchEvent(new Event('change'));
+                    }
+                }
+            });
+        }
+    } catch (err) {
+        console.error('Failed to initialize OCR tool:', err);
+    }
     });
 </script>
 
@@ -222,8 +253,8 @@ const customSchema = {
     .workspace-editor { display: flex; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; }
     
     .upload-container { display: flex; justify-content: center; }
-    .upload-box { background: var(--surface-50); border: 2.5px dashed var(--border-subtle); border-radius: 32px; padding: 60px 40px; text-align: center; width: 100%; cursor: pointer; transition: 0.2s; }
-    .upload-box:hover { border-color: var(--accent-primary); background: var(--surface-100); }
+    .upload-box { background: var(--surface-3); border: 2.5px dashed var(--border-subtle); border-radius: 32px; padding: 60px 40px; text-align: center; width: 100%; cursor: pointer; transition: 0.2s; }
+    .upload-box:hover { border-color: var(--accent-primary); background: var(--surface-2); }
     .upload-icon { font-size: 3.5rem; margin-bottom: 24px; line-height: 1; }
 
     .editor-grid { display: grid; grid-template-columns: 1fr 340px; gap: 32px; }
@@ -239,17 +270,17 @@ const customSchema = {
     .doc-frame { border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--border-subtle); width: 100%; display: flex; align-items: center; justify-content: center; min-height: 400px; }
     .doc-frame img { max-width: 100%; max-height: 500px; display: block; filter: drop-shadow(0 15px 40px rgba(0,0,0,0.1)); }
     
-    .hint-badge { display: inline-block; font-size: 0.85rem; color: var(--text-muted); background: var(--surface-100); padding: 8px 20px; border-radius: 100px; border: 1px solid var(--border-subtle); }
+    .hint-badge { display: inline-block; font-size: 0.85rem; color: var(--text-muted); background: var(--surface-2); padding: 8px 20px; border-radius: 100px; border: 1px solid var(--border-subtle); }
 
     .loader-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; text-align: center; border-radius: 12px; }
     .loader-content { position: relative; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-    .pulse-loader { width: 100%; height: 100%; border: 4px solid var(--surface-200); border-top-color: var(--accent-primary); border-radius: 50%; animation: spin 1s linear infinite; }
-    .progress-pct { position: absolute; font-size: 1rem; font-weight:600; color: var(--text-main); }
-    .loader-status { font-weight:600; color: var(--text-main); font-size: 0.95rem; }
+    .pulse-loader { width: 100%; height: 100%; border: 4px solid var(--border-subtle); border-top-color: var(--accent-primary); border-radius: 50%; animation: spin 1s linear infinite; }
+    .progress-pct { position: absolute; font-size: 1rem; font-weight:600; color: var(--text-primary); }
+    .loader-status { font-weight:600; color: var(--text-primary); font-size: 0.95rem; }
 
     .controls-sidebar { display: flex; flex-direction: column; gap: 24px; }
-    .settings-card { background: var(--surface-50); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); }
-    .info-alert { font-size: 0.85rem; color: var(--text-main); background:var(--surface-3); padding: 16px; border-radius: 12px; border: 1px solid var(--border-subtle); line-height: 1.5; }
+    .settings-card { background: var(--surface-3); padding: 24px; border-radius: 24px; border: 1px solid var(--border-subtle); }
+    .info-alert { font-size: 0.85rem; color: var(--text-primary); background:var(--surface-3); padding: 16px; border-radius: 12px; border: 1px solid var(--border-subtle); line-height: 1.5; }
 
     .action-stack { display: flex; flex-direction: column; }
     .wide-btn { width: 100%; height: 60px; font-weight:600; font-size: 1rem; border-radius: 16px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
@@ -257,18 +288,18 @@ const customSchema = {
     /* Result Area */
     .result-area { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 32px; box-shadow: var(--shadow-sm); animation: slideUp 0.4s ease-out; }
     .textarea-header { display: flex; justify-content: space-between; align-items: center; }
-    .section-label { font-size: 0.75rem; font-weight:600; color: var(--surface-500); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+    .section-label { font-size: 0.75rem; font-weight:600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; }
     
-    .copy-action-btn { font-size: 0.85rem; font-weight:600; color: var(--accent-primary); background: var(--surface-100); padding: 8px 20px; border-radius: 100px; border: none; cursor: pointer; transition: 0.2s; }
+    .copy-action-btn { font-size: 0.85rem; font-weight:600; color: var(--accent-primary); background: var(--surface-2); padding: 8px 20px; border-radius: 100px; border: none; cursor: pointer; transition: 0.2s; }
     .copy-action-btn:hover { background: var(--accent-primary); color: #fff; box-shadow: var(--shadow-sm); }
     
-    .ocr-result-box { width: 100%; height: 350px; background: var(--surface-50); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; font-size: 1rem; line-height: 1.7; color: var(--text-main); outline: none; transition: 0.2s; resize: vertical; font-family: inherit; box-sizing: border-box; }
+    .ocr-result-box { width: 100%; height: 350px; background: var(--surface-3); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; font-size: 1rem; line-height: 1.7; color: var(--text-primary); outline: none; transition: 0.2s; resize: vertical; font-family: inherit; box-sizing: border-box; }
     .ocr-result-box:focus { border-color: var(--accent-primary); background:var(--surface-3); box-shadow: var(--shadow-sm); }
 
     /* FAQ */
     .faq-grid { display: grid; gap: 16px; }
     .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; text-align: left; }
-    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
+    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-primary); list-style-type: none; position: relative; }
     .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
@@ -276,27 +307,15 @@ const customSchema = {
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    .d-flex { display: flex; }
-    .justify-between { justify-content: space-between; }
-    .align-center { align-items: center; }
-    .text-center { text-align: center; }
     .small { font-size: 0.85rem; }
-    .px-40 { padding-left: 40px; padding-right: 40px; }
-    .mb-8 { margin-bottom: 8px; }
-    .mb-12 { margin-bottom: 12px; }
-    .mb-16 { margin-bottom: 16px; }
-    .mb-24 { margin-bottom: 24px; }
-    .mt-16 { margin-top: 16px; }
-    .mt-32 { margin-top: 32px; }
-    .m-0 { margin: 0; }
-    .font-600 { font-weight: 600; }
-    .font-850 { font-weight:600; }
-    .text-muted { color: var(--text-muted); }
-    .hidden { display: none !important; }
 
     @media (max-width: 900px) {
         .editor-grid { grid-template-columns: 1fr; }
         .preview-panel { min-height: 350px; padding: 16px; }
         .controls-sidebar { position: static; }
+    }
+    @media (max-width: 640px) {
+        .upload-box { padding: 40px 24px; }
+        .result-area { padding: 20px; }
     }
 </style>

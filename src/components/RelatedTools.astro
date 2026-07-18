@@ -2,34 +2,33 @@
 const { currentTool } = Astro.props;
 
 const allTools = [
-  { id: 'compress',           title: 'Compress to KB',      href: '/compress-image',       icon: '🎯', desc: 'Hit exact file size targets' },
-  { id: 'passport-maker',     title: 'Passport Photo',       href: '/passport-size-photo',  icon: '📸', desc: 'Official 3.5×4.5cm photos' },
-  { id: 'signature',          title: 'Signature Maker',      href: '/signature-maker',      icon: '✍️', desc: '60+ cursive fonts, PNG export' },
-  { id: 'crop',               title: 'Crop Image',           href: '/crop-image',           icon: '✂️', desc: 'Any ratio: 1:1, 4:3, 16:9' },
-  { id: 'resize',             title: 'Resize Image',         href: '/resize-image',         icon: '📏', desc: 'Custom pixel dimensions' },
-  { id: 'convert',            title: 'Format Converter',     href: '/convert-image',        icon: '🔄', desc: 'JPG ↔ PNG ↔ WebP' },
-  { id: 'merge-pdf',          title: 'Merge PDF',            href: '/merge-pdf',            icon: '🔗', desc: 'Combine PDFs offline' },
-  { id: 'image-to-pdf',       title: 'Image to PDF',         href: '/image-to-pdf',         icon: '📄', desc: 'Multiple images → one PDF' },
-  { id: 'pdf-to-image',       title: 'PDF to Image',         href: '/pdf-to-image',         icon: '🖼️', desc: 'Extract PDF pages as JPG' },
-  { id: 'split-pdf',          title: 'Split PDF',            href: '/split-pdf',            icon: '✂️', desc: 'Extract specific pages' },
-  { id: 'rotate-pdf',         title: 'Rotate PDF',           href: '/rotate-pdf',           icon: '🔄', desc: 'Fix upside-down pages' },
-  { id: 'bg-remover',         title: 'Remove BG',            href: '/background-remover',   icon: '🪄', desc: 'AI background removal' },
-  { id: 'black-and-white',    title: 'B&W Filter',           href: '/black-and-white',      icon: '🔲', desc: 'Elegant grayscale filter' },
-  { id: 'photo-to-sketch',    title: 'Pencil Sketch',        href: '/photo-to-sketch',      icon: '✏️', desc: 'Turn photo into art' },
-  { id: 'ocr',                title: 'Image to Text',      href: '/image-to-text',       icon: '🔍', desc: 'Extract text from docs' },
-  { id: 'resume',             title: 'Resume Builder',     href: '/resume-builder',      icon: '👔', desc: '1-min professional CV' },
-  { id: 'handwriting',        title: 'Assignment Maker',     href: '/text-to-handwriting',  icon: '✍️', desc: 'Text to realistic handwriting' },
-  { id: 'blur',               title: 'Blur & Censor',        href: '/blur-image',           icon: '🌫️', desc: 'Redact sensitive info' },
-  { id: 'watermark',          title: 'Add Watermark',        href: '/watermark-image',      icon: '🏷️', desc: 'Protect your photos' },
-  { id: 'qr-code-generator',  title: 'QR Code Generator',   href: '/qr-code-generator',    icon: '📱', desc: 'Branded, permanent QR codes' },
-  { id: 'password-generator', title: 'Password Generator',   href: '/password-generator',   icon: '🔐', desc: 'Military-grade passwords' },
-  { id: 'circle-crop',        title: 'Circle Crop',          href: '/circle-crop',          icon: '⭕', desc: 'Perfect circular avatars' },
+  { id: 'compress',               title: 'Compress to KB',      href: '/compress-image',       icon: '🎯', desc: 'Hit exact file size targets' },
+  { id: 'passport-maker',         title: 'Passport Photo',       href: '/passport-size-photo',  icon: '📸', desc: 'Official 3.5×4.5cm photos' },
+  { id: 'signature-maker',        title: 'Signature Maker',      href: '/signature-maker',      icon: '✍️', desc: '60+ cursive fonts, PNG export' },
+  { id: 'crop-image',             title: 'Crop Image',           href: '/crop-image',           icon: '✂️', desc: 'Any ratio: 1:1, 4:3, 16:9' },
+  { id: 'resize-image',           title: 'Resize Image',         href: '/resize-image',         icon: '📏', desc: 'Custom pixel dimensions' },
+  { id: 'convert-image',          title: 'Format Converter',     href: '/convert-image',        icon: '🔄', desc: 'JPG ↔ PNG ↔ WebP' },
+  { id: 'merge-pdf',              title: 'Merge PDF',            href: '/merge-pdf',            icon: '🔗', desc: 'Combine PDFs offline' },
+  { id: 'image-to-pdf',           title: 'Image to PDF',         href: '/image-to-pdf',         icon: '📄', desc: 'Multiple images → one PDF' },
+  { id: 'pdf-to-image',           title: 'PDF to Image',         href: '/pdf-to-image',         icon: '🖼️', desc: 'Extract PDF pages as JPG' },
+  { id: 'split-pdf',              title: 'Split PDF',            href: '/split-pdf',            icon: '✂️', desc: 'Extract specific pages' },
+  { id: 'rotate-pdf',             title: 'Rotate PDF',           href: '/rotate-pdf',           icon: '🔄', desc: 'Fix upside-down pages' },
+  { id: 'background-remover',     title: 'Remove BG',            href: '/background-remover',   icon: '🪄', desc: 'AI background removal' },
+  { id: 'black-and-white',        title: 'B&W Filter',           href: '/black-and-white',      icon: '🔲', desc: 'Elegant grayscale filter' },
+  { id: 'photo-to-sketch',        title: 'Pencil Sketch',        href: '/photo-to-sketch',      icon: '✏️', desc: 'Turn photo into art' },
+  { id: 'image-to-text',          title: 'Image to Text',        href: '/image-to-text',        icon: '🔍', desc: 'Extract text from docs' },
+  { id: 'resume-builder',         title: 'Resume Builder',       href: '/resume-builder',       icon: '👔', desc: '1-min professional CV' },
+  { id: 'text-to-handwriting',    title: 'Assignment Maker',     href: '/text-to-handwriting',  icon: '✍️', desc: 'Text to realistic handwriting' },
+  { id: 'blur-image',             title: 'Blur & Censor',        href: '/blur-image',           icon: '🌫️', desc: 'Redact sensitive info' },
+  { id: 'watermark-image',        title: 'Add Watermark',        href: '/watermark-image',      icon: '🏷️', desc: 'Protect your photos' },
+  { id: 'qr-code-generator',      title: 'QR Code Generator',   href: '/qr-code-generator',    icon: '📱', desc: 'Branded, permanent QR codes' },
+  { id: 'password-generator',     title: 'Password Generator',   href: '/password-generator',   icon: '🔐', desc: 'Military-grade passwords' },
+  { id: 'circle-crop',            title: 'Circle Crop',          href: '/circle-crop',          icon: '⭕', desc: 'Perfect circular avatars' },
 ];
 
-// Define logical groups for interlinking
-const imageTools = ['compress', 'passport-maker', 'crop', 'resize', 'circle-crop', 'bg-remover', 'black-and-white', 'photo-to-sketch', 'blur', 'watermark', 'convert'];
+const imageTools = ['compress', 'passport-maker', 'crop-image', 'resize-image', 'circle-crop', 'background-remover', 'black-and-white', 'photo-to-sketch', 'blur-image', 'watermark-image', 'convert-image'];
 const pdfTools = ['merge-pdf', 'image-to-pdf', 'pdf-to-image', 'split-pdf', 'rotate-pdf'];
-const utilTools = ['qr-code-generator', 'password-generator', 'file-size-converter', 'percentage-calculator', 'age-calculator', 'ocr', 'resume', 'handwriting'];
+const utilTools = ['qr-code-generator', 'password-generator', 'file-size-converter', 'percentage-calculator', 'age-calculator', 'image-to-text', 'resume-builder', 'text-to-handwriting', 'signature-maker'];
 
 let relatedTools = [];
 

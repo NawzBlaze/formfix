@@ -75,6 +75,16 @@ const customSchema = {
              <h2>The Professional Image Compressor Online</h2>
              <p>FormFix is the highest-precision <strong>online image compressor</strong> for users who need to hit exact file size targets. We ensure that you keep maximum sharpness and readability.</p>
              
+             <div class="how-it-works mt-32">
+                  <h3>How It Works</h3>
+                  <ol class="steps">
+                       <li><strong>Step 1:</strong> Upload your image</li>
+                       <li><strong>Step 2:</strong> Choose target size (20KB, 50KB, or 100KB)</li>
+                       <li><strong>Step 3:</strong> Click Optimize</li>
+                       <li><strong>Step 4:</strong> Download your compressed image</li>
+                  </ol>
+             </div>
+
              <div class="faq-grid mt-32">
                   <details class="faq-item">
                        <summary>How to compress image to 20kb?</summary>
@@ -90,13 +100,8 @@ const customSchema = {
 </BaseLayout>
 
 <style>
-    /* FAQ */
-    .faq-grid { display: grid; gap: 16px; }
-    .faq-item { background:var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); overflow: hidden; }
-    .faq-item summary { font-weight:600; font-size: 1rem; padding: 16px 20px; cursor: pointer; color: var(--text-main); list-style-type: none; position: relative; }
-    .faq-item summary::after { content: '+'; position: absolute; right: 20px; font-weight:600; font-size: 1.2rem; color: var(--accent-primary); }
-    .faq-item[open] summary::after { content: '−'; }
-    .faq-item p { padding: 0 20px 20px; margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
-
-    .mt-32 { margin-top: 32px; }
+    .how-it-works h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 12px; color: var(--text-primary); }
+    .steps { padding-left: 20px; margin: 0; }
+    .steps li { font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-bottom: 8px; }
+    .steps li strong { color: var(--text-primary); }
 </style>

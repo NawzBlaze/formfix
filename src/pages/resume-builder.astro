@@ -21,9 +21,15 @@ const customSchema = {
     },
   ],
 };
+
+const faqs = [
+  { q: "Does autosave upload my resume?", a: "No. Autosave uses your browser storage only." },
+  { q: "Can I keep multiple versions?", a: "Yes. Use Duplicate or Export JSON before making major edits." },
+  { q: "Are creative templates ATS safe?", a: "The ATS template is safest. Creative templates keep clear headings and selectable text, but one-column layouts are best for strict systems." },
+];
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/resume-builder">
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/resume-builder" faqs={faqs}>
   <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: 'Resume Builder', path: '/resume-builder' }]} />
 
   <ToolWrapper title="Resume Builder" subtitle="Choose a template, fill your details, improve the writing, check ATS fit, and download a clean PDF." currentTool="resume-builder">
@@ -165,11 +171,11 @@ const customSchema = {
   .rb-stage-step.is-active span { background: var(--rb-accent); color: #fff; }
   .rb-toolbar { display: flex; justify-content: space-between; gap: 12px; padding: 12px; margin-bottom: 16px; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-3); position: sticky; top: 8px; z-index: 5; }
   .rb-toolbar-main, .rb-toolbar-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .rb-tab, .rb-soft-btn, .rb-icon-btn, .rb-primary-btn, .rb-add-section { min-height: 38px; border-radius: 8px; border: 1px solid var(--border-subtle); background: var(--surface-50); color: var(--text-primary); font-weight: 800; cursor: pointer; }
+  .rb-tab, .rb-soft-btn, .rb-icon-btn, .rb-primary-btn, .rb-add-section { min-height: 44px; border-radius: 8px; border: 1px solid var(--border-subtle); background: var(--surface-3); color: var(--text-primary); font-weight: 800; cursor: pointer; }
   .rb-tab { padding: 0 14px; }
   .rb-tab.is-active { background: var(--rb-accent); border-color: var(--rb-accent); color: #fff; }
   .rb-soft-btn { padding: 0 12px; font-size: .84rem; }
-  .rb-icon-btn { width: 38px; font-size: 1.05rem; }
+  .rb-icon-btn { min-width: 44px; min-height: 44px; font-size: 1.05rem; }
   .rb-primary-btn { padding: 0 16px; border-color: var(--rb-accent); background: var(--rb-accent); color: #fff; }
   .rb-file-btn { display: inline-flex; align-items: center; }
   .rb-file-btn input { position: absolute; opacity: 0; width: 1px; height: 1px; }
@@ -181,13 +187,13 @@ const customSchema = {
   .rb-panel-head h2, .rb-preview-top h2 { margin: 0; font-size: 1rem; }
   .rb-kicker { margin: 0 0 3px; font-size: .72rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
   .rb-section-list { display: flex; flex-direction: column; gap: 10px; }
-  .rb-edit-section { border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-50); overflow: hidden; }
+  .rb-edit-section { border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-3); overflow: hidden; }
   .rb-edit-section.is-drag-over { border-color: var(--rb-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent), transparent 82%); }
   .rb-edit-head { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--border-subtle); }
   .rb-edit-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .rb-edit-title strong { font-size: .9rem; overflow-wrap: anywhere; }
   .rb-edit-actions { display: flex; gap: 4px; }
-  .rb-mini { width: 30px; height: 30px; border: 1px solid var(--border-subtle); border-radius: 7px; background: var(--surface-3); color: var(--text-primary); cursor: pointer; }
+  .rb-mini { min-width: 44px; min-height: 44px; border: 1px solid var(--border-subtle); border-radius: 7px; background: var(--surface-3); color: var(--text-primary); cursor: pointer; display: inline-grid; place-items: center; }
   .rb-edit-body { padding: 12px; display: grid; gap: 10px; }
   .rb-edit-section.is-collapsed .rb-edit-body { display: none; }
   .rb-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -203,7 +209,7 @@ const customSchema = {
   .rb-ai-btn { border-style: solid; padding: 0 10px; justify-self: start; }
   .rb-add-section { width: 100%; margin-top: 12px; border-style: dashed; color: var(--rb-accent); }
   .rb-template-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .rb-template-card { text-align: left; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-50); padding: 10px; cursor: pointer; color: var(--text-primary); }
+  .rb-template-card { text-align: left; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-3); padding: 10px; cursor: pointer; color: var(--text-primary); }
   .rb-template-card.is-active { border-color: var(--rb-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent), transparent 78%); }
   .rb-template-preview { height: 92px; display: grid; align-content: start; gap: 8px; padding: 12px; margin-bottom: 8px; background: var(--tpl-bg); border: 1px solid #e5e7eb; border-radius: 6px; }
   .rb-template-preview::before { content: ""; width: 48%; height: 12px; background: var(--tpl-accent); border-radius: 2px; }
@@ -212,20 +218,20 @@ const customSchema = {
   .rb-template-card small { color: var(--text-muted); text-transform: capitalize; }
   .rb-control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .rb-check { display: flex; align-items: center; gap: 8px; min-height: 40px; font-weight: 800; color: var(--text-primary); }
-  .rb-score-card { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: center; padding: 14px; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-50); }
+  .rb-score-card { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: center; padding: 14px; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-3); }
   .rb-score-ring { width: 108px; height: 108px; border-radius: 50%; display: grid; place-content: center; text-align: center; border: 10px solid color-mix(in srgb, var(--rb-accent), white 72%); }
   .rb-score-ring strong { font-size: 2rem; line-height: 1; }
   .rb-score-bars, .rb-suggestions { display: grid; gap: 8px; }
   .rb-bar { display: grid; gap: 4px; font-size: .8rem; font-weight: 800; }
   .rb-bar i { height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
   .rb-bar i span { display: block; height: 100%; background: var(--rb-accent); }
-  .rb-suggestion { padding: 10px; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-50); font-size: .84rem; }
+  .rb-suggestion { padding: 10px; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-3); font-size: .84rem; }
   .rb-preview-area { position: sticky; top: 8px; min-width: 0; }
   .rb-preview-top { display: flex; justify-content: space-between; gap: 12px; align-items: end; padding: 12px; border: 1px solid var(--border-subtle); border-radius: 8px 8px 0 0; background: var(--surface-3); }
   .rb-preview-status { display: flex; gap: 8px; flex-wrap: wrap; color: var(--text-muted); font-weight: 800; font-size: .78rem; }
   .rb-preview-scroll { display: flex; justify-content: center; padding: 24px; max-height: 86vh; overflow: auto; border: 1px solid var(--border-subtle); border-top: 0; border-radius: 0 0 8px 8px; background: #edf1f7; }
   .rb-shell.is-dark-preview .rb-preview-scroll { background: #111827; }
-  .rb-paper { width: 210mm; min-height: 297mm; max-width: 100%; box-sizing: border-box; background: #fff; color: #1f2937; box-shadow: 0 12px 34px rgba(16,24,40,.16); font-size: 10.5pt; line-height: 1.55; overflow-wrap: break-word; }
+  .rb-paper { width: 210mm; min-height: 297mm; max-width: 100%; box-sizing: border-box; background: var(--surface-3); color: var(--text-primary); box-shadow: 0 12px 34px rgba(16,24,40,.16); font-size: 10.5pt; line-height: 1.55; overflow-wrap: break-word; }
   .cv-head { display: grid; gap: 6px; margin-bottom: var(--cv-section-gap); }
   .cv-head.centered { text-align: center; }
   .cv-head.split { grid-template-columns: 1fr auto; align-items: end; }
@@ -267,7 +273,7 @@ const customSchema = {
     .rb-toolbar, .rb-preview-top { position: static; flex-direction: column; align-items: stretch; }
     .rb-row, .rb-control-grid, .rb-template-grid, .rb-score-card { grid-template-columns: 1fr; }
     .rb-workspace { gap: 12px; }
-    .rb-preview-scroll { padding: 12px; }
+    .rb-preview-scroll { padding: 12px; overflow-x: auto; }
     .rb-paper { min-width: 680px; transform-origin: top center; }
   }
 </style>
@@ -311,8 +317,17 @@ const customSchema = {
   let saveTimer = 0;
   let draggedSectionId = '';
 
+  function generateId() {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxx-xxxx-xxxx'.replace(/x/g, () => Math.floor(Math.random() * 16).toString(16));
+  }
+  function safeClone(obj) {
+    if (typeof structuredClone === 'function') return structuredClone(obj);
+    return JSON.parse(JSON.stringify(obj));
+  }
+
   function blankItem(type) {
-    const base = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()) };
+    const base = { id: generateId() };
     return {
       experience: { ...base, company: '', position: '', location: '', startDate: '', endDate: '', current: false, description: '' },
       education: { ...base, institution: '', degree: '', field: '', location: '', startDate: '', endDate: '', current: false, gpa: '', description: '' },
@@ -398,11 +413,11 @@ const customSchema = {
       <div class="rb-edit-head">
         <div class="rb-edit-title"><span>${meta.icon}</span><strong>${esc(meta.label)}</strong></div>
         <div class="rb-edit-actions">
-          <button class="rb-mini" type="button" data-section-action="up" ${index === 0 ? 'disabled' : ''} title="Move up">↑</button>
-          <button class="rb-mini" type="button" data-section-action="down" ${index === total - 1 ? 'disabled' : ''} title="Move down">↓</button>
-          <button class="rb-mini" type="button" data-section-action="collapse" title="Collapse or expand">${state.collapsed[id] ? '+' : '-'}</button>
-          ${required ? '' : `<button class="rb-mini" type="button" data-section-action="toggle" title="Show or hide">${state.data.sectionVisibility[id] === false ? '○' : '●'}</button>`}
-          ${custom ? `<button class="rb-mini" type="button" data-section-action="delete" title="Delete custom section">×</button>` : ''}
+          <button class="rb-mini" type="button" data-section-action="up" ${index === 0 ? 'disabled' : ''} title="Move up" aria-label="Move section up">↑</button>
+          <button class="rb-mini" type="button" data-section-action="down" ${index === total - 1 ? 'disabled' : ''} title="Move down" aria-label="Move section down">↓</button>
+          <button class="rb-mini" type="button" data-section-action="collapse" title="Collapse or expand" aria-label="Collapse section">${state.collapsed[id] ? '+' : '-'}</button>
+          ${required ? '' : `<button class="rb-mini" type="button" data-section-action="toggle" title="Show or hide" aria-label="Toggle section visibility">${state.data.sectionVisibility[id] === false ? '○' : '●'}</button>`}
+          ${custom ? `<button class="rb-mini" type="button" data-section-action="delete" title="Delete custom section" aria-label="Delete section">×</button>` : ''}
         </div>
       </div>
       <div class="rb-edit-body">${renderSectionBody(id)}</div>
@@ -437,7 +452,7 @@ const customSchema = {
     if (type === 'custom') body = `<div class="rb-row">${field('Title', `${path}.title`, item.title)}${field('Subtitle', `${path}.subtitle`, item.subtitle)}</div>${field('Date', `${path}.date`, item.date)}${field('Description', `${path}.description`, item.description, 'textarea')}`;
     return `<div class="rb-entry" data-entry-type="${type}" data-index="${i}" data-custom-id="${customId}">
       <div class="rb-entry-bar"><strong>${esc(type === 'custom' ? 'Item' : sectionMeta[type].label)} ${i + 1}</strong><div class="rb-entry-tools">
-        <button class="rb-mini" type="button" data-entry-action="up" title="Move up">↑</button><button class="rb-mini" type="button" data-entry-action="down" title="Move down">↓</button><button class="rb-mini" type="button" data-entry-action="duplicate" title="Duplicate">+</button><button class="rb-mini" type="button" data-entry-action="delete" title="Delete">×</button>
+        <button class="rb-mini" type="button" data-entry-action="up" title="Move up" aria-label="Move entry up">↑</button><button class="rb-mini" type="button" data-entry-action="down" title="Move down" aria-label="Move entry down">↓</button><button class="rb-mini" type="button" data-entry-action="duplicate" title="Duplicate" aria-label="Duplicate entry">+</button><button class="rb-mini" type="button" data-entry-action="delete" title="Delete" aria-label="Delete entry">×</button>
       </div></div>${body}</div>`;
   }
   function renderPreview() {
@@ -655,23 +670,25 @@ const customSchema = {
     const type = entry.dataset.entryType;
     const index = Number(entry.dataset.index);
     const customId = entry.dataset.customId;
-    const arr = customId ? state.data.customSections.find((s) => s.id === customId).items : state.data[type];
+    const customSection = customId ? state.data.customSections.find((s) => s.id === customId) : null;
+    const arr = customId ? (customSection ? customSection.items : []) : state.data[type];
+    if (!arr.length && !state.data[type]) return;
     remember();
     if (btn.dataset.entryAction === 'delete') arr.splice(index, 1);
-    if (btn.dataset.entryAction === 'duplicate') arr.splice(index + 1, 0, { ...structuredClone(arr[index]), id: crypto.randomUUID() });
+    if (btn.dataset.entryAction === 'duplicate') arr.splice(index + 1, 0, { ...safeClone(arr[index]), id: generateId() });
     if (btn.dataset.entryAction === 'up' && index > 0) [arr[index - 1], arr[index]] = [arr[index], arr[index - 1]];
     if (btn.dataset.entryAction === 'down' && index < arr.length - 1) [arr[index + 1], arr[index]] = [arr[index], arr[index + 1]];
     commit();
   }
   function addItem(type, customId) {
     remember();
-    if (type === 'custom') state.data.customSections.find((s) => s.id === customId).items.push({ id: crypto.randomUUID(), title: '', subtitle: '', date: '', description: '' });
+    if (type === 'custom') { const cs = state.data.customSections.find((s) => s.id === customId); if (cs) cs.items.push({ id: generateId(), title: '', subtitle: '', date: '', description: '' }); }
     else state.data[type].push(blankItem(type));
     commit();
   }
   function addCustomSection() {
     remember();
-    state.data.customSections.push({ id: crypto.randomUUID(), title: 'Custom Section', items: [] });
+    state.data.customSections.push({ id: generateId(), title: 'Custom Section', items: [] });
     commit();
   }
   function restore(from, to) {
