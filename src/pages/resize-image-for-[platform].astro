@@ -45,7 +45,7 @@ const customSchema = {
 ---
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath={`/resize-image-for-${platform}`}>
-    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: "Resize Image For [Platform]", path: "/" }]} />
+    <Breadcrumb items={[{ name: 'Home', path: '/' }, { name: `Resize Image for ${title}`, path: `/resize-image-for-${platform}` }]} />
 
     <div class="tool-wrapper animate-fade-up">
         <header class="tool-intro text-center">
@@ -100,10 +100,10 @@ const customSchema = {
     }
     
     .text-gradient {
-        background: linear-gradient(135deg, #111 0%, #666 100%);
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        border-bottom: 4px solid #111;
+        border-bottom: 4px solid var(--text-primary);
         padding-bottom: 2px;
     }
 

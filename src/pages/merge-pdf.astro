@@ -31,7 +31,7 @@ const faqs = [
 ];
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/merge-pdf" faqs={faqs}>
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="pdf" canonicalPath="/merge-pdf" faqs={faqs}>
 <script>
     import { PDFDocument } from 'pdf-lib';
 
@@ -276,7 +276,7 @@ const faqs = [
                   window.ffNotice("PDFs merged successfully!", "success");
                   var shareUrl = encodeURIComponent(window.location.href);
                   var shareTxt = encodeURIComponent("I just merged multiple PDFs into one using FormFix! 100% private, no uploads. Try it: " + window.__SITE_URL + "/merge-pdf");
-                  var shareHTML = '<div style="margin-top:20px;text-align:center;"><p style="font-weight:600;margin-bottom:10px;color:var(--success);">Love FormFix? Share it!</p><div style="display:flex;gap:8px;justify-content:center;"><a href="https://twitter.com/intent/tweet?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#000;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">Share on X</a><a href="https://wa.me/?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">WhatsApp</a></div></div>';
+                  var shareHTML = '<div style="margin-top:20px;text-align:center;"><p style="font-weight:600;margin-bottom:10px;color:var(--success);">Love FormFix? Share it!</p><div style="display:flex;gap:8px;justify-content:center;"><a href="https://x.com/intent/tweet?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#000;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">Share on X</a><a href="https://wa.me/?text=' + shareTxt + '" target="_blank" style="padding:8px 16px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none;font-weight:600;font-size:0.85rem;">WhatsApp</a></div></div>';
                   var existing = document.getElementById('post-merge-share');
                   if (!existing) {
                       var shareDiv = document.createElement('div');

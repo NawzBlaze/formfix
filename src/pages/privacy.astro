@@ -26,7 +26,7 @@ const customSchema = {
     <div class="page">
         <div class="container page-inner">
             <h1>Privacy Policy</h1>
-            <p class="updated">Effective Date: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            <p class="updated">Effective Date: January 1, 2024</p>
 
             <section class="section">
                 <h2>1. Introduction</h2>
@@ -41,12 +41,22 @@ const customSchema = {
 
             <section class="section">
                 <h2>3. Analytics</h2>
-                <p>We may use basic, privacy-friendly analytics tools to see aggregate data (like how many people visit the site or which browsers are used) to improve the tool. We do not use intrusive trackers or sell your data to third parties.</p>
+                <p>We use two privacy-friendly analytics tools to understand aggregate usage patterns:</p>
+                <ul>
+                    <li><strong>Plausible Analytics</strong> — A lightweight, cookie-free analytics service. Plausible does not use cookies, does not collect personal data, and is fully compliant with GDPR, CCPA, and PECR. It processes pageview statistics entirely on its own servers without tracking individual users.</li>
+                    <li><strong>Microsoft Clarity</strong> — Used to understand how visitors interact with our tools through session heatmaps and aggregate behavior analysis. Clarity uses cookies to identify unique sessions. No personally identifiable information is collected or stored. You can learn more at <a href="https://clarity.microsoft.com" target="_blank" rel="noopener noreferrer">clarity.microsoft.com</a>.</li>
+                </ul>
+                <p>Both services only see aggregate, anonymized data. We never use them to collect or store personal information about you.</p>
             </section>
 
             <section class="section">
                 <h2>4. Cookies</h2>
-                <p>FormFix does not require or set any tracking cookies to function.</p>
+                <p>FormFix uses minimal cookies solely for functionality:</p>
+                <ul>
+                    <li><strong>Cookie consent</strong> — A localStorage entry to remember whether you accepted or declined analytics.</li>
+                    <li><strong>Theme preference</strong> — A localStorage entry to remember your dark/light mode choice.</li>
+                </ul>
+                <p>No third-party advertising cookies are set. Microsoft Clarity may set a session cookie for its analytics purposes as described above.</p>
             </section>
 
             <section class="section">

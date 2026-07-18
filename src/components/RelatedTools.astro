@@ -36,7 +36,8 @@ if (imageTools.includes(currentTool)) {
     // If it's an image tool, recommend other image tools first
     relatedTools = allTools.filter(t => t.id !== currentTool && imageTools.includes(t.id)).slice(0, 5);
     // Add one PDF tool for variety
-    relatedTools.push(allTools.find(t => t.id === 'merge-pdf'));
+    const mergePdf = allTools.find(t => t.id === 'merge-pdf');
+    if (mergePdf) relatedTools.push(mergePdf);
 } else if (pdfTools.includes(currentTool)) {
     // If it's a PDF tool, recommend other PDF tools
     relatedTools = allTools.filter(t => t.id !== currentTool && pdfTools.includes(t.id));
@@ -46,7 +47,7 @@ if (imageTools.includes(currentTool)) {
     }
 } else {
     // Default to a mix of popular tools
-    const popularIds = ['compress', 'merge-pdf', 'passport-maker', 'qr-code-generator', 'resume', 'bg-remover'];
+    const popularIds = ['compress', 'merge-pdf', 'passport-maker', 'qr-code-generator', 'resume-builder', 'background-remover'];
     relatedTools = allTools.filter(t => t.id !== currentTool && popularIds.includes(t.id)).slice(0, 6);
 }
 ---

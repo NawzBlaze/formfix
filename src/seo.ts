@@ -57,7 +57,7 @@ export function organizationSchema() {
         '@type': 'ContactPoint',
         email: SITE_CONTACT_EMAIL,
         contactType: 'customer support',
-        availableLanguage: ['English', 'Hindi'],
+        availableLanguage: ['English'],
         url: SITE_URL + '/contact',
       },
     ],
@@ -158,6 +158,7 @@ export function articleSchema(opts: {
   description: string;
   path: string;
   image?: string;
+  datePublished?: string;
 }) {
   return {
     '@context': 'https://schema.org',
@@ -166,8 +167,8 @@ export function articleSchema(opts: {
     description: opts.description,
     url: buildCanonical(opts.path),
     image: opts.image ? buildCanonical(opts.image) : buildCanonical(DEFAULT_OG_IMAGE),
-    datePublished: '2024-01-01',
-    dateModified: new Date().toISOString().slice(0, 10),
+    datePublished: opts.datePublished || '2024-01-01',
+    dateModified: opts.datePublished || '2024-01-01',
     author: {
       '@type': 'Organization',
       name: SITE_NAME + ' Editorial',

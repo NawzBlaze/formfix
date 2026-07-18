@@ -139,7 +139,7 @@ const jsonLd = {
 		<meta name="theme-color" content={themeColor} />
 		<meta name="color-scheme" content="light dark" />
 		<meta name="format-detection" content="telephone=no" />
-		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://www.clarity.ms https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data:; connect-src 'self' blob: https://www.clarity.ms https://plausible.io;">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://www.clarity.ms https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data:; connect-src 'self' blob: https://www.clarity.ms https://plausible.io; worker-src 'self' blob:;">
 
 		<!-- Security Utilities -->
 		<script is:inline>
@@ -298,17 +298,34 @@ const jsonLd = {
 		<!-- 7. Performance Hints -->
 		<meta http-equiv="x-dns-prefetch-control" content="on" />
 
-		<!-- Microsoft Clarity Tracking -->
+		<!-- Analytics loaded only after cookie consent -->
 		<script is:inline>
-		(function(c,l,a,r,i,t,y){
-			c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-			t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-			y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-		})(window, document, "clarity", "script", "w3sxusm4n2");
+		(function() {
+			var consent = localStorage.getItem('fc-cookie-consent');
+			if (consent === 'accepted') {
+				loadAnalytics();
+			}
+			window.loadFormFixAnalytics = function() {
+				loadAnalytics();
+			};
+			function loadAnalytics() {
+				if (window._ffAnalyticsLoaded) return;
+				window._ffAnalyticsLoaded = true;
+				// Microsoft Clarity
+				(function(c,l,a,r,i,t,y){
+					c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+					t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+					y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+				})(window, document, "clarity", "script", "w3sxusm4n2");
+				// Plausible Analytics
+				var s = document.createElement('script');
+				s.defer = true;
+				s.dataset.domain = 'formfix.pages.dev';
+				s.src = 'https://plausible.io/js/script.js';
+				document.head.appendChild(s);
+			}
+		})();
 		</script>
-
-		<!-- Plausible Analytics (privacy-friendly) -->
-		<script defer data-domain="formfix.pages.dev" src="https://plausible.io/js/script.js"></script>
 
 		<script is:inline define:vars={{ SITE_URL }}>
 window.__SITE_URL = SITE_URL;
@@ -414,7 +431,7 @@ window.__SITE_URL = SITE_URL;
 			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
 		</button>
 
-		<button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+		<button id="theme-toggle-floating" class="theme-toggle-btn" aria-label="Toggle dark mode" title="Toggle dark/light mode">
 			<svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
 			<svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
 		</button>
@@ -429,6 +446,9 @@ window.__SITE_URL = SITE_URL;
 			document.getElementById('cookie-accept').onclick = function() {
 				localStorage.setItem('fc-cookie-consent', 'accepted');
 				banner.style.display = 'none';
+				if (typeof window.loadFormFixAnalytics === 'function') {
+					window.loadFormFixAnalytics();
+				}
 			};
 			document.getElementById('cookie-decline').onclick = function() {
 				localStorage.setItem('fc-cookie-consent', 'declined');
@@ -469,15 +489,15 @@ window.__SITE_URL = SITE_URL;
 			});
 		})();
 
-		// Theme Toggle
-		(function() {
-			var btn = document.getElementById('theme-toggle');
-			if (!btn) return;
-			btn.addEventListener('click', function() {
-				var isDark = document.documentElement.classList.toggle('dark');
-				localStorage.setItem('ff-theme', isDark ? 'dark' : 'light');
-			});
-		})();
+	// Theme Toggle (floating button)
+	(function() {
+		var btn = document.getElementById('theme-toggle-floating');
+		if (!btn) return;
+		btn.addEventListener('click', function() {
+			var isDark = document.documentElement.classList.toggle('dark');
+			localStorage.setItem('ff-theme', isDark ? 'dark' : 'light');
+		});
+	})();
 
 		// Service Worker Registration
 		if ('serviceWorker' in navigator) {

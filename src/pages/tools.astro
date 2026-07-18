@@ -424,9 +424,12 @@ const customSchema = {
 
             if(activityArea) activityArea.classList.remove('hidden');
 
+            const safeTitle = (typeof window.FormFix !== 'undefined' && window.FormFix.escapeHtml)
+                ? window.FormFix.escapeHtml
+                : (s) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
             recentContainer.innerHTML = recents.map(t => `
-                <a href="${t.href}" class="recent-card" aria-label="Recently used ${t.title}">
-                    <span class="recent-title">${t.title}</span>
+                <a href="${safeTitle(t.href)}" class="recent-card" aria-label="Recently used ${safeTitle(t.title)}">
+                    <span class="recent-title">${safeTitle(t.title)}</span>
                 </a>
             `).join('');
         }

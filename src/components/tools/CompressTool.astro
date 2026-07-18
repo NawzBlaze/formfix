@@ -248,7 +248,7 @@ const { initialTarget = 'auto' } = Astro.props;
                         const shareWA = document.getElementById('share-wa');
                         const shareTxt = `I just compressed my photo to ${targetKB}KB exactly using FormFix! It's 100% private and runs in the browser. No uploads. Check it out: ` + window.__SITE_URL;
                         
-                        if(shareX) shareX.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTxt)}`;
+                        if(shareX) shareX.href = `https://x.com/intent/tweet?text=${encodeURIComponent(shareTxt)}`;
                         if(shareWA) shareWA.href = `https://wa.me/?text=${encodeURIComponent(shareTxt)}`;
 
                         if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
