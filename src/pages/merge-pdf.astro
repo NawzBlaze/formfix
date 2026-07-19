@@ -33,7 +33,7 @@ const faqs = [
 
 <BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="pdf" canonicalPath="/merge-pdf" faq={faqs}>
 <script>
-    import { PDFDocument } from 'pdf-lib';
+    import { mergePdfs } from '../lib/pdf';
 
     document.addEventListener('DOMContentLoaded', () => {
     try {
@@ -47,10 +47,10 @@ const faqs = [
         
         let pendingFiles = [];
         let draggedIndex = null;
-        let touchDragClone = null;
-        let touchDragFromIndex = null;
+        let touchDragClone: HTMLElement | null = null;
+        let touchDragFromIndex: number | null = null;
 
-        async function handleFiles(files) {
+        async function handleFiles(files: FileList | File[]) {
             const validPdfs = Array.from(files).filter(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
             if(validPdfs.length === 0) {
                  return window.ffNotice("Please select valid PDF files.", "error");
@@ -71,7 +71,7 @@ const faqs = [
         });
         dropZone?.addEventListener('dragover', () => dropZone?.classList.add('drag-active'));
         dropZone?.addEventListener('dragleave', () => dropZone?.classList.remove('drag-active'));
-        dropZone?.addEventListener('drop', (e) => {
+        dropZone?.addEventListener('drop', (e: any) => {
             dropZone?.classList.remove('drag-active');
             if(e.dataTransfer && e.dataTransfer.files) handleFiles(e.dataTransfer.files);
         });
@@ -136,14 +136,14 @@ const faqs = [
 
         resetBtn?.addEventListener('click', resetApp);
 
-        function handleDragStart(e) {
-            draggedIndex = parseInt(this.dataset.index);
+        function handleDragStart(this: HTMLElement, e: any) {
+            draggedIndex = parseInt(this.dataset.index!);
             this.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
             e.dataTransfer.setData('text/plain', draggedIndex);
         }
 
-        function handleDragEnd(e) {
+        function handleDragEnd(this: HTMLElement, e: any) {
             this.classList.remove('dragging');
             draggedIndex = null;
             fileListContainer?.querySelectorAll('.file-row').forEach(r => r.classList.remove('drag-over'));
@@ -158,14 +158,14 @@ const faqs = [
             row.classList.add('drag-over');
         }
 
-        function handleDragLeave(e) {
+        function handleDragLeave(e: any) {
             const row = e.target.closest('.file-row');
             if (row && !row.contains(e.relatedTarget)) {
                 row.classList.remove('drag-over');
             }
         }
 
-        function handleDrop(e) {
+        function handleDrop(e: any) {
             e.preventDefault();
             const row = e.target.closest('.file-row');
             if (!row) return;
@@ -250,16 +250,7 @@ const faqs = [
              document.getElementById('merge-overlay')?.classList.add('active');
              
              try {
-                 const mergedPdf = await PDFDocument.create();
-
-                 for (const file of pendingFiles) {
-                     const arrayBuffer = await file.arrayBuffer();
-                     const incomingPdf = await PDFDocument.load(arrayBuffer);
-                     const copiedPages = await mergedPdf.copyPages(incomingPdf, incomingPdf.getPageIndices());
-                     copiedPages.forEach((page) => mergedPdf.addPage(page));
-                 }
-
-                 const mergedPdfBytes = await mergedPdf.save();
+                 const mergedPdfBytes = await mergePdfs(pendingFiles);
                  const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
                  const url = URL.createObjectURL(blob);
                  const link = document.createElement('a');

@@ -164,7 +164,7 @@ export interface TemplateConfig {
   borderRadius: number;
   columns: 1 | 2;
   photoEnabled: boolean;
-  photoPosition: 'left' | 'right' | 'top';
+  photoPosition?: 'left' | 'right' | 'top';
   sectionOrder: string[];
 }
 

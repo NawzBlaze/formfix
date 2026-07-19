@@ -209,6 +209,7 @@ const faqs = [
 </style>
 
 <script is:inline>
+(function() {
 try {
     const textInput = document.getElementById('text-input');
     const fontSelect = document.getElementById('font-select');
@@ -378,4 +379,5 @@ try {
     console.error('Handwriting tool error:', err);
     if (typeof window.ffNotice === 'function') window.ffNotice('Something went wrong with the handwriting tool. Please try again.', 'error');
 }
+})();
 </script>
