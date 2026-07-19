@@ -1,13 +1,16 @@
 ---
+import { toolCategories } from '../data/tools';
 const { active = 'home' } = Astro.props;
 
-const navItems = [
-    { name: 'Compress', href: '/compress-image', id: 'compress' },
-    { name: 'Passport Photo', href: '/passport-size-photo', id: 'passport-maker' },
-    { name: 'Sign Maker', href: '/signature-maker', id: 'signature' },
-    { name: 'PDF Tools', href: '/merge-pdf', id: 'pdf' },
-    { name: 'All Tools', href: '/tools', id: 'tools' },
-];
+function isActive(toolId: string): boolean {
+    return active === toolId;
+}
+function isCategoryActive(catId: string): boolean {
+    if (catId === 'image') return ['compress-image','compress-20kb','compress-50kb','passport-photo-compressor','passport-maker','global-passport','crop-image','circle-crop','resize-image','background-remover','black-and-white','photo-to-sketch','convert-image','blur-image','watermark-image','signature'].includes(active);
+    if (catId === 'pdf') return ['merge-pdf','split-pdf','rotate-pdf','image-to-pdf','pdf-to-image','resume-builder','text-to-handwriting'].includes(active);
+    if (catId === 'utilities') return ['qr-code-generator','password-generator','image-to-text','age-calculator','percentage-calculator','file-size-converter'].includes(active);
+    return false;
+}
 ---
 
 <header class="site-header" id="main-header" role="banner">
@@ -23,13 +26,30 @@ const navItems = [
 
         <nav class="desktop-nav no-mobile" aria-label="Primary">
             <ul class="nav-list">
-                {navItems.map(item => (
-                    <li>
-                        <a href={item.href} class={`nav-link ${active === item.id ? 'active' : ''}`} aria-current={active === item.id ? 'page' : undefined}>
-                            {item.name}
-                        </a>
+                {toolCategories.map(cat => (
+                    <li class="nav-dropdown" data-dropdown={cat.id}>
+                        <button
+                            class={`nav-link nav-trigger ${isCategoryActive(cat.id) ? 'active' : ''}`}
+                            aria-expanded="false"
+                            aria-controls={`mega-${cat.id}`}
+                            type="button"
+                            set:html={cat.label}
+                        />
+                        <div class="mega-dropdown" id={`mega-${cat.id}`} role="menu" aria-label={cat.label}>
+                            <div class="mega-inner">
+                                {cat.tools.map(tool => (
+                                    <a href={tool.href} class={`mega-item ${isActive(tool.id) ? 'current' : ''}`} role="menuitem">
+                                        <span class="mega-title">{tool.title}</span>
+                                        <span class="mega-desc">{tool.desc}</span>
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
                     </li>
                 ))}
+                <li>
+                    <a href="/tools" class={`nav-link ${active === 'tools' ? 'active' : ''}`} aria-current={active === 'tools' ? 'page' : undefined}>All Tools</a>
+                </li>
             </ul>
         </nav>
 
@@ -38,10 +58,6 @@ const navItems = [
                 <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                 <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
             </button>
-
-            <a href="/tools" class="header-cta no-mobile">
-                Open Tools
-            </a>
 
             <button class="menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer" type="button">
                 <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
@@ -58,10 +74,32 @@ const navItems = [
         </button>
     </div>
     <nav class="drawer-nav" aria-label="Mobile">
-        {navItems.map(item => (
-            <a href={item.href} class="drawer-link" aria-current={active === item.id ? 'page' : undefined}>{item.name}</a>
+        <a href="/tools" class="drawer-link drawer-all-tools" aria-current={active === 'tools' ? 'page' : undefined}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            All Tools
+        </a>
+
+        {toolCategories.map(cat => (
+            <div class={`drawer-category ${isCategoryActive(cat.id) ? 'open' : ''}`}>
+                <button class="drawer-cat-trigger" aria-expanded={isCategoryActive(cat.id) ? 'true' : 'false'} aria-controls={`drawer-cat-${cat.id}`} type="button">
+                    <span class="drawer-cat-label" set:html={`${cat.icon} ${cat.label}`} />
+                    <span class="drawer-cat-count">{cat.tools.length}</span>
+                    <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                </button>
+                <div class={`drawer-cat-list ${isCategoryActive(cat.id) ? 'expanded' : ''}`} id={`drawer-cat-${cat.id}`} aria-hidden={isCategoryActive(cat.id) ? 'false' : 'true'} role="group" aria-label={cat.label}>
+                    {cat.tools.map(tool => (
+                        <a href={tool.href} class={`drawer-link drawer-tool-link ${isActive(tool.id) ? 'active' : ''}`} aria-current={isActive(tool.id) ? 'page' : undefined}>{tool.title}</a>
+                    ))}
+                </div>
+            </div>
         ))}
-        <button id="mobile-theme-toggle" class="drawer-link text-left" type="button">Switch Theme</button>
+
+        <div class="drawer-divider"></div>
+        <button id="mobile-theme-toggle" class="drawer-link text-left" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="drawer-sun-icon"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="drawer-moon-icon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            Switch Theme
+        </button>
     </nav>
 </aside>
 <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
@@ -74,88 +112,68 @@ const navItems = [
     background: var(--surface-1);
     border-bottom: 1px solid var(--border-subtle);
 }
+.site-header.scrolled { background: var(--surface-2); }
 
-.site-header.scrolled {
-    background: var(--surface-2);
-}
-
-.header-inner {
-    height: 56px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+.header-inner { height: 56px; display: flex; justify-content: space-between; align-items: center; }
 
 .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
 .logo-mark { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-xs); overflow: hidden; }
 .logo-text { font-weight: 600; font-size: 1rem; color: var(--text-primary); letter-spacing: -0.02em; }
 
-.nav-list { display: flex; gap: 2px; list-style: none; padding: 0; margin: 0; }
+/* Desktop Nav */
+.nav-list { display: flex; gap: 2px; list-style: none; padding: 0; margin: 0; align-items: center; }
 .nav-link {
-    padding: 6px 12px;
-    border-radius: var(--radius-sm);
-    font-weight: 500;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    text-decoration: none;
-    display: inline-block;
+    padding: 6px 12px; border-radius: var(--radius-sm); font-weight: 500; font-size: 0.8rem;
+    color: var(--text-secondary); text-decoration: none; display: inline-block;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+    align-items: center; gap: 4px;
 }
-.nav-link:hover { color: var(--text-primary); }
-.nav-link.active { color: var(--accent-primary); }
+.nav-link:hover, .nav-trigger:hover { color: var(--text-primary); }
+.nav-link.active, .nav-trigger.active { color: var(--accent-primary); }
+.nav-trigger .chevron-icon { width: 12px; height: 12px; transition: transform 0.2s; }
+.nav-dropdown.open .nav-trigger .chevron-icon { transform: rotate(180deg); }
+
+/* Mega Dropdown */
+.nav-dropdown { position: relative; }
+.mega-dropdown {
+    position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px);
+    opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    background: var(--surface-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg); min-width: 340px; max-width: 520px; z-index: 1001; padding: 12px;
+}
+.nav-dropdown:hover .mega-dropdown,
+.nav-dropdown:focus-within .mega-dropdown {
+    opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: all; visibility: visible;
+}
+.mega-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.mega-item {
+    display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: var(--radius-sm);
+    text-decoration: none; transition: background 0.15s;
+}
+.mega-item:hover { background: var(--surface-2); }
+.mega-item.current { background: var(--accent-soft); }
+.mega-title { font-size: 0.82rem; font-weight: 500; color: var(--text-primary); }
+.mega-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.3; }
 
 .header-right { display: flex; align-items: center; gap: 6px; }
-
 .icon-btn {
-    background: transparent;
-    border: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: transparent; border: 1px solid var(--border-subtle); color: var(--text-secondary);
+    width: 44px; height: 44px; border-radius: var(--radius-sm); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
 }
-.icon-btn:hover {
-    color: var(--text-primary);
-    border-color: var(--border-strong);
-}
-
+.icon-btn:hover { color: var(--text-primary); border-color: var(--border-strong); }
 .sun-icon { display: none; }
 :global(.dark) .sun-icon { display: block; }
 :global(.dark) .moon-icon { display: none; }
-
-.header-cta {
-    background: var(--text-primary);
-    color: var(--surface-1) !important;
-    padding: 6px 14px;
-    border-radius: var(--radius-sm);
-    font-weight: 500;
-    font-size: 0.8rem;
-    text-decoration: none;
-}
-.header-cta:hover {
-    opacity: 0.9;
-}
 
 .menu-toggle { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 4px; border: none; background: transparent; width: 44px; height: 44px; border-radius: var(--radius-sm); cursor: pointer; }
 .menu-toggle span { width: 16px; height: 1.5px; background: var(--text-primary); border-radius: 1px; transition: 0.2s; }
 
 /* Mobile Drawer */
 .mobile-drawer {
-    position: fixed;
-    right: -100%;
-    top: 0;
-    width: 85%;
-    max-width: 300px;
-    height: 100vh;
-    height: 100dvh;
-    background: var(--surface-1);
-    z-index: 1001;
-    transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    padding: 20px;
-    border-left: 1px solid var(--border-subtle);
+    position: fixed; right: -100%; top: 0; width: 85%; max-width: 320px; height: 100vh; height: 100dvh;
+    background: var(--surface-1); z-index: 1001; transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 20px; border-left: 1px solid var(--border-subtle); overflow-y: auto;
 }
 .mobile-drawer.open { right: 0; }
 .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; pointer-events: none; transition: 0.2s; z-index: 1000; }
@@ -163,25 +181,49 @@ const navItems = [
 
 .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle); }
 .drawer-header button { background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 13px; display: flex; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
+
 .drawer-nav { display: flex; flex-direction: column; gap: 2px; }
 .drawer-link {
-    padding: 14px 14px;
-    color: var(--text-primary);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.9rem;
-    border-radius: var(--radius-sm);
-    background: none;
-    border: none;
-    text-align: left;
-    cursor: pointer;
-    font-family: inherit;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
+    padding: 12px 14px; color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 0.88rem;
+    border-radius: var(--radius-sm); background: none; border: none; text-align: left; cursor: pointer;
+    font-family: inherit; min-height: 44px; display: flex; align-items: center; gap: 10px;
 }
 .drawer-link:hover { background: var(--surface-2); }
+.drawer-link.active { color: var(--accent-primary); background: var(--accent-soft); }
 .text-left { text-align: left; }
+
+.drawer-all-tools { border-bottom: 1px solid var(--border-subtle); margin-bottom: 8px; font-weight: 600; }
+.drawer-all-tools svg { flex-shrink: 0; color: var(--text-muted); }
+
+/* Drawer Categories */
+.drawer-category { border-radius: var(--radius-sm); }
+.drawer-cat-trigger {
+    width: 100%; display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+    background: none; border: none; color: var(--text-primary); font-weight: 500; font-size: 0.85rem;
+    font-family: inherit; cursor: pointer; border-radius: var(--radius-sm); min-height: 44px; text-align: left;
+}
+.drawer-cat-trigger:hover { background: var(--surface-2); }
+.drawer-cat-label { display: flex; align-items: center; gap: 8px; flex: 1; }
+.drawer-cat-label :global(svg) { color: var(--text-muted); flex-shrink: 0; }
+.drawer-cat-count {
+    font-size: 0.7rem; font-weight: 600; color: var(--text-muted);
+    background: var(--surface-2); padding: 2px 8px; border-radius: 999px;
+}
+.drawer-cat-trigger .chevron { margin-left: auto; transition: transform 0.2s; flex-shrink: 0; }
+.drawer-category.open .drawer-cat-trigger .chevron { transform: rotate(180deg); }
+
+.drawer-cat-list { max-height: 0; overflow: hidden; transition: max-height 0.25s ease; }
+.drawer-cat-list.expanded { max-height: 600px; }
+.drawer-tool-link { padding: 10px 14px 10px 42px; font-size: 0.82rem; font-weight: 400; min-height: 40px; }
+.drawer-tool-link.active { color: var(--accent-primary); }
+.drawer-tool-link[aria-current="page"] { color: var(--accent-primary); background: var(--accent-soft); }
+
+.drawer-divider { height: 1px; background: var(--border-subtle); margin: 8px 0; }
+
+/* Drawer Theme Toggle Icons */
+.drawer-sun-icon { display: none; }
+:global(.dark) .drawer-sun-icon { display: block; }
+:global(.dark) .drawer-moon-icon { display: none; }
 
 @media (max-width: 960px) {
     .no-mobile { display: none; }
@@ -210,50 +252,115 @@ const navItems = [
     themeBtn?.addEventListener('click', toggleTheme);
     mobileThemeBtn?.addEventListener('click', () => {
         toggleTheme();
-        drawer?.classList.remove('open');
-        overlay?.classList.remove('open');
-        toggle?.setAttribute('aria-expanded', 'false');
+        closeDrawer();
     });
 
+    /* ── Desktop Mega Menu (keyboard) ── */
+    document.querySelectorAll('.nav-trigger').forEach(trigger => {
+        const dropdown = trigger.closest('.nav-dropdown');
+        const panel = dropdown?.querySelector('.mega-dropdown');
+        const items = panel?.querySelectorAll('.mega-item') || [];
+
+        trigger.addEventListener('click', () => {
+            const wasOpen = dropdown?.classList.contains('open');
+            document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+                d.classList.remove('open');
+                d.querySelector('.nav-trigger')?.setAttribute('aria-expanded', 'false');
+            });
+            if (!wasOpen) {
+                dropdown?.classList.add('open');
+                trigger.setAttribute('aria-expanded', 'true');
+                if (items.length) (items[0] as HTMLElement).focus();
+            }
+        });
+
+        trigger.addEventListener('keydown', (e) => {
+            if ((e as KeyboardEvent).key === 'ArrowDown') {
+                e.preventDefault();
+                dropdown?.classList.add('open');
+                trigger.setAttribute('aria-expanded', 'true');
+                (items[0] as HTMLElement)?.focus();
+            }
+            if ((e as KeyboardEvent).key === 'Escape') {
+                dropdown?.classList.remove('open');
+                trigger.setAttribute('aria-expanded', 'false');
+                trigger.focus();
+            }
+        });
+
+        items.forEach((item, i) => {
+            item.addEventListener('keydown', (e) => {
+                const key = (e as KeyboardEvent).key;
+                if (key === 'ArrowDown') { e.preventDefault(); (items[i + 1] as HTMLElement)?.focus(); }
+                if (key === 'ArrowUp') { e.preventDefault(); i === 0 ? trigger.focus() : (items[i - 1] as HTMLElement)?.focus(); }
+                if (key === 'Escape') { dropdown?.classList.remove('open'); trigger.setAttribute('aria-expanded', 'false'); trigger.focus(); }
+                if (key === 'Home') { e.preventDefault(); (items[0] as HTMLElement)?.focus(); }
+                if (key === 'End') { e.preventDefault(); (items[items.length - 1] as HTMLElement)?.focus(); }
+            });
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!(e.target as Element).closest('.nav-dropdown')) {
+            document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+                d.classList.remove('open');
+                d.querySelector('.nav-trigger')?.setAttribute('aria-expanded', 'false');
+            });
+        }
+    });
+
+    /* ── Mobile Drawer ── */
     const FOCUSABLE = 'button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
-    const openDrawer = () => {
+    function openDrawer() {
         drawer?.classList.add('open');
         overlay?.classList.add('open');
         toggle?.setAttribute('aria-expanded', 'true');
         drawer?.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
-        const firstFocusable = drawer?.querySelector(FOCUSABLE);
-        firstFocusable?.focus();
-    };
-    const closeDrawer = () => {
+        const first = drawer?.querySelector(FOCUSABLE);
+        (first as HTMLElement)?.focus();
+    }
+    function closeDrawer() {
         drawer?.classList.remove('open');
         overlay?.classList.remove('open');
         toggle?.setAttribute('aria-expanded', 'false');
         drawer?.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
         toggle?.focus();
-    };
+    }
 
     drawer?.addEventListener('keydown', (e) => {
-        if (e.key !== 'Tab' || !drawer) return;
+        if ((e as KeyboardEvent).key !== 'Tab' || !drawer) return;
         const focusables = [...drawer.querySelectorAll(FOCUSABLE)];
         if (focusables.length === 0) return;
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-        }
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); (last as HTMLElement).focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); (first as HTMLElement).focus(); }
     });
 
     toggle?.addEventListener('click', openDrawer);
     [close, overlay].forEach(el => el?.addEventListener('click', closeDrawer));
 
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeDrawer();
+        if ((e as KeyboardEvent).key === 'Escape') closeDrawer();
+    });
+
+    /* Drawer accordion toggle */
+    document.querySelectorAll('.drawer-cat-trigger').forEach(trigger => {
+        trigger.addEventListener('click', () => {
+            const category = trigger.closest('.drawer-category');
+            const panel = category?.querySelector('.drawer-cat-list');
+            const isOpen = category?.classList.toggle('open');
+            trigger.setAttribute('aria-expanded', String(isOpen));
+            panel?.classList.toggle('expanded', isOpen || false);
+            panel?.setAttribute('aria-hidden', String(!isOpen));
+        });
+    });
+
+    /* Close drawer on link click */
+    drawer?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeDrawer);
     });
 </script>

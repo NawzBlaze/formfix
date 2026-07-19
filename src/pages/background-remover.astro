@@ -31,7 +31,7 @@ const faqs = [
 ];
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/background-remover" faqs={faqs}>
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/background-remover" faq={faqs}>
     <script is:inline>
     document.addEventListener('DOMContentLoaded', () => { try {
         const input = document.getElementById('img-input'), canvas = document.getElementById('main-canvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });

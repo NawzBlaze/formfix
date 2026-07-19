@@ -31,7 +31,7 @@ const faqs = [
 ];
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="pdf" canonicalPath="/merge-pdf" faqs={faqs}>
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="pdf" canonicalPath="/merge-pdf" faq={faqs}>
 <script>
     import { PDFDocument } from 'pdf-lib';
 
@@ -84,7 +84,7 @@ const faqs = [
                 row.setAttribute('draggable', 'true');
                 row.dataset.index = index;
                 
-                const sizeKb = (file.size / 1024).toFixed(1);
+                const sizeStr = file.size > 1048576 ? (file.size / 1048576).toFixed(1) + ' MB' : (file.size / 1024).toFixed(1) + ' KB';
                 const safeName = (window.FormFix && window.FormFix.escapeHtml) ? window.FormFix.escapeHtml(file.name) : file.name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
                 
                 row.innerHTML = `
@@ -93,7 +93,7 @@ const faqs = [
                         <span class="f-icon">📄</span>
                         <div class="f-text">
                             <span class="f-name">${safeName}</span>
-                            <span class="f-size">${sizeKb} KB</span>
+                            <span class="f-size">${sizeStr}</span>
                         </div>
                     </div>
                     <button class="remove-btn" data-index="${index}" title="Remove file">❌</button>

@@ -3,64 +3,11 @@ import BaseLayout from '../components/BaseLayout.astro';
 import CompressTool from '../components/tools/CompressTool.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import { SITE_URL } from '../seo';
+import { toolCategories, allTools } from '../data/tools';
 
 const PAGE_TITLE = 'All Free Online Tools — Image Compressor, PDF Merger, Passport Photo & More | FormFix';
 const PAGE_DESC = 'Browse 30+ free browser-based tools: image compressor, PDF merger, passport photo maker, signature maker, QR code generator, and more. No sign-up, no uploads.';
 const PAGE_KEYWORDS = 'free online tools, image compressor online, pdf merger free, passport photo maker, signature maker online, qr code generator free, browser tools, no upload tools';
-
-const categories = [
-    {
-        id: 'image',
-        title: 'Image Tools',
-        desc: 'Professional image processing, resizing, and manipulation.',
-        tools: [
-            { id: 'compress-image', title: 'Image Compressor', href: '/compress-image', desc: 'Hit exact file size targets like 20KB, 50KB or any custom limit.' },
-            { id: 'compress-image-to-20kb', title: 'Compress to 20KB', href: '/compress-image-to-20kb', desc: 'Precisely hit the 20KB file size limit for government forms.' },
-            { id: 'compress-image-to-50kb', title: 'Compress to 50KB', href: '/compress-image-to-50kb', desc: 'Optimize images for SSC, UPSC, and banking form uploads.' },
-            { id: 'passport-photo-compressor', title: 'Passport Photo Compressor', href: '/passport-photo-compressor', desc: 'Compress passport photos to required size limits.' },
-            { id: 'passport-size-photo', title: 'Passport Photo Maker', href: '/passport-size-photo', desc: 'Official 3.5x4.5cm passport photos.' },
-            { id: 'official-passport-photo-maker', title: 'Global Passport Photo', href: '/official-passport-photo-maker', desc: 'Generate photos for any country with correct dimensions.' },
-            { id: 'crop-image', title: 'Crop Image', href: '/crop-image', desc: 'Precise cropping with ratio presets.' },
-            { id: 'circle-crop', title: 'Circle Profile Maker', href: '/circle-crop', desc: 'Perfect circular avatars for profiles.' },
-            { id: 'resize-image', title: 'Resize Image', href: '/resize-image', desc: 'Change width/height proportionally.' },
-            { id: 'resize-image-for-platform', title: 'Resize for Social', href: '/resize-image-for-instagram', desc: 'One-click resize for Instagram, Twitter, LinkedIn.' },
-            { id: 'background-remover', title: 'Background Remover', href: '/background-remover', desc: 'Remove white or solid backgrounds.' },
-            { id: 'black-and-white', title: 'Black & White Filter', href: '/black-and-white', desc: 'Convert photos to elegant grayscale.' },
-            { id: 'photo-to-sketch', title: 'Pencil Sketch Maker', href: '/photo-to-sketch', desc: 'Turn any photo into a pencil drawing.' },
-            { id: 'convert-image', title: 'Format Converter', href: '/convert-image', desc: 'Convert between JPG, PNG & WebP.' },
-            { id: 'blur-image', title: 'Blur & Censor', href: '/blur-image', desc: 'Redact sensitive info securely.' },
-            { id: 'watermark-image', title: 'Watermark Engine', href: '/watermark-image', desc: 'Add text watermarks to your photos.' }
-        ]
-    },
-    {
-        id: 'pdf',
-        title: 'Document & PDF Tools',
-        desc: 'Merge, split, and extract documents completely offline.',
-        tools: [
-            { id: 'merge-pdf', title: 'Merge PDF', href: '/merge-pdf', desc: 'Combine multiple PDFs into one file.' },
-            { id: 'rotate-pdf', title: 'Rotate PDF', href: '/rotate-pdf', desc: 'Fix upside-down scanned PDFs.' },
-            { id: 'image-to-pdf', title: 'Images to PDF', href: '/image-to-pdf', desc: 'Merge JPG/PNG images into a single PDF.' },
-            { id: 'pdf-to-image', title: 'PDF to Images', href: '/pdf-to-image', desc: 'Extract every page as a high-quality image.' },
-            { id: 'split-pdf', title: 'Split & Extract', href: '/split-pdf', desc: 'Separate specific pages from any PDF.' },
-            { id: 'resume-builder', title: 'Resume Builder', href: '/resume-builder', desc: 'Create a modern resume in 60 seconds.' },
-            { id: 'text-to-handwriting', title: 'Assignment Studio', href: '/text-to-handwriting', desc: 'Convert text into realistic handwriting.' },
-            { id: 'signature-maker', title: 'Signature Maker', href: '/signature-maker', desc: 'Draw or type digital signatures.' }
-        ]
-    },
-    {
-        id: 'utilities',
-        title: 'Utilities & Calculators',
-        desc: 'Quick tools for everyday tasks and calculations.',
-        tools: [
-            { id: 'qr-code-generator', title: 'QR Code Generator', href: '/qr-code-generator', desc: 'Create permanent QR codes.' },
-            { id: 'password-generator', title: 'Password Generator', href: '/password-generator', desc: 'Generate secure passwords.' },
-            { id: 'file-size-converter', title: 'File Size Converter', href: '/file-size-converter', desc: 'Instant calculator for Bytes to KB to MB.' },
-            { id: 'percentage-calculator', title: 'Percentage Calculator', href: '/percentage-calculator', desc: 'Quickly find percent of numbers.' },
-            { id: 'age-calculator', title: 'Age Calculator', href: '/age-calculator', desc: 'Calculate exact age in years, months, days.' },
-            { id: 'image-to-text', title: 'Image to Text (OCR)', href: '/image-to-text', desc: 'Extract text from any image using OCR.' }
-        ]
-    }
-];
 
 const customSchema = {
     '@context': 'https://schema.org',
@@ -70,7 +17,7 @@ const customSchema = {
             name: 'FormFix Tools',
             description: PAGE_DESC,
             url: `${SITE_URL}/tools`,
-            hasPart: categories.flatMap(c => c.tools).map(t => ({
+            hasPart: allTools.map(t => ({
                 '@type': 'SoftwareApplication',
                 name: t.title,
                 url: SITE_URL + t.href,
@@ -115,9 +62,9 @@ const customSchema = {
             </div>
             <div class="filter-tabs" role="tablist" aria-label="Filter by category">
                 <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All</button>
-                <button class="filter-tab" data-filter="image" role="tab" aria-selected="false">Image</button>
-                <button class="filter-tab" data-filter="pdf" role="tab" aria-selected="false">PDF</button>
-                <button class="filter-tab" data-filter="utilities" role="tab" aria-selected="false">Utilities</button>
+                {toolCategories.map(cat => (
+                    <button class="filter-tab" data-filter={cat.id} role="tab" aria-selected="false">{cat.label.split(' ')[0]}</button>
+                ))}
             </div>
         </div>
 
@@ -130,10 +77,10 @@ const customSchema = {
         </div>
 
         <div class="tools-library" id="groups-container">
-            {categories.map(cat => (
+            {toolCategories.map(cat => (
                 <section class="tool-section" data-category={cat.id} aria-labelledby={`cat-${cat.id}`}>
                     <header class="section-header">
-                        <h2 id={`cat-${cat.id}`}>{cat.title}</h2>
+                        <h2 id={`cat-${cat.id}`}>{cat.label}</h2>
                         <p>{cat.desc}</p>
                     </header>
 

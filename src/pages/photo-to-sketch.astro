@@ -32,7 +32,7 @@ const faqs = [
 ];
 ---
 
-<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/photo-to-sketch" faqs={faqs}>
+<BaseLayout title={PAGE_TITLE} description={PAGE_DESC} keywords={PAGE_KEYWORDS} customSchema={customSchema} active="tools" canonicalPath="/photo-to-sketch" faq={faqs}>
     <script is:inline>
     document.addEventListener('DOMContentLoaded', () => { try {
         const input = document.getElementById('file-input'), canvas = document.getElementById('sketch-canvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
